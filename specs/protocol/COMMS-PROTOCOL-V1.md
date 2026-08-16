@@ -589,6 +589,12 @@ READY_FOR_REVIEW 之后不得再改动任何文件，直到收到 FIX_PACKAGE。
 
 它已经在跑，且有 harness 级强制（hook），比本协议单靠约定更可靠。**不修改 `project-auditor.md` 以迁就本协议**，而是让 `COMMANDER` 承担它结构上做不到的事。
 
+> **2026-08-16 实测更正**：`COMMANDER` 尝试用 Agent 工具以 `subagent_type: project-auditor` 直接调用，返回硬错误——`Agent type 'project-auditor' not found`。也就是说，尽管 `.claude/agents/project-auditor.md` 文件存在，**在当前会话的 harness 配置下它并不在可调用 agent 列表里**，无法直接调用。原因未知（可能是本 session 的 agent 列表在会话开始时已固定、需要重新扫描才能纳入新文件；也可能是这类自定义 subagent 需要额外注册步骤）。
+>
+> **结论调整**：下方"调和后的实际流程"里"COMMANDER 通过 Agent 工具调用 project-auditor"这一步，**在当前 harness 配置下实际不可执行**，本协议原文本假设它可行是错的。默认落地方式改为**附录 B2 硬约束 3 早已预留的降级路径**——用 `subagent_type: general-purpose`，把 `project-auditor.md` 的正文（frontmatter 之后的全部内容）逐字注入为 prompt 开头，再附加本轮具体任务范围。已有一次实测成功先例（DEV-000 第二轮、DEV-001 第二轮审计均用此法）。
+>
+> **代价必须如实说明，不能假装等价**：`general-purpose` 的工具集里含 `Edit`/`Write`，不像原生 `project-auditor` 那样在工具层面就拿不到写权限。注入的 persona 里必须显式追加"本轮只允许 Read/Glob/Grep/Bash 只读命令，禁止 Edit/Write/NotebookEdit 及任何写型 Bash 命令"这条书面约束——但这终究是**约定**，不是**结构性禁止**，附录 B2 硬约束 2 声称的"从工具层面杜绝审核员顺手改代码"这条优点，在此降级路径下并不成立。
+
 ### 调和后的实际流程
 
 ```
@@ -603,6 +609,8 @@ COMMANDER 在 LEDGER 追加一条 AUDIT_VERDICT 记录，from 字段填 AUDITOR
         ↓
 COMMANDER 依此发 NODE_RULING
 ```
+
+> 上图第一步按当前 harness 实况应读作："COMMANDER 用 `general-purpose` + 注入 `project-auditor.md` 正文 + 只读工具书面限制"，而不是原文暗示的原生子代理直调。若未来某次 harness/会话确实能列出 `project-auditor` 为可用 agent 类型，才切回真正的直调路径。
 
 ### 字段映射
 
@@ -621,6 +629,69 @@ COMMANDER 依此发 NODE_RULING
 1. **COMMANDER 转录时不得修改判定结果本身。** 若认为 `project-auditor` 的判定有误，只能另行调用一次独立复核（例如换 `general-purpose` 走本协议附录 B 流程），不得自行改写其 verdict。
 2. `project-auditor` 无 `Edit`/`Write` 权限这件事**是设计优点，不是缺陷**——它从工具层面杜绝了"审核员顺手改代码"的可能性，比本协议的书面禁止更可靠。往后设计新 subagent 角色时优先沿用"只读工具集 + 由主调用方落盘"这一模式。
 3. 若 `project-auditor` 与本协议正文冲突，**以 `project-auditor.md` 的判定逻辑为准**（它是实际在跑的强制机制），本协议附录 B 的独立会话版本降级为**备选实现**，仅在 `project-auditor` 不可用时启用。
+
+---
+
+## 附录 B3 — 审核环节自动化（2026-08-16 起生效）
+
+此前的假设是：`COMMANDER` 发出 `NODE_REPORT` 后停下，由 `USER` 手动在另一个窗口跑 `project-auditor`，再把结果贴回来。**这一步人工搬运没有必要**——`project-auditor` 的独立性来自其受限工具集（无 `Edit`/`Write`，`PreToolUse` hook 强制），不来自"由人操作的窗口调用它"。谁调用它，审计本身的计算过程完全一样。
+
+### 新流程
+
+`COMMANDER` 在同一轮次内，收到（或被告知）`OPENCODE` 的 `NODE_REPORT` 后，**直接**：
+
+```
+读取 NODE_REPORT 指向的 INDEX/REQUIREMENTS/ACCEPTANCE/REPORT
+        ↓
+用 Agent 工具调用 project-auditor（附上：当前节点、Task Package 路径、git_head、
+需要 AUDITOR 重点裁定的项目）
+        ↓
+project-auditor 返回文本
+        ↓
+COMMANDER 逐字转录 + 字段映射（附录 B2）→ 写入 VERDICT.md
+        ↓
+COMMANDER 追加 LEDGER 的 AUDIT_VERDICT 记录 → 发 NODE_RULING
+```
+
+不再要求 `USER` 手动运行审核员、复制粘贴其输出。`USER` 的角色从"人工搬运工"变为"知情旁观者+ 终裁者"——仍能随时打开 `VERDICT.md`/`LEDGER` 核查，但不必再充当消息总线。
+
+### 硬约束（不因自动化而放松）
+
+1. **审计仍是独立事实认定，不因调用方式改变而降格。** `COMMANDER` 依旧不得修改 `project-auditor` 的判定内容（附录 B2 硬约束 1 持续有效）。
+2. **不得省略调用。** 自动化省的是"人工搬运"，不是"审计本身"——`COMMANDER` 不得因为"预期会 PASS"就跳过实际调用直接写 `NODE_RULING`。
+3. `OPENCODE` 侧仍是独立会话，本条自动化**不涉及**自动调用 `opencode run`——Commander 与 Executor 的分离必须保留（理由：`opencode run` 要在无人值守下跑通几乎必须开 `--auto`，等同关闭其自身权限门禁，会拆除当前设计里唯一抓到过真实 BLOCKING 缺陷的摩擦点）。
+
+### 汇报格式：短句 + 指文件，不复制表格
+
+`COMMANDER` 在**对话中**向 `USER` 汇报审计/裁决结果时，采用一句话 + 文件指针的形式，例如：
+
+> DEV-001 审计：PASS，见 `specs/dev/DEV-001/VERDICT.md`（消息 `0013`）。
+
+**不得**在对话里重新粘贴 `VERDICT.md` 的完整表格（Acceptance Results、Independent Verification 等）——那些内容已经落盘，重复输出只会占用对话篇幅而不增加信息量。
+
+例外（仍需完整展开）：
+
+- `Verdict: FAIL` 时，BLOCKING 与 DEVIATION 的具体内容需要摘要说明（供 `USER` 判断是否需要介入），但仍应先给结论句 + 文件指针，摘要控制在必要信息以内，不逐字复制整份 VERDICT
+- 发出 `FIX_PACKAGE` 时，修复范围需要说清楚（这是新指令，不是复述旧文件）
+- `INTEGRITY_ALERT` 必须逐字转呈（协议 §5.10 既有规则，优先于本条简洁性要求）
+
+文件本身（`VERDICT.md`、`LEDGER.md`、各消息文件）**保持完整**——本条只约束对话输出的简洁度，不允许借"简洁"为由削减落盘记录的严谨度。
+
+### OpenCode 交接行——必须单独摘出，不许混在叙述里
+
+**背景问题**：`AUDITOR` 这一跳自动化之后（本附录前段），`OPENCODE` 这一跳仍然是人工监督的独立会话（刻意保留，理由见上）。这意味着**每当轮到 `OPENCODE` 行动**（`TASK_PACKAGE` / `FIX_PACKAGE` / `SCOPE_RULING` / `ACCEPTANCE_AMENDMENT` 任一），`USER` 都要亲自去那个会话里说一句话。如果这句话被淹没在一整段"发生了什么、为什么、还有哪些治理决定"的叙述里，`USER` 就得自己从中摘——这正是需要消除的手工劳动，不是审计报告本身。
+
+**规则**：任何一次汇报，只要下一步动作方是 `OPENCODE`，**必须在结尾单列一块**，格式固定：
+
+```
+→ 发给 OpenCode（照抄即可）：
+"处理 LEDGER 中消息 NNNN（<TYPE> <NODE-ID>）。"
+```
+
+- 这一行**只是触发指针，不复述消息内容**——`OPENCODE` 的启动提示词（附录 A）本来就要求它自己开场先读 LEDGER 里 `To=OPENCODE` 且 `Status=OPEN` 的消息、再读消息文件本体。内容只活在文件里的这一条纪律（协议 §2.1"没有写入文件的沟通不存在"）同样适用于这行提示——它不是内容的副本，只是"该看第几号"的指针。
+- **位置固定在报告末尾**，前面无论叙述多长，这一块都是最后、且视觉上独立（单独代码块）的一段，不与决策记录、审计发现混排。
+- 若下一步动作方是 `AUDITOR`（现在已自动化）或无需任何人介入，**不输出这一块**——避免让它在不需要时也变成噪音，失去"看到这块就该去 OpenCode 那边说话"的信号意义。
+- 若同一轮里连续产生多条 `OPENCODE` 需处理的消息（罕见，例如同时发出 `NODE_RULING` 与 `FIX_PACKAGE`），只需指向**最新的一条**——`OPENCODE` 开场会把所有 `OPEN` 消息一并处理，不需要逐条罗列。
 
 ---
 
@@ -643,4 +714,15 @@ COMMANDER 依此发 NODE_RULING
 - 已发出的消息不得编辑，更正发 CORRECTION
 - 规范变更、产品决策、重开 DONE 节点、DAG 结构调整、第 70 节例外申请，
   一律上报 USER，不得自行批准
+- 收到 NODE_REPORT 后不再等待 USER 手动跑审核员：直接用 Agent 工具调用
+  project-auditor，转录其输出为 VERDICT.md，按附录 B2/B3 完成裁决闭环
+- 对 USER 汇报审计/裁决结果时用一句话 + 文件指针（如"DEV-XXX 审计：PASS，
+  见 specs/dev/DEV-XXX/VERDICT.md"），不在对话中重新粘贴完整表格；
+  FAIL 需摘要 BLOCKING/DEVIATION，仍不逐字复制全文；INTEGRITY_ALERT 例外，
+  必须逐字转呈
+- 不自动调用 opencode run 代替人工监督的 Executor 会话——Commander/Executor
+  的会话分离必须保留
+- 只要下一步动作方是 OpenCode，汇报结尾必须单列固定格式的交接块：
+  "→ 发给 OpenCode（照抄即可）：处理 LEDGER 中消息 NNNN（TYPE NODE-ID）。"
+  只给指针不复述内容；下一步是 AUDITOR 或无需人介入时不输出这一块
 ```

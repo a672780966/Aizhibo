@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-001 — Chapter Schema（IN_PROGRESS）
+DEV-008 — Runtime Event Model（待下发；DEV-001 已 DONE）
 
 ## Current Status
 
-DEV-000 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-001`（消息 `0011`）已下发，OpenCode 施工中。
+DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）：`FIX_PACKAGE DEV-001-FIX-01`（消息 `0015`）已由 OpenCode 完成，`AUDITOR` 第二轮独立复核 A25/A26/A27 = VERIFIED（`specs/dev/DEV-001/VERDICT.md`「第二轮」章节），`NODE_RULING: PASS`（消息 `0018`，`verdict_ref: "0017"`）。
+
+制度修复待执行：Commander 需在下发 DEV-008 Task Package 前，先独立提交当前工作区中的治理文件改动（见 Commander 决策记录）。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-001.md` ＋ 权威输入 `specs/audit/SPEC-ADDENDUM-001.md` ＋ `specs/audit/SPEC-ADDENDUM-002.md`
-
-DEV-000 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md` ＋ 修订 `0002`/`0003` ＋ `FIX_PACKAGE DEV-000-FIX-01`（消息 `0007`）
+DEV-000、DEV-001 均已结案。DEV-008 Task Package 待 Commander 生成（先完成治理文件独立提交）。
 
 ## 通信协议
 
@@ -44,25 +44,26 @@ DEV-000 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md` ＋ 修订 `0002`/`
 ## Completed Nodes
 
 - DEV-000 — Repository Foundation（DONE，`verdict_ref: "0009"`，`git_head` `fac7e3e7ea4eeaa802985fab443da74bac9384fd`）
+- DEV-001 — Chapter Schema（DONE，`verdict_ref: "0017"`，`git_head` `cbcbd8dc82910f542dee0bf81352d26241add06f`）
 
 ## In Progress Nodes
 
-- DEV-001 — Chapter Schema
+（无）
 
 ## Blocked Nodes
 
-无。DEV-001 的规范阻塞已于 2026-08-16 解除（ADDENDUM-001 冻结）。
+无。
 
 ## Last Accepted Node
 
-DEV-000 — Repository Foundation（2026-08-16）
+DEV-001 — Chapter Schema（2026-08-16）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-001 — Chapter Schema（IN_PROGRESS）
-2. DEV-008 — Runtime Event Model（待 DEV-001 PASS）
+1. **DEV-008 — Runtime Event Model**（TODO，Task Package 待 Commander 生成）
+2. DEV-002 — Chapter Compiler Core（待 DEV-008/DEV-001 后续排期）
 
 ## Project-level Blockers
 
@@ -122,6 +123,13 @@ DEV-000 — Repository Foundation（2026-08-16）
 | 2026-08-16 | 发出 `NODE_RULING: PASS`（消息 `0010`，`verdict_ref: "0009"`）：**DEV-000 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
 | 2026-08-16 | 起草 `SPEC-ADDENDUM-002`（FROZEN）：补齐 `DangerState`/`HostPolicy`/`ResultDictionary` 三处此前被引用但未定义的类型；更正 DEV-000 中「WorldState 属 DEV-004」的错误表述——正确归属为 DEV-001（静态形状）+ DEV-004（求值逻辑） |
 | 2026-08-16 | 发出 `TASK_PACKAGE DEV-001`（消息 `0011`）：`packages/chapter-schema`，T001–T020，A01–A28；DEV-001 转 `IN_PROGRESS` |
+| 2026-08-16 | 收到 DEV-001 `NODE_REPORT`（消息 `0012`，`git_head` `363834e...`），转交 `AUDITOR` 独立审计 |
+| 2026-08-16 | `AUDITOR` 出具 `AUDIT_VERDICT`（消息 `0013`）：`AUDIT_FAIL`。F-01/F-02 BLOCKING：`git_head` 冻结的 `INDEX.md` 仍是 T001 骨架版本，完成态从未提交；F-03 BLOCKING：A28 无法用一次干净 diff 证明只读路径未被修改（自仓库首个提交起即存在的结构性问题，未发现篡改语义实证） |
+| 2026-08-16 | 发出 `NODE_RULING: FAIL`（消息 `0014`）：F-01/F-02 转 FIX；F-03 裁决为接受并说明，制度修复为 Commander 后续下发 Task Package 前先行独立提交自己的治理文件改动，避免与 OpenCode 的 `git add -A` 混入同一提交 |
+| 2026-08-16 | 发出 `FIX_PACKAGE DEV-001-FIX-01`（消息 `0015`）：要求 OpenCode 以新提交（不得 amend）固化 `INDEX.md` 完成态；不重开已通过的 A01–A24 |
+| 2026-08-16 | 收到 FIX-01 第二轮 `NODE_REPORT`（消息 `0016`，`git_head` `cbcbd8d...`）：OpenCode 以独立新提交（非 amend）固化完成态 INDEX.md，转交 `AUDITOR` 复核 |
+| 2026-08-16 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0017`）：PASS。独立核实新提交非 amend、仅改动 INDEX.md 一个文件、未触碰任何已通过源码；A25/A26/A27 = VERIFIED |
+| 2026-08-16 | 发出 `NODE_RULING: PASS`（消息 `0018`，`verdict_ref: "0017"`）：**DEV-001 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`。制度修复承诺生效：下发 DEV-008 前先独立提交治理文件 |
 
 ## Authority
 

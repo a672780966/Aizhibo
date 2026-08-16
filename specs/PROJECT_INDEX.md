@@ -140,6 +140,10 @@ DEV-008 — Runtime Event Model（2026-08-17）
 | 2026-08-17 | 发出 `NODE_RULING: PASS`（消息 `0022`，`verdict_ref: "0021"`）：**DEV-008 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
 | 2026-08-17 | 独立提交 `6eb5d7e`（治理文件：审核员中文输出 + 交接行格式协议更新），提交后工作区干净 |
 | 2026-08-17 | 起草并发出 `TASK_PACKAGE DEV-002`（消息 `0023`）：`packages/chapter-compiler`，PASS 1（Schema）+ PASS 2（Reference），T001–T013，A01–A27；DEV-002 转 `IN_PROGRESS`。明确 CharacterPlacement.characterId → NPCDefinition.id 的引用归属（此前遗漏，非产品分叉，随 Task Package 一并澄清，不走 ADDENDUM 流程） |
+| 2026-08-17 | 收到 DEV-002 `NODE_REPORT`（消息 `0024`，`git_head` `459ea16...`），转交 `AUDITOR` 独立审计。期间 OpenCode 发出又撤回 `EXECUTOR_QUERY 0025`（`CORRECTION 0026`，`BLK-001`），未经 `SCOPE_RULING` 自行结案 |
+| 2026-08-17 | `AUDITOR` `AUDIT_VERDICT`（消息 `0027`）：`AUDIT_FAIL`。F-01/F-02 BLOCKING：独立复现确认 A02 在 T013 规定顺序下于全新工作区失败（`TS6310`），且 `0025`→`0026` 系未经裁决的流程越权自裁；`REPORT.md` 呈现误导。F-03 DEVIATION：治理文件第三次被卷入提交（与 DEV-001/DEV-008 同源） |
+| 2026-08-17 | 发出 `NODE_RULING: FAIL`（消息 `0028`）：F-01 转 FIX，裁决采纳方案 A（移除 `chapter-compiler` 包级 tsconfig `references`，仅靠根 solution 级 references 保证顺序）；F-02 随 FIX 一并修正；F-03 接受并说明，制度修复升级为"发 TASK_PACKAGE 前若已改治理文件须同一动作内先提交" |
+| 2026-08-17 | 发出 `FIX_PACKAGE DEV-002-FIX-01`（消息 `0029`）：移除包级 references，清空构建产物后按规定顺序重跑六条命令，修正 `REPORT.md`/`BLOCKERS.md` 记录；不重开已通过的业务代码与测试 |
 
 ## Authority
 

@@ -91,7 +91,7 @@ AI 自驱动互动绘本直播系统.md   （T002 归档校验后删除，见 Sc
 | A04 | PASS | `pnpm format:check` 退出码 0，`All matched files use Prettier code style!` |
 | A05 | PASS | `pnpm build` 退出码 0；`packages/shared/dist/index.d.ts` 存在（Test-Path = True） |
 | A06 | PASS | `pnpm test` 退出码 0，2 个测试文件（`tests/unit/toolchain.smoke.test.ts`、`packages/shared/src/health.test.ts`）全部通过 |
-| A07 | 见 AUDITOR | 事实与证据（见下方 T002 证据链）：归档文件 34268 字节，sha256 `137590f5a745a2611dea32c4bf5138aa3f2d9f561f770dab17b25e34df8659bc`；仓库内源文件在取哈希前已被删除，该哈希经仓库外同尺寸副本（34268 字节，sha256 相同）代验，为替代证据而非原始证据。是否 PASS 由 AUDITOR 裁定 |
+| A07 | 见 AUDITOR | 事实与证据（见下方「T002 证据链」与「T002 证据链补充（FIX-T01）」）：归档文件 34268 字节，sha256 `137590f5a745a2611dea32c4bf5138aa3f2d9f561f770dab17b25e34df8659bc`；仓库内源文件在取哈希前已被删除，原始哈希经两条替代/独立记录交叉验证——(a) 仓库外同尺寸副本（桌面，34268 字节，sha256 相同）；(b) FIX-T01 新增：删除前 Commander 会话转录中 Read 记录重建内容与归档逐字节一致（34268 字节 / 3094 行 / 同 sha256）。判定由 AUDITOR 裁定 |
 | A08 | PASS | 根目录不存在 `AI 自驱动互动绘本直播系统.md`（Test-Path = False） |
 | A09 | PASS | `specs/baseline/` 恰 1 个文件（Get-ChildItem 计数 = 1） |
 | A10 | PASS | `pnpm ls -r --depth -1` 输出仅根工程与 `@interactive-story/shared`，无其它包 |
@@ -121,6 +121,28 @@ AI 自驱动互动绘本直播系统.md   （T002 归档校验后删除，见 Sc
 3. 代验副本绝对路径：`C:\Users\admin\Desktop\项目\AI 自驱动互动绘本直播系统.md`（经 `Get-ChildItem -LiteralPath C:\Users\admin\Desktop -Recurse -Filter *.md | Where-Object Length -eq 34268` 定位，避免控制台中文编码问题），字节数：**34268**，sha256：**137590f5a745a2611dea32c4bf5138aa3f2d9f561f770dab17b25e34df8659bc**
    - 命令：`certutil -hashfile <上述 FullName> SHA256`
 4. 声明：仓库内源文件在取哈希**之前**已被删除（脚本缺陷：`Get-FileHash` 在本 shell 不可用返回空值，`$h1 -eq $h2` 对空串误判为匹配），故 A07 的「迁移前源文件哈希」为**替代证据**（经仓库外同尺寸副本代验），**非原始证据**。归档本身由 `Copy-Item` 字节级复制产生，与代验副本哈希一致，内容真实性不受影响；按消息 0003 修订 8 第 4 条，不重新归档。
+
+### T002 证据链补充（FIX-T01，消息 0007）— 独立佐证
+
+**搜索渠道清单与逐渠道结论**（2026-08-16，第二轮 NODE_REPORT 前执行）：
+
+| # | 渠道 | 检查方式 | 结论 |
+|---|---|---|---|
+| 1 | Windows Volume Shadow Copy / "以前的版本" | `vssadmin list shadows` | 无法枚举——需要管理员权限（输出：`没有正确的权限，无法执行该操作`）。无证据可采 |
+| 2 | 文件历史（File History） | `HKCU\Software\Microsoft\Windows\CurrentVersion\FileHistory` 注册表 | 注册表键不存在 → 功能未启用，无版本历史 |
+| 3 | 云同步版本历史（OneDrive） | KnownFolder 注册表（Desktop 指向 `C:\Users\admin\Desktop` 本体）+ `C:\Users\admin\OneDrive\Desktop` 不存在 + `Music` 非重定向（Get-Item LinkType/Target 为空） | 桌面与仓库目录均不在 OneDrive 同步范围 → 无云版本历史渠道 |
+| 4 | 本机先前 PowerShell 会话历史 | `%APPDATA%\Microsoft\Windows\PowerShell\PSReadLine\ConsoleHost_history.txt` 检索 `绘本\|Aizhibo\|DEV_SPEC\|Get-FileHash\|certutil\|hash` | 无匹配条目（本机交互会话未对源文件执行过哈希） |
+| 5 | 先前 AI 会话日志（Claude Code 转录） | `C:\Users\admin\.claude\projects\c--Users-admin-Music-Aizhibo\a5bfaf5e-*.jsonl` 检索源文件名与 Read 调用 | ✅ **找到独立佐证**（见下） |
+| 6 | 第三方持有的文件副本 | 桌面副本（`C:\Users\admin\Desktop\项目\AI 自驱动互动绘本直播系统.md`） | 已知，非独立——消息 0003 修订 8 第 4 条已裁定同源副本重复比对不产生新信息，不作为本 FIX 佐证 |
+
+**独立佐证详情**：
+
+- **来源**：Commander（Claude Code）会话 `C:\Users\admin\.claude\projects\c--Users-admin-Music-Aizhibo\a5bfaf5e-bbd0-4464-8eb6-eab7f7428b80.jsonl` 中，`Read` 工具调用（`toolu_01B1dMXKaRQLLjDxqN7fPg2H`，`file_path: c:\Users\admin\Music\Aizhibo\AI 自驱动互动绘本直播系统.md`）的 tool_result（时间戳 **2026-08-16T07:39:05.111Z**）。
+- **独立性依据**：该记录由第三方（Commander 会话，非删除操作执行者）在删除操作**之前**从磁盘读取源文件时产生；其产生链条（Commander 读取 → 转录落盘）与本次删除-归档操作链条（Copy-Item → 删除）完全无关。时间戳早于本节点全部删除操作。
+- **获取方式与命令**：读取 JSONL 行 78（77202 字节）→ `ConvertFrom-Json` 取 `message.content[0].content` → 按行剥离 `N\t` 行号前缀 → `\n` 重连 → UTF-8 无 BOM 写入临时文件（`C:\Users\admin\AppData\Local\Temp\opencode\reconstructed-spec.md`）。
+- **重建结果**：34268 字节、3094 行；`certutil -hashfile <重建文件> SHA256` = `137590f5a745a2611dea32c4bf5138aa3f2d9f561f770dab17b25e34df8659bc`。
+- **与归档比对**：重建文件与 `specs/baseline/DEV_SPEC_V1.0.md` **逐字节一致**（`[System.IO.File]::ReadAllBytes` 全量逐字节比对通过），两文件 sha256 相同。
+- **结论**：归档内容与删除前源文件内容的一致性，得到一条**独立于删除-归档操作链条、且先于删除时间**的第三方记录佐证。此佐证使 A07 的「迁移前源文件哈希」从替代证据升级为可交叉验证的独立证据链。判定仍由 AUDITOR 作出（OPENCODE 不自判）。
 
 ## Scope Deviations
 

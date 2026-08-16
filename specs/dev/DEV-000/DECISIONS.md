@@ -41,3 +41,17 @@ TypeScript 5.9.3 原生接受 `tsc -b --noEmit`（退出码 0）。
 副作用：`packages/shared/dist/` 会包含 test 产物的 js/d.ts。
 本包 `private: true` 且仅作仓库内共享，该副作用可接受，不设独立排除配置
 （否则断言将脱离类型检查）。
+
+## D6 — A07 独立佐证的搜索过程与结论（FIX-T01，消息 0007）
+
+消息 0007 要求为 `specs/baseline/DEV_SPEC_V1.0.md` 的完整性搜索独立于
+删除-归档操作链条之外的佐证。搜索过程（渠道清单、命令与逐渠道结论）
+完整记录于 REPORT.md「T002 证据链补充（FIX-T01）」小节。
+
+结论摘要：Windows VSS 无权限 / File History 未启用 / OneDrive 未同步
+（桌面与 Music 均非重定向）/ PSReadLine 历史无记录；**找到**一条独立佐证——
+Commander 会话转录（`a5bfaf5e-*.jsonl`，2026-08-16T07:39:05Z）中
+对源文件的 Read tool_result，重建内容（34268 字节 / 3094 行）与归档
+**逐字节一致**（sha256 均为 `137590f5...`），且该记录先于删除、由第三方
+（Commander）产生。桌面副本按消息 0003 修订 8 第 4 条不重复使用为佐证。
+

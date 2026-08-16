@@ -98,10 +98,11 @@ tests/soak/**
 - [x] T008 CI 流水线
 - [x] T009 README
 - [x] T010 全量验证 + REPORT + commit
+- [x] FIX-T01 A07 证据链补充（消息 0007；独立佐证已找到并记录于 REPORT）
 
 ## Current Task
 
-T010（已完成，待 AUDITOR 审核）
+FIX-T01（已完成，第二轮 READY_FOR_REVIEW，待 AUDITOR 重新裁定 A07）
 
 ## Exit Criteria
 

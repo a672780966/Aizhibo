@@ -1,0 +1,6 @@
+{
+  "id": "npc-guide",
+  "characterAssetId": "char-guide",
+  "displayName": "guide",
+  "initialState": { "present": true, "alive": true, "disposition": "FRIENDLY", "flags": {} }
+}

@@ -1,0 +1,9 @@
+{
+  "id": "boss-bad",
+  "displayName": "bad",
+  "visualSceneId": "vs-bad",
+  "phases": [],
+  "variables": {},
+  "stateRuleSetId": "rules-bad",
+  "onFailure": "scene-ok"
+}

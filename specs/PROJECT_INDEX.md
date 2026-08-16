@@ -17,19 +17,19 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-008 — Runtime Event Model（DONE，接口冻结）
+DEV-002 — Chapter Compiler Core（PASS 1 + 2）（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）。DEV-008 `DONE`（接口冻结，`verdict_ref: "0021"`，`git_head` `18d00446f628da965bdfd4f18d1f2ef447d8e32d`）。
+DEV-000/DEV-001/DEV-008 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-002`（消息 `0023`）已下发，OpenCode 施工中。
 
-`packages/runtime-kernel`（`RuntimeEvent` 信封 + Dice 事件族）自消息 `0022` 起为冻结产物。下一节点待 Commander 评估后下发。
+`packages/chapter-compiler` 是首个被授权读写文件系统的包（读，不写），依赖 `chapter-schema`，不依赖 `runtime-kernel`/`shared`。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-008.md` ＋ 权威输入 Dev Spec 第 8/16/17 节、`specs/dev/DAG.md` CR-008/CR-009 决议、`specs/audit/SPEC-AUDIT-001.md` P1-6
+`specs/tasks/TASK-PACKAGE-DEV-002.md` ＋ 权威输入 Dev Spec 第 19/23/24 节、`packages/chapter-schema`（冻结）、`SPEC-ADDENDUM-001.md` §A18、`SPEC-ADDENDUM-002.md` §B4、`DAG.md` CR-006 决议
 
-DEV-000/DEV-001 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）
+DEV-000/DEV-001/DEV-008 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`
 
 ## 通信协议
 
@@ -51,7 +51,7 @@ DEV-000/DEV-001 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01�
 
 ## In Progress Nodes
 
-无。
+- DEV-002 — Chapter Compiler Core（PASS 1 + 2）
 
 ## Blocked Nodes
 
@@ -65,8 +65,8 @@ DEV-008 — Runtime Event Model（2026-08-17）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-002 — Chapter Compiler Core（DEV-001 PASS 已满足，待 Commander 评估下发）
-2. DEV-009 — XState Runtime Kernel（依赖 DEV-008 已满足，另需 DEV-006、DEV-033）
+1. DEV-002 — Chapter Compiler Core（IN_PROGRESS）
+2. DEV-003 — Story Graph Analyzer（待 DEV-002 PASS）
 
 ## Project-level Blockers
 
@@ -138,6 +138,8 @@ DEV-008 — Runtime Event Model（2026-08-17）
 | 2026-08-17 | 收到 DEV-008 `NODE_REPORT`（消息 `0020`，`git_head` `18d0044...`），转交 `AUDITOR` 独立审计 |
 | 2026-08-17 | `AUDITOR` `AUDIT_VERDICT`（消息 `0021`）：PASS，Blocker 0 / Major 0 / Minor 0；A01–A23 全部 VERIFIED，OpenCode 主动要求重点核验的 6 项（A10/A12/A15/A21/A23/D3）均独立复核通过 |
 | 2026-08-17 | 发出 `NODE_RULING: PASS`（消息 `0022`，`verdict_ref: "0021"`）：**DEV-008 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
+| 2026-08-17 | 独立提交 `6eb5d7e`（治理文件：审核员中文输出 + 交接行格式协议更新），提交后工作区干净 |
+| 2026-08-17 | 起草并发出 `TASK_PACKAGE DEV-002`（消息 `0023`）：`packages/chapter-compiler`，PASS 1（Schema）+ PASS 2（Reference），T001–T013，A01–A27；DEV-002 转 `IN_PROGRESS`。明确 CharacterPlacement.characterId → NPCDefinition.id 的引用归属（此前遗漏，非产品分叉，随 Task Package 一并澄清，不走 ADDENDUM 流程） |
 
 ## Authority
 

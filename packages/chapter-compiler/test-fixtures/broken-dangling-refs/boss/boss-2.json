@@ -1,0 +1,19 @@
+{
+  "id": "boss-2",
+  "displayName": "boss2",
+  "visualSceneId": "vs-2",
+  "phases": [
+    {
+      "id": "phase-1",
+      "order": 1,
+      "enterWhen": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" },
+      "interactionId": "ghost-interaction",
+      "hostPolicy": "MUTED"
+    }
+  ],
+  "variables": {},
+  "stateRuleSetId": "rules-x",
+  "onDefeat": "ghost-node",
+  "onFailure": "ending-end",
+  "maxRounds": 5
+}

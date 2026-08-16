@@ -1,0 +1,5 @@
+{
+  "id": "dice-ok",
+  "diceType": "d20",
+  "qualityThresholds": [{ "quality": "SUCCESS", "min": 1, "max": 20 }]
+}

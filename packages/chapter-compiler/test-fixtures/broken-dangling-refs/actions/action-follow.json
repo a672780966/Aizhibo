@@ -1,0 +1,6 @@
+{
+  "id": "action-follow",
+  "actionType": "FOLLOW",
+  "diceProfileId": "ghost-dice",
+  "resultSetId": "ghost-results"
+}

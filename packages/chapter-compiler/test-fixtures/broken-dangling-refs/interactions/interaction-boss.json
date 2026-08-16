@@ -1,0 +1,9 @@
+{
+  "id": "interaction-boss",
+  "openDurationMs": 15000,
+  "choices": [],
+  "diceMode": "PER_ACTION_GROUP",
+  "resultPolicy": "p",
+  "nextScene": "somewhere-else",
+  "noParticipationPolicy": { "kind": "SKIP" }
+}

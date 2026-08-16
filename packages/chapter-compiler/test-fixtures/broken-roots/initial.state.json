@@ -1,0 +1,10 @@
+{
+  "chapterId": "ch-roots",
+  "sceneId": "scene-x",
+  "flags": {},
+  "npc": {},
+  "danger": { "level": -1, "tensionKey": "calm" },
+  "discovered": [],
+  "activeThreats": [],
+  "chapterVariables": {}
+}

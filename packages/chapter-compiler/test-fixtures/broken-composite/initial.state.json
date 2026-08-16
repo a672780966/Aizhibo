@@ -1,0 +1,10 @@
+{
+  "chapterId": "ch-composite",
+  "sceneId": "scene-a",
+  "flags": {},
+  "npc": {},
+  "danger": { "level": 0, "tensionKey": "calm" },
+  "discovered": [],
+  "activeThreats": [],
+  "chapterVariables": {}
+}

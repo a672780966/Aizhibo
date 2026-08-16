@@ -1,0 +1,10 @@
+{
+  "id": "rules-bad",
+  "rules": [
+    {
+      "id": "rule-1",
+      "when": { "path": { "container": "flags", "key": "x" }, "op": "FLIP" },
+      "effects": []
+    }
+  ]
+}

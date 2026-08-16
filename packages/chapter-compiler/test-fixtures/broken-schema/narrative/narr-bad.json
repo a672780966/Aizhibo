@@ -1,0 +1,5 @@
+{
+  "id": "narr-bad",
+  "primaryBlockId": "block-bad",
+  "focus": { "priority": 1, "category": "x", "urgency": "EXTREME" }
+}

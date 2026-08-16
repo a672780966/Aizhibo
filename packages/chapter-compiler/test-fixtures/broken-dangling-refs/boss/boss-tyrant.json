@@ -1,0 +1,19 @@
+{
+  "id": "boss-tyrant",
+  "displayName": "tyrant",
+  "visualSceneId": "vs-tyrant",
+  "phases": [
+    {
+      "id": "phase-1",
+      "order": 1,
+      "enterWhen": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" },
+      "interactionId": "interaction-boss",
+      "hostPolicy": "MUTED"
+    }
+  ],
+  "variables": {},
+  "stateRuleSetId": "rules-x",
+  "onDefeat": "ending-end",
+  "onFailure": "ending-end",
+  "maxRounds": 5
+}

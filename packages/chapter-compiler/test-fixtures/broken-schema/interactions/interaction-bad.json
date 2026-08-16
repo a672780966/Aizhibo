@@ -1,0 +1,9 @@
+{
+  "id": "interaction-bad",
+  "openDurationMs": 15000,
+  "choices": "not-an-array",
+  "diceMode": "PER_ACTION_GROUP",
+  "resultPolicy": "p",
+  "nextScene": "scene-ok",
+  "noParticipationPolicy": { "kind": "SKIP" }
+}

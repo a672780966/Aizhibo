@@ -1,0 +1,7 @@
+{
+  "nodes": [
+    { "id": "scene-start", "kind": "SCENE", "file": "scenes/scene-start.json" },
+    { "id": "boss-tyrant", "kind": "BOSS", "file": "boss/boss-tyrant.json" },
+    { "id": "ending-end", "kind": "ENDING", "file": "endings/ending-end.json" }
+  ]
+}

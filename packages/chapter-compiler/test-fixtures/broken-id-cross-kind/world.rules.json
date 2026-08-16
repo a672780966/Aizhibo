@@ -1,0 +1,11 @@
+{
+  "viewerDefaults": { "hp": 3, "life": 2 },
+  "downedPolicy": "AUTO_SPEND_LIFE",
+  "defaultScaleBands": [],
+  "defaultDiceProfileId": "dice-x",
+  "interactionDefaults": {
+    "openDurationMs": 15000,
+    "noParticipationPolicy": { "kind": "SKIP" }
+  },
+  "diceBuffer": { "minDiceMs": 3000, "targetDiceMs": 6000, "maxDiceMs": 12000 }
+}

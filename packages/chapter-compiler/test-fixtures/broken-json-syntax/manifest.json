@@ -1,0 +1,5 @@
+{
+  // 截断的 JSON：注释使 JSON.parse 必然失败（Loader JSON_SYNTAX_ERROR 用例）
+  "schemaVersion": "1.0",
+  "chapterId": "ch-broken"
+}

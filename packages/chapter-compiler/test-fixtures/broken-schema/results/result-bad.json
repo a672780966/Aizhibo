@@ -1,0 +1,14 @@
+{
+  "id": "result-bad",
+  "entries": [
+    {
+      "quality": "SUCCESS",
+      "resultId": "res-bad",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-bad",
+      "visibility": "PUBLIC",
+      "mapsTo": "FAILURE"
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "ending-bad",
+  "title": "bad",
+  "when": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" },
+  "priority": 2,
+  "isFallback": true,
+  "visualSceneId": "vs-bad",
+  "narrationBlockIds": []
+}

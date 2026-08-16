@@ -1,0 +1,10 @@
+{
+  "id": "boss-ok",
+  "displayName": "ok",
+  "visualSceneId": "vs-ok",
+  "phases": [],
+  "variables": {},
+  "stateRuleSetId": "rules-ok",
+  "onDefeat": "scene-ok",
+  "onFailure": "scene-ok"
+}

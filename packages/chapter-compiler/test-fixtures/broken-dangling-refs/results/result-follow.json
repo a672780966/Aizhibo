@@ -1,0 +1,32 @@
+{
+  "id": "result-follow",
+  "entries": [
+    { "quality": "DISASTER", "mapsTo": "FAILURE" },
+    { "quality": "FAILURE", "mapsTo": "GREAT_SUCCESS" },
+    {
+      "quality": "COSTLY_SUCCESS",
+      "resultId": "res-costly",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "ghost-narr",
+      "visibility": "PUBLIC"
+    },
+    {
+      "quality": "SUCCESS",
+      "resultId": "res-success",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-ok",
+      "visibility": "PUBLIC"
+    },
+    {
+      "quality": "GREAT_SUCCESS",
+      "resultId": "res-great",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-ok",
+      "visibility": "PUBLIC"
+    },
+    { "quality": "SPECIAL", "unreachable": true }
+  ]
+}

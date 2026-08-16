@@ -1,0 +1,9 @@
+{
+  "schemaVersion": "1.0",
+  "chapterId": "ch-composite",
+  "chapterVersion": "0.1.0",
+  "title": "Composite Broken",
+  "entryNodeId": "scene-a",
+  "language": "zh-CN",
+  "authoring": { "createdAt": "2026-08-17" }
+}

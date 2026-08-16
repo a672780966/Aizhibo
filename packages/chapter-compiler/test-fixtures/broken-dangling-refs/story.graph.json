@@ -1,0 +1,11 @@
+{
+  "nodes": [
+    { "id": "scene-start", "kind": "SCENE", "file": "scenes/scene-start.json" },
+    { "id": "scene-2", "kind": "SCENE", "file": "scenes/scene-2.json" },
+    { "id": "reg-id", "kind": "SCENE", "file": "scenes/scene-start.json" },
+    { "id": "node-missing", "kind": "SCENE", "file": "scenes/not-there.json" },
+    { "id": "boss-tyrant", "kind": "BOSS", "file": "boss/boss-tyrant.json" },
+    { "id": "boss-2", "kind": "BOSS", "file": "boss/boss-2.json" },
+    { "id": "ending-end", "kind": "ENDING", "file": "endings/ending-end.json" }
+  ]
+}

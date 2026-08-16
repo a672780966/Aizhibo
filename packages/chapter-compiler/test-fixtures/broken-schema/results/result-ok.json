@@ -1,0 +1,13 @@
+{
+  "id": "result-ok",
+  "entries": [
+    {
+      "quality": "SUCCESS",
+      "resultId": "res-ok",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-ok",
+      "visibility": "PUBLIC"
+    }
+  ]
+}

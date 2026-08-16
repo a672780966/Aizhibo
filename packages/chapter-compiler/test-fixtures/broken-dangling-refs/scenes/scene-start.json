@@ -1,0 +1,17 @@
+{
+  "id": "scene-start",
+  "visualSceneId": "vs-start",
+  "characters": [
+    { "characterId": "ghost-npc", "slot": "CENTER", "expression": "smile", "visible": true }
+  ],
+  "interactionId": "ghost-interaction",
+  "next": "ghost-next",
+  "guards": [
+    {
+      "when": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" },
+      "goto": "ghost-goto",
+      "priority": 1
+    }
+  ],
+  "hostPolicy": "ALLOWED"
+}

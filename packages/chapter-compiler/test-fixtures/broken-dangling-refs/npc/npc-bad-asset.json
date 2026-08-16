@@ -1,0 +1,6 @@
+{
+  "id": "npc-bad-asset",
+  "characterAssetId": "ghost-char",
+  "displayName": "bad",
+  "initialState": { "present": true, "alive": true, "disposition": "NEUTRAL", "flags": {} }
+}

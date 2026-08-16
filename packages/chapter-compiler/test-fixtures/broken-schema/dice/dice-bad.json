@@ -1,0 +1,5 @@
+{
+  "id": "dice-bad",
+  "diceType": "d20",
+  "qualityThresholds": [{ "quality": "EPIC", "min": 1, "max": 20 }]
+}

@@ -1,0 +1,5 @@
+{
+  "id": "action-bad",
+  "actionType": "FOLLOW",
+  "resultSetId": "result-x"
+}

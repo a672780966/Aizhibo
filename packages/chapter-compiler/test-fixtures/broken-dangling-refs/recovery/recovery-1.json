@@ -1,0 +1,6 @@
+{
+  "id": "recovery-1",
+  "when": { "kind": "RESULT_QUALITY", "actionId": "ghost-action", "minQuality": "GREAT_SUCCESS" },
+  "scope": "ALL_DOWNED",
+  "effects": [{ "scope": "ALL_DOWNED", "op": "REVIVE" }]
+}

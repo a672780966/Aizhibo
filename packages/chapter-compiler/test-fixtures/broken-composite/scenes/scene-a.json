@@ -1,0 +1,7 @@
+{
+  "id": "shared-id",
+  "visualSceneId": "vs-a",
+  "characters": [],
+  "next": "ghost-node",
+  "hostPolicy": "ALLOWED"
+}

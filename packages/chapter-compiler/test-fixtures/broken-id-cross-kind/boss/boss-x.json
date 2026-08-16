@@ -1,0 +1,10 @@
+{
+  "id": "cross-id",
+  "displayName": "x",
+  "visualSceneId": "vs-x",
+  "phases": [],
+  "variables": {},
+  "stateRuleSetId": "rules-x",
+  "onDefeat": "ending-x",
+  "onFailure": "ending-x"
+}

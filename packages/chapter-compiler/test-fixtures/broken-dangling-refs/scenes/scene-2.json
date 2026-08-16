@@ -1,0 +1,8 @@
+{
+  "id": "scene-2",
+  "visualSceneId": "vs-2",
+  "characters": [
+    { "characterId": "npc-guide", "slot": "LEFT", "expression": "laugh", "visible": true }
+  ],
+  "hostPolicy": "ALLOWED"
+}

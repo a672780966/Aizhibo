@@ -1,0 +1,6 @@
+{
+  "id": "npc-ok",
+  "characterAssetId": "char-ok",
+  "displayName": "ok",
+  "initialState": { "present": true, "alive": true, "disposition": "NEUTRAL", "flags": {} }
+}

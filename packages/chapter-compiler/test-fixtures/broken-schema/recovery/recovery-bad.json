@@ -1,0 +1,9 @@
+{
+  "id": "recovery-bad",
+  "when": {
+    "kind": "STATE",
+    "condition": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" }
+  },
+  "scope": "ALL_EVERYONE",
+  "effects": []
+}

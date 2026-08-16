@@ -1,0 +1,9 @@
+{
+  "id": "recovery-ok",
+  "when": {
+    "kind": "STATE",
+    "condition": { "path": { "container": "flags", "key": "x" }, "op": "EXISTS" }
+  },
+  "scope": "ALL_DOWNED",
+  "effects": []
+}

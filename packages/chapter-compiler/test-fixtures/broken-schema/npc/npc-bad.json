@@ -1,0 +1,5 @@
+{
+  "id": "npc-bad",
+  "displayName": "bad",
+  "initialState": { "present": true, "alive": true, "disposition": "NEUTRAL", "flags": {} }
+}

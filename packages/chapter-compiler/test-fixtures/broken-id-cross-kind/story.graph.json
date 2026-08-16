@@ -1,0 +1,6 @@
+{
+  "nodes": [
+    { "id": "dup-node", "kind": "SCENE", "file": "scenes/scene-x.json" },
+    { "id": "dup-node", "kind": "BOSS", "file": "boss/boss-x.json" }
+  ]
+}

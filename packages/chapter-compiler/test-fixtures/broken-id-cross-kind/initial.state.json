@@ -1,0 +1,10 @@
+{
+  "chapterId": "ch-id-cross",
+  "sceneId": "scene-x",
+  "flags": {},
+  "npc": {},
+  "danger": { "level": 0, "tensionKey": "calm" },
+  "discovered": [],
+  "activeThreats": [],
+  "chapterVariables": {}
+}

@@ -1,0 +1,10 @@
+{
+  "chapterId": "ch-broken",
+  "sceneId": "scene-ok",
+  "flags": {},
+  "npc": {},
+  "danger": { "level": 0, "tensionKey": "calm" },
+  "discovered": [],
+  "activeThreats": [],
+  "chapterVariables": {}
+}

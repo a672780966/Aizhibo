@@ -1,0 +1,9 @@
+{
+  "id": "ending-end",
+  "title": "end",
+  "when": null,
+  "priority": 1,
+  "isFallback": true,
+  "visualSceneId": "vs-end",
+  "narrationBlockIds": []
+}

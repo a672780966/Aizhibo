@@ -1,0 +1,9 @@
+{
+  "id": "interaction-01",
+  "openDurationMs": 15000,
+  "choices": [{ "id": "A", "label": "x", "actionType": "y", "ruleId": "ghost-action" }],
+  "diceMode": "PER_ACTION_GROUP",
+  "resultPolicy": "p",
+  "nextScene": "ghost-next",
+  "noParticipationPolicy": { "kind": "SKIP" }
+}

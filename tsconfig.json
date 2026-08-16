@@ -1,4 +1,8 @@
 {
   "files": [],
-  "references": [{ "path": "./packages/shared" }, { "path": "./packages/chapter-schema" }]
+  "references": [
+    { "path": "./packages/shared" },
+    { "path": "./packages/chapter-schema" },
+    { "path": "./packages/runtime-kernel" }
+  ]
 }

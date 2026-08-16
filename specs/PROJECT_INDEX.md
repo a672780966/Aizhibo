@@ -17,17 +17,19 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-008 — Runtime Event Model（待下发；DEV-001 已 DONE）
+DEV-008 — Runtime Event Model（ISSUED）
 
 ## Current Status
 
-DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）：`FIX_PACKAGE DEV-001-FIX-01`（消息 `0015`）已由 OpenCode 完成，`AUDITOR` 第二轮独立复核 A25/A26/A27 = VERIFIED（`specs/dev/DEV-001/VERDICT.md`「第二轮」章节），`NODE_RULING: PASS`（消息 `0018`，`verdict_ref: "0017"`）。
+DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）。制度修复已执行：Commander 于提交 `a5b0cd8` 独立提交全部治理文件，工作区清空后再下发 DEV-008。
 
-制度修复待执行：Commander 需在下发 DEV-008 Task Package 前，先独立提交当前工作区中的治理文件改动（见 Commander 决策记录）。
+`TASK_PACKAGE DEV-008`（消息 `0019`）已下发，OpenCode 施工中。新包位置裁定：`packages/runtime-kernel`（第 4 节原始包名，DEV-009 既定包，本节点提前建空壳只填事件类型；不复活已取消的 `event-engine`，理由见 Task Package 第 1 节）。
 
 ## Current Task Package
 
-DEV-000、DEV-001 均已结案。DEV-008 Task Package 待 Commander 生成（先完成治理文件独立提交）。
+`specs/tasks/TASK-PACKAGE-DEV-008.md` ＋ 权威输入 Dev Spec 第 8/16/17 节、`specs/dev/DAG.md` CR-008/CR-009 决议、`specs/audit/SPEC-AUDIT-001.md` P1-6
+
+DEV-000/DEV-001 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）
 
 ## 通信协议
 
@@ -48,7 +50,7 @@ DEV-000、DEV-001 均已结案。DEV-008 Task Package 待 Commander 生成（先
 
 ## In Progress Nodes
 
-（无）
+- DEV-008 — Runtime Event Model（ISSUED）
 
 ## Blocked Nodes
 
@@ -62,8 +64,8 @@ DEV-001 — Chapter Schema（2026-08-16）
 
 按 DAG Rev 2 执行序：
 
-1. **DEV-008 — Runtime Event Model**（TODO，Task Package 待 Commander 生成）
-2. DEV-002 — Chapter Compiler Core（待 DEV-008/DEV-001 后续排期）
+1. DEV-008 — Runtime Event Model（ISSUED）
+2. DEV-002 — Chapter Compiler Core（待 DEV-008 PASS 后排期）
 
 ## Project-level Blockers
 
@@ -130,6 +132,8 @@ DEV-001 — Chapter Schema（2026-08-16）
 | 2026-08-16 | 收到 FIX-01 第二轮 `NODE_REPORT`（消息 `0016`，`git_head` `cbcbd8d...`）：OpenCode 以独立新提交（非 amend）固化完成态 INDEX.md，转交 `AUDITOR` 复核 |
 | 2026-08-16 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0017`）：PASS。独立核实新提交非 amend、仅改动 INDEX.md 一个文件、未触碰任何已通过源码；A25/A26/A27 = VERIFIED |
 | 2026-08-16 | 发出 `NODE_RULING: PASS`（消息 `0018`，`verdict_ref: "0017"`）：**DEV-001 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`。制度修复承诺生效：下发 DEV-008 前先独立提交治理文件 |
+| 2026-08-16 | 执行制度修复：独立提交 `a5b0cd8`（治理文件，含消息 `0012`–`0018`、两份 VERDICT、PROJECT_INDEX/DAG/协议更新），提交后工作区干净 |
+| 2026-08-16 | 起草并发出 `TASK_PACKAGE DEV-008`（消息 `0019`）：`packages/runtime-kernel`（新包位置裁定，见 Task Package 第 1 节），`RuntimeEvent` 信封 + Dice 事件族，T001–T006，A01–A23；DEV-008 转 `IN_PROGRESS` |
 
 ## Authority
 

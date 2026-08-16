@@ -26,7 +26,7 @@
 |---|---|---|---|---|
 | 1 | DEV-000 | Repository Foundation | — | DONE |
 | 2 | DEV-001 | Chapter Schema | DEV-000 | DONE |
-| 3 | DEV-008 | Runtime Event Model ⬆ | DEV-000, DEV-001 | TODO |
+| 3 | DEV-008 | Runtime Event Model ⬆ | DEV-000, DEV-001 | IN_PROGRESS |
 | 4 | DEV-002 | Chapter Compiler Core（PASS 1 + 2）✂ | DEV-001 | TODO |
 | 5 | DEV-003 | Story Graph Analyzer（PASS 3 + 5）✂ | DEV-002 | TODO |
 | 6 | DEV-002A | Hidden Information Validator（PASS 6）✚ | DEV-001, DEV-003 | TODO |

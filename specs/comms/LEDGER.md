@@ -38,6 +38,7 @@
 | 0016 | NODE_REPORT | OPENCODE | AUDITOR | DEV-001 | 0015 | CLOSED | FIX-01 完成（INDEX.md 完成态已提交），第二轮 READY_FOR_REVIEW |
 | 0017 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-001 | 0016 | CLOSED | 第二轮复核 PASS：A25/A26/A27 VERIFIED |
 | 0018 | NODE_RULING | COMMANDER | ALL | DEV-001 | 0017 | CLOSED | ruling: PASS；DEV-001 转 DONE，接口冻结 |
+| 0019 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-008 | — | OPEN | Runtime Event Model |
 
 ---
 
@@ -45,6 +46,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0019（DEV-008 Task Package） |
 | AUDITOR | — |
 | COMMANDER | — |

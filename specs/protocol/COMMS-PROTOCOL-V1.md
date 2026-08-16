@@ -612,6 +612,15 @@ COMMANDER 依此发 NODE_RULING
 
 > 上图第一步按当前 harness 实况应读作："COMMANDER 用 `general-purpose` + 注入 `project-auditor.md` 正文 + 只读工具书面限制"，而不是原文暗示的原生子代理直调。若未来某次 harness/会话确实能列出 `project-auditor` 为可用 agent 类型，才切回真正的直调路径。
 
+### 标准追加约束（每次调用审核员都必须附加，不论走哪条路径）
+
+以下内容不改动 `project-auditor.md` 本体（不修改持续有效），而是作为 `COMMANDER` 每次调用时的**任务级追加指令**，附在注入的 persona 之后（走 `general-purpose` 降级路径）或附在 `prompt` 参数里（若未来能直调）：
+
+1. **只读工具限制**（见上）：仅 `Read`/`Glob`/`Grep`/`Bash` 只读命令，禁止 `Edit`/`Write`/`NotebookEdit` 及任何写型 Bash 命令。
+2. **输出语言：中文。** 审核员的全部解释性文字——Evidence、Findings 描述、Required Remediation 说明、Auditor Statement——**必须使用中文撰写**。
+   **例外（保持原文，不翻译）**：协议固定关键词，即 `AUDIT_PASS`/`AUDIT_FAIL`、`BLOCKER`/`MAJOR`/`MINOR`/`INFO`、`VERIFIED`/`PARTIAL`/`MISSING`/`NOT_APPLICABLE`、`PASS`/`FAIL`，以及代码标识符、文件路径、命令行、git sha 等技术字面量。这些是被 §B2 字段映射表机械匹配的协议 token，翻译会破坏映射，必须保持英文原样。
+   理由：`COMMANDER` 需要把审核员输出转录进 `VERDICT.md` 并向 `USER` 汇报，中文输出免去转录时的翻译损耗与歧义。
+
 ### 字段映射
 
 | project-auditor 输出 | 映射为 |
@@ -725,4 +734,7 @@ COMMANDER 追加 LEDGER 的 AUDIT_VERDICT 记录 → 发 NODE_RULING
 - 只要下一步动作方是 OpenCode，汇报结尾必须单列固定格式的交接块：
   "→ 发给 OpenCode（照抄即可）：处理 LEDGER 中消息 NNNN（TYPE NODE-ID）。"
   只给指针不复述内容；下一步是 AUDITOR 或无需人介入时不输出这一块
+- 每次调用审核员（project-auditor 或其 general-purpose 降级路径）必须附加两条
+  标准约束：只读工具限制 + 输出语言为中文（协议固定关键词如
+  AUDIT_PASS/BLOCKER/VERIFIED 等及代码/路径/命令/sha 保持英文原样，不翻译）
 ```

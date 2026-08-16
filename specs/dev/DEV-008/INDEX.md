@@ -1,6 +1,6 @@
 # DEV-008 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -85,7 +85,7 @@ tests/integration/**、tests/simulation/**、tests/replay/**、tests/soak/**
 
 ## Current Task
 
-T006（已完成，待 AUDITOR 审核）
+无。DEV-008 已由 COMMANDER 裁决 PASS（消息 `0022`），接口冻结。
 
 ## Exit Criteria
 
@@ -98,6 +98,6 @@ commit 时点 `git status --porcelain` 干净（不计 LEDGER 与新消息文件
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+由 Claude Commander 在当前节点验收 PASS 后决定（消息 `0022`：`DEV-002` 优先评估，`DEV-009` 另需 `DEV-006`/`DEV-033`）。
 
 OpenCode 禁止自行推进下一 DEV Node。

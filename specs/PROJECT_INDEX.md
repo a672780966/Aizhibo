@@ -17,13 +17,13 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-008 — Runtime Event Model（ISSUED）
+DEV-008 — Runtime Event Model（DONE，接口冻结）
 
 ## Current Status
 
-DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）。制度修复已执行：Commander 于提交 `a5b0cd8` 独立提交全部治理文件，工作区清空后再下发 DEV-008。
+DEV-000 `DONE`（接口冻结）。DEV-001 `DONE`（接口冻结）。DEV-008 `DONE`（接口冻结，`verdict_ref: "0021"`，`git_head` `18d00446f628da965bdfd4f18d1f2ef447d8e32d`）。
 
-`TASK_PACKAGE DEV-008`（消息 `0019`）已下发，OpenCode 施工中。新包位置裁定：`packages/runtime-kernel`（第 4 节原始包名，DEV-009 既定包，本节点提前建空壳只填事件类型；不复活已取消的 `event-engine`，理由见 Task Package 第 1 节）。
+`packages/runtime-kernel`（`RuntimeEvent` 信封 + Dice 事件族）自消息 `0022` 起为冻结产物。下一节点待 Commander 评估后下发。
 
 ## Current Task Package
 
@@ -47,10 +47,11 @@ DEV-000/DEV-001 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01�
 
 - DEV-000 — Repository Foundation（DONE，`verdict_ref: "0009"`，`git_head` `fac7e3e7ea4eeaa802985fab443da74bac9384fd`）
 - DEV-001 — Chapter Schema（DONE，`verdict_ref: "0017"`，`git_head` `cbcbd8dc82910f542dee0bf81352d26241add06f`）
+- DEV-008 — Runtime Event Model（DONE，`verdict_ref: "0021"`，`git_head` `18d00446f628da965bdfd4f18d1f2ef447d8e32d`）
 
 ## In Progress Nodes
 
-- DEV-008 — Runtime Event Model（ISSUED）
+无。
 
 ## Blocked Nodes
 
@@ -58,14 +59,14 @@ DEV-000/DEV-001 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01�
 
 ## Last Accepted Node
 
-DEV-001 — Chapter Schema（2026-08-16）
+DEV-008 — Runtime Event Model（2026-08-17）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-008 — Runtime Event Model（ISSUED）
-2. DEV-002 — Chapter Compiler Core（待 DEV-008 PASS 后排期）
+1. DEV-002 — Chapter Compiler Core（DEV-001 PASS 已满足，待 Commander 评估下发）
+2. DEV-009 — XState Runtime Kernel（依赖 DEV-008 已满足，另需 DEV-006、DEV-033）
 
 ## Project-level Blockers
 
@@ -134,6 +135,9 @@ DEV-001 — Chapter Schema（2026-08-16）
 | 2026-08-16 | 发出 `NODE_RULING: PASS`（消息 `0018`，`verdict_ref: "0017"`）：**DEV-001 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`。制度修复承诺生效：下发 DEV-008 前先独立提交治理文件 |
 | 2026-08-16 | 执行制度修复：独立提交 `a5b0cd8`（治理文件，含消息 `0012`–`0018`、两份 VERDICT、PROJECT_INDEX/DAG/协议更新），提交后工作区干净 |
 | 2026-08-16 | 起草并发出 `TASK_PACKAGE DEV-008`（消息 `0019`）：`packages/runtime-kernel`（新包位置裁定，见 Task Package 第 1 节），`RuntimeEvent` 信封 + Dice 事件族，T001–T006，A01–A23；DEV-008 转 `IN_PROGRESS` |
+| 2026-08-17 | 收到 DEV-008 `NODE_REPORT`（消息 `0020`，`git_head` `18d0044...`），转交 `AUDITOR` 独立审计 |
+| 2026-08-17 | `AUDITOR` `AUDIT_VERDICT`（消息 `0021`）：PASS，Blocker 0 / Major 0 / Minor 0；A01–A23 全部 VERIFIED，OpenCode 主动要求重点核验的 6 项（A10/A12/A15/A21/A23/D3）均独立复核通过 |
+| 2026-08-17 | 发出 `NODE_RULING: PASS`（消息 `0022`，`verdict_ref: "0021"`）：**DEV-008 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
 
 ## Authority
 

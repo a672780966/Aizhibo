@@ -1,6 +1,6 @@
 # DEV-001 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -102,30 +102,30 @@ tests/integration/**、tests/simulation/**、tests/replay/**、tests/soak/**
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 包脚手架
-- [ ] T003 Manifest / StoryGraph / WorldRules
-- [ ] T004 WorldState / NPCState / DangerState
-- [ ] T005 State Rules（Condition / StateEffect / SceneGuard）
-- [ ] T006 Scene
-- [ ] T007 Interaction / Choice
-- [ ] T008 Action / Dice
-- [ ] T009 Result Dictionary
-- [ ] T010 Narrative
-- [ ] T011 NPC
-- [ ] T012 Visuals
-- [ ] T013 Audio
-- [ ] T014 Boss
-- [ ] T015 Endings
-- [ ] T016 Recovery
-- [ ] T017 Host Public
-- [ ] T018 Metadata
-- [ ] T019 ChapterPack 聚合 + 桶导出
-- [ ] T020 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 包脚手架
+- [x] T003 Manifest / StoryGraph / WorldRules
+- [x] T004 WorldState / NPCState / DangerState
+- [x] T005 State Rules（Condition / StateEffect / SceneGuard）
+- [x] T006 Scene
+- [x] T007 Interaction / Choice
+- [x] T008 Action / Dice
+- [x] T009 Result Dictionary
+- [x] T010 Narrative
+- [x] T011 NPC
+- [x] T012 Visuals
+- [x] T013 Audio
+- [x] T014 Boss
+- [x] T015 Endings
+- [x] T016 Recovery
+- [x] T017 Host Public
+- [x] T018 Metadata
+- [x] T019 ChapterPack 聚合 + 桶导出
+- [x] T020 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001
+T020（已完成，待 AUDITOR 审核）
 
 ## Exit Criteria
 

@@ -1,0 +1,6 @@
+specs/
+.claude/
+node_modules/
+dist/
+coverage/
+pnpm-lock.yaml

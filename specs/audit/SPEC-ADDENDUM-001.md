@@ -1,10 +1,12 @@
-# SPEC ADDENDUM 001 — DRAFT
+# SPEC ADDENDUM 001
 
 Development Specification V1.0 增补稿
 Drafted by: Claude Commander
-Date: 2026-08-16
-Status: **DRAFT — 待用户逐条批准，未冻结**
-Covers: CR-001、CR-002、CR-003（并顺带覆盖 CR-011，见 §A17）
+Approved by: USER — 2026-08-16
+Status: **FROZEN** — 全部 20 项决策（D01–D20）已定稿
+Covers: CR-001、CR-002、CR-003、CR-011
+
+> 冻结后本稿与 Dev Spec V1.0 具有同等约束力。变更须走 `CHANGE_REQUEST` 并经 USER 批准。
 
 ---
 
@@ -19,11 +21,11 @@ Covers: CR-001、CR-002、CR-003（并顺带覆盖 CR-011，见 §A17）
 1. **不引入任何新子系统。** 所有新结构必须复用原规范已确立的机制：Condition 求值、批量 scope、六等级 quality、Event Log、WorldState 容器。
 2. **不引入表达式语言。** 所有条件与效果均为纯数据结构，禁止字符串表达式、禁止 `eval`。理由：第 24 节 PASS 5 要求静态追踪可达状态，可执行表达式无法静态分析。
 3. **不引入新的状态容器。** Boss 变量、Ending 判定、Recovery 计数全部落在第 14 节 `WorldState.chapterVariables` 或 `flags` 内。
-4. **每条设计决策都可单独驳回**，见 §A19 清单。
+4. 每条设计决策的定稿结果见 §A19。
 
-### 冻结前提
+### 冻结状态
 
-DEV-001 Chapter Schema 在本稿批准前保持 **BLOCKED**。
+DEV-001 Chapter Schema 的规范阻塞已解除。本稿即其权威输入。
 
 ---
 
@@ -794,42 +796,51 @@ type NoParticipationPolicy =
 
 ---
 
-## A19. 待批准决策清单
+## A19. 决策定稿清单
 
-每条可单独驳回。驳回任意一条不影响其余条目。
+全部 20 项已于 2026-08-16 定稿。
 
-| # | 决策 | 本稿取向 | 影响面 |
+### 由 USER 直接裁决（产品分叉）
+
+| # | 决策 | 定稿 |
+|---|---|---|
+| D06 | 角色站位模型 | **固定五档 slot**（LEFT / CENTER_LEFT / CENTER / CENTER_RIGHT / RIGHT）。同屏上限 5 角色；构图确定，DEV-073 可自动导出资产需求 |
+| D08 | Boss 形态 | **复用普通 Interaction，零新增运行时模块**。Boss 无独立 HP 字段，血量即 `chapterVariables` 中一个普通数值；相位推进复用 state-rules |
+| D10 | DOWNED / SPECTATOR 能否投票 | **不能投票，能聊天**。惩罚玩法参与，不惩罚社交存在 |
+| D11 | DOWNED 默认处置 | **`AUTO_SPEND_LIFE`** — 下一轮自动 `life -= 1`、`hp = 1` 站起。总耐受 3 HP + 2 次复起 = 5 次伤害。`world.rules.downedPolicy` 可切换为 `REQUIRE_RECOVERY` |
+| D13 | Recovery 主力触发器 | **`RESULT_QUALITY`** — 某 ActionGroup 打出高等级结果时全场复活。「集体行动带来集体救赎」 |
+
+### 由已冻结原则推导定稿（非新增产品决策）
+
+| # | 决策 | 定稿 | 推导依据 |
 |---|---|---|---|
-| D01 | story.graph 是否重复声明边 | **不重复**，只做节点注册表 | A2 |
-| D02 | Bundle 完整性哈希放哪 | Compiler 生成，不入 raw manifest | A1 |
-| D03 | Action scale 是否用可执行函数 | **不用**，改分段映射 + Result 查表 | A4 |
-| D04 | scale 是否影响骰子修正 | **不影响**（守住"人数不转攻击力"） | A5 |
-| D05 | Condition / Effect 是否允许表达式字符串 | **禁止**，纯数据结构 | A6 |
-| D06 | 角色站位 | **固定五档 slot**，非自由坐标 | A9 |
-| D07 | 是否为镜头设计 DSL | **不设计**，只用 preset 键 | A9 |
-| D08 | Boss 是否有独立 HP / 战斗引擎 | **没有**，复用 chapterVariables + 普通 Interaction | A11 |
-| D09 | Ending 冲突如何裁决 | 全局唯一 priority + 强制唯一兜底 | A12 |
-| D10 | DOWNED / SPECTATOR 能否投票 | **不能投票，能聊天** | A13 |
-| D11 | DOWNED 默认处置 | `AUTO_SPEND_LIFE`（3 HP + 2 复起 = 5 次耐受） | A13 |
-| D12 | 迟到观众初始状态 | **满血满命**，不因加入晚受罚 | A13 |
-| D13 | Recovery 的主力触发器 | `RESULT_QUALITY`（集体行动带来集体救赎） | A13 |
-| D14 | playerEffects 粒度 | **批量**，无 viewerId | A14 |
-| D15 | 个体互动（点名等）归属 | Host 社交层，不入 ViewerState，不入 Replay | A14 |
-| D16 | PASS 6 用黑名单还是白名单 | **白名单 + 穷举强制**，未声明即违规 | A15 |
-| D17 | host.public 是否做时序检查 | **做**（P-03 的编译期执行点） | A15 |
-| D18 | metadata 是否可被运行时读取 | **禁止** | A16 |
-| D19 | noParticipationPolicy 是否必填 | **必填不可省略** | A17 |
-| D20 | audio kind 三分类是否收敛 | 收敛为 SPEECH / BGM / SFX / AMBIENCE + source 三档（含 PREGENERATED） | A10 |
+| D01 | story.graph 是否重复声明边 | **不重复**，只做节点注册表 | P-01 单一事实源 |
+| D02 | Bundle 完整性哈希放哪 | Compiler 生成，不入 raw manifest | §26 Compile–Repair Loop |
+| D03 | Action scale 是否用可执行函数 | **不用**，分段映射 + Result 查表 | §24 PASS 5 需静态可分析 |
+| D04 | scale 是否影响骰子修正 | **不影响** | §10 人数不得转攻击力 |
+| D05 | Condition / Effect 是否允许表达式字符串 | **禁止**，纯数据结构 | §24 PASS 5 需静态可分析 |
+| D07 | 是否为镜头设计 DSL | **不设计**，只用 preset 键 | 反过度设计（已批准 P3 立场） |
+| D09 | Ending 冲突如何裁决 | 全局唯一 priority + 强制唯一兜底 | G03 Replay 确定性 |
+| D12 | 迟到观众初始状态 | **满血满命**，不因加入晚受罚 | §60 first participation rate |
+| D14 | playerEffects 粒度 | **批量**，无 viewerId | §9 ResolveInput 只带 participantCount；§61 需测 10,000 viewer |
+| D15 | 个体互动（点名等）归属 | Host 社交层，不入 ViewerState，不入 Replay | P-01 |
+| D16 | PASS 6 用黑名单还是白名单 | **白名单 + 穷举强制**，未声明即违规 | P-03 权限隔离而非 Prompt 约束 |
+| D17 | host.public 是否做时序检查 | **做** | P-03 AI 不提前知道未来 |
+| D18 | metadata 是否可被运行时读取 | **禁止** | P-01 |
+| D19 | noParticipationPolicy 是否必填 | **必填不可省略** | §22「不能省略」的同一纪律 |
+| D20 | audio kind 三分类是否收敛 | 收敛为 SPEECH / BGM / SFX / AMBIENCE + source 三档（含 PREGENERATED） | CR-018 裁决 |
 
-### 已裁决、不再待批
+### 相关 CR 状态
 
-- **CR-018** 编译期音频预生成 — 已采纳，机制修正为**块级**预生成。`AudioAsset.source` 增加 `PREGENERATED`（§A10）
-- **CR-010** Host 出站安全过滤 — 已采纳，PASS 6 增加 `ForbiddenLexicon` 产物（§A15.1）
-- **CR-012** Renderer 全量重同步 — 已采纳，契约归 DEV-012，与 Chapter Schema 无关
-- **CR-017** Platform Adapter — 部分采纳，落在 DEV-010 与 DEV-040 组，与 Chapter Schema 无关
+全部已裁决，无待批项。
+
+| CR | 裁决 |
+|---|---|
+| CR-001 / 002 / 003 / 011 | 本稿采纳并冻结 |
+| CR-010 | 采纳 — PASS 6 增加 `ForbiddenLexicon` 产物（§A15.1）；新增 DEV-050A |
+| CR-012 | 采纳 — 契约归 DEV-012，与 Chapter Schema 无关 |
+| CR-017 | 部分采纳 — 落在 DEV-010 与 DEV-040 组 |
+| CR-018 | 采纳，机制修正为**块级**预生成（§A10） |
+| CR-019 / CR-020 | 已在 DAG 层记录为跨节点约束 |
 
 裁决详见 `specs/audit/CR-RESOLUTIONS-001.md`。
-
-### 仍待独立决策
-
-- **CR-019 / CR-020** — 已在 DAG 层记录为跨节点约束，不需要 Chapter Schema 变更

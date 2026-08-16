@@ -7,7 +7,7 @@
 - Product Name: AI 自驱动互动绘本直播系统
 - Product Version: V4 (frozen)
 - Dev Spec: Development Specification V1.0 — COMPLETE（第 0–72 节，3094 行）
-- Spec 增补: `specs/audit/SPEC-ADDENDUM-001-DRAFT.md` — **DRAFT，待批准**
+- Spec 增补: `specs/audit/SPEC-ADDENDUM-001.md`（FROZEN）＋ `specs/audit/SPEC-ADDENDUM-002.md`（FROZEN——补齐 `DangerState`/`HostPolicy`/`ResultDictionary`，更正 WorldState 归属）
 - Spec 源文件: `AI 自驱动互动绘本直播系统.md`（DEV-000 T002 归档为 `specs/baseline/DEV_SPEC_V1.0.md`）
 - Repo Root: `c:\Users\admin\Music\Aizhibo`
 
@@ -17,23 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-000 — Repository Foundation
+DEV-001 — Chapter Schema（IN_PROGRESS）
 
 ## Current Status
 
-`IN_PROGRESS` — OPENCODE 施工中，进度约在 T003 ~ T004 之间
-
-已完成迹象：git init、`.gitignore`/`.npmrc`/`.nvmrc`、`package.json`、`pnpm-workspace.yaml`、`pnpm-lock.yaml`、`node_modules`、`specs/baseline/DEV_SPEC_V1.0.md` 归档、根目录源文件已删除、节点四份文档已建。
-未完成：无 commit、无 `tsconfig`、无 `packages/shared`、无 `eslint`/`prettier`/`vitest` 配置、无 CI。
-
-⚠ **风险记录**：T002 在取源文件哈希**之前**已删除仓库内源文件，A07 目前依赖用户桌面副本作替代证据。
-**在 DEV-000 验收 PASS 之前，请勿删除 `Desktop\项目\AI 自驱动互动绘本直播系统.md`。**
+DEV-000 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-001`（消息 `0011`）已下发，OpenCode 施工中。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-000.md`
-＋ 修订 `0002`（协议接入，A25）
-＋ 修订 `0003`（INDEX 占位符 / `.claude` 裁定 / T002 证据链，A26）
+`specs/tasks/TASK-PACKAGE-DEV-001.md` ＋ 权威输入 `specs/audit/SPEC-ADDENDUM-001.md` ＋ `specs/audit/SPEC-ADDENDUM-002.md`
+
+DEV-000 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md` ＋ 修订 `0002`/`0003` ＋ `FIX_PACKAGE DEV-000-FIX-01`（消息 `0007`）
 
 ## 通信协议
 
@@ -49,27 +43,26 @@ DEV-000 — Repository Foundation
 
 ## Completed Nodes
 
-（无）
+- DEV-000 — Repository Foundation（DONE，`verdict_ref: "0009"`，`git_head` `fac7e3e7ea4eeaa802985fab443da74bac9384fd`）
 
 ## In Progress Nodes
 
-- DEV-000 — Repository Foundation
+- DEV-001 — Chapter Schema
 
 ## Blocked Nodes
 
-- **DEV-001 — Chapter Schema** — 阻塞于 `SPEC-ADDENDUM-001-DRAFT` 未批准（CR-001/002/003）
+无。DEV-001 的规范阻塞已于 2026-08-16 解除（ADDENDUM-001 冻结）。
 
 ## Last Accepted Node
 
-（无）
+DEV-000 — Repository Foundation（2026-08-16）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-000（进行中）
-2. DEV-001 — Chapter Schema（**BLOCKED**，需增补稿批准）
-3. DEV-008 — Runtime Event Model（执行序已前移）
+1. DEV-001 — Chapter Schema（IN_PROGRESS）
+2. DEV-008 — Runtime Event Model（待 DEV-001 PASS）
 
 ## Project-level Blockers
 
@@ -80,19 +73,30 @@ DEV-000 — Repository Foundation
 | 文档 | 状态 |
 |---|---|
 | `specs/audit/SPEC-AUDIT-001.md` | 已完成，20 条 CR |
-| `specs/audit/SPEC-ADDENDUM-001-DRAFT.md` | DRAFT，20 项决策待批（D01–D20） |
+| `specs/audit/SPEC-ADDENDUM-001.md` | **FROZEN** — D01–D20 定稿 |
+| `specs/audit/SPEC-ADDENDUM-002.md` | **FROZEN** — `DangerState`/`HostPolicy`/`ResultDictionary` 补齐 + WorldState 归属更正 |
 | `specs/audit/CR-RESOLUTIONS-001.md` | 已裁决 CR-010 / 012 / 017 / 018 |
 
 ### CR 处置状态
 
+**20 条全部结案，规范层无待批项。**
+
 | 状态 | CR |
 |---|---|
 | ✅ 已批准 | CR-004 ~ CR-009（P1 架构）、CR-013 ~ CR-016（P3 削减） |
-| ✅ 已裁决 | CR-010（采纳，新增 DEV-050A）、CR-012（采纳，契约上移 DEV-012）、CR-017（部分采纳）、CR-018（采纳但机制修正为块级预生成） |
-| 📝 起草待批 | CR-001 / 002 / 003（+ CR-011 顺带） → ADDENDUM-001 的 D01–D20 |
-| 📌 已记录为跨节点约束 | CR-019（getHealth 自落地起）、CR-020（Failover 决策权归 SAFETY） |
+| ✅ 已裁决 | CR-010、CR-012、CR-017、CR-018 |
+| ✅ 已冻结 | CR-001 / 002 / 003 / 011 → ADDENDUM-001 |
+| 📌 跨节点约束 | CR-019（getHealth 自落地起）、CR-020（Failover 决策权归 SAFETY） |
 
-**全部 20 条 CR 中，仅 CR-001/002/003/011 仍待批准**，且它们是 DEV-001 的唯一阻塞源。
+### ADDENDUM-001 的五项 USER 产品裁决
+
+| # | 定稿 |
+|---|---|
+| D06 | 角色站位 **固定五档 slot** |
+| D08 | Boss **复用普通 Interaction，零新增运行时模块** |
+| D10 | DOWNED / SPECTATOR **不能投票，能聊天** |
+| D11 | DOWNED 默认 **`AUTO_SPEND_LIFE`**（3 HP + 2 复起 = 5 次耐受） |
+| D13 | Recovery 主力触发器 **`RESULT_QUALITY`** |
 
 ## Commander 决策记录
 
@@ -107,6 +111,17 @@ DEV-000 — Repository Foundation
 | 2026-08-16 | DEV-001 置为 BLOCKED，待增补稿批准 |
 | 2026-08-16 | 建立 COMMS-PROTOCOL-V1：四方文件信道 + append-only LEDGER + 强审核员模式（事实认定不可推翻）；DEV-000 追溯接入 |
 | 2026-08-16 | 裁决 CR-010/012/017/018；新增 DEV-050A Host Egress Gate；修正 DEV-002A 与 DEV-003 的执行序矛盾 |
+| 2026-08-16 | 发出修订 0003（INDEX 占位符 / `.claude` 裁定 / T002 证据链 / A26）；记录 T002 先删后验的不可逆操作风险 |
+| 2026-08-16 | USER 裁决 D06 / D08 / D10 / D11 / D13；其余 15 项按已冻结原则推导定稿；**ADDENDUM-001 冻结，DEV-001 规范阻塞解除** |
+| 2026-08-16 | 收到 DEV-000 `NODE_REPORT`（消息 `0004`），转交 `AUDITOR` 独立审计 |
+| 2026-08-16 | `AUDITOR` 出具 `AUDIT_VERDICT`（消息 `0005`）：`AUDIT_FAIL`，F-01 BLOCKING（A07）+ F-02 BLOCKING（`.claude` 越权改写）+ F-03 DEVIATION + 3 项 OBSERVATION |
+| 2026-08-16 | 发出 `NODE_RULING: FAIL`（消息 `0006`）：F-01 转 FIX；F-02 裁决为接受并说明（原字节不可逆丢失，补救无意义），`.claude/**` 正式纳入 Read-only Scope；F-03 与 3 项 OBSERVATION 转 Future Consideration，不追溯要求修复 |
+| 2026-08-16 | 发出 `FIX_PACKAGE DEV-000-FIX-01`（消息 `0007`）：要求补充 A07 独立第三方佐证，若找不到则如实记录缺口；不重开已通过的 A01–A06/A08–A26 |
+| 2026-08-16 | 收到 FIX-01 第二轮 `NODE_REPORT`（消息 `0008`，`git_head` `fac7e3e7...`）：OpenCode 找到独立佐证（仓库外会话转录 `a5bfaf5e-*.jsonl` 中早于删除时刻的 Read 记录），转交 `AUDITOR` 复核 |
+| 2026-08-16 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0009`）：PASS。独立定位并阅读该会话转录、自行重建正文、独立计算哈希，与归档文件逐字节一致；独立性与时间顺序核实通过。A07 = VERIFIED |
+| 2026-08-16 | 发出 `NODE_RULING: PASS`（消息 `0010`，`verdict_ref: "0009"`）：**DEV-000 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
+| 2026-08-16 | 起草 `SPEC-ADDENDUM-002`（FROZEN）：补齐 `DangerState`/`HostPolicy`/`ResultDictionary` 三处此前被引用但未定义的类型；更正 DEV-000 中「WorldState 属 DEV-004」的错误表述——正确归属为 DEV-001（静态形状）+ DEV-004（求值逻辑） |
+| 2026-08-16 | 发出 `TASK_PACKAGE DEV-001`（消息 `0011`）：`packages/chapter-schema`，T001–T020，A01–A28；DEV-001 转 `IN_PROGRESS` |
 
 ## Authority
 

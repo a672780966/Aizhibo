@@ -571,6 +571,59 @@ READY_FOR_REVIEW 之后不得再改动任何文件，直到收到 FIX_PACKAGE。
 静默回退状态），发 INTEGRITY_ALERT。总指挥必须逐字转呈用户。
 ```
 
+## 附录 B2 — 与已存在的 `project-auditor` 子代理的调和
+
+2026-08-16 发现仓库内已存在 `.claude/agents/project-auditor.md`，是一个先于本协议、且已被 harness 实际收录为可调用 subagent 的审计员定义。它与附录 B 不是同一套东西，不重写它，按下述方式调和。
+
+### 差异
+
+| 项 | 本协议 AUDITOR | `project-auditor` |
+|---|---|---|
+| 判定词 | `PASS / FAIL / BLOCKED_ON_EVIDENCE` | `AUDIT_PASS / AUDIT_FAIL` |
+| 严重度 | `BLOCKING / DEVIATION / OBSERVATION` | `BLOCKER / MAJOR / MINOR / INFO` |
+| 工具权限 | 假定可写 `VERDICT.md` | **仅 `Read, Glob, Grep, Bash`，无 `Edit`/`Write`** |
+| 强制手段 | 书面纪律（附录 B 的"绝对边界"） | 书面纪律 **+ `PreToolUse` Bash 硬 hook** |
+| 协议感知 | 读 LEDGER，发 `AUDIT_VERDICT` | 不知道 LEDGER / msg 信封，只返回一段文本 |
+
+### 结论：`project-auditor` 是权威实现，不修改它
+
+它已经在跑，且有 harness 级强制（hook），比本协议单靠约定更可靠。**不修改 `project-auditor.md` 以迁就本协议**，而是让 `COMMANDER` 承担它结构上做不到的事。
+
+### 调和后的实际流程
+
+```
+COMMANDER 通过 Agent 工具调用 project-auditor（或用户在独立会话中调用）
+        ↓
+project-auditor 返回一段文本（§17 固定输出格式：AUDIT_PASS/FAIL + 分级 Findings）
+        ↓
+COMMANDER 逐字转录该文本，套入本协议的 VERDICT.md 模板（§6），
+只做字段映射，不改写、不删减、不解读其结论
+        ↓
+COMMANDER 在 LEDGER 追加一条 AUDIT_VERDICT 记录，from 字段填 AUDITOR
+        ↓
+COMMANDER 依此发 NODE_RULING
+```
+
+### 字段映射
+
+| project-auditor 输出 | 映射为 |
+|---|---|
+| `AUDIT_PASS` | `Verdict: PASS` |
+| `AUDIT_FAIL` | `Verdict: FAIL` |
+| `BLOCKER` | `BLOCKING` |
+| `MAJOR` | `BLOCKING`（§14 PASS 规则要求 MAJOR = 0 才能 PASS，与本协议"任一 BLOCKING → FAIL"等价） |
+| `MINOR` | `DEVIATION` |
+| `INFO` | `OBSERVATION` |
+| `Required Remediation` | 并入 VERDICT 的 Findings 说明，供 `COMMANDER` 生成 `FIX_PACKAGE` |
+
+### 硬约束
+
+1. **COMMANDER 转录时不得修改判定结果本身。** 若认为 `project-auditor` 的判定有误，只能另行调用一次独立复核（例如换 `general-purpose` 走本协议附录 B 流程），不得自行改写其 verdict。
+2. `project-auditor` 无 `Edit`/`Write` 权限这件事**是设计优点，不是缺陷**——它从工具层面杜绝了"审核员顺手改代码"的可能性，比本协议的书面禁止更可靠。往后设计新 subagent 角色时优先沿用"只读工具集 + 由主调用方落盘"这一模式。
+3. 若 `project-auditor` 与本协议正文冲突，**以 `project-auditor.md` 的判定逻辑为准**（它是实际在跑的强制机制），本协议附录 B 的独立会话版本降级为**备选实现**，仅在 `project-auditor` 不可用时启用。
+
+---
+
 ## 附录 C — COMMANDER 启动提示词补丁
 
 以下条款追加到现有总指挥章程：

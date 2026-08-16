@@ -24,8 +24,8 @@
 
 | Exec | Node | Name | Deps | Status |
 |---|---|---|---|---|
-| 1 | DEV-000 | Repository Foundation | — | IN_PROGRESS |
-| 2 | DEV-001 | Chapter Schema | DEV-000 | **BLOCKED** |
+| 1 | DEV-000 | Repository Foundation | — | DONE |
+| 2 | DEV-001 | Chapter Schema | DEV-000 | IN_PROGRESS |
 | 3 | DEV-008 | Runtime Event Model ⬆ | DEV-000, DEV-001 | TODO |
 | 4 | DEV-002 | Chapter Compiler Core（PASS 1 + 2）✂ | DEV-001 | TODO |
 | 5 | DEV-003 | Story Graph Analyzer（PASS 3 + 5）✂ | DEV-002 | TODO |
@@ -54,9 +54,13 @@
 
 M1 结束时三个对外契约全部冻结：Runtime Event（DEV-008）、Public State 可见性分区（DEV-009）、Presentation Command（DEV-012）。
 
-### DEV-001 阻塞原因
+### DEV-001 已下发（2026-08-16）
 
-`SPEC-ADDENDUM-001-DRAFT` 待用户批准。Chapter Pack 中 7 项结构零定义、HP/Life 闭环缺失、`playerEffects` 粒度歧义（CR-001/002/003）。批准后解除。
+`SPEC-ADDENDUM-001` 与 `SPEC-ADDENDUM-002`（后者补齐 `DangerState`/`HostPolicy`/`ResultDictionary` 三处缺失定义，并更正 WorldState 归属——见下）均已冻结。`TASK-PACKAGE-DEV-001` 已通过消息 `0011` 发出，节点转 `IN_PROGRESS`。
+
+**归属更正**：DEV-000 Non-goals 曾写「WorldState 属 DEV-004」，有误。Dev Spec 第 65 节 DEV-001 交付物清单明确包含 World State。正确归属：`WorldState`/`NPCState`/`DangerState` 的**静态形状**属 DEV-001（`chapter-schema`）；对其求值/变更的**运行时逻辑**属 DEV-004（`rule-engine`，消费 DEV-001 类型，不重新定义）。`ViewerState` 不在 DEV-001 范围内（不在 Chapter Pack 目录结构内），其 schema 延后到实际需要它的节点（如 DEV-010）。详见 `SPEC-ADDENDUM-002.md §B1`。
+
+`packages/chapter-schema` 是仓库第一个需要运行时依赖（`zod`）的包；`CR-019`（getHealth 自落地起）不适用于它——纯数据形状包无运行时服务。
 
 ### 已应用的修订说明
 
@@ -316,9 +320,11 @@ CR-010 / CR-012 / CR-017 / CR-018 已于 2026-08-16 裁决，详见 `specs/audit
 | CR | 裁决 | 落点 |
 |---|---|---|
 | CR-010 | 采纳 | 新增 DEV-050A；DEV-002A 增加 `ForbiddenLexicon` 产物 |
-| CR-011 | 已入 ADDENDUM §A17，待 D19 批准 | DEV-001, DEV-006 |
+| CR-011 | 采纳，已冻结于 ADDENDUM §A17（D19） | DEV-001, DEV-006 |
 | CR-012 | 采纳，契约上移至 DEV-012 | DEV-012 / DEV-020 / DEV-028 |
 | CR-017 | 部分采纳（窄化核心消费面 + 合规变量前置） | DEV-010 / DEV-040 组 |
 | CR-018 | 采纳但机制修正为**块级**预生成 | DEV-030 / 035 / 037 / 074 / 075 |
 
-唯一仍待用户批准的是增补稿 `SPEC-ADDENDUM-001-DRAFT` 的 D01–D20（阻塞 DEV-001）。
+**20 条 CR 全部结案。规范层无待批项。**
+
+`specs/audit/SPEC-ADDENDUM-001.md` 已冻结，与 Dev Spec V1.0 具同等约束力。

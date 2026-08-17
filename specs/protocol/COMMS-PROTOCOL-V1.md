@@ -702,18 +702,20 @@ COMMANDER 追加 LEDGER 的 AUDIT_VERDICT 记录 → 发 NODE_RULING
 
 文件本身（`VERDICT.md`、`LEDGER.md`、各消息文件）**保持完整**——本条只约束对话输出的简洁度，不允许借"简洁"为由削减落盘记录的严谨度。
 
-### OpenCode 交接行——必须单独摘出，不许混在叙述里
+### Executor 交接行——必须单独摘出，不许混在叙述里
 
-**背景问题**：`AUDITOR` 这一跳自动化之后（本附录前段），`OPENCODE` 这一跳仍然是人工监督的独立会话（刻意保留，理由见上）。这意味着**每当轮到 `OPENCODE` 行动**（`TASK_PACKAGE` / `FIX_PACKAGE` / `SCOPE_RULING` / `ACCEPTANCE_AMENDMENT` 任一），`USER` 都要亲自去那个会话里说一句话。如果这句话被淹没在一整段"发生了什么、为什么、还有哪些治理决定"的叙述里，`USER` 就得自己从中摘——这正是需要消除的手工劳动，不是审计报告本身。
+**背景问题**：`AUDITOR` 这一跳自动化之后（本附录前段），`OPENCODE`（协议角色名，实际执行工具见附录 A 顶部说明，2026-08-17 起为 `codex` CLI）这一跳仍然是人工监督的独立会话（刻意保留，理由见上）。这意味着**每当轮到 Executor 行动**（`TASK_PACKAGE` / `FIX_PACKAGE` / `SCOPE_RULING` / `ACCEPTANCE_AMENDMENT` 任一），`USER` 都要亲自去那个会话里说一句话。如果这句话被淹没在一整段"发生了什么、为什么、还有哪些治理决定"的叙述里，`USER` 就得自己从中摘——这正是需要消除的手工劳动，不是审计报告本身。
 
-**规则**：任何一次汇报，只要下一步动作方是 `OPENCODE`，**必须在结尾单列一块**，格式固定：
+**规则**：任何一次汇报，只要下一步动作方是 Executor（协议内部角色名 `OPENCODE`），**必须在结尾单列一块**，格式固定：
 
 ```
-→ 发给 OpenCode（照抄即可）：
+→ 发给 Codex（照抄即可）：
 "处理 LEDGER 中消息 NNNN（<TYPE> <NODE-ID>）。"
 ```
 
-- 这一行**只是触发指针，不复述消息内容**——`OPENCODE` 的启动提示词（附录 A）本来就要求它自己开场先读 LEDGER 里 `To=OPENCODE` 且 `Status=OPEN` 的消息、再读消息文件本体。内容只活在文件里的这一条纪律（协议 §2.1"没有写入文件的沟通不存在"）同样适用于这行提示——它不是内容的副本，只是"该看第几号"的指针。
+> **人类可见文案 vs 协议内部角色名，两者分离**：`LEDGER.md`/消息信封里的 `From`/`To` 字段永远用 `OPENCODE`（角色名，不随执行工具改变，历史记录也不重写）。但这一行是**说给人看、照抄去粘贴的**，必须写实际正在对话的工具名——当前是 `Codex`。执行工具再换（例如换回 `opencode` 或换成别的），只改这一行的显示文案，不改协议正文里的角色名。
+
+- 这一行**只是触发指针，不复述消息内容**——Executor 的启动提示词（附录 A）本来就要求它自己开场先读 LEDGER 里 `To=OPENCODE` 且 `Status=OPEN` 的消息、再读消息文件本体。内容只活在文件里的这一条纪律（协议 §2.1"没有写入文件的沟通不存在"）同样适用于这行提示——它不是内容的副本，只是"该看第几号"的指针。
 - **位置固定在报告末尾**，前面无论叙述多长，这一块都是最后、且视觉上独立（单独代码块）的一段，不与决策记录、审计发现混排。
 - 若下一步动作方是 `AUDITOR`（现在已自动化）或无需任何人介入，**不输出这一块**——避免让它在不需要时也变成噪音，失去"看到这块就该去 OpenCode 那边说话"的信号意义。
 - 若同一轮里连续产生多条 `OPENCODE` 需处理的消息（罕见，例如同时发出 `NODE_RULING` 与 `FIX_PACKAGE`），只需指向**最新的一条**——`OPENCODE` 开场会把所有 `OPEN` 消息一并处理，不需要逐条罗列。
@@ -745,11 +747,13 @@ COMMANDER 追加 LEDGER 的 AUDIT_VERDICT 记录 → 发 NODE_RULING
   见 specs/dev/DEV-XXX/VERDICT.md"），不在对话中重新粘贴完整表格；
   FAIL 需摘要 BLOCKING/DEVIATION，仍不逐字复制全文；INTEGRITY_ALERT 例外，
   必须逐字转呈
-- 不自动调用 opencode run 代替人工监督的 Executor 会话——Commander/Executor
-  的会话分离必须保留
-- 只要下一步动作方是 OpenCode，汇报结尾必须单列固定格式的交接块：
-  "→ 发给 OpenCode（照抄即可）：处理 LEDGER 中消息 NNNN（TYPE NODE-ID）。"
-  只给指针不复述内容；下一步是 AUDITOR 或无需人介入时不输出这一块
+- 不自动调用 Executor CLI（当前为 codex）代替人工监督的 Executor 会话——
+  Commander/Executor 的会话分离必须保留
+- 只要下一步动作方是 Executor（协议角色名 OPENCODE），汇报结尾必须单列固定
+  格式的交接块："→ 发给 <当前实际执行工具的人类可读名，如 Codex>（照抄即可）：
+  处理 LEDGER 中消息 NNNN（TYPE NODE-ID）。"只给指针不复述内容；下一步是
+  AUDITOR 或无需人介入时不输出这一块。工具名只影响这一行的显示文案，
+  LEDGER/消息信封的角色名始终是 OPENCODE，不随执行工具改变
 - 每次调用审核员（project-auditor 或其 general-purpose 降级路径）必须附加两条
   标准约束：只读工具限制 + 输出语言为中文（协议固定关键词如
   AUDIT_PASS/BLOCKER/VERIFIED 等及代码/路径/命令/sha 保持英文原样，不翻译）

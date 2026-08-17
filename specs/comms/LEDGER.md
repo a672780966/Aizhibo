@@ -58,6 +58,9 @@
 | 0036 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-003 | 0035 | CLOSED | 澄清：T002 编号纠错 + 单元测试免 fixture + T008 复制 valid-minimal 改一处，禁生成脚本 |
 | 0037 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-003 | 0036 | CLOSED | BLK-003：valid-minimal 经 PASS3 后 passed 必为 false，A06 无回归与 T007 判定互斥，待 SCOPE_RULING |
 | 0038 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-003 | 0037 | CLOSED | BLK-003 裁决：采纳方案 A，解除 scene-start.json 单文件只读限制，追加一条 guard 边 |
+| 0039 | NODE_REPORT | OPENCODE | AUDITOR | DEV-003 | 0038 | CLOSED | DEV-003 施工完成，六命令全绿 219/219，READY_FOR_REVIEW |
+| 0040 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-003 | 0039 | CLOSED | AUDIT_PASS：0 Blocker/0 Major/1 Minor（MINOR-01：A08 文字与 T007 #3 字面冲突，接受并说明）/2 Info |
+| 0041 | NODE_RULING | COMMANDER | ALL | DEV-003 | 0040 | CLOSED | ruling: PASS；DEV-003 转 DONE，接口冻结 |
 
 ---
 

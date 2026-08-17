@@ -17,19 +17,18 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-003 — Story Graph Analyzer（PASS 3 + 5）（IN_PROGRESS）
+DEV-002A — Hidden Information Validator（PASS 6）（待下发 TASK_PACKAGE）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-003`（消息 `0035`）已下发，Codex 施工中。
-
-本节点是对已冻结 `packages/chapter-compiler` 的增量扩展（新增 PASS3/5），不新建包。DEV-002 的 PASS1/PASS2 源文件保持 Read-only；`types.ts`/`compile.ts`/`compile.test.ts`/`index.ts` 仅允许追加式修改。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 均 `DONE`（接口冻结）。DEV-003 的 PASS3/5 已冻结，
+`Commander` 尚未下发 `TASK-PACKAGE-DEV-002A`。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-003.md` ＋ 权威输入 Dev Spec 第 24 节、现有 `packages/chapter-compiler` 源码、`SPEC-ADDENDUM-001.md` §A6/§A11/§A12/§A13、`DAG.md` CR-006 决议
+（待下发。依赖 DEV-003 的可达节点集合 + 可达状态集合，`Commander` 起草中。）
 
-DEV-000/DEV-001/DEV-008/DEV-002 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）
 
 ## 通信协议
 
@@ -49,10 +48,11 @@ DEV-000/DEV-001/DEV-008/DEV-002 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000
 - DEV-001 — Chapter Schema（DONE，`verdict_ref: "0017"`，`git_head` `cbcbd8dc82910f542dee0bf81352d26241add06f`）
 - DEV-008 — Runtime Event Model（DONE，`verdict_ref: "0021"`，`git_head` `18d00446f628da965bdfd4f18d1f2ef447d8e32d`）
 - DEV-002 — Chapter Compiler Core（PASS 1 + 2）（DONE，`verdict_ref: "0033"`，`git_head` `4812478ae657414984f9d6c4d5e56930583a662e`）
+- DEV-003 — Story Graph Analyzer（PASS 3 + 5）（DONE，`verdict_ref: "0040"`，`git_head` `be43f75f80702edcf63c5ad206766f6a98d269ca`）
 
 ## In Progress Nodes
 
-- DEV-003 — Story Graph Analyzer（PASS 3 + 5）
+无。
 
 ## Blocked Nodes
 
@@ -60,14 +60,13 @@ DEV-000/DEV-001/DEV-008/DEV-002 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000
 
 ## Last Accepted Node
 
-DEV-002 — Chapter Compiler Core（2026-08-18）
+DEV-003 — Story Graph Analyzer（2026-08-18）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-003 — Story Graph Analyzer（IN_PROGRESS）
-2. DEV-002A — Hidden Information Validator（待 DEV-003 PASS；依赖 DEV-003 的可达节点集合 + 可达状态集合）
+1. DEV-002A — Hidden Information Validator（待下发 TASK_PACKAGE；依赖 DEV-003 的可达节点集合 + 可达状态集合，已满足）
 
 ## Project-level Blockers
 
@@ -154,6 +153,11 @@ DEV-002 — Chapter Compiler Core（2026-08-18）
 | 2026-08-18 | 更正协议：系统通知 `project-auditor` 现已出现在 Agent 可用类型列表，推翻 2026-08-16 的"不可用"结论；恢复为优先直调，报错才降级至 `general-purpose` 注入路径。可用性按会话验证，不假设固定 |
 | 2026-08-18 | 起草并发出 `TASK_PACKAGE DEV-003`（消息 `0035`）：`packages/chapter-compiler` 增量扩展 PASS3（图可达性/死路/环检测）+ PASS5（状态可达性/可满足性），T001–T009，A01–A24；DEV-002 的 PASS1/2 源文件划为 Read-only，`types.ts`/`compile.ts`/`compile.test.ts`/`index.ts` 仅允许追加式修改；DEV-003 转 `IN_PROGRESS` |
 | 2026-08-18 | 施工约 2h45m 无新文件产出，排查后发现 Task Package 存在编号笔误（T002 验收误引用不存在的"T009"fixture）且未明确"单元测试可用手写最小对象、不必走完整 fixture"，推测执行方因此陷入自建 fixture 生成脚本的困境（`dev003-fixtures.mjs`，未落盘）。发出 `ACCEPTANCE_AMENDMENT`（消息 `0036`）：更正编号；明确 T002–T006 测试免 fixture；T008 fixture 改为复制 `valid-minimal` 做单点编辑，不写生成脚本，并附逐条最小编辑指引 |
+| 2026-08-18 | 收到 `EXECUTOR_QUERY`（消息 `0037`，`blocking: true`，`BLK-003`）：PASS3 接入后 `valid-minimal` 的 `boss-tyrant` 经独立复现确认不可达（先于 DEV-003 存在的 fixture 图设计缺陷，PASS1/2 未曾检出），导致 T007 #3 的 `passed` 判定规则与 DEV-002 遗留断言 `passed: true` 互斥 |
+| 2026-08-18 | 核实 `story.graph.json` 已注册 `boss-tyrant`、现有全部 `valid-minimal` 相关测试断言均不依赖 `guards` 具体内容后，发出 `SCOPE_RULING`（消息 `0038`）：采纳方案 A，解除 `scene-start.json` 单文件只读限制，授权追加一条指向 `boss-tyrant` 的 guard 边以修复 fixture 自身缺陷；不触及 Acceptance 语义，判定属 `Commander` 自主裁决范围（协议 §7.3），未上报 `USER` |
+| 2026-08-18 | 收到 DEV-003 `NODE_REPORT`（消息 `0039`，`git_head` `be43f75...`）：六条命令严格顺序全部退出码 0，219/219，转交 `AUDITOR` 独立审计 |
+| 2026-08-18 | `AUDITOR` `AUDIT_VERDICT`（消息 `0040`）：**PASS**。T002–T009/A01–A24 全部 VERIFIED 或 PASS，0 BLOCKING（Minor: 1，MINOR-01：A08 文字与 T007 #3 字面冲突，接受并说明；Info: 2）。独立核对 `SCOPE_RULING 0038` 授权范围与实际 diff 逐字一致 |
+| 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0041`，`verdict_ref: "0040"`）：**DEV-003 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-002A |
 
 ## Authority
 

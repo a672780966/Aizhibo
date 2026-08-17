@@ -17,16 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-004 — State Rule Engine（待下发）
+DEV-004 — State Rule Engine（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 均 `DONE`（接口冻结）。下一可下发节点为
-DEV-004，`Commander` 尚未起草其 `TASK_PACKAGE`。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-004`（消息 `0048`）已下发，Codex 施工中。
+
+本节点是新包 `packages/rule-engine`，全项目第一个真正的运行时包（会在直播进行中被反复调用），但设计上仍是纯函数库：不做 IO、不发 Event、不维护跨调用状态。
 
 ## Current Task Package
 
-无（DEV-004 `TASK_PACKAGE` 尚未起草）
+`specs/tasks/TASK-PACKAGE-DEV-004.md` ＋ 权威输入 Dev Spec 第 65 节、`packages/chapter-schema/src/stateRules.ts`（冻结类型来源）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）
 
@@ -53,7 +54,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 历史记录：`specs/tasks/TAS
 
 ## In Progress Nodes
 
-无。
+- DEV-004 — State Rule Engine
 
 ## Blocked Nodes
 
@@ -67,7 +68,8 @@ DEV-002A — Hidden Information Validator（2026-08-18）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-004 — State Rule Engine（依赖 DEV-002，已 `DONE`，可下发）
+1. DEV-004 — State Rule Engine（IN_PROGRESS）
+2. DEV-005 — Dice Engine（待 DEV-004 PASS 后，依赖 DEV-002，已满足）
 
 ## Project-level Blockers
 
@@ -165,6 +167,8 @@ DEV-002A — Hidden Information Validator（2026-08-18）
 | 2026-08-18 | 收到 DEV-002A `NODE_REPORT`（消息 `0045`，`git_head` `8718654...`）：`SCOPE_RULING 0044` 执行完毕，六条命令严格顺序全部退出码 0，254/254，BLK-004 结案，转交 `AUDITOR` 独立审计 |
 | 2026-08-18 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0046`）：**PASS**。T001–T010/A01–A23 全部 VERIFIED 或 PASS，0 BLOCKING（Info: 1，治理文件随 `git add -A` 入库，非 OPENCODE 编写）；独立核对 `SCOPE_RULING 0044` 授权范围与实际 diff 逐字一致 |
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0047`，`verdict_ref: "0046"`）：**DEV-002A 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-004 |
+| 2026-08-18 | 独立提交 `c605b94`（治理文件：DEV-002A 审计通过记录），提交后工作区干净 |
+| 2026-08-18 | 起草并发出 `TASK_PACKAGE DEV-004`（消息 `0048`）：新包 `packages/rule-engine`，全项目第一个运行时包但仍为纯函数库；实现 Condition/StateEffect/StateRuleSet/SceneGuard 的运行时求值，T001–T008，A01–A18；StatePath 寻址规则（npc/danger 字段、discovered/activeThreats 成员判定、INC/DEC 增量、PUSH 幂等）作为运行时语义直接写入任务包，不留给执行方猜测；`once` 语义的记忆责任明确交还未来的 DEV-009 调用方；DEV-004 转 `IN_PROGRESS` |
 
 ## Authority
 

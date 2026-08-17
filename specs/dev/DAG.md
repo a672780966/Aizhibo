@@ -30,7 +30,7 @@
 | 4 | DEV-002 | Chapter Compiler Core（PASS 1 + 2）✂ | DEV-001 | DONE |
 | 5 | DEV-003 | Story Graph Analyzer（PASS 3 + 5）✂ | DEV-002 | DONE |
 | 6 | DEV-002A | Hidden Information Validator（PASS 6）✚ | DEV-001, DEV-003 | DONE |
-| 7 | DEV-004 | State Rule Engine | DEV-002 | TODO |
+| 7 | DEV-004 | State Rule Engine | DEV-002 | IN_PROGRESS |
 | 8 | DEV-005 | Dice Engine | DEV-002 | TODO |
 | 9 | DEV-006 | Action Resolution Engine（PASS 4） | DEV-004, DEV-005 | TODO |
 | 10 | DEV-033 | Narrative Composer ⬆ | DEV-006 | TODO |

@@ -45,6 +45,12 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
 
+  packages/rule-engine:
+    dependencies:
+      '@interactive-story/chapter-schema':
+        specifier: workspace:*
+        version: link:../chapter-schema
+
   packages/runtime-kernel:
     dependencies:
       zod:

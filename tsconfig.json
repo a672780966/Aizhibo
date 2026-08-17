@@ -4,6 +4,7 @@
     { "path": "./packages/shared" },
     { "path": "./packages/chapter-schema" },
     { "path": "./packages/runtime-kernel" },
-    { "path": "./packages/chapter-compiler" }
+    { "path": "./packages/chapter-compiler" },
+    { "path": "./packages/rule-engine" }
   ]
 }

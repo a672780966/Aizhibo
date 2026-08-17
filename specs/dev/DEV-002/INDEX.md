@@ -104,10 +104,11 @@ tests/integration/**、tests/simulation/**、tests/replay/**、tests/soak/**
 - [x] T011 compile() 编排
 - [x] T012 测试 Fixture
 - [x] T013 全量验证 + REPORT + commit + NODE_REPORT
+- [x] FIX-T01 移除包级 tsconfig references + 修正验证记录（第二轮，READY_FOR_REVIEW）
 
 ## Current Task
 
-T013（已完成，待 AUDITOR 审核）
+FIX-T01（已完成，第二轮待 AUDITOR 审核）
 
 ## Exit Criteria
 

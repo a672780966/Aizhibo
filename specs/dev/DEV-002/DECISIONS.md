@@ -2,6 +2,9 @@
 
 记录 T001–T013 施工过程中的决策。无业务语义变更。
 
+> **FIX-T01 追加记录**：D1–D9 均为施工期决策，未受 FIX 影响；D10 历史现象保留，
+> 其顺序依赖已由 D11 记录的方式消除，不再适用于当前交付态（消息 `0031`）。
+
 ## D1 — zod 版本对齐（T002）
 
 `packages/chapter-compiler` 的 `dependencies` 恰为
@@ -91,3 +94,20 @@ Scope，无法追加忽略规则。解决：两个文件以 **JSONC 形态**提�
 交付态工作区含完整构建产物（T013 命令序列以 `pnpm build` 收尾），六条命令全部退出码 0；
 全新环境需先 `pnpm build` 再 `pnpm typecheck`。此为 TS 工具链行为，非本包缺陷，
 记录备审（REPORT Future Considerations 亦留痕）。
+
+## D11 — FIX-T01：typecheck 顺序依赖在脚本层面消除（T013 第二轮）
+
+`FIX_PACKAGE 0029`（`DEV-002-FIX-01`）移除 chapter-compiler 包级 `references` 后，
+全新工作区 + T013 §1 严格顺序下 `pnpm typecheck` 仍失败（`TS2307`，消息 `0030`，
+BLK-002）：`tsc -b --noEmit` 不会发射任何项目产物，被依赖包 `chapter-schema` 的
+`dist/index.d.ts` 未物化时类型解析必然失败——该失败与 references 存在与否无关，只改变
+失败形态（带 references 为 `TS6310`，移除后为 `TS2307`）。
+
+`SCOPE_RULING 0031` 采纳方案 A'（USER 已批准，CR 性质留痕）：根 `package.json` 的
+`typecheck` 脚本由 `tsc -b --noEmit` 改为 `tsc -b && tsc -b --noEmit`，把「依赖产物
+必须先物化」这一真实前置显式化到脚本内，不再依赖外部调用者手动排序。该文件超出本节点
+Writable Scope，由 `Commander` 自行改动并独立验证（本节点不越权）。
+
+**结论**：D10 记录的「typecheck 依赖先行 build」顺序现象（历史真实）在脚本层面被消除——
+全新工作区 + 严格顺序 + 无额外命令下，六条命令在新脚本下全部退出码 0（本节点第二轮
+独立重跑，见 REPORT Tests Executed）。验收字面语义（A02）不变。

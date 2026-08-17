@@ -79,15 +79,32 @@ specs/comms/LEDGER.md            （消息 0023 OPEN → CLOSED；追加 0024 �
 
 构建产物 `packages/chapter-compiler/dist/` 与 `node_modules/` 为 gitignored 产物。
 
+### FIX-T01 第二轮改动（本提交）
+
+```
+packages/chapter-compiler/tsconfig.json    （移除包级 references，FIX Requirement #1）
+specs/dev/DEV-002/REPORT.md                （Tests Executed / A02 / Known Issues / Future Considerations）
+specs/dev/DEV-002/DECISIONS.md             （追加 D11）
+specs/dev/DEV-002/BLOCKERS.md              （BLK-001 结案依据改指 0028/0029；BLK-002 结案，引用 0031）
+specs/dev/DEV-002/INDEX.md                 （Task Order 追加 FIX-T01，Status READY_FOR_REVIEW）
+```
+
+根 `package.json` 的 `typecheck` 脚本改动（消息 `0031` 方案 A'）由 `Commander` 直接
+提交（commit `d2e67ca`），不在本节点提交内。
+
 ## Tests Executed
+
+（本表为 FIX-T01 第二轮：清空全部 `packages/*/dist` 与 `*.tsbuildinfo` 后，严格按 T013 §1 顺序、
+新脚本（根 `package.json` `typecheck = tsc -b && tsc -b --noEmit`，消息 `0031` 方案 A'）下执行，
+全程未插入任何额外命令。）
 
 | 命令 | 结果 | 关键输出 |
 |---|---|---|
-| pnpm install | PASS | `Already up to date` / `Done in 775ms using pnpm v11.5.3`，退出码 0 |
-| pnpm typecheck | PASS | 无错误输出，退出码 0（全部四包通过） |
-| pnpm lint | PASS | 无错误无警告输出，退出码 0（0 error / 0 warning） |
+| pnpm install | PASS | `Already up to date` / `Done in 538ms using pnpm v11.5.3`，退出码 0 |
+| pnpm typecheck | PASS | `tsc -b && tsc -b --noEmit`，无错误输出，退出码 0（全部四包通过） |
+| pnpm lint | PASS | `eslint .`，无错误无警告输出，退出码 0（0 error / 0 warning） |
 | pnpm format:check | PASS | `All matched files use Prettier code style!`，退出码 0 |
-| pnpm build | PASS | 无错误输出，退出码 0；`packages/chapter-compiler/dist/index.d.ts` 存在（Test-Path = True） |
+| pnpm build | PASS | `tsc -b`，无错误输出，退出码 0；`packages/chapter-compiler/dist/index.d.ts` 存在（Test-Path = True），内容正确导出全部 10 个模块 |
 | pnpm test | PASS | `Test Files 33 passed (33)` / `Tests 174 passed (174)`，退出码 0（shared 2 + chapter-schema 18 + runtime-kernel 3 无回归 + chapter-compiler 10 文件全部通过） |
 
 ## Acceptance Results
@@ -95,7 +112,7 @@ specs/comms/LEDGER.md            （消息 0023 OPEN → CLOSED；追加 0024 �
 | # | 结果 | 证据 |
 |---|---|---|
 | A01 | PASS | `pnpm install` 退出码 0（见 Tests Executed） |
-| A02 | PASS | `pnpm typecheck` 退出码 0，全部四包通过；前置条件说明见 DECISIONS D10 |
+| A02 | PASS | `pnpm typecheck` 退出码 0，全部四包通过；根脚本已按消息 `0031` 方案 A' 显式声明「先构建后检查」（`tsc -b && tsc -b --noEmit`），全新工作区 + 严格顺序下不再需要外部前置 build，D10 记录的历史顺序依赖已消除（见 D11） |
 | A03 | PASS | `pnpm lint` 退出码 0，0 error / 0 warning |
 | A04 | PASS | `pnpm format:check` 退出码 0；语法错误 fixture 以 JSONC 形态兼容（D9） |
 | A05 | PASS | `pnpm build` 退出码 0；`packages/chapter-compiler/dist/index.d.ts` 存在 |
@@ -136,9 +153,7 @@ A6/A7 StatePath 与 blockId 引用等，属后续节点职责）。
    T013 按 `git add -A && git commit` 执行（Task Package T013 Requirement #4），Commander
    治理改动随本次提交入库，处理方式与 DEV-001（消息 `0012`）/DEV-008（消息 `0020`）先例一致，
    归因在提交 diff 中可见。
-2. **`pnpm typecheck` 的前置依赖**：仓库首个跨包 project reference 使全新环境需先
-   `pnpm build` 再 `pnpm typecheck`（TS 5.9 `tsc -b --noEmit` 行为，DECISIONS D10）；
-   交付态工作区含完整构建产物，命令序列全部退出码 0。
+2. **`pnpm typecheck` 的顺序依赖**：首轮审计发现 `tsc -b --noEmit` 在全新工作区需依赖产物先就绪（DECISIONS D10），故 A02 判定 FAIL（消息 `0027` F-01）。`FIX_PACKAGE 0029` 移除包级 references 后仍未解决——`--noEmit` 不发射依赖产物与 references 存在与否无关（消息 `0030`，BLK-002）。经 `SCOPE_RULING`（消息 `0031`，方案 A'，USER 批准）根 `typecheck` 脚本改为 `tsc -b && tsc -b --noEmit`，该顺序依赖已消除（D11）；本表已按新脚本在清空产物 + 严格顺序下重跑验证。
 3. 语法错误 fixture 以 JSONC（注释）形态提交以兼容 `format:check`（DECISIONS D9）——
    对 `JSON.parse` 仍为语法错误，Loader 用例语义不变。
 
@@ -152,7 +167,8 @@ NONE
   文件路径级检查可直接使用。
 - `boss.interactionNextScene` 以 `ADVISORY` 级别报告（D7）；`compile().passed` 按 T011
   字面规则不区分严重度，下游若需"仅 BLOCKING 阻断"语义可在组装阶段自行过滤。
-- 跨包 project reference 后 `tsc -b --noEmit` 在全新 clone 环境需先 build（D10）；
-  未来若引入 CI，可在 CI 中调整命令顺序或改用 `tsc --noEmit -p` 逐包检查。
+- 跨包 project reference 后 `tsc -b --noEmit` 在全新 clone 环境需先 build 的历史现象（D10）
+  已由根 `typecheck` 脚本显式声明「先构建后检查」消除（消息 `0031` 方案 A'，D11），
+  不再适用于当前交付态。
 - 本节点不组装最终 Validated Runtime Bundle（Task Package 第 2 节跨节点开放问题）；
   `compile()` 返回的内存结果已含四类 issue 与 `passed`，供 DEV-072 等下游按需组合。

@@ -72,10 +72,11 @@ RuntimeEvent 的构造或发送（DEV-008 已冻结该类型，DEV-009 才负责
 - [x] T006 StateRuleSet 求值（含 once 语义）
 - [x] T007 SceneGuard 解析
 - [x] T008 全量验证 + REPORT + commit + NODE_REPORT
+- [x] FIX-T01 提交 `DECISIONS.md`（DEV-004-FIX-01，消除 REPORT 引用断链）
 
 ## Current Task
 
-—（T001–T008 全部完成，节点 READY_FOR_REVIEW，已发 NODE_REPORT 消息 `0049` 给 AUDITOR）
+—（T001–T008 全部完成 + FIX-T01 完成，节点 READY_FOR_REVIEW，已发第二轮 NODE_REPORT 给 AUDITOR）
 
 ## Exit Criteria
 

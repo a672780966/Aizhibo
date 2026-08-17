@@ -488,6 +488,8 @@ Task Package 本体不重写（避免作废重发），以 `ACCEPTANCE_AMENDMENT
 
 ## 附录 A — OPENCODE 启动提示词
 
+> **2026-08-17 执行工具变更**：`OPENCODE` 这个角色代号保留不变（LEDGER/消息信封的 `from`/`to` 字段沿用），但实际执行工具由 `opencode` CLI 换成 `codex` CLI。协议对角色的约束不因执行工具而变——下方全部条款对任何担任 Executor 角色的工具同等生效。因这次切换新增一条强约束（见下），针对的是"任务声称完成，但列出的文件其实没真的改"这类风险，不特定针对某个工具，只是切换时机顺带补上。
+
 ```
 你是本项目的唯一施工执行者（Executor），代号 OPENCODE。
 
@@ -506,6 +508,17 @@ Task Package 本体不重写（避免作废重发），以 `ACCEPTANCE_AMENDMENT
 - 不得实现 Task Package 未明确要求的内容，即使你确信以后需要
 - 不得顺手重构、顺手优化、顺手新增基础设施
 - 不得引入 Dev Spec 第 70 节禁止清单中的技术
+
+【强约束：Allowed Files 逐一真实改动】
+每个 Task 在其 Allowed Files 清单里列出的每一个文件，必须相对该 Task 开始前的
+状态产生真实、非空的改动，才能把该 Task 标记为完成。具体：
+- 不允许创建文件但内容是空壳/占位符/仅注释，却在 INDEX.md 里勾选该 Task
+- 不允许 Allowed Files 中列出的某个文件完全未被触碰，却声称整个 Task 完成
+- 不允许用"改了其中一个文件"代表"这批文件全部完成"——每个文件独立核验
+- 若某个 Allowed File 在当前 Task 下确实不需要改动（例如任务实际不需要用到
+  它），必须在该 Task 完成时同步写入 REPORT.md 的 Scope Deviations 或
+  DECISIONS.md 说明原因，不能默认跳过、不提。
+AUDITOR 会用 git diff 逐文件核对这一条，未说明的"零改动"文件按 BLOCKING 处理。
 
 需要越界时：停止该 Task，发 EXECUTOR_QUERY（blocking: true），同时写入
 specs/dev/DEV-XXX/BLOCKERS.md，继续其它不受影响的 Task，等 SCOPE_RULING。
@@ -544,6 +557,9 @@ READY_FOR_REVIEW 之后不得再改动任何文件，直到收到 FIX_PACKAGE。
 两条强制动作，不得跳过：
 1. 自己重跑全部验证命令，记录原始退出码。禁止采信 REPORT 中的输出摘要
 2. 自己跑 git diff，与 REPORT 的 Changed Files 列表逐项比对。未声明的改动一律判 DEVIATION
+3. 对当前节点每个 Task 的 Allowed Files 逐一核对：每个文件相对 Task 开始前是否
+   有真实非空 diff。空壳文件、或列在 Allowed Files 却零改动又未在 REPORT/DECISIONS
+   说明原因的，判 BLOCKING（附录 A"强约束：Allowed Files 逐一真实改动"）
 
 你的绝对边界：
 - 不得修改任何文件，唯一例外是 specs/dev/DEV-XXX/VERDICT.md 与你自己发出的消息
@@ -737,4 +753,8 @@ COMMANDER 追加 LEDGER 的 AUDIT_VERDICT 记录 → 发 NODE_RULING
 - 每次调用审核员（project-auditor 或其 general-purpose 降级路径）必须附加两条
   标准约束：只读工具限制 + 输出语言为中文（协议固定关键词如
   AUDIT_PASS/BLOCKER/VERIFIED 等及代码/路径/命令/sha 保持英文原样，不翻译）
+- Executor 角色代号统一称 OPENCODE，不论其实际执行工具是 opencode CLI 还是
+  codex CLI 或其它——协议约束对角色生效，不对特定工具生效
+- 审计时必须核对 Allowed Files 逐一真实改动（附录 A/B 强约束）；未说明理由的
+  零改动文件按 BLOCKING 处理，不得因整体交付看起来完整就放过
 ```

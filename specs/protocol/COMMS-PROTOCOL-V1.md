@@ -605,11 +605,15 @@ READY_FOR_REVIEW 之后不得再改动任何文件，直到收到 FIX_PACKAGE。
 
 它已经在跑，且有 harness 级强制（hook），比本协议单靠约定更可靠。**不修改 `project-auditor.md` 以迁就本协议**，而是让 `COMMANDER` 承担它结构上做不到的事。
 
-> **2026-08-16 实测更正**：`COMMANDER` 尝试用 Agent 工具以 `subagent_type: project-auditor` 直接调用，返回硬错误——`Agent type 'project-auditor' not found`。也就是说，尽管 `.claude/agents/project-auditor.md` 文件存在，**在当前会话的 harness 配置下它并不在可调用 agent 列表里**，无法直接调用。原因未知（可能是本 session 的 agent 列表在会话开始时已固定、需要重新扫描才能纳入新文件；也可能是这类自定义 subagent 需要额外注册步骤）。
+> **2026-08-16 实测更正**：`COMMANDER` 尝试用 Agent 工具以 `subagent_type: project-auditor` 直接调用，返回硬错误——`Agent type 'project-auditor' not found`。也就是说，尽管 `.claude/agents/project-auditor.md` 文件存在，**当时的会话 harness 配置下它并不在可调用 agent 列表里**，无法直接调用。原因未知（可能是本 session 的 agent 列表在会话开始时已固定、需要重新扫描才能纳入新文件；也可能是这类自定义 subagent 需要额外注册步骤）。
 >
-> **结论调整**：下方"调和后的实际流程"里"COMMANDER 通过 Agent 工具调用 project-auditor"这一步，**在当前 harness 配置下实际不可执行**，本协议原文本假设它可行是错的。默认落地方式改为**附录 B2 硬约束 3 早已预留的降级路径**——用 `subagent_type: general-purpose`，把 `project-auditor.md` 的正文（frontmatter 之后的全部内容）逐字注入为 prompt 开头，再附加本轮具体任务范围。已有一次实测成功先例（DEV-000 第二轮、DEV-001 第二轮审计均用此法）。
+> 当时的临时结论：默认落地方式改为**附录 B2 硬约束 3 早已预留的降级路径**——用 `subagent_type: general-purpose`，把 `project-auditor.md` 正文逐字注入 prompt，再附加只读工具书面限制。已有实测成功先例（DEV-000/DEV-001 第二轮审计均用此法）。
 >
-> **代价必须如实说明，不能假装等价**：`general-purpose` 的工具集里含 `Edit`/`Write`，不像原生 `project-auditor` 那样在工具层面就拿不到写权限。注入的 persona 里必须显式追加"本轮只允许 Read/Glob/Grep/Bash 只读命令，禁止 Edit/Write/NotebookEdit 及任何写型 Bash 命令"这条书面约束——但这终究是**约定**，不是**结构性禁止**，附录 B2 硬约束 2 声称的"从工具层面杜绝审核员顺手改代码"这条优点，在此降级路径下并不成立。
+> **2026-08-18 更正的更正**：系统通知 `project-auditor` 现已出现在 Agent 工具的可用 agent 类型列表中，与 2026-08-16 的报错状态相反——harness 侧的可用性会随时间变化（大概率是当初"session 开始时列表已固定"的猜测成立，新会话/新扫描后纳入了它）。
+>
+> **结论恢复为协议原文本假设**：`COMMANDER` 起始应优先尝试 `subagent_type: project-auditor` **直接调用**。这才是真正结构性只读（`Edit`/`Write` 从工具层面就不存在，不是约定）——直调可用时必须用直调，不得图省事继续走降级路径。
+>
+> **判定方式，不留猜测空间**：每次调用前不预判是否可用，直接尝试直调；若再次出现"Agent type not found"类硬错误，才认定当次会话不可用，转用 `general-purpose` 降级路径（附录 B2 硬约束 3），并在 VERDICT.md 里如实记录当次走的是哪条路径。**可用性可能逐会话不同，不能凭上一次的结果假设这一次**。
 
 ### 调和后的实际流程
 
@@ -626,14 +630,14 @@ COMMANDER 在 LEDGER 追加一条 AUDIT_VERDICT 记录，from 字段填 AUDITOR
 COMMANDER 依此发 NODE_RULING
 ```
 
-> 上图第一步按当前 harness 实况应读作："COMMANDER 用 `general-purpose` + 注入 `project-auditor.md` 正文 + 只读工具书面限制"，而不是原文暗示的原生子代理直调。若未来某次 harness/会话确实能列出 `project-auditor` 为可用 agent 类型，才切回真正的直调路径。
+> 上图第一步的可用性逐会话验证（见上方 2026-08-18 更正）：每次先尝试直调 `subagent_type: project-auditor`；报 "Agent type not found" 才退回 `general-purpose` + 注入正文 + 只读书面限制的降级路径。不得跳过尝试直接假设走降级路径。
 
 ### 标准追加约束（每次调用审核员都必须附加，不论走哪条路径）
 
-以下内容不改动 `project-auditor.md` 本体（不修改持续有效），而是作为 `COMMANDER` 每次调用时的**任务级追加指令**，附在注入的 persona 之后（走 `general-purpose` 降级路径）或附在 `prompt` 参数里（若未来能直调）：
+以下内容不改动 `project-auditor.md` 本体（不修改持续有效），而是作为 `COMMANDER` 每次调用时的**任务级追加指令**，附在注入的 persona 之后（走 `general-purpose` 降级路径）或附在 `prompt` 参数里（直调 `project-auditor` 时）：
 
-1. **只读工具限制**（见上）：仅 `Read`/`Glob`/`Grep`/`Bash` 只读命令，禁止 `Edit`/`Write`/`NotebookEdit` 及任何写型 Bash 命令。
-2. **输出语言：中文。** 审核员的全部解释性文字——Evidence、Findings 描述、Required Remediation 说明、Auditor Statement——**必须使用中文撰写**。
+1. **只读工具限制**（见上）：仅 `Read`/`Glob`/`Grep`/`Bash` 只读命令，禁止 `Edit`/`Write`/`NotebookEdit` 及任何写型 Bash 命令。**直调 `project-auditor` 时这条已由其 frontmatter 工具声明结构性保证**（它本来就没有 `Edit`/`Write`），此处重申不影响正确性，只在走 `general-purpose` 降级路径时才是唯一防线。
+2. **输出语言：中文。** 审核员的全部解释性文字——Evidence、Findings 描述、Required Remediation 说明、Auditor Statement——**必须使用中文撰写**。此条**两条路径都必须显式追加**——中文输出不是 `project-auditor.md` 本体自带的要求，直调时若不在 `prompt` 里说明，默认可能仍是英文。
    **例外（保持原文，不翻译）**：协议固定关键词，即 `AUDIT_PASS`/`AUDIT_FAIL`、`BLOCKER`/`MAJOR`/`MINOR`/`INFO`、`VERIFIED`/`PARTIAL`/`MISSING`/`NOT_APPLICABLE`、`PASS`/`FAIL`，以及代码标识符、文件路径、命令行、git sha 等技术字面量。这些是被 §B2 字段映射表机械匹配的协议 token，翻译会破坏映射，必须保持英文原样。
    理由：`COMMANDER` 需要把审核员输出转录进 `VERDICT.md` 并向 `USER` 汇报，中文输出免去转录时的翻译损耗与歧义。
 

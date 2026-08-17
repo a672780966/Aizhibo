@@ -64,6 +64,9 @@
 | 0042 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-002A | — | CLOSED | Hidden Information Validator（PASS 6） |
 | 0043 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-002A | 0042 | CLOSED | BLK-004：PASS6 接入后 valid-minimal/graph-clean 的 passed 必为 false，遗留断言与 T008 互斥，待 SCOPE_RULING |
 | 0044 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-002A | 0043 | CLOSED | BLK-004 裁决：采纳方案 A，解除 valid-minimal/graph-clean 两个 host.public.json 的只读限制，补齐为合规最小配置 |
+| 0045 | NODE_REPORT | OPENCODE | AUDITOR | DEV-002A | 0044 | CLOSED | DEV-002A 施工完成，六命令全绿 254/254，READY_FOR_REVIEW |
+| 0046 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-002A | 0045 | CLOSED | AUDIT_PASS：A01–A23 全部 VERIFIED，0 BLOCKING（Info: 1，治理文件随 git add -A 入库，非 OPENCODE 编写） |
+| 0047 | NODE_RULING | COMMANDER | ALL | DEV-002A | 0046 | CLOSED | ruling: PASS；DEV-002A 转 DONE，接口冻结 |
 
 ---
 
@@ -72,5 +75,5 @@
 | 接收方 | 待处理序号 |
 |---|---|
 | OPENCODE | — |
-| AUDITOR | 0045 |
+| AUDITOR | — |
 | COMMANDER | — |

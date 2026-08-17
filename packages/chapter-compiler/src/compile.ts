@@ -1,4 +1,11 @@
-import type { LoadIssue, RawChapterPack, ReferenceIssue, GraphIssue, StateIssue } from './types.js';
+import type {
+  LoadIssue,
+  RawChapterPack,
+  ReferenceIssue,
+  GraphIssue,
+  StateIssue,
+  HiddenInfoIssue,
+} from './types.js';
 import { loadChapterPack } from './loader.js';
 import {
   countSchemaFailures,
@@ -20,6 +27,10 @@ import {
   checkRecoverySatisfiability,
   type UnsatisfiableFinding,
 } from './pass5Satisfiability.js';
+import { checkFlagExhaustiveness, checkSceneCoverage } from './pass6Exhaustiveness.js';
+import { checkIsolation } from './pass6Isolation.js';
+import { checkDisclosureSafety } from './pass6Disclosure.js';
+import { buildForbiddenLexicon, type ForbiddenLexicon } from './pass6ForbiddenLexicon.js';
 
 export interface Pass1Result {
   schemaResult: SchemaValidationResult;
@@ -37,6 +48,7 @@ export interface CompileResult {
   referenceIssues: ReferenceIssue[];
   graphIssues: GraphIssue[];
   stateIssues: StateIssue[];
+  hiddenInfoIssues: HiddenInfoIssue[];
   passed: boolean;
 }
 
@@ -63,15 +75,18 @@ export function compile(rootDir: string): CompileResult {
   const pass2 = runPass2(raw, pass1);
   const pass3 = runPass3(pass1.schemaResult);
   const pass5 = runPass5(pass1.schemaResult, pass3);
+  const pass6 = runPass6(pass1.schemaResult, pass3);
   const graphIssues = buildGraphIssues(pass3, pass1.schemaResult);
   const stateIssues = buildStateIssues(pass5, pass1.schemaResult);
+  const hiddenInfoIssues = pass6.issues;
   const passed =
     issues.length === 0 &&
     countSchemaFailures(pass1.schemaResult) === 0 &&
     pass1.uniquenessIssues.length === 0 &&
     pass2.referenceIssues.length === 0 &&
     graphIssues.length === 0 &&
-    stateIssues.length === 0;
+    stateIssues.length === 0 &&
+    hiddenInfoIssues.length === 0;
   return {
     loadIssues: issues,
     schemaResult: pass1.schemaResult,
@@ -79,8 +94,30 @@ export function compile(rootDir: string): CompileResult {
     referenceIssues: pass2.referenceIssues,
     graphIssues,
     stateIssues,
+    hiddenInfoIssues,
     passed,
   };
+}
+
+export interface Pass6Result {
+  issues: HiddenInfoIssue[];
+  forbiddenLexicon: ForbiddenLexicon;
+}
+
+export function runPass6(schemaResult: SchemaValidationResult, pass3: Pass3Result): Pass6Result {
+  const globalStateModel = buildReachableStateModel(schemaResult, pass3.reachability.reachable);
+  const issues = [
+    ...checkFlagExhaustiveness(schemaResult, globalStateModel),
+    ...checkSceneCoverage(schemaResult),
+    ...checkIsolation(schemaResult),
+    ...checkDisclosureSafety(schemaResult, pass3.graphModel, pass3.reachability.reachable),
+  ];
+  const forbiddenLexicon = buildForbiddenLexicon(
+    schemaResult,
+    pass3.graphModel,
+    pass3.reachability.reachable,
+  );
+  return { issues, forbiddenLexicon };
 }
 
 export interface Pass3Result {

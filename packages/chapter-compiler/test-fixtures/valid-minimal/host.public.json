@@ -1,5 +1,18 @@
 {
-  "flagVisibility": {},
-  "sceneDisclosures": {},
+  "flagVisibility": {
+    "npc.npc-guide.present": "HIDDEN",
+    "npc.npc-guide.alive": "HIDDEN",
+    "npc.npc-guide.disposition": "HIDDEN",
+    "danger.level": "HIDDEN",
+    "danger.tensionKey": "HIDDEN",
+    "chapterVariables.bossHp": "HIDDEN"
+  },
+  "sceneDisclosures": {
+    "scene-start": {
+      "locationLabel": "森林入口",
+      "knownFactIds": [],
+      "tensionKey": "calm"
+    }
+  },
   "tensionLabels": { "calm": "平静" }
 }

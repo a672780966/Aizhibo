@@ -34,4 +34,31 @@ describe('SceneDisclosure', () => {
     };
     expect(SceneDisclosureSchema.parse(d).tensionKey).toBe('tension-watchful');
   });
+
+  it('accepts a disclosure without knownFactDependencies (optional field)', () => {
+    const d = {
+      locationLabel: 'The Hall',
+      knownFactIds: ['fact-key'],
+      tensionKey: 'tension-watchful',
+    };
+    const parsed = SceneDisclosureSchema.parse(d);
+    expect(parsed.knownFactDependencies).toBeUndefined();
+    expect(
+      HostPublicSpecSchema.safeParse({ ...validSpec, sceneDisclosures: { s: d } }).success,
+    ).toBe(true);
+  });
+
+  it('parses knownFactDependencies and rejects a non-array value', () => {
+    const d = {
+      locationLabel: 'The Hall',
+      knownFactIds: ['fact-key'],
+      tensionKey: 'tension-watchful',
+      knownFactDependencies: { 'fact-key': ['flags.torchLit', 'danger.level'] },
+    };
+    expect(SceneDisclosureSchema.parse(d).knownFactDependencies).toEqual({
+      'fact-key': ['flags.torchLit', 'danger.level'],
+    });
+    const bad = { ...d, knownFactDependencies: { 'fact-key': 'not-an-array' } };
+    expect(SceneDisclosureSchema.safeParse(bad).success).toBe(false);
+  });
 });

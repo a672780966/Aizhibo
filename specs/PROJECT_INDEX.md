@@ -17,16 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-002A — Hidden Information Validator（PASS 6）（待下发 TASK_PACKAGE）
+DEV-002A — Hidden Information Validator（PASS 6）（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 均 `DONE`（接口冻结）。DEV-003 的 PASS3/5 已冻结，
-`Commander` 尚未下发 `TASK-PACKAGE-DEV-002A`。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-002A`（消息 `0042`）已下发，Codex 施工中。
+
+本节点同时触碰两个已冻结包：`chapter-schema`（仅 `hostPublic.ts` 追加一个可选字段 `knownFactDependencies`）与 `chapter-compiler`（新增 PASS6 模块 + 追加式扩展 `compile()`）。默认原则与 DEV-003 相反：不确定就拒绝。
 
 ## Current Task Package
 
-（待下发。依赖 DEV-003 的可达节点集合 + 可达状态集合，`Commander` 起草中。）
+`specs/tasks/TASK-PACKAGE-DEV-002A.md` ＋ 权威输入 Dev Spec 第 24 节、DEV-003 冻结导出、`SPEC-ADDENDUM-001.md` §A15/§A15.1、`DAG.md` CR-006/CR-010 决议
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）
 
@@ -52,7 +53,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003 历史记录：`specs/tasks/TASK-PACKAGE
 
 ## In Progress Nodes
 
-无。
+- DEV-002A — Hidden Information Validator（PASS 6）
 
 ## Blocked Nodes
 
@@ -66,7 +67,8 @@ DEV-003 — Story Graph Analyzer（2026-08-18）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-002A — Hidden Information Validator（待下发 TASK_PACKAGE；依赖 DEV-003 的可达节点集合 + 可达状态集合，已满足）
+1. DEV-002A — Hidden Information Validator（PASS 6）（IN_PROGRESS）
+2. DEV-004 — State Rule Engine（待 DEV-002A PASS 后，M1 内可与之并行评估，暂按顺序推进）
 
 ## Project-level Blockers
 
@@ -158,6 +160,9 @@ DEV-003 — Story Graph Analyzer（2026-08-18）
 | 2026-08-18 | 收到 DEV-003 `NODE_REPORT`（消息 `0039`，`git_head` `be43f75...`）：六条命令严格顺序全部退出码 0，219/219，转交 `AUDITOR` 独立审计 |
 | 2026-08-18 | `AUDITOR` `AUDIT_VERDICT`（消息 `0040`）：**PASS**。T002–T009/A01–A24 全部 VERIFIED 或 PASS，0 BLOCKING（Minor: 1，MINOR-01：A08 文字与 T007 #3 字面冲突，接受并说明；Info: 2）。独立核对 `SCOPE_RULING 0038` 授权范围与实际 diff 逐字一致 |
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0041`，`verdict_ref: "0040"`）：**DEV-003 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-002A |
+| 2026-08-18 | 起草并发出 `TASK_PACKAGE DEV-002A`（消息 `0042`）：PASS 6 Hidden Information Validator，T001–T010，A01–A23；发现并处置结构性缺口——`HostPublicSpec.SceneDisclosure` 缺"事实→flag"依赖映射，随任务包对 `chapter-schema/hostPublic.ts` 做唯一一次纯新增字段扩展（`knownFactDependencies`），性质同 ADDENDUM-002 的既往缺口补齐，不重新走用户逐项批准；DEV-002A 转 `IN_PROGRESS` |
+| 2026-08-18 | 收到 `EXECUTOR_QUERY`（消息 `0043`，`blocking: true`，`BLK-004`）：PASS6 接入后 `valid-minimal`/`graph-clean` 的冻结 `host.public.json` 均为空配置（DEV-002/003 无 PASS 消费其内容，从未需要填充），触发"未声明即违规"判定，导致 T008 #3 的 `passed` 判定规则与 DEV-002/003 遗留断言 `passed: true` 互斥 |
+| 2026-08-18 | 独立复现 `pnpm test` 确认恰 2/254 失败（与 `0043` 附输出逐字一致），核对 `pass6Exhaustiveness.ts`/`pass6Isolation.ts` 只读 host 配置的声明状态、PASS1–PASS5 不消费其取值内容后，发出 `SCOPE_RULING`（消息 `0044`）：采纳方案 A，解除两个 `host.public.json` 的单文件只读限制，授权补齐为合规最小配置（全部可达键标 `HIDDEN`、覆盖全部可达场景）；不触及 Acceptance 语义，判定属 `Commander` 自主裁决范围（协议 §7.3，与 `SCOPE_RULING 0038`/BLK-003 同一性质），未上报 `USER` |
 
 ## Authority
 

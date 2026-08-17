@@ -80,3 +80,17 @@ export interface StateIssue {
   message: string;
   file: string;
 }
+
+export type HiddenInfoIssueCategory =
+  | 'FLAG_NOT_DECLARED'
+  | 'SCENE_NOT_COVERED'
+  | 'ISOLATION_LEAK'
+  | 'FACT_DEPENDENCY_NOT_DECLARED'
+  | 'FACT_FUTURE_LEAK';
+
+export interface HiddenInfoIssue {
+  category: HiddenInfoIssueCategory;
+  severity: ReferenceIssueSeverity;
+  message: string;
+  file: string;
+}

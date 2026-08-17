@@ -1,0 +1,11 @@
+{
+  "id": "interaction-01",
+  "openDurationMs": 15000,
+  "choices": [
+    { "id": "A", "label": "跟随向导", "actionType": "FOLLOW", "ruleId": "action-follow" }
+  ],
+  "diceMode": "PER_ACTION_GROUP",
+  "resultPolicy": "result-policy-follow",
+  "nextScene": "ending-end",
+  "noParticipationPolicy": { "kind": "DEFAULT_CHOICE", "choiceId": "A" }
+}

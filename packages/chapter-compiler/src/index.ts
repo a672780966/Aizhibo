@@ -13,3 +13,8 @@ export * from './pass3Reachability.js';
 export * from './pass3Cycles.js';
 export * from './pass5ReachableState.js';
 export * from './pass5Satisfiability.js';
+export * from './pass6Ancestors.js';
+export * from './pass6Exhaustiveness.js';
+export * from './pass6Isolation.js';
+export * from './pass6Disclosure.js';
+export * from './pass6ForbiddenLexicon.js';

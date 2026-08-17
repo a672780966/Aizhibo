@@ -35,3 +35,23 @@
 
 新增目录均由 `valid-minimal` 复制后做针对性编辑（DEV-003 消息 `0036` 修订 3），与既有
 `broken-*`/`valid-minimal` 命名前缀区分，且各自通过 PASS1+PASS2（无 schema/引用错误混入）。
+
+- `host-exhaustive-missing-flag/` — PASS 6 穷举性反例：`host.public.json` 的 `flagVisibility` 漏声明
+  `danger.level`（其余可达状态键已声明）⇒ `FLAG_NOT_DECLARED`（T004，ADDENDUM §A15 判定 1）。
+- `host-scene-not-covered/` — PASS 6 场景覆盖反例：`sceneDisclosures` 为空，可达 SCENE
+  `scene-start` 未被覆盖 ⇒ `SCENE_NOT_COVERED`（T004，判定 1b）。
+- `host-isolation-leak/` — PASS 6 隔离性反例：非兜底结局 `ending-secret` 的 `when` 引用
+  `flags.secretFlag`（经可达效果 SET 产生，结局可满足），但该键被误标 `PUBLIC` ⇒
+  `ISOLATION_LEAK`（T005，判定 4）。
+- `host-fact-undeclared/` — PASS 6 白名单反例：`knownFactIds` 含 `fact-ghost`，但
+  `knownFactDependencies` 未声明其依赖 ⇒ `FACT_DEPENDENCY_NOT_DECLARED`（T006，判定 2）。
+- `host-fact-future-leak/` — PASS 6 时序性反例：`fact-gate-open` 依赖 `flags.gateOpen`（已声明且
+  `PUBLIC`），但该键在 `scene-start` 的任何祖先可达状态中都不存在（从未被任何可达效果设置）
+  ⇒ `FACT_FUTURE_LEAK`（T006，判定 3）。
+- `host-clean/` — PASS 6 正例：`flagVisibility` 穷举全部可达状态键、`sceneDisclosures` 覆盖
+  `scene-start` 且 `knownFactIds` 为空，四条判定全部通过，`compile()` 期望 `passed: true` 且
+  `hiddenInfoIssues` 为空（T008/T009；`valid-minimal` 自身的 host 配置为空，不满足穷举/覆盖，
+  故另建本正例）。
+
+新增目录均复制自 `valid-minimal`（主要编辑 `host.public.json`，host-isolation-leak 同步编辑
+endings/scenes/results 制造隔离性场景），纯 JSON 无生成脚本；各自通过 PASS1–PASS5（A19）。

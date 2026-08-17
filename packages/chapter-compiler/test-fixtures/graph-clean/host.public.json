@@ -1,5 +1,18 @@
 {
-  "flagVisibility": {},
-  "sceneDisclosures": {},
+  "flagVisibility": {
+    "npc.npc-guide.present": "HIDDEN",
+    "npc.npc-guide.alive": "HIDDEN",
+    "npc.npc-guide.disposition": "HIDDEN",
+    "danger.level": "HIDDEN",
+    "danger.tensionKey": "HIDDEN",
+    "flags.gateOpen": "HIDDEN",
+    "flags.forestClear": "HIDDEN",
+    "chapterVariables.bossHp": "HIDDEN"
+  },
+  "sceneDisclosures": {
+    "scene-start": { "locationLabel": "森林入口", "knownFactIds": [], "tensionKey": "calm" },
+    "scene-tavern": { "locationLabel": "酒馆", "knownFactIds": [], "tensionKey": "calm" },
+    "scene-forest": { "locationLabel": "森林深处", "knownFactIds": [], "tensionKey": "calm" }
+  },
   "tensionLabels": { "calm": "平静" }
 }

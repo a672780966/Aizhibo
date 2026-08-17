@@ -1,0 +1,39 @@
+{
+  "id": "result-fight",
+  "entries": [
+    { "quality": "DISASTER", "mapsTo": "FAILURE" },
+    {
+      "quality": "FAILURE",
+      "resultId": "res-fight-failure",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-failure",
+      "visibility": "PUBLIC"
+    },
+    {
+      "quality": "COSTLY_SUCCESS",
+      "resultId": "res-fight-costly",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-success",
+      "visibility": "PUBLIC"
+    },
+    {
+      "quality": "SUCCESS",
+      "resultId": "res-fight-success",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-success",
+      "visibility": "PUBLIC"
+    },
+    {
+      "quality": "GREAT_SUCCESS",
+      "resultId": "res-fight-great",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-success",
+      "visibility": "PUBLIC"
+    },
+    { "quality": "SPECIAL", "unreachable": true }
+  ]
+}

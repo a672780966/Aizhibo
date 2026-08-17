@@ -29,7 +29,7 @@
 | 3 | DEV-008 | Runtime Event Model ⬆ | DEV-000, DEV-001 | DONE |
 | 4 | DEV-002 | Chapter Compiler Core（PASS 1 + 2）✂ | DEV-001 | DONE |
 | 5 | DEV-003 | Story Graph Analyzer（PASS 3 + 5）✂ | DEV-002 | DONE |
-| 6 | DEV-002A | Hidden Information Validator（PASS 6）✚ | DEV-001, DEV-003 | TODO |
+| 6 | DEV-002A | Hidden Information Validator（PASS 6）✚ | DEV-001, DEV-003 | IN_PROGRESS |
 | 7 | DEV-004 | State Rule Engine | DEV-002 | TODO |
 | 8 | DEV-005 | Dice Engine | DEV-002 | TODO |
 | 9 | DEV-006 | Action Resolution Engine（PASS 4） | DEV-004, DEV-005 | TODO |
@@ -81,6 +81,12 @@ M1 结束时三个对外契约全部冻结：Runtime Event（DEV-008）、Public
 | PASS 8 Simulation | DEV-007 | — |
 
 DEV-002A 依赖 DEV-003，因为 SPEC-ADDENDUM §A15 的时序性判定需要 PASS 3 的可达性结果与 PASS 5 的状态可达集合。它是 **G06（Host Hidden Information Leak = 0）的编译期执行点**，运行时对偶为 DEV-050。
+
+### DEV-002A 已下发（2026-08-18）
+
+起草时发现 `ADDENDUM-001 §A15` 判定 2（白名单）依赖"事实→flag"映射，但冻结的 `HostPublicSpec.SceneDisclosure` 从未定义这个映射——性质与 DEV-001 阶段发现的 `DangerState`/`HostPolicy`/`ResultDictionary` 缺口相同。处置：对 `packages/chapter-schema/src/hostPublic.ts` 做**唯一一次纯新增字段**扩展（`SceneDisclosure.knownFactDependencies?: Record<string, string[]>`），不改动任何既有字段，随 `TASK-PACKAGE-DEV-002A` 一并交付，不重新走用户逐项批准。
+
+本节点的默认原则与 DEV-003 刻意相反：**不确定就拒绝**（DEV-003 是不确定就放行）。理由：DEV-003 判错方向是拦住合法内容，DEV-002A 判错方向是让 AI 说漏嘴——两者的错误代价不对称。
 
 **CR-007 — DEV-033 Narrative Composer 上移至 M1**
 第 71 节列其为六大核心资产之一；第 13 节明确不使用 LLM，与音频零依赖（TTS 是它的下游消费者，不是依赖）。更关键：不纳入仿真回路，DEV-007 的 100,000 局证明不了叙事覆盖（缺句法块、focus.priority 冲突、SUPPORT 缺失都只在 Composer 参与时暴露）。第三施工组只保留 TTS 相关节点。

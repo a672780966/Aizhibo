@@ -1,6 +1,6 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
-import { compile, runPass1, runPass2 } from './compile.js';
+import { compile, runPass1, runPass2, runPass3, runPass5, runPass6 } from './compile.js';
 import { countSchemaFailures } from './pass1Schema.js';
 import { loadChapterPack } from './loader.js';
 import type { RawChapterPack } from './types.js';
@@ -244,6 +244,94 @@ describe('PASS 3 / PASS 5 integration (DEV-003)', () => {
         uniqueness: [],
       });
       expect({ fixture, reference: pass2.referenceIssues }).toEqual({ fixture, reference: [] });
+    }
+  });
+});
+
+describe('PASS 6 hidden information integration (DEV-002A)', () => {
+  it('host-clean: passes with no hidden info issues and a well-formed lexicon', () => {
+    const result = compile(`${fixtureRoot}/host-clean`);
+    expect(result.hiddenInfoIssues).toEqual([]);
+    expect(result.passed).toBe(true);
+    const { raw } = loadChapterPack(`${fixtureRoot}/host-clean`);
+    const pass3 = runPass3(runPass1(raw).schemaResult);
+    const pass6 = runPass6(runPass1(raw).schemaResult, pass3);
+    // Lexicon is a product, not a gate: passed stays true while it is non-empty.
+    expect((pass6.forbiddenLexicon.bySceneId['scene-start'] ?? []).sort()).toEqual([
+      '暴君',
+      '结局',
+    ]);
+    expect(pass6.forbiddenLexicon.always.sort()).toEqual(['暴君', '结局']);
+  });
+
+  it('host-exhaustive-missing-flag: FLAG_NOT_DECLARED blocks passed', () => {
+    const result = compile(`${fixtureRoot}/host-exhaustive-missing-flag`);
+    expect(result.passed).toBe(false);
+    expect(result.hiddenInfoIssues.map((i) => i.category)).toEqual(['FLAG_NOT_DECLARED']);
+  });
+
+  it('host-scene-not-covered: SCENE_NOT_COVERED blocks passed', () => {
+    const result = compile(`${fixtureRoot}/host-scene-not-covered`);
+    expect(result.passed).toBe(false);
+    expect(result.hiddenInfoIssues.map((i) => i.category)).toEqual(['SCENE_NOT_COVERED']);
+  });
+
+  it('host-isolation-leak: ISOLATION_LEAK blocks passed', () => {
+    const result = compile(`${fixtureRoot}/host-isolation-leak`);
+    expect(result.passed).toBe(false);
+    expect(result.hiddenInfoIssues.map((i) => i.category)).toEqual(['ISOLATION_LEAK']);
+  });
+
+  it('host-fact-undeclared: FACT_DEPENDENCY_NOT_DECLARED blocks passed', () => {
+    const result = compile(`${fixtureRoot}/host-fact-undeclared`);
+    expect(result.passed).toBe(false);
+    expect(result.hiddenInfoIssues.map((i) => i.category)).toEqual([
+      'FACT_DEPENDENCY_NOT_DECLARED',
+    ]);
+  });
+
+  it('host-fact-future-leak: FACT_FUTURE_LEAK blocks passed', () => {
+    const result = compile(`${fixtureRoot}/host-fact-future-leak`);
+    expect(result.passed).toBe(false);
+    expect(result.hiddenInfoIssues.map((i) => i.category)).toEqual(['FACT_FUTURE_LEAK']);
+  });
+
+  it('A19: every host-* fixture passes PASS1 through PASS5', () => {
+    for (const fixture of [
+      'host-exhaustive-missing-flag',
+      'host-scene-not-covered',
+      'host-isolation-leak',
+      'host-fact-undeclared',
+      'host-fact-future-leak',
+      'host-clean',
+    ]) {
+      const { raw, issues } = loadChapterPack(`${fixtureRoot}/${fixture}`);
+      const pass1 = runPass1(raw);
+      const pass2 = runPass2(raw, pass1);
+      const pass3 = runPass3(pass1.schemaResult);
+      const pass5 = runPass5(pass1.schemaResult, pass3);
+      expect({ fixture, issues }).toEqual({ fixture, issues: [] });
+      expect({ fixture, schemaFailures: countSchemaFailures(pass1.schemaResult) }).toEqual({
+        fixture,
+        schemaFailures: 0,
+      });
+      expect({ fixture, uniqueness: pass1.uniquenessIssues }).toEqual({
+        fixture,
+        uniqueness: [],
+      });
+      expect({ fixture, reference: pass2.referenceIssues }).toEqual({ fixture, reference: [] });
+      expect({ fixture, graph: pass3.reachability }).toEqual({
+        fixture,
+        graph: {
+          reachable: pass3.reachability.reachable,
+          deadEnds: [],
+          unreachableNodes: [],
+          unreachableEndings: [],
+          unreachableBosses: [],
+        },
+      });
+      expect({ fixture, trapCycles: pass3.trapCycles }).toEqual({ fixture, trapCycles: [] });
+      expect({ fixture, state: pass5.unsatisfiable }).toEqual({ fixture, state: [] });
     }
   });
 });

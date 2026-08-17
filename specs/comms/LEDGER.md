@@ -61,6 +61,9 @@
 | 0039 | NODE_REPORT | OPENCODE | AUDITOR | DEV-003 | 0038 | CLOSED | DEV-003 施工完成，六命令全绿 219/219，READY_FOR_REVIEW |
 | 0040 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-003 | 0039 | CLOSED | AUDIT_PASS：0 Blocker/0 Major/1 Minor（MINOR-01：A08 文字与 T007 #3 字面冲突，接受并说明）/2 Info |
 | 0041 | NODE_RULING | COMMANDER | ALL | DEV-003 | 0040 | CLOSED | ruling: PASS；DEV-003 转 DONE，接口冻结 |
+| 0042 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-002A | — | CLOSED | Hidden Information Validator（PASS 6） |
+| 0043 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-002A | 0042 | CLOSED | BLK-004：PASS6 接入后 valid-minimal/graph-clean 的 passed 必为 false，遗留断言与 T008 互斥，待 SCOPE_RULING |
+| 0044 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-002A | 0043 | CLOSED | BLK-004 裁决：采纳方案 A，解除 valid-minimal/graph-clean 两个 host.public.json 的只读限制，补齐为合规最小配置 |
 
 ---
 
@@ -69,5 +72,5 @@
 | 接收方 | 待处理序号 |
 |---|---|
 | OPENCODE | — |
-| AUDITOR | — |
+| AUDITOR | 0045 |
 | COMMANDER | — |

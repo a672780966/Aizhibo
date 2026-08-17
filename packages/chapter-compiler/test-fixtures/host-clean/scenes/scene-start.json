@@ -1,0 +1,25 @@
+{
+  "id": "scene-start",
+  "visualSceneId": "vs-start",
+  "narration": ["你站在森林入口。"],
+  "characters": [
+    { "characterId": "npc-guide", "slot": "CENTER", "expression": "smile", "visible": true }
+  ],
+  "bgm": "bgm-main",
+  "ambience": ["amb-forest"],
+  "interactionId": "interaction-01",
+  "next": "ending-end",
+  "guards": [
+    {
+      "when": { "path": { "container": "flags", "key": "gateOpen" }, "op": "EXISTS" },
+      "goto": "ending-end",
+      "priority": 1
+    },
+    {
+      "when": { "path": { "container": "flags", "key": "bossStart" }, "op": "EXISTS" },
+      "goto": "boss-tyrant",
+      "priority": 2
+    }
+  ],
+  "hostPolicy": "ALLOWED"
+}

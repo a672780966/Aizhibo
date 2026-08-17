@@ -1,0 +1,6 @@
+{
+  "id": "char-guide",
+  "expressions": { "smile": "img-guide-smile", "neutral": "img-guide-neutral" },
+  "microAnimations": [],
+  "defaultExpression": "neutral"
+}

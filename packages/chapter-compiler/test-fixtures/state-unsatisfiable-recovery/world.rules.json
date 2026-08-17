@@ -1,0 +1,47 @@
+{
+  "viewerDefaults": {
+    "hp": 3,
+    "life": 2
+  },
+  "downedPolicy": "REQUIRE_RECOVERY",
+  "defaultScaleBands": [
+    {
+      "scale": "SOLO",
+      "minParticipants": 1,
+      "maxParticipants": 4
+    },
+    {
+      "scale": "SMALL",
+      "minParticipants": 5,
+      "maxParticipants": 20
+    },
+    {
+      "scale": "MEDIUM",
+      "minParticipants": 21,
+      "maxParticipants": 50
+    },
+    {
+      "scale": "LARGE",
+      "minParticipants": 51,
+      "maxParticipants": 100
+    },
+    {
+      "scale": "MASS",
+      "minParticipants": 101,
+      "maxParticipants": null
+    }
+  ],
+  "defaultDiceProfileId": "dice-standard",
+  "interactionDefaults": {
+    "openDurationMs": 15000,
+    "noParticipationPolicy": {
+      "kind": "DEFAULT_CHOICE",
+      "choiceId": "A"
+    }
+  },
+  "diceBuffer": {
+    "minDiceMs": 3000,
+    "targetDiceMs": 6000,
+    "maxDiceMs": 12000
+  }
+}

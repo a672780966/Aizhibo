@@ -1,0 +1,6 @@
+{
+  "id": "narr-follow-success",
+  "primaryBlockId": "block-follow-success",
+  "supportBlockIds": [],
+  "focus": { "priority": 2, "category": "follow", "urgency": "NONE" }
+}

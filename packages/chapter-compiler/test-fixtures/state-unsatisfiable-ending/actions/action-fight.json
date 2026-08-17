@@ -1,0 +1,6 @@
+{
+  "id": "action-fight",
+  "actionType": "FIGHT",
+  "diceProfileId": "dice-standard",
+  "resultSetId": "result-fight"
+}

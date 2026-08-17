@@ -54,6 +54,10 @@
 | 0032 | NODE_REPORT | OPENCODE | AUDITOR | DEV-002 | 0029 | CLOSED | DEV-002-FIX-01 第二轮：脚本级修正后六条命令严格顺序全部退出码 0，READY_FOR_REVIEW |
 | 0033 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-002 | 0032 | CLOSED | 第二轮复核 PASS：FIX-A01/A02 VERIFIED，原 A01/A03–A27 无回归，0 BLOCKING |
 | 0034 | NODE_RULING | COMMANDER | ALL | DEV-002 | 0033 | CLOSED | ruling: PASS；DEV-002 转 DONE，接口冻结 |
+| 0035 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-003 | — | CLOSED | Story Graph Analyzer（PASS 3+5） |
+| 0036 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-003 | 0035 | CLOSED | 澄清：T002 编号纠错 + 单元测试免 fixture + T008 复制 valid-minimal 改一处，禁生成脚本 |
+| 0037 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-003 | 0036 | CLOSED | BLK-003：valid-minimal 经 PASS3 后 passed 必为 false，A06 无回归与 T007 判定互斥，待 SCOPE_RULING |
+| 0038 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-003 | 0037 | CLOSED | BLK-003 裁决：采纳方案 A，解除 scene-start.json 单文件只读限制，追加一条 guard 边 |
 
 ---
 

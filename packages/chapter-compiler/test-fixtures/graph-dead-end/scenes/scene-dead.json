@@ -1,0 +1,7 @@
+{
+  "id": "scene-dead",
+  "visualSceneId": "vs-start",
+  "narration": ["一条死路。"],
+  "characters": [],
+  "hostPolicy": "ALLOWED"
+}

@@ -1,0 +1,16 @@
+{
+  "id": "ending-nice",
+  "title": "好结局",
+  "when": {
+    "path": {
+      "container": "flags",
+      "key": "gateOpen"
+    },
+    "op": "EQ",
+    "value": true
+  },
+  "priority": 2,
+  "isFallback": false,
+  "visualSceneId": "vs-end",
+  "narrationBlockIds": ["block-follow-success"]
+}

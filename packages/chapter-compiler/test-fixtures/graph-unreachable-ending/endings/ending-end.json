@@ -1,0 +1,9 @@
+{
+  "id": "ending-end",
+  "title": "结局",
+  "when": null,
+  "priority": 1,
+  "isFallback": true,
+  "visualSceneId": "vs-end",
+  "narrationBlockIds": ["block-follow-success"]
+}

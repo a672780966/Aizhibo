@@ -14,6 +14,11 @@
       "when": { "path": { "container": "flags", "key": "gateOpen" }, "op": "EXISTS" },
       "goto": "ending-end",
       "priority": 1
+    },
+    {
+      "when": { "path": { "container": "flags", "key": "bossStart" }, "op": "EXISTS" },
+      "goto": "boss-tyrant",
+      "priority": 2
     }
   ],
   "hostPolicy": "ALLOWED"

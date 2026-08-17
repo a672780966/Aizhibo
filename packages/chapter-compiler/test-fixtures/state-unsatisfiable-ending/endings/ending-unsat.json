@@ -1,0 +1,16 @@
+{
+  "id": "ending-unsat",
+  "title": "死局",
+  "when": {
+    "path": {
+      "container": "flags",
+      "key": "macguffin"
+    },
+    "op": "EQ",
+    "value": true
+  },
+  "priority": 2,
+  "isFallback": false,
+  "visualSceneId": "vs-end",
+  "narrationBlockIds": []
+}

@@ -1,0 +1,32 @@
+{
+  "id": "scene-forest",
+  "visualSceneId": "vs-start",
+  "narration": ["森林深处传来窸窣声。"],
+  "characters": [],
+  "next": "scene-tavern",
+  "guards": [
+    {
+      "when": {
+        "path": {
+          "container": "flags",
+          "key": "gateOpen"
+        },
+        "op": "EXISTS"
+      },
+      "goto": "ending-end",
+      "priority": 1
+    },
+    {
+      "when": {
+        "path": {
+          "container": "flags",
+          "key": "forestClear"
+        },
+        "op": "EXISTS"
+      },
+      "goto": "ending-nice",
+      "priority": 2
+    }
+  ],
+  "hostPolicy": "ALLOWED"
+}

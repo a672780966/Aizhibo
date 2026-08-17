@@ -61,3 +61,22 @@ export interface ReferenceIssue {
   message: string;
   file: string;
 }
+
+export type GraphIssueCategory =
+  'DEAD_END' | 'UNREACHABLE_NODE' | 'UNREACHABLE_ENDING' | 'UNREACHABLE_BOSS' | 'TRAP_CYCLE';
+
+export interface GraphIssue {
+  category: GraphIssueCategory;
+  severity: ReferenceIssueSeverity;
+  message: string;
+  file: string;
+}
+
+export type StateIssueCategory = 'UNSATISFIABLE_ENDING' | 'UNSATISFIABLE_RECOVERY';
+
+export interface StateIssue {
+  category: StateIssueCategory;
+  severity: ReferenceIssueSeverity;
+  message: string;
+  file: string;
+}

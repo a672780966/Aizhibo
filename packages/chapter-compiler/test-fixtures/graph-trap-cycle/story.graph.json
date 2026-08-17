@@ -1,0 +1,24 @@
+{
+  "nodes": [
+    {
+      "id": "scene-start",
+      "kind": "SCENE",
+      "file": "scenes/scene-start.json"
+    },
+    {
+      "id": "scene-a",
+      "kind": "SCENE",
+      "file": "scenes/scene-a.json"
+    },
+    {
+      "id": "scene-b",
+      "kind": "SCENE",
+      "file": "scenes/scene-b.json"
+    },
+    {
+      "id": "ending-end",
+      "kind": "ENDING",
+      "file": "endings/ending-end.json"
+    }
+  ]
+}

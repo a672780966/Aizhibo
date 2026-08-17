@@ -1,0 +1,7 @@
+{
+  "id": "scene-b",
+  "visualSceneId": "vs-start",
+  "characters": [],
+  "hostPolicy": "ALLOWED",
+  "next": "scene-a"
+}

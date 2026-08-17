@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { compile, runPass1, runPass2 } from './compile.js';
+import { countSchemaFailures } from './pass1Schema.js';
 import { loadChapterPack } from './loader.js';
 import type { RawChapterPack } from './types.js';
 
@@ -156,5 +157,93 @@ describe('runPass1 / runPass2', () => {
     const pass2 = runPass2(raw, pass1);
     expect(pass1.uniquenessIssues).toEqual([]);
     expect(pass2.referenceIssues).toEqual([]);
+  });
+});
+
+describe('PASS 3 / PASS 5 integration (DEV-003)', () => {
+  it('graph-clean: passes with no graph or state issues', () => {
+    const result = compile(`${fixtureRoot}/graph-clean`);
+    expect(result.loadIssues).toEqual([]);
+    expect(result.uniquenessIssues).toEqual([]);
+    expect(result.referenceIssues).toEqual([]);
+    expect(result.graphIssues).toEqual([]);
+    expect(result.stateIssues).toEqual([]);
+    expect(result.passed).toBe(true);
+  });
+
+  it('graph-dead-end: DEAD_END issue blocks passed', () => {
+    const result = compile(`${fixtureRoot}/graph-dead-end`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues.map((i) => i.category)).toContain('DEAD_END');
+    expect(result.stateIssues).toEqual([]);
+  });
+
+  it('graph-unreachable-scene: UNREACHABLE_NODE issue blocks passed', () => {
+    const result = compile(`${fixtureRoot}/graph-unreachable-scene`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues.map((i) => i.category)).toContain('UNREACHABLE_NODE');
+    expect(result.graphIssues.map((i) => i.category)).not.toContain('UNREACHABLE_ENDING');
+    expect(result.graphIssues.map((i) => i.category)).not.toContain('UNREACHABLE_BOSS');
+  });
+
+  it('graph-unreachable-ending: UNREACHABLE_ENDING issue blocks passed', () => {
+    const result = compile(`${fixtureRoot}/graph-unreachable-ending`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues.map((i) => i.category)).toContain('UNREACHABLE_ENDING');
+    expect(result.graphIssues.map((i) => i.category)).not.toContain('UNREACHABLE_BOSS');
+  });
+
+  it('graph-unreachable-boss: UNREACHABLE_BOSS issue blocks passed', () => {
+    const result = compile(`${fixtureRoot}/graph-unreachable-boss`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues.map((i) => i.category)).toContain('UNREACHABLE_BOSS');
+    expect(result.graphIssues.map((i) => i.category)).not.toContain('UNREACHABLE_ENDING');
+  });
+
+  it('graph-trap-cycle: TRAP_CYCLE issue blocks passed', () => {
+    const result = compile(`${fixtureRoot}/graph-trap-cycle`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues.map((i) => i.category)).toContain('TRAP_CYCLE');
+  });
+
+  it('state-unsatisfiable-ending: UNSATISFIABLE_ENDING issue, graph stays clean', () => {
+    const result = compile(`${fixtureRoot}/state-unsatisfiable-ending`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues).toEqual([]);
+    expect(result.stateIssues.map((i) => i.category)).toEqual(['UNSATISFIABLE_ENDING']);
+  });
+
+  it('state-unsatisfiable-recovery: UNSATISFIABLE_RECOVERY issue, graph stays clean', () => {
+    const result = compile(`${fixtureRoot}/state-unsatisfiable-recovery`);
+    expect(result.passed).toBe(false);
+    expect(result.graphIssues).toEqual([]);
+    expect(result.stateIssues.map((i) => i.category)).toEqual(['UNSATISFIABLE_RECOVERY']);
+  });
+
+  it('A19: every new fixture passes PASS1+PASS2 with no load issues', () => {
+    for (const fixture of [
+      'graph-clean',
+      'graph-dead-end',
+      'graph-unreachable-scene',
+      'graph-unreachable-ending',
+      'graph-unreachable-boss',
+      'graph-trap-cycle',
+      'state-unsatisfiable-ending',
+      'state-unsatisfiable-recovery',
+    ]) {
+      const { raw, issues } = loadChapterPack(`${fixtureRoot}/${fixture}`);
+      const pass1 = runPass1(raw);
+      const pass2 = runPass2(raw, pass1);
+      expect({ fixture, issues }).toEqual({ fixture, issues: [] });
+      expect({ fixture, schemaFailures: countSchemaFailures(pass1.schemaResult) }).toEqual({
+        fixture,
+        schemaFailures: 0,
+      });
+      expect({ fixture, uniqueness: pass1.uniquenessIssues }).toEqual({
+        fixture,
+        uniqueness: [],
+      });
+      expect({ fixture, reference: pass2.referenceIssues }).toEqual({ fixture, reference: [] });
+    }
   });
 });

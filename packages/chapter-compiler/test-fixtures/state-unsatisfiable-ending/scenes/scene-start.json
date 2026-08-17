@@ -1,0 +1,31 @@
+{
+  "id": "scene-start",
+  "visualSceneId": "vs-start",
+  "narration": ["你站在森林入口。"],
+  "characters": [
+    {
+      "characterId": "npc-guide",
+      "slot": "CENTER",
+      "expression": "smile",
+      "visible": true
+    }
+  ],
+  "bgm": "bgm-main",
+  "ambience": ["amb-forest"],
+  "interactionId": "interaction-01",
+  "next": "ending-end",
+  "guards": [
+    {
+      "when": {
+        "path": {
+          "container": "flags",
+          "key": "unsatWay"
+        },
+        "op": "EXISTS"
+      },
+      "goto": "ending-unsat",
+      "priority": 1
+    }
+  ],
+  "hostPolicy": "ALLOWED"
+}

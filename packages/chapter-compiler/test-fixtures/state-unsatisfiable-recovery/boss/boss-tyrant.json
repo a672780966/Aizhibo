@@ -1,0 +1,19 @@
+{
+  "id": "boss-tyrant",
+  "displayName": "暴君",
+  "visualSceneId": "vs-boss",
+  "phases": [
+    {
+      "id": "phase-1",
+      "order": 1,
+      "enterWhen": { "path": { "container": "flags", "key": "bossStarted" }, "op": "EXISTS" },
+      "interactionId": "interaction-boss",
+      "hostPolicy": "MUTED"
+    }
+  ],
+  "variables": { "bossHp": 3 },
+  "stateRuleSetId": "rules-boss",
+  "onDefeat": "ending-end",
+  "onFailure": "ending-end",
+  "maxRounds": 10
+}

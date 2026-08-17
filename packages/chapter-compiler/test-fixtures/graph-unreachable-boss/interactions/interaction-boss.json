@@ -1,0 +1,18 @@
+{
+  "id": "interaction-boss",
+  "openDurationMs": 20000,
+  "choices": [
+    {
+      "id": "A",
+      "label": "攻击",
+      "actionType": "FIGHT",
+      "ruleId": "action-fight"
+    }
+  ],
+  "diceMode": "PER_ACTION_GROUP",
+  "resultPolicy": "result-policy-fight",
+  "nextScene": "boss-lost",
+  "noParticipationPolicy": {
+    "kind": "SKIP"
+  }
+}

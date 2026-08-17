@@ -1,0 +1,20 @@
+{
+  "id": "recovery-1",
+  "when": {
+    "kind": "STATE",
+    "condition": {
+      "path": {
+        "container": "flags",
+        "key": "cureToken"
+      },
+      "op": "EXISTS"
+    }
+  },
+  "scope": "ALL_DOWNED",
+  "effects": [
+    {
+      "scope": "ALL_DOWNED",
+      "op": "REVIVE"
+    }
+  ]
+}

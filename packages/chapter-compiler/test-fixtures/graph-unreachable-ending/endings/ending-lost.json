@@ -1,0 +1,15 @@
+{
+  "id": "ending-lost",
+  "title": "失落结局",
+  "when": {
+    "path": {
+      "container": "flags",
+      "key": "lostPath"
+    },
+    "op": "EXISTS"
+  },
+  "priority": 9,
+  "isFallback": false,
+  "visualSceneId": "vs-end",
+  "narrationBlockIds": []
+}

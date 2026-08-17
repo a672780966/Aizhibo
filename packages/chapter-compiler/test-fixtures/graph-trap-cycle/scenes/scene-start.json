@@ -1,0 +1,21 @@
+{
+  "id": "scene-start",
+  "visualSceneId": "vs-start",
+  "characters": [],
+  "hostPolicy": "ALLOWED",
+  "narration": ["起点。"],
+  "next": "scene-a",
+  "guards": [
+    {
+      "when": {
+        "path": {
+          "container": "flags",
+          "key": "anyFlag"
+        },
+        "op": "EXISTS"
+      },
+      "goto": "ending-end",
+      "priority": 1
+    }
+  ]
+}

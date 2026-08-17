@@ -1,0 +1,17 @@
+{
+  "chapterId": "ch-minimal",
+  "sceneId": "scene-start",
+  "flags": {},
+  "npc": {
+    "npc-guide": {
+      "present": true,
+      "alive": true,
+      "disposition": "FRIENDLY",
+      "flags": {}
+    }
+  },
+  "danger": { "level": 0, "tensionKey": "calm" },
+  "discovered": [],
+  "activeThreats": [],
+  "chapterVariables": {}
+}

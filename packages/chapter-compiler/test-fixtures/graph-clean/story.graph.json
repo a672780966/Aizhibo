@@ -1,0 +1,34 @@
+{
+  "nodes": [
+    {
+      "id": "scene-start",
+      "kind": "SCENE",
+      "file": "scenes/scene-start.json"
+    },
+    {
+      "id": "scene-tavern",
+      "kind": "SCENE",
+      "file": "scenes/scene-tavern.json"
+    },
+    {
+      "id": "scene-forest",
+      "kind": "SCENE",
+      "file": "scenes/scene-forest.json"
+    },
+    {
+      "id": "boss-tyrant",
+      "kind": "BOSS",
+      "file": "boss/boss-tyrant.json"
+    },
+    {
+      "id": "ending-end",
+      "kind": "ENDING",
+      "file": "endings/ending-end.json"
+    },
+    {
+      "id": "ending-nice",
+      "kind": "ENDING",
+      "file": "endings/ending-nice.json"
+    }
+  ]
+}

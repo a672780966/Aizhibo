@@ -8,3 +8,8 @@ export * from './pass2ActionChain.js';
 export * from './pass2NpcVisuals.js';
 export * from './pass2BossRecovery.js';
 export * from './compile.js';
+export * from './pass3GraphModel.js';
+export * from './pass3Reachability.js';
+export * from './pass3Cycles.js';
+export * from './pass5ReachableState.js';
+export * from './pass5Satisfiability.js';

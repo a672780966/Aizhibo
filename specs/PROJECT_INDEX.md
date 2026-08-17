@@ -17,19 +17,19 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-002 — Chapter Compiler Core（PASS 1 + 2）（DONE，接口冻结）
+DEV-003 — Story Graph Analyzer（PASS 3 + 5）（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002 均 `DONE`（接口冻结）。`Commander` 将依 DAG Rev 2 执行序评估下一可下发节点。
+DEV-000/DEV-001/DEV-008/DEV-002 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-003`（消息 `0035`）已下发，Codex 施工中。
 
-`packages/chapter-compiler` 是首个被授权读写文件系统的包（读，不写），依赖 `chapter-schema`，不依赖 `runtime-kernel`/`shared`。
+本节点是对已冻结 `packages/chapter-compiler` 的增量扩展（新增 PASS3/5），不新建包。DEV-002 的 PASS1/PASS2 源文件保持 Read-only；`types.ts`/`compile.ts`/`compile.test.ts`/`index.ts` 仅允许追加式修改。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-002.md` ＋ 权威输入 Dev Spec 第 19/23/24 节、`packages/chapter-schema`（冻结）、`SPEC-ADDENDUM-001.md` §A18、`SPEC-ADDENDUM-002.md` §B4、`DAG.md` CR-006 决议
+`specs/tasks/TASK-PACKAGE-DEV-003.md` ＋ 权威输入 Dev Spec 第 24 节、现有 `packages/chapter-compiler` 源码、`SPEC-ADDENDUM-001.md` §A6/§A11/§A12/§A13、`DAG.md` CR-006 决议
 
-DEV-000/DEV-001/DEV-008 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`
+DEV-000/DEV-001/DEV-008/DEV-002 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）
 
 ## 通信协议
 
@@ -52,7 +52,7 @@ DEV-000/DEV-001/DEV-008 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+
 
 ## In Progress Nodes
 
-无。
+- DEV-003 — Story Graph Analyzer（PASS 3 + 5）
 
 ## Blocked Nodes
 
@@ -66,7 +66,8 @@ DEV-002 — Chapter Compiler Core（2026-08-18）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-003 — Story Graph Analyzer（待 `Commander` 下发 Task Package）
+1. DEV-003 — Story Graph Analyzer（IN_PROGRESS）
+2. DEV-002A — Hidden Information Validator（待 DEV-003 PASS；依赖 DEV-003 的可达节点集合 + 可达状态集合）
 
 ## Project-level Blockers
 
@@ -149,6 +150,10 @@ DEV-002 — Chapter Compiler Core（2026-08-18）
 | 2026-08-17 | 收到 DEV-002 FIX-01 第二轮 `NODE_REPORT`（消息 `0032`，`git_head` `4812478...`）：新脚本下清空构建产物后严格顺序六条命令全部退出码 0，转交 `AUDITOR` 独立复核 |
 | 2026-08-18 | `AUDITOR` `AUDIT_VERDICT`（消息 `0033`）：**PASS**。FIX-A01/A02 VERIFIED，原 A01/A03–A27 无回归，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，LEDGER 落盘顺序观察，不影响判定） |
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0034`，`verdict_ref: "0033"`）：**DEV-002 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
+| 2026-08-18 | 修正误标提交（本地未分享，直接 amend）：治理提交实际内容为协议更正，非重复的 DEV-002 裁决记录 |
+| 2026-08-18 | 更正协议：系统通知 `project-auditor` 现已出现在 Agent 可用类型列表，推翻 2026-08-16 的"不可用"结论；恢复为优先直调，报错才降级至 `general-purpose` 注入路径。可用性按会话验证，不假设固定 |
+| 2026-08-18 | 起草并发出 `TASK_PACKAGE DEV-003`（消息 `0035`）：`packages/chapter-compiler` 增量扩展 PASS3（图可达性/死路/环检测）+ PASS5（状态可达性/可满足性），T001–T009，A01–A24；DEV-002 的 PASS1/2 源文件划为 Read-only，`types.ts`/`compile.ts`/`compile.test.ts`/`index.ts` 仅允许追加式修改；DEV-003 转 `IN_PROGRESS` |
+| 2026-08-18 | 施工约 2h45m 无新文件产出，排查后发现 Task Package 存在编号笔误（T002 验收误引用不存在的"T009"fixture）且未明确"单元测试可用手写最小对象、不必走完整 fixture"，推测执行方因此陷入自建 fixture 生成脚本的困境（`dev003-fixtures.mjs`，未落盘）。发出 `ACCEPTANCE_AMENDMENT`（消息 `0036`）：更正编号；明确 T002–T006 测试免 fixture；T008 fixture 改为复制 `valid-minimal` 做单点编辑，不写生成脚本，并附逐条最小编辑指引 |
 
 ## Authority
 

@@ -1,0 +1,8 @@
+{
+  "id": "scene-lost",
+  "visualSceneId": "vs-start",
+  "narration": ["迷路的场景。"],
+  "characters": [],
+  "next": "ending-end",
+  "hostPolicy": "ALLOWED"
+}

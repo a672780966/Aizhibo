@@ -1,0 +1,12 @@
+{
+  "schemaVersion": "1.0",
+  "chapterId": "ch-trap",
+  "chapterVersion": "0.1.0",
+  "title": "Trap Cycle",
+  "entryNodeId": "scene-start",
+  "language": "zh-CN",
+  "authoring": {
+    "generatedBy": "opencode-test",
+    "createdAt": "2026-08-18"
+  }
+}

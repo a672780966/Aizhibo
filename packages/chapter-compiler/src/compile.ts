@@ -1,4 +1,4 @@
-import type { LoadIssue, RawChapterPack, ReferenceIssue } from './types.js';
+import type { LoadIssue, RawChapterPack, ReferenceIssue, GraphIssue, StateIssue } from './types.js';
 import { loadChapterPack } from './loader.js';
 import {
   countSchemaFailures,
@@ -11,6 +11,15 @@ import { runStoryGraphChecks } from './pass2StoryGraph.js';
 import { runActionChainChecks } from './pass2ActionChain.js';
 import { runNpcVisualsChecks } from './pass2NpcVisuals.js';
 import { runBossChecks } from './pass2BossRecovery.js';
+import { buildStoryGraphModel, type StoryGraphModel } from './pass3GraphModel.js';
+import { computeReachability, type Pass3ReachabilityResult } from './pass3Reachability.js';
+import { detectTrapCycles, type TrapCycle } from './pass3Cycles.js';
+import { buildReachableStateModel, type ReachableStateModel } from './pass5ReachableState.js';
+import {
+  checkEndingSatisfiability,
+  checkRecoverySatisfiability,
+  type UnsatisfiableFinding,
+} from './pass5Satisfiability.js';
 
 export interface Pass1Result {
   schemaResult: SchemaValidationResult;
@@ -26,6 +35,8 @@ export interface CompileResult {
   schemaResult: SchemaValidationResult;
   uniquenessIssues: UniquenessIssue[];
   referenceIssues: ReferenceIssue[];
+  graphIssues: GraphIssue[];
+  stateIssues: StateIssue[];
   passed: boolean;
 }
 
@@ -50,16 +61,129 @@ export function compile(rootDir: string): CompileResult {
   const { raw, issues } = loadChapterPack(rootDir);
   const pass1 = runPass1(raw);
   const pass2 = runPass2(raw, pass1);
+  const pass3 = runPass3(pass1.schemaResult);
+  const pass5 = runPass5(pass1.schemaResult, pass3);
+  const graphIssues = buildGraphIssues(pass3, pass1.schemaResult);
+  const stateIssues = buildStateIssues(pass5, pass1.schemaResult);
   const passed =
     issues.length === 0 &&
     countSchemaFailures(pass1.schemaResult) === 0 &&
     pass1.uniquenessIssues.length === 0 &&
-    pass2.referenceIssues.length === 0;
+    pass2.referenceIssues.length === 0 &&
+    graphIssues.length === 0 &&
+    stateIssues.length === 0;
   return {
     loadIssues: issues,
     schemaResult: pass1.schemaResult,
     uniquenessIssues: pass1.uniquenessIssues,
     referenceIssues: pass2.referenceIssues,
+    graphIssues,
+    stateIssues,
     passed,
   };
+}
+
+export interface Pass3Result {
+  graphModel: StoryGraphModel;
+  reachability: Pass3ReachabilityResult;
+  trapCycles: TrapCycle[];
+}
+
+export interface Pass5Result {
+  stateModel: ReachableStateModel;
+  unsatisfiable: UnsatisfiableFinding[];
+}
+
+export function runPass3(schemaResult: SchemaValidationResult): Pass3Result {
+  const graphModel = buildStoryGraphModel(schemaResult);
+  const reachability = computeReachability(
+    graphModel,
+    schemaResult.manifest.passed?.entryNodeId ?? '',
+  );
+  const trapCycles = detectTrapCycles(graphModel, reachability.reachable);
+  return { graphModel, reachability, trapCycles };
+}
+
+export function runPass5(schemaResult: SchemaValidationResult, pass3: Pass3Result): Pass5Result {
+  const stateModel = buildReachableStateModel(schemaResult, pass3.reachability.reachable);
+  const unsatisfiable = [
+    ...checkEndingSatisfiability(schemaResult, stateModel, pass3.reachability.reachable),
+    ...checkRecoverySatisfiability(schemaResult, stateModel),
+  ];
+  return { stateModel, unsatisfiable };
+}
+
+function buildGraphIssues(pass3: Pass3Result, schemaResult: SchemaValidationResult): GraphIssue[] {
+  const fileOf = new Map<string, string>();
+  for (const node of schemaResult.storyGraph.passed?.nodes ?? []) {
+    fileOf.set(node.id, node.file);
+  }
+  const nodeFile = (id: string): string => fileOf.get(id) ?? 'story.graph.json';
+
+  const issues: GraphIssue[] = [];
+  for (const id of pass3.reachability.deadEnds) {
+    issues.push({
+      category: 'DEAD_END',
+      severity: 'BLOCKING',
+      message: `reachable non-ENDING node "${id}" has no outgoing edge`,
+      file: nodeFile(id),
+    });
+  }
+  for (const id of pass3.reachability.unreachableNodes) {
+    issues.push({
+      category: 'UNREACHABLE_NODE',
+      severity: 'BLOCKING',
+      message: `node "${id}" is not reachable from the entry node`,
+      file: nodeFile(id),
+    });
+  }
+  for (const id of pass3.reachability.unreachableEndings) {
+    issues.push({
+      category: 'UNREACHABLE_ENDING',
+      severity: 'BLOCKING',
+      message: `ending "${id}" is not reachable from the entry node`,
+      file: nodeFile(id),
+    });
+  }
+  for (const id of pass3.reachability.unreachableBosses) {
+    issues.push({
+      category: 'UNREACHABLE_BOSS',
+      severity: 'BLOCKING',
+      message: `boss "${id}" is not reachable from the entry node`,
+      file: nodeFile(id),
+    });
+  }
+  for (const cycle of pass3.trapCycles) {
+    issues.push({
+      category: 'TRAP_CYCLE',
+      severity: 'BLOCKING',
+      message: `trap cycle detected with no escaping edge: ${cycle.members.join(' -> ')}`,
+      file: 'story.graph.json',
+    });
+  }
+  return issues;
+}
+
+function buildStateIssues(pass5: Pass5Result, schemaResult: SchemaValidationResult): StateIssue[] {
+  const endingFile = new Map(schemaResult.endings.passed.map((e) => [e.value.id, e.file]));
+  const issues: StateIssue[] = [];
+  for (const finding of pass5.unsatisfiable) {
+    const file = endingFile.get(finding.targetId);
+    if (file !== undefined) {
+      issues.push({
+        category: 'UNSATISFIABLE_ENDING',
+        severity: 'BLOCKING',
+        message: finding.reason,
+        file,
+      });
+    } else {
+      issues.push({
+        category: 'UNSATISFIABLE_RECOVERY',
+        severity: 'BLOCKING',
+        message: finding.reason,
+        file: 'world.rules.json',
+      });
+    }
+  }
+  return issues;
 }

@@ -17,19 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-004 — State Rule Engine（IN_PROGRESS）
+DEV-005 — Dice Engine（待下发）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-004`（消息 `0048`）已下发，Codex 施工中。
-
-本节点是新包 `packages/rule-engine`，全项目第一个真正的运行时包（会在直播进行中被反复调用），但设计上仍是纯函数库：不做 IO、不发 Event、不维护跨调用状态。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-005` 待起草下发。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-004.md` ＋ 权威输入 Dev Spec 第 65 节、`packages/chapter-schema/src/stateRules.ts`（冻结类型来源）
+（待起草）`specs/tasks/TASK-PACKAGE-DEV-005.md`
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）
 
 ## 通信协议
 
@@ -51,10 +49,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 历史记录：`specs/tasks/TAS
 - DEV-002 — Chapter Compiler Core（PASS 1 + 2）（DONE，`verdict_ref: "0033"`，`git_head` `4812478ae657414984f9d6c4d5e56930583a662e`）
 - DEV-003 — Story Graph Analyzer（PASS 3 + 5）（DONE，`verdict_ref: "0040"`，`git_head` `be43f75f80702edcf63c5ad206766f6a98d269ca`）
 - DEV-002A — Hidden Information Validator（PASS 6）（DONE，`verdict_ref: "0046"`，`git_head` `871865475768f0f5aa38ee266dc1b3021328df36`）
+- DEV-004 — State Rule Engine（DONE，`verdict_ref: "0054"`，`git_head` `290d7c9a0ef7ca5ae63ce60859dcf6d598d5ccab`）
 
 ## In Progress Nodes
 
-- DEV-004 — State Rule Engine
+无。
 
 ## Blocked Nodes
 
@@ -62,14 +61,13 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A 历史记录：`specs/tasks/TAS
 
 ## Last Accepted Node
 
-DEV-002A — Hidden Information Validator（2026-08-18）
+DEV-004 — State Rule Engine（2026-08-18）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-004 — State Rule Engine（IN_PROGRESS）
-2. DEV-005 — Dice Engine（待 DEV-004 PASS 后，依赖 DEV-002，已满足）
+1. DEV-005 — Dice Engine（依赖 DEV-002，已满足）
 
 ## Project-level Blockers
 
@@ -169,6 +167,13 @@ DEV-002A — Hidden Information Validator（2026-08-18）
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0047`，`verdict_ref: "0046"`）：**DEV-002A 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-004 |
 | 2026-08-18 | 独立提交 `c605b94`（治理文件：DEV-002A 审计通过记录），提交后工作区干净 |
 | 2026-08-18 | 起草并发出 `TASK_PACKAGE DEV-004`（消息 `0048`）：新包 `packages/rule-engine`，全项目第一个运行时包但仍为纯函数库；实现 Condition/StateEffect/StateRuleSet/SceneGuard 的运行时求值，T001–T008，A01–A18；StatePath 寻址规则（npc/danger 字段、discovered/activeThreats 成员判定、INC/DEC 增量、PUSH 幂等）作为运行时语义直接写入任务包，不留给执行方猜测；`once` 语义的记忆责任明确交还未来的 DEV-009 调用方；DEV-004 转 `IN_PROGRESS` |
+| 2026-08-18 | 收到 DEV-004 `NODE_REPORT`（消息 `0049`，`git_head` `84832f0...`）：六条命令严格顺序全部退出码 0，280/280（rule-engine 新增 26 条零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-18 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0050`）：`AUDIT_FAIL`。F-01 BLOCKING：`specs/dev/DEV-004/DECISIONS.md` 从未被 git 提交，但已冻结提交 `84832f0` 的 `REPORT.md` 明文引用其中 D1 决策，证据链断裂；对比六个先例节点，DEV-004 是唯一未随源码一并提交 `DECISIONS.md` 的节点。D1 决策内容本身经独立复现确认技术准确（包级 tsconfig references 恢复未复现 DEV-002 历史问题），Finding 只针对提交完整性 |
+| 2026-08-18 | 发出 `NODE_RULING: FAIL`（消息 `0051`）：F-01 转 FIX |
+| 2026-08-18 | 发出 `FIX_PACKAGE DEV-004-FIX-01`（消息 `0052`）：要求以新提交（不得 `--amend`）将现有 `DECISIONS.md` 内容原文纳入版本控制；不重开任何已 VERIFIED Task，不重跑六条命令 |
+| 2026-08-18 | 收到 FIX-01 第二轮 `NODE_REPORT`（消息 `0053`，`git_head` `290d7c9...`）：`DECISIONS.md` 已以新提交入库，`84832f0` 未受任何改动，转交 `AUDITOR` 复核 |
+| 2026-08-18 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0054`）：**PASS**。独立核实 `290d7c9` 为该文件首次入库、非 `--amend`、内容与首轮所见逐字一致，`REPORT.md` 证据引用断链已消除；原 A01–A15/A17/A18 无回归，0 BLOCKING |
+| 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0055`，`verdict_ref: "0054"`）：**DEV-004 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-005 |
 
 ## Authority
 

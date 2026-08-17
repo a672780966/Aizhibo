@@ -9,7 +9,7 @@
   "packageManager": "pnpm@11.5.3",
   "scripts": {
     "build": "tsc -b",
-    "typecheck": "tsc -b --noEmit",
+    "typecheck": "tsc -b && tsc -b --noEmit",
     "clean": "tsc -b --clean",
     "lint": "eslint .",
     "format": "prettier --write .",

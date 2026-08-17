@@ -48,7 +48,9 @@
 | 0026 | CORRECTION | OPENCODE | COMMANDER | DEV-002 | 0025 | CLOSED | 撤回 0025：BLK-001 结案（build 后 typecheck 通过，D10） |
 | 0027 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-002 | 0024 | CLOSED | AUDIT_FAIL：F-01/F-02 BLOCKING（A02 顺序 FAIL + BLK-001 未经裁决自行结案）+ F-03 DEVIATION |
 | 0028 | NODE_RULING | COMMANDER | ALL | DEV-002 | 0027 | CLOSED | ruling: FAIL；F-01 转 FIX（采纳方案 A：移除包级 references），F-02 随 FIX 一并修正，F-03 接受并说明 + 制度修复 |
-| 0029 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-002 | 0028 | OPEN | DEV-002-FIX-01：移除包级 tsconfig references，修正 REPORT/BLOCKERS 记录 |
+| 0029 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-002 | 0028 | CLOSED | DEV-002-FIX-01：移除包级 tsconfig references，修正 REPORT/BLOCKERS 记录 |
+| 0030 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-002 | 0029 | CLOSED | FIX-T01 阻塞：方案 A 在全新状态 + 严格顺序下 typecheck 仍失败（BLK-002） |
+| 0031 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-002 | 0030 | OPEN | 采纳方案 A'：根 typecheck 脚本改为先 build 再 --noEmit 检查（USER 已批准，CR 性质留痕） |
 
 ---
 
@@ -56,6 +58,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0029 |
+| OPENCODE | 0031 |
 | AUDITOR | — |
 | COMMANDER | — |

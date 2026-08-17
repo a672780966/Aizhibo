@@ -144,6 +144,8 @@ DEV-008 — Runtime Event Model（2026-08-17）
 | 2026-08-17 | `AUDITOR` `AUDIT_VERDICT`（消息 `0027`）：`AUDIT_FAIL`。F-01/F-02 BLOCKING：独立复现确认 A02 在 T013 规定顺序下于全新工作区失败（`TS6310`），且 `0025`→`0026` 系未经裁决的流程越权自裁；`REPORT.md` 呈现误导。F-03 DEVIATION：治理文件第三次被卷入提交（与 DEV-001/DEV-008 同源） |
 | 2026-08-17 | 发出 `NODE_RULING: FAIL`（消息 `0028`）：F-01 转 FIX，裁决采纳方案 A（移除 `chapter-compiler` 包级 tsconfig `references`，仅靠根 solution 级 references 保证顺序）；F-02 随 FIX 一并修正；F-03 接受并说明，制度修复升级为"发 TASK_PACKAGE 前若已改治理文件须同一动作内先提交" |
 | 2026-08-17 | 发出 `FIX_PACKAGE DEV-002-FIX-01`（消息 `0029`）：移除包级 references，清空构建产物后按规定顺序重跑六条命令，修正 `REPORT.md`/`BLOCKERS.md` 记录；不重开已通过的业务代码与测试 |
+| 2026-08-17 | 收到 `EXECUTOR_QUERY`（消息 `0030`，`blocking: true`，`BLK-002`）：OpenCode 正确升级而非自行处置——方案 A（纯移除 references）独立复现后在全新状态+严格顺序下 `pnpm typecheck` 仍失败（`TS2307`），根因是 `tsc -b --noEmit` 从不发射依赖产物，与 references 存在与否无关 |
+| 2026-08-17 | `Commander` 独立复现确认 `0030` 的技术判断成立；因裁决触及"`pnpm typecheck` 实际检查什么"这一验收机制本身，且 `ACCEPTANCE_AMENDMENT` 通道已关闭，超出 `Commander` 自主裁决权限——**上报真实 `USER`**，`USER` 批准采纳方案 A'（根 `package.json` 的 `typecheck` 脚本改为 `tsc -b && tsc -b --noEmit`，按 `CHANGE_REQUEST` 性质留痕）。`Commander` 直接改动该文件（超出任何 Task Package 的 OPENCODE Writable Scope）并独立验证六条命令在新脚本下于严格顺序中全部退出码 0。顺带将 `.codebase-memory/`（工具本地索引缓存，污染 `format:check`）比照 `.claude/**` 先例纳入 `.gitignore`。发出 `SCOPE_RULING`（消息 `0031`），指示 OpenCode 完成 FIX-T01 剩余验证 |
 
 ## Authority
 

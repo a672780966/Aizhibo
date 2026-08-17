@@ -120,3 +120,117 @@
 我没有修改任何项目业务代码，也没有推进任何后续 DEV 节点。（审计过程中为独立复现构建行为，
 删除并重建了 gitignored 的 `dist/`、`*.tsbuildinfo` 产物，这些不属于版本控制内容，审计结束时
 已恢复至与开场一致的 git 工作区状态。）
+
+---
+
+# DEV-002 VERDICT — 第二轮（FIX-01 第二轮复核）
+
+> 同样由 `COMMANDER` 依附录 B2 逐字转录 `project-auditor` 输出。本轮复核 `FIX_PACKAGE`
+> 消息 `0029`（`DEV-002-FIX-01`）在 `SCOPE_RULING` 消息 `0031`（采纳方案 A'：根 `package.json`
+> `typecheck` 脚本改为 `tsc -b && tsc -b --noEmit`）修正后的完整重跑结果，对应 `NODE_REPORT`
+> 消息 `0032`。字段映射同上：`BLOCKER`/`MAJOR` → `BLOCKING`，`MINOR` → `DEVIATION`，
+> `INFO` → `OBSERVATION`。
+
+## Audit Basis
+
+- Task Package: `specs/tasks/TASK-PACKAGE-DEV-002.md`（Acceptance 权威副本第 12 节，A01–A27）
+- FIX Package: 消息 `0029`（`DEV-002-FIX-01`），Allowed Files / Requirements #1/#3/#4/#5/#6 /
+  Exit Procedure 经 `SCOPE_RULING` 消息 `0031` 确认未变，仅 Requirement #2 的验证脚本被
+  `0031` 采纳的方案 A' 替换
+- `git_head` 审核锚点（`NODE_REPORT` 消息 `0032` 申报）：`4812478ae657414984f9d6c4d5e56930583a662e`，
+  独立 `git rev-parse HEAD` 核对一致
+
+## Independent Verification（本人重跑，未采信 REPORT 摘要）
+
+清空 `packages/{chapter-compiler,chapter-schema,runtime-kernel,shared}/dist` 与全部
+`*.tsbuildinfo` 后，严格按 T013 §1 顺序、不插入任何额外命令：
+
+| 命令 | 退出码 | 与 NODE_REPORT/REPORT.md 声明一致 |
+|---|---|---|
+| `pnpm install` | 0 | ✅ |
+| `pnpm typecheck`（新脚本 `tsc -b && tsc -b --noEmit`） | 0 | ✅ |
+| `pnpm lint` | 0 | ✅ |
+| `pnpm format:check` | 0 | ✅ |
+| `pnpm build` | 0 | ✅ |
+| `pnpm test` | 0（33 files / 174 tests） | ✅ |
+
+`packages/chapter-compiler/dist/index.d.ts` 独立核对：存在，内容为 10 条 `export * from`
+语句，与 `src/index.ts` 逐行一致（`types`/`loader`/`pass1Schema`/`pass1Uniqueness`/
+`referenceIndex`/`pass2StoryGraph`/`pass2ActionChain`/`pass2NpcVisuals`/`pass2BossRecovery`/
+`compile`）。
+
+## Undeclared Changes（`git diff 4812478~1 4812478` 与 NODE_REPORT Changed Files 列表比对）
+
+`git diff 4812478~1 4812478 --name-only` 结果恰为 5 个文件，与 `NODE_REPORT`（消息 `0032`）
+申报的 5 文件列表逐一一致：
+
+```
+packages/chapter-compiler/tsconfig.json
+specs/dev/DEV-002/BLOCKERS.md
+specs/dev/DEV-002/DECISIONS.md
+specs/dev/DEV-002/INDEX.md
+specs/dev/DEV-002/REPORT.md
+```
+
+`packages/chapter-compiler/src/**`、`test-fixtures/**`、`package.json` 在 `db67337`
+（首轮结束态）与 `4812478` 之间零改动（独立 `git diff --stat` 核对为空）；根
+`tsconfig.json`/`tsconfig.base.json`/`chapter-schema`/`runtime-kernel`/`shared` 在同一区间
+也零改动。`specs/PROJECT_INDEX.md`、`specs/protocol/COMMS-PROTOCOL-V1.md` 在此区间确有改动，
+但均来自 `Commander` 自己的提交（`d2e67ca`/`7cda444`/`8c52ec3`），不在 `4812478` 的 diff 范围内，
+已用 `git show --stat 4812478` 单独核实。
+
+**NONE**（无未声明改动）。
+
+## Requirement Verification（FIX Package 0029 Requirements，按 0031 修正后的基准）
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| #1 移除包级 `references` | VERIFIED | `git show 4812478` 对 `packages/chapter-compiler/tsconfig.json` 的 diff：删除 `"references": [{ "path": "../chapter-schema" }]`，`include` 保留；根 `tsconfig.json` 未被本提交触碰 |
+| #2（经 0031 修正）清空产物后严格顺序六条命令全部退出码 0 | VERIFIED | 独立重跑，见 Independent Verification 表，全部退出码 0，顺序未插入任何额外命令 |
+| #3 更正 REPORT.md/DECISIONS.md 记录 | VERIFIED | `REPORT.md` Tests Executed/A02/Known Issues 已按新脚本如实更新，不再暗示"typecheck 依赖先行 build"；`DECISIONS.md` D10 原文保留未删，新增 D11 说明脚本层面消除该顺序依赖 |
+| #4 更新 BLOCKERS.md 结案依据 | VERIFIED | BLK-001 状态 CLOSED，结案依据已改为引用消息 `0028`/`0029`，不再引用 `CORRECTION 0026`；BLK-002 新增记录，状态 CLOSED，引用消息 `0031` |
+| #5 `dist/index.d.ts` 不受影响、正确导出 10 个模块 | VERIFIED | 见 Independent Verification 段落；`src/index.ts` 与 `dist/index.d.ts` 逐行比对一致；`pnpm typecheck`/`pnpm build` 均 0 错误，未见任何 `@ts-ignore` 或 strict 设置放宽 |
+| #6 不改动 `src/**` 业务代码或测试 | VERIFIED | `git diff db67337 4812478 --stat -- packages/chapter-compiler/src packages/chapter-compiler/test-fixtures packages/chapter-compiler/package.json` 输出为空 |
+
+## Acceptance Verification
+
+| Acceptance Item | Result | Evidence |
+|---|---|---|
+| FIX-A01（六条命令全部退出码 0，`REPORT.md` 如实反映，`BLOCKERS.md` BLK-001 结案依据指向 0028/0029） | PASS | 见上表 Independent Verification 与 Requirement #3/#4 |
+| A02（`pnpm typecheck` 退出码 0，含全部四包） | PASS | 独立重跑退出码 0，无错误输出 |
+| 原 A01/A03–A26（首轮已 VERIFIED，本轮不重新验收，仅需确认未被 FIX-T01 破坏） | PASS（无回归） | `pnpm test` 33 files/174 tests 全绿，与首轮 REPORT 记录的测试文件数一致；`src/**` 零改动排除业务逻辑回归可能 |
+| A27（冻结路径未被修改） | PASS | 本提交 diff 未触及 `packages/chapter-schema`/`runtime-kernel`/`shared`/`specs/audit`/`specs/protocol`/`specs/tasks`/`specs/PROJECT_INDEX.md`/`specs/dev/DAG.md` |
+
+## Architecture / Regression / Overengineering Audit
+
+三项均 **PASS**。本轮改动仅涉及 `tsconfig.json` 的 `references` 字段与节点文档，未引入任何
+第 70 节禁止清单技术；`chapter-schema`（18 文件）、`runtime-kernel`（3 文件）、`shared`
+（2 文件）既有测试在新脚本 + 全新构建产物下重跑全部通过，无回归；根 `package.json`/
+`tsconfig.json`/冻结包 exports 均未被 `OpenCode` 侧改动（脚本改动由 `Commander` 直接提交，
+超出本节点 Writable Scope，符合 `0031` 裁决）；未引入任何投机性抽象。
+
+## Findings
+
+| ID | 等级 | 内容 | 依据 |
+|---|---|---|---|
+| INF-01 | OBSERVATION | `specs/comms/LEDGER.md` 中标记消息 `0031` 为 `CLOSED` 并追加消息 `0032` 行、以及消息文件 `specs/comms/0032-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-002.md` 本身，截至审计时仍未被 git 提交（工作区内为 modified/untracked 状态），未包含在提交 `4812478` 内。这与 `FIX_PACKAGE 0029` Exit Procedure 的字面顺序（先 commit 取得 `git_head`，再追加 LEDGER 行、创建引用该 sha 的 NODE_REPORT 消息）相符，不构成协议违反；但与 DEV-002 首轮先例（`LEDGER.md` 的追加曾随 T013 提交 `459ea16` 一并入库）不完全一致。不影响本轮任何 Acceptance 判定或事实认定，仅建议后续提交（无论由 `OPENCODE` 下一轮还是 `Commander`）将其一并归档，避免仓库长期停留在"文件存在但未提交"状态 |
+
+## Verdict
+
+**PASS**（Blocker: 0，Major: 0；FIX-A01/A02 VERIFIED，原 A01/A03–A27 无回归，Scope/Regression/
+Overengineering Audit 均 PASS；Minor: 0；Info: 1 映射为 OBSERVATION，不影响 PASS）
+
+## Scope Discipline Check
+
+- 是否实现了 Non-goals 中明确禁止的内容：否
+- 是否提前实现了后续节点的内容：否
+- 是否引入了第 70 节禁止清单中的技术：否
+- 是否修改了权限矩阵中不属于自己的文件：否（提交 `4812478` 仅含 `packages/chapter-compiler/tsconfig.json` 与 4 份 DEV-002 节点文档，均在 `FIX_PACKAGE 0029` Allowed Files 内；根 `package.json`/`.gitignore` 的改动由 `Commander` 自行提交为 `d2e67ca`，不在本节点 Writable Scope 之内，也不计入 OPENCODE 的越权认定）
+- 是否顺手重构了未要求改动的代码：否
+
+## Auditor Statement
+
+我只针对当前授权 DEV-002 节点第二轮 FIX-01（消息 `0032`，`in_reply_to 0029`，`git_head 4812478`）
+及其冻结的 `FIX_PACKAGE`、`SCOPE_RULING` 与 Requirements/Acceptance 进行了独立审计。我没有修改
+任何项目业务代码，也没有推进任何后续 DEV 节点。审计过程中为独立复现构建行为，删除并重建了
+gitignored 的 `dist/`、`*.tsbuildinfo` 产物，这些不属于版本控制内容。

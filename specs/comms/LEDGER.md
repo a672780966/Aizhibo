@@ -50,7 +50,10 @@
 | 0028 | NODE_RULING | COMMANDER | ALL | DEV-002 | 0027 | CLOSED | ruling: FAIL；F-01 转 FIX（采纳方案 A：移除包级 references），F-02 随 FIX 一并修正，F-03 接受并说明 + 制度修复 |
 | 0029 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-002 | 0028 | CLOSED | DEV-002-FIX-01：移除包级 tsconfig references，修正 REPORT/BLOCKERS 记录 |
 | 0030 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-002 | 0029 | CLOSED | FIX-T01 阻塞：方案 A 在全新状态 + 严格顺序下 typecheck 仍失败（BLK-002） |
-| 0031 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-002 | 0030 | OPEN | 采纳方案 A'：根 typecheck 脚本改为先 build 再 --noEmit 检查（USER 已批准，CR 性质留痕） |
+| 0031 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-002 | 0030 | CLOSED | 采纳方案 A'：根 typecheck 脚本改为先 build 再 --noEmit 检查（USER 已批准，CR 性质留痕） |
+| 0032 | NODE_REPORT | OPENCODE | AUDITOR | DEV-002 | 0029 | CLOSED | DEV-002-FIX-01 第二轮：脚本级修正后六条命令严格顺序全部退出码 0，READY_FOR_REVIEW |
+| 0033 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-002 | 0032 | CLOSED | 第二轮复核 PASS：FIX-A01/A02 VERIFIED，原 A01/A03–A27 无回归，0 BLOCKING |
+| 0034 | NODE_RULING | COMMANDER | ALL | DEV-002 | 0033 | CLOSED | ruling: PASS；DEV-002 转 DONE，接口冻结 |
 
 ---
 
@@ -58,6 +61,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0031 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

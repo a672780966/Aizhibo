@@ -17,11 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-002 — Chapter Compiler Core（PASS 1 + 2）（IN_PROGRESS）
+DEV-002 — Chapter Compiler Core（PASS 1 + 2）（DONE，接口冻结）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-002`（消息 `0023`）已下发，OpenCode 施工中。
+DEV-000/DEV-001/DEV-008/DEV-002 均 `DONE`（接口冻结）。`Commander` 将依 DAG Rev 2 执行序评估下一可下发节点。
 
 `packages/chapter-compiler` 是首个被授权读写文件系统的包（读，不写），依赖 `chapter-schema`，不依赖 `runtime-kernel`/`shared`。
 
@@ -48,10 +48,11 @@ DEV-000/DEV-001/DEV-008 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+
 - DEV-000 — Repository Foundation（DONE，`verdict_ref: "0009"`，`git_head` `fac7e3e7ea4eeaa802985fab443da74bac9384fd`）
 - DEV-001 — Chapter Schema（DONE，`verdict_ref: "0017"`，`git_head` `cbcbd8dc82910f542dee0bf81352d26241add06f`）
 - DEV-008 — Runtime Event Model（DONE，`verdict_ref: "0021"`，`git_head` `18d00446f628da965bdfd4f18d1f2ef447d8e32d`）
+- DEV-002 — Chapter Compiler Core（PASS 1 + 2）（DONE，`verdict_ref: "0033"`，`git_head` `4812478ae657414984f9d6c4d5e56930583a662e`）
 
 ## In Progress Nodes
 
-- DEV-002 — Chapter Compiler Core（PASS 1 + 2）
+无。
 
 ## Blocked Nodes
 
@@ -59,14 +60,13 @@ DEV-000/DEV-001/DEV-008 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+
 
 ## Last Accepted Node
 
-DEV-008 — Runtime Event Model（2026-08-17）
+DEV-002 — Chapter Compiler Core（2026-08-18）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-002 — Chapter Compiler Core（IN_PROGRESS）
-2. DEV-003 — Story Graph Analyzer（待 DEV-002 PASS）
+1. DEV-003 — Story Graph Analyzer（待 `Commander` 下发 Task Package）
 
 ## Project-level Blockers
 
@@ -146,6 +146,9 @@ DEV-008 — Runtime Event Model（2026-08-17）
 | 2026-08-17 | 发出 `FIX_PACKAGE DEV-002-FIX-01`（消息 `0029`）：移除包级 references，清空构建产物后按规定顺序重跑六条命令，修正 `REPORT.md`/`BLOCKERS.md` 记录；不重开已通过的业务代码与测试 |
 | 2026-08-17 | 收到 `EXECUTOR_QUERY`（消息 `0030`，`blocking: true`，`BLK-002`）：OpenCode 正确升级而非自行处置——方案 A（纯移除 references）独立复现后在全新状态+严格顺序下 `pnpm typecheck` 仍失败（`TS2307`），根因是 `tsc -b --noEmit` 从不发射依赖产物，与 references 存在与否无关 |
 | 2026-08-17 | `Commander` 独立复现确认 `0030` 的技术判断成立；因裁决触及"`pnpm typecheck` 实际检查什么"这一验收机制本身，且 `ACCEPTANCE_AMENDMENT` 通道已关闭，超出 `Commander` 自主裁决权限——**上报真实 `USER`**，`USER` 批准采纳方案 A'（根 `package.json` 的 `typecheck` 脚本改为 `tsc -b && tsc -b --noEmit`，按 `CHANGE_REQUEST` 性质留痕）。`Commander` 直接改动该文件（超出任何 Task Package 的 OPENCODE Writable Scope）并独立验证六条命令在新脚本下于严格顺序中全部退出码 0。顺带将 `.codebase-memory/`（工具本地索引缓存，污染 `format:check`）比照 `.claude/**` 先例纳入 `.gitignore`。发出 `SCOPE_RULING`（消息 `0031`），指示 OpenCode 完成 FIX-T01 剩余验证 |
+| 2026-08-17 | 收到 DEV-002 FIX-01 第二轮 `NODE_REPORT`（消息 `0032`，`git_head` `4812478...`）：新脚本下清空构建产物后严格顺序六条命令全部退出码 0，转交 `AUDITOR` 独立复核 |
+| 2026-08-18 | `AUDITOR` `AUDIT_VERDICT`（消息 `0033`）：**PASS**。FIX-A01/A02 VERIFIED，原 A01/A03–A27 无回归，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，LEDGER 落盘顺序观察，不影响判定） |
+| 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0034`，`verdict_ref: "0033"`）：**DEV-002 转 DONE，接口冻结**；同步更新本文件与 `DAG.md` |
 
 ## Authority
 

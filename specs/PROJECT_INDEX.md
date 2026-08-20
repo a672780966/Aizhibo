@@ -17,11 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-007 — Chapter Simulator（`TASK_PACKAGE` 已发出，消息 `0082`，节点 `IN_PROGRESS`）
+DEV-007 — Chapter Simulator（DONE，接口冻结，`verdict_ref: "0084"`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009 均 `DONE`（接口冻结）。DEV-007 已下发（追加式扩展 `runtime-kernel`，复用 DEV-009 statechart，仅换 platform/clock 两个 Port），等待 Codex 施工。DEV-010（Persistence）仍为并行可下发节点，留待下一轮。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 均 `DONE`（接口冻结）。DEV-010（Persistence）为下一可下发节点，只依赖已冻结的 DEV-009，留待下一轮起草 `TASK_PACKAGE`。
 
 ## Current Task Package
 
@@ -54,10 +54,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-006 — Action Resolution Engine（PASS 4）（DONE，`verdict_ref: "0064"`，`git_head` `dc9f47f0a2ef5f415e9e63379f1310ad32c78bb1`）
 - DEV-033 — Narrative Composer（DONE，`verdict_ref: "0068"`，`git_head` `49ed11c1591f71bb69029c7db1ed7298adaad4a5`）
 - DEV-009 — XState Runtime Kernel（DONE，`verdict_ref: "0080"`，`git_head` `9a8c4656838347f709f6e363288d2cbd97a228ed`）
+- DEV-007 — Chapter Simulator（DONE，`verdict_ref: "0084"`，`git_head` `ef5816591431ea6d300600b8d507f15b2d497765`）
 
 ## In Progress Nodes
 
-- DEV-007 — Chapter Simulator（`TASK_PACKAGE` 消息 `0082`）
+无。
 
 ## Blocked Nodes
 
@@ -65,11 +66,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-009 — XState Runtime Kernel（2026-08-21）
+DEV-007 — Chapter Simulator（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-007 `IN_PROGRESS` 中。DEV-010（Persistence）仍具备下发条件（只依赖 DEV-009，与 DEV-007 互不依赖），可在 DEV-007 之前或之后下发，留待下一轮决定顺序。
+DEV-010（Persistence）具备下发条件（只依赖已冻结的 DEV-009），留待下一轮起草 `TASK_PACKAGE`。
 
 ## Project-level Blockers
 
@@ -197,6 +198,9 @@ DEV-007 `IN_PROGRESS` 中。DEV-010（Persistence）仍具备下发条件（只�
 | 2026-08-21 | 收到第三轮 `NODE_REPORT`（消息 `0079`）。`AUDITOR` 第三轮 `AUDIT_VERDICT`（消息 `0080`）：**PASS**。独立用 `git worktree` 复现验证 F-05（缺陷态下新测试真实失败、修复后真实通过），原 A01–A09/A11–A21 及 FIX-01 的 FIX-A01–A04 无回归，0 BLOCKING |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0081`，`verdict_ref: "0080"`）：**DEV-009 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-007 与 DEV-010（互不依赖，均只依赖 DEV-009） |
 | 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-007`（消息 `0082`）：追加式扩展既有冻结包 `packages/runtime-kernel`；核对现有源码确认驱动循环精确时序后，新增 `getCurrentChoiceIds` 访问器（对 `machine.ts`/`index.ts` 的唯二追加式编辑）+ 虚拟 Port（仅换 CR-004 点名的 platform/clock）+ 确定性投票生成器 + `runSimulation` 主循环；如实记录但不修复 DEV-009 遗留的 `PlatformPort.onVote` 未接线缺口；明确 Non-goal：本节点不在 CI 里真跑 10,000+/100,000+ 局（G02 是上线前产品级 Gate，需真实 Chapter 内容），只做 50 局规模的机制回归验证；T001–T007，A01–A22；DEV-007 转 `IN_PROGRESS` |
+| 2026-08-21 | 收到 DEV-007 `NODE_REPORT`（消息 `0083`，`git_head` `ef58165...`）：六条命令严格顺序全部退出码 0，70 files/396 tests（simulator 新增，既有零回归），50 局 `valid-minimal` 全部 `CHAPTER_END`，转交 `AUDITOR` 独立审计 |
+| 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0084`）：**PASS**。独立重跑六条命令一致；`git diff --stat 2ee7a9e ef58165` 核实恰 13 文件/605 行新增/0 删除，与 Writable Scope 精确一致；`machine.ts`/`index.ts` 纯追加，既有冻结文件/`valid-minimal`/`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 均零 diff；A14 分裂投票语义回溯 `resolveGroups` 分组逻辑确认有效；A01–A22 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`DECISIONS.md` 额外文档观察，不影响判定） |
+| 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0085`，`verdict_ref: "0084"`）：**DEV-007 转 DONE，接口冻结**（新增 Simulator 公开接口：`getCurrentChoiceIds`/`virtualClockPort`/`virtualPlatformPort`/`generateVotes`/`runSimulation`/`SimulationReport`/`SimulationRunResult`；DEV-009 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-010（Persistence），只依赖已冻结的 DEV-009 |
 | 2026-08-20 | 收到 DEV-009 `NODE_REPORT`（消息 `0071`，`git_head` `cc40360...`）：六条命令严格顺序全部退出码 0，67 files/380 tests（runtime-kernel 新增 25 条，既有 355 条零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0072`）：`AUDIT_FAIL`。F-01 BLOCKING（A08：`index.ts` 经 `RuntimeContext`/`getSnapshot()` 结构性泄漏内部 Snapshot，独立 `tsc --strict` 验证泄漏真实可用，违反本节点 Forbidden Scope 明文条目）；F-02 BLOCKING（A10：`resolveGuard` 从未被调用、`scene.guards` 被忽略，`compile()` 失败→ERROR 路径无行为测试）；F-03 BLOCKING（A11：多 ActionGroup 并存无测试，`resolveGroups` 实现本身经独立脚本验证正确，纯测试缺口）；F-04 BLOCKING（A12：AUDIO `PLAYING_HOST`/`ERROR` 两态从未被测试进入）；六条命令独立重跑一致，Scope 纪律/DEV-008 冻结边界/`DECISIONS.md` 覆盖度均核验通过（Info: 3，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: FAIL`（消息 `0073`，`verdict_ref: "0072"`）：F-01–F-04 全部转 FIX，节点转 `FIX_REQUIRED` |

@@ -17,19 +17,22 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-005 — Dice Engine（IN_PROGRESS）
+DEV-006 — Action Resolution Engine（PASS 4）（待下发）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-005`（消息 `0056`）已下发，Codex 施工中。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 均 `DONE`（接口冻结）。
+DEV-005 首轮 `AUDIT_PASS`（消息 `0058`），`NODE_RULING: PASS`（消息 `0059`）。下一可下发节点为
+DEV-006，依赖 DEV-004/DEV-005 均已满足。
 
-新包 `packages/dice-engine`，依赖 `chapter-schema` + `rule-engine`。确定性骰子摸点用 FNV-1a 哈希派生，不用有状态 PRNG，`Math.random()` 为唯一"测试全过也判 BLOCKING"的红线。
+新包 `packages/dice-engine` 已冻结：`fnv1a32`（FNV-1a 哈希派生骰子点数）、`parseDiceNotation`、
+`rollRaw`/`drawDie`、`resolveModifiers`、`resolveQuality`/`rollDice`，均为纯函数，无有状态 PRNG。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-005.md` ＋ 权威输入 Dev Spec 第 8/65 节、`packages/chapter-schema/src/dice.ts`（冻结类型来源）、`packages/runtime-kernel/src/diceEvent.ts`（字段对齐参照，不直接依赖）
+无（DEV-006 `TASK_PACKAGE` 待 Commander 起草下发）
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`
 
 ## 通信协议
 
@@ -52,10 +55,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/t
 - DEV-003 — Story Graph Analyzer（PASS 3 + 5）（DONE，`verdict_ref: "0040"`，`git_head` `be43f75f80702edcf63c5ad206766f6a98d269ca`）
 - DEV-002A — Hidden Information Validator（PASS 6）（DONE，`verdict_ref: "0046"`，`git_head` `871865475768f0f5aa38ee266dc1b3021328df36`）
 - DEV-004 — State Rule Engine（DONE，`verdict_ref: "0054"`，`git_head` `290d7c9a0ef7ca5ae63ce60859dcf6d598d5ccab`）
+- DEV-005 — Dice Engine（DONE，`verdict_ref: "0058"`，`git_head` `3f19f5529468440a75aba134b71126e0a0323e6f`）
 
 ## In Progress Nodes
 
-- DEV-005 — Dice Engine
+无。
 
 ## Blocked Nodes
 
@@ -63,14 +67,13 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/t
 
 ## Last Accepted Node
 
-DEV-004 — State Rule Engine（2026-08-18）
+DEV-005 — Dice Engine（2026-08-20）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-005 — Dice Engine（IN_PROGRESS）
-2. DEV-006 — Action Resolution Engine（PASS 4）（待 DEV-004/DEV-005 均 PASS）
+1. DEV-006 — Action Resolution Engine（PASS 4）（依赖 DEV-004/DEV-005 均已 `DONE`，待下发）
 
 ## Project-level Blockers
 
@@ -178,6 +181,9 @@ DEV-004 — State Rule Engine（2026-08-18）
 | 2026-08-18 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0054`）：**PASS**。独立核实 `290d7c9` 为该文件首次入库、非 `--amend`、内容与首轮所见逐字一致，`REPORT.md` 证据引用断链已消除；原 A01–A15/A17/A18 无回归，0 BLOCKING |
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0055`，`verdict_ref: "0054"`）：**DEV-004 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-005 |
 | 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-005`（消息 `0056`）：新包 `packages/dice-engine`，依赖 chapter-schema + rule-engine；确定性骰子摸点（FNV-1a 哈希派生，无有状态 PRNG）+ Modifier 求值 + Quality 判定，T001–T008，A01–A21；`Math.random()` 定为唯一"测试全过也判 BLOCKING"红线；记录一处已知未认领的编译期缺口（qualityThresholds 覆盖/重叠校验），如实记录不擅自补做；DEV-005 转 `IN_PROGRESS` |
+| 2026-08-20 | 收到 DEV-005 `NODE_REPORT`（消息 `0057`，`git_head` `3f19f55...`）：六条命令严格顺序全部退出码 0，53 files/313 tests（dice-engine 新增 33 条，既有 280 条零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0058`）：**PASS**。全部 Requirement/Acceptance VERIFIED 或 PASS，红线检查（A08，禁止非确定性随机源）独立通过，0 BLOCKING（Info: 2，LEDGER 落盘顺序观察 + 包级 tsconfig references 与 DEV-004 先例的判断分歧，均不影响判定） |
+| 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0059`，`verdict_ref: "0058"`）：**DEV-005 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-006 |
 
 ## Authority
 

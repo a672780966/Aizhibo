@@ -216,9 +216,16 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
       onToInteraction: assign(({ context }) =>
         storyMove(context, 'INTERACTION_PENDING', 'STORY.INITIATE_INTERACTION'),
       ),
-      onToTransition: assign(({ context }) =>
-        storyMove(context, 'TRANSITION', 'STORY.PLAYING_ENDED'),
-      ),
+      onToTransition: assign(({ context }) => {
+        const next =
+          context.compiled !== null
+            ? resolveNextScene(context.compiled, context.currentSceneId, context.snapshot.world)
+            : undefined;
+        const emitted = storyMove(context, 'TRANSITION', 'STORY.PLAYING_ENDED', {
+          nextScene: next,
+        });
+        return { ...emitted, currentSceneId: next ?? context.currentSceneId };
+      }),
       onResolutionPending: assign(({ context }) =>
         storyMove(context, 'RESOLUTION_PENDING', 'STORY.INTERACTION_RESOLVED'),
       ),

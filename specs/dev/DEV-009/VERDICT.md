@@ -127,3 +127,152 @@ NONE。`git diff` 与 REPORT Changed Files 列表逐项比对一致；`pnpm-lock
 我只针对当前授权 DEV-009 节点及其冻结 Task Package、Requirements 和 Acceptance 进行了独立审计。
 
 我没有修改任何项目业务代码，也没有推进任何后续 DEV 节点。
+
+---
+
+# DEV-009 VERDICT — 第二轮（FIX-01 复核）
+
+> 同样由 `COMMANDER` 依附录 B2 逐字转录 `project-auditor` 输出。本轮复核 `FIX_PACKAGE`
+> 消息 `0074`（`DEV-009-FIX-01`）在首轮 `AUDIT_VERDICT`（消息 `0072`）判定 F-01–F-04 BLOCKING
+> 后的最小修复结果，对应 `NODE_REPORT` 消息 `0075`。字段映射同上：`BLOCKER`/`MAJOR` →
+> `BLOCKING`，`MINOR` → `DEVIATION`，`INFO` → `OBSERVATION`。
+
+## Audit Basis
+
+- FIX Package: 消息 `0074`（`DEV-009-FIX-01`），Allowed Files 限
+  `index.ts`/`machine.ts`/`machine.test.ts`（FIX-T01）、`storyRegion.ts`/`storyRegion.test.ts`
+  （FIX-T02）、`interactionRegion.test.ts`（FIX-T03）、`audioRegion.test.ts`（FIX-T04）+ 节点文档
+- 上一轮判定基线：本文件第一轮部分（A01–A07/A09/A13–A21 已 VERIFIED，本轮不重新论证，仅核对无回归）
+- `git_head` 审核锚点（`NODE_REPORT` 消息 `0075` 申报）：`a4be3c47666de7abd94bf94aafd462106156f978`，
+  独立 `git rev-parse HEAD` 核对一致；父提交为首轮冻结的 `cc4036006ef5edeb6d4b0aba9bf988a8de03a751`
+  （`git merge-base --is-ancestor` 核实为 true，`cc40360` SHA 本身未变，非 `--amend`）
+
+## Independent Verification
+
+| 命令 | 退出码 | 与 NODE_REPORT 声明一致 |
+|---|---|---|
+| `pnpm install` | 0 | 一致 |
+| `pnpm typecheck` | 0 | 一致 |
+| `pnpm lint` | 0（0 error/0 warning） | 一致 |
+| `pnpm format:check` | 0 | 一致 |
+| `pnpm build` | 0 | 一致 |
+| `pnpm test` | 0，`Test Files 67 passed / Tests 386 passed` | 一致（新增 6 条：audioRegion +2、storyRegion +2、interactionRegion +1、machine +1；既有 380 条零回归） |
+
+## Scope Audit
+
+PASS
+
+- `git show --stat a4be3c4`：16 个文件变更，与信封 `changed_files_count: 16` 逐项吻合。
+- 逐项核对 FIX_PACKAGE 0074 授权范围：FIX-T01/T02/T03/T04 的改动文件均落在各自 Allowed Files 内，
+  无越权。
+- **禁止改动文件核查全部零输出**：`specs/dev/DAG.md`、`specs/tasks/**`、`specs/audit/**`、
+  `specs/protocol/**`、DEV-008 冻结文件、`interactionRegion.ts`（`resolveGroups` 实现本体）、
+  `audioRegion.ts`（状态图本体）、`snapshot.ts`（D3 设计）均未被触碰。
+- Commander 治理文件（`PROJECT_INDEX.md`、本 `VERDICT.md`、`0071–0074` 通信消息、`LEDGER.md`）随
+  OpenCode 本轮提交一并入库/追加，核实内容均为 Commander 自撰、非 OpenCode 篡改，与首轮 OBS-3、
+  DEV-033 等既往节点同一时序模式，不构成违规。
+- 无 Undeclared Changes。
+
+## FIX 逐项核实
+
+### FIX-T01 / A08（F-01）— **RESOLVED（独立验证）**
+
+`index.ts` 不再导出 `RuntimeContext`；`RuntimeActor.getSnapshot()` 返回类型收窄为
+`{ value: unknown; context: unknown }`；包内私有 `InternalActor` 承担真实结构访问。审核员独立编写
+四段 `tsc --strict --noEmit` 探测脚本（验证后已删除，非项目文件）：结构性访问 `snap.context.snapshot.world`
+产生 `TS18046`；`import type { RuntimeContext }`/`{ InternalSnapshot }` 均产生 `TS2305`（无此导出）；
+仅用具名访问器（`createRuntimeMachine`/`getRuntimeSnapshot`/`getStoryPhase`/`getEventLog`）的合法用法
+编译通过。**FIX-A01 VERIFIED**。
+
+### FIX-T02 / A10（F-02 局部）— **guard 接入与 ERROR 路径本身 RESOLVED；但发现新缺陷 F-05**
+
+`storyRegion.ts` 的 `resolveNextScene` 现接受 `world` 参数，`scene.guards` 非空时先
+`resolveGuard(scene.guards, world)`，命中用 `goto`、未命中回退 `next`——`storyRegion.test.ts` 新增的
+guard 命中/未命中测试真实调用该函数、随 `world` 不同返回不同结果，非摆设。新增的"不存在目录 →
+`compile().passed=false` → `ERROR`"测试经审核员独立复现确认真实驱动状态机进入 `ERROR`，非仅类型检查。
+**FIX-A02（guard 分支 + ERROR 路径）VERIFIED**——F-02 原判定的两个具体缺口已修复。
+
+但审核员在核实本轮明确要求重新论证的 A10 整体正确性时，独立发现一项两轮均未被检测到的新缺陷，见
+下方 **F-05**。
+
+### FIX-T03 / A11（F-03）— **RESOLVED**
+
+`interactionRegion.test.ts` 新增手写含 `action-follow`/`action-fight` 两 `choices` 的
+`InteractionNode`，真实调用导出的 `resolveGroups(...)`（函数签名与调用参数逐一核对一致），断言产生
+2 个独立 `diceRecords`/`ResolveResult`。`resolveGroups` 实现本体与 `valid-minimal` fixture 均未改动
+（`git diff` 零输出）。**FIX-A03 VERIFIED**。
+
+### FIX-T04 / A12（F-04）— **RESOLVED**
+
+`audioRegion.test.ts` 新增两条事件驱动测试：`PREPARE→READY→PLAY_HOST` 到 `PLAYING_HOST`、
+`PREPARE→FAIL` 到 `ERROR`，均为真实 `send()` 序列驱动、非类型层断言；`audioRegion.ts` 状态图本体
+未改动。AUDIO 六态现全部有测试覆盖。**FIX-A04 VERIFIED**。
+
+## Acceptance Results（仅本轮涉及/重新论证项；A01–A07/A09/A13–A21 沿用首轮 VERIFIED，抽查确认无回归）
+
+| # | AUDITOR 判定 | OPENCODE 自报 | 一致 | 证据 |
+|---|---|---|---|---|
+| A08 | **PASS** | PASS | ✅ | 独立 `tsc --strict --noEmit` 四段探测脚本验证 |
+| A10 | **FAIL** | PASS | ❌ | F-02 声明的两个具体缺口已修复，但审核员独立发现 F-05（STORY"无互动场景"分支从未真正推进下一场景），STORY 十态整体转移逻辑仍不完整 |
+| A11 | **PASS** | PASS | ✅ | 多 ActionGroup 并存测试真实驱动 `resolveGroups` |
+| A12 | **PASS** | PASS | ✅ | AUDIO `PLAYING_HOST`/`ERROR` 两态均被真实事件序列驱动 |
+| FIX-A01 | PASS | PASS | ✅ | 见 FIX-T01 |
+| FIX-A02 | PASS | PASS | ✅ | 见 FIX-T02（但 A10 整体因 F-05 仍判 FAIL） |
+| FIX-A03 | PASS | PASS | ✅ | 见 FIX-T03 |
+| FIX-A04 | PASS | PASS | ✅ | 见 FIX-T04 |
+
+`INCONCLUSIVE` 项：无。
+
+## Undeclared Changes
+
+NONE。16 个变更文件与信封 `changed_files_count: 16` 完全吻合。
+
+## Findings
+
+| ID | 等级 | 内容 | 依据 |
+|---|---|---|---|
+| F-01 | RESOLVED | 首轮 A08 结构性泄漏——FIX-T01 已修复，独立编译验证 | 见 FIX-T01 |
+| F-02 | RESOLVED | 首轮 A10 `resolveGuard` 未调用 + ERROR 路径无测试——FIX-T02 已修复对应两点 | 见 FIX-T02 |
+| F-03 | RESOLVED | 首轮 A11 多 ActionGroup 无测试——FIX-T03 已修复 | 见 FIX-T03 |
+| F-04 | RESOLVED | 首轮 A12 AUDIO 状态可达性缺口——FIX-T04 已修复 | 见 FIX-T04 |
+| **F-05** | **BLOCKING（新发现）** | **STORY Region"无互动场景"分支的下一场景推进从未被真正执行**：`machine.ts` 中，`STORY_PLAYING → TRANSITION`（无互动分支，`onToTransition`，第 219-221 行）与 `TRANSITION` 态自身（`onTransitionAdvance`，第 238-240 行）均不调用 `resolveNextScene`、不更新 `currentSceneId`；该函数目前只在互动解算完成后的 `onNextScene`（第 229-236 行，`RESULT_PLAYING` 内）被调用。审核员独立构造一个真实可编译（`compile().passed === true`）、场景无 `interactionId` 的两节点章节，驱动状态机反复发送 `STORY.DONE`：状态机永远停留在 `STORY_PLAYING`（在 `TRANSITION`/`SCENE_ENTER` 间原地循环，`currentSceneId` 从未改变），无法推进到下一场景或 `CHAPTER_END`。直接违反 Task Package T005 要求 4（"否则按 guards/next…决定下一场景，转 TRANSITION"）与本轮明确要求重新论证的 A10。`valid-minimal` fixture 唯一场景恰好带 `interactionId`，掩盖了该路径两轮以来从未被任何测试覆盖。 | `packages/runtime-kernel/src/machine.ts:219-221,238-240`（对照第 229-236 行 `onNextScene`）；`packages/runtime-kernel/src/storyRegion.ts` `STORY_PLAYING`/`RESULT_PLAYING` 转移定义对比（后者有 `hasNextScene` guard 分流到 `CHAPTER_END`，前者没有）；审核员独立 fixture + 探测脚本复现记录 |
+| OBS-1 | OBSERVATION | Commander 治理文件随 OpenCode 本轮 `git add -A` 一并入库/追加，属既定流程时序，非篡改 | `git diff cc40360 a4be3c4 -- specs/PROJECT_INDEX.md` 等 |
+| OBS-2 | OBSERVATION | 本轮四项 FIX 测试质量扎实，均未违反"不得改动已验证正确实现"约束 | 逐文件 `git diff` 核对 |
+
+## Verdict
+
+**FAIL**（Blocker: 1 → BLOCKING(F-05)；F-01–F-04 均 RESOLVED；Major: 0；Minor: 0；Info: 2 →
+OBSERVATION；任一 BLOCKING 即为 FAIL）
+
+## Scope Discipline Check
+
+- 是否实现了 Non-goals 中明确禁止的内容：否
+- 是否提前实现了后续节点的内容：否
+- 是否引入了第 70 节禁止清单中的技术：否
+- 是否修改了权限矩阵中不属于自己的文件：否
+- 是否顺手重构了未要求改动的代码：否（`resolveGroups`/`audioRegion.ts`/`snapshot.ts` 均确认未改动）
+- 是否违反了本节点 Forbidden Scope 明文列出的技术限制：否（F-05 是遗漏，不是违规改动）
+
+## Required Remediation
+
+1. **修复 F-05（A10）**：在 STORY_PLAYING 的无互动分支（`onToTransition`）中，比照 `onNextScene` 的
+   模式调用 `resolveNextScene(context.compiled, context.currentSceneId, context.snapshot.world)` 并
+   把结果写入 `currentSceneId`；并比照 `RESULT_PLAYING` 已有的 `hasNextScene` guard 分流模式，让
+   `STORY_PLAYING` 的无互动分支在无下一场景时也能转 `CHAPTER_END`，而不是无条件转 `TRANSITION`。
+2. 补充至少一条测试：用真实可编译、场景无 `interactionId` 的 fixture，驱动
+   `STORY_PLAYING --STORY.DONE--> TRANSITION --> SCENE_ENTER` 并断言 `currentSceneId` 确实前进，
+   以及无后续场景时能到达 `CHAPTER_END`。
+3. 修复范围严格限于上述缺口，不得连带重构 `onNextScene`/`resolveNextScene` 已验证正确的部分，不得
+   改动 `resolveGroups`/`audioRegion.ts`/`snapshot.ts`。
+
+其余交付物（FIX-T01–T04 全部、六条命令绿灯、Scope 纪律、DEV-008 冻结边界、首轮 REPORT.md 内容完整
+保留）均已独立核验通过，下一轮 FIX 不得借机重构或扩大范围。
+
+## Auditor Statement
+
+我只针对当前授权 DEV-009 节点及其冻结 Task Package、Requirements 和 Acceptance（含本轮 `FIX_PACKAGE`
+明确要求重新论证的 A08/A10/A11/A12）进行了独立审计。F-01–F-04 经独立验证确认已修复；审计过程中在核实
+A10 整体正确性时独立发现一项此前两轮均未被检测到的新缺陷（F-05），据实报告，不构成对已通过部分的重新
+论证或扩大范围。
+
+我没有修改任何项目业务代码，也没有推进任何后续 DEV 节点。

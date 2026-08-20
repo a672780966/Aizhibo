@@ -84,10 +84,11 @@ Replay 校验逻辑（DEV-011）
 - [x] FIX-T02 STORY guard 分支接入 + ERROR 路径测试（F-02 / A10）
 - [x] FIX-T03 多 ActionGroup 并存测试（F-03 / A11）
 - [x] FIX-T04 AUDIO 状态可达性测试（F-04 / A12）
+- [x] FIX-02-T01 STORY_PLAYING 无互动分支接入场景推进 + hasNextScene 分流 CHAPTER_END（F-05 / A10）
 
 ## Current Task
 
-—（T001–T011 + FIX-T01–T04 全部完成，节点 READY_FOR_REVIEW，已发第二轮 NODE_REPORT 给 AUDITOR）
+—（T001–T011 + FIX-01 四项 + FIX-02-T01 全部完成，节点 READY_FOR_REVIEW，已发第三轮 NODE_REPORT 给 AUDITOR）
 
 ## Exit Criteria
 

@@ -1,3 +1,6 @@
+import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import type { RuntimeEvent } from './event.js';
@@ -7,6 +10,95 @@ import { getStoryPhase, getInteractionPhase } from './snapshot.js';
 const fixture = fileURLToPath(
   new URL('../../chapter-compiler/test-fixtures/valid-minimal', import.meta.url),
 );
+
+/**
+ * Build a throwaway no-interaction chapter (temp dir; `valid-minimal` never
+ * modified) used by the FIX-02 story-advance / chapter-end tests: scene-start
+ * (no interaction, next -> scene-b) -> scene-b (no interaction, next ->
+ * ending-end, an ENDING therefore no next SCENE).
+ */
+function makeNoInteractionChapter(): string {
+  const dir = mkdtempSync(join(tmpdir(), 'dev009-fix02-'));
+  cpSync(fixture, dir, { recursive: true });
+  writeFileSync(
+    join(dir, 'scenes', 'scene-start.json'),
+    JSON.stringify(
+      {
+        id: 'scene-start',
+        visualSceneId: 'vs-start',
+        narration: ['你站在森林入口。'],
+        characters: [
+          { characterId: 'npc-guide', slot: 'CENTER', expression: 'smile', visible: true },
+        ],
+        next: 'scene-b',
+        hostPolicy: 'ALLOWED',
+      },
+      null,
+      2,
+    ) + '\n',
+  );
+  writeFileSync(
+    join(dir, 'scenes', 'scene-b.json'),
+    JSON.stringify(
+      {
+        id: 'scene-b',
+        visualSceneId: 'vs-start',
+        narration: ['你深入森林。'],
+        characters: [{ characterId: 'npc-guide', slot: 'CENTER', visible: true }],
+        next: 'ending-end',
+        hostPolicy: 'ALLOWED',
+      },
+      null,
+      2,
+    ) + '\n',
+  );
+  writeFileSync(
+    join(dir, 'story.graph.json'),
+    JSON.stringify(
+      {
+        nodes: [
+          { id: 'scene-start', kind: 'SCENE', file: 'scenes/scene-start.json' },
+          { id: 'scene-b', kind: 'SCENE', file: 'scenes/scene-b.json' },
+          { id: 'ending-end', kind: 'ENDING', file: 'endings/ending-end.json' },
+        ],
+      },
+      null,
+      2,
+    ) + '\n',
+  );
+  writeFileSync(
+    join(dir, 'interactions', 'interaction-a.json'),
+    JSON.stringify({
+      id: 'interaction-a',
+      openDurationMs: 15000,
+      choices: [],
+      diceMode: 'PER_ACTION_GROUP',
+      resultPolicy: 'none',
+      nextScene: 'scene-b',
+      noParticipationPolicy: { kind: 'SKIP' },
+    }) + '\n',
+  );
+  // drop the interaction-based/interaction-boss files (scenes are now interaction-free)
+  rmSync(join(dir, 'interactions', 'interaction-01.json'), { force: true });
+  rmSync(join(dir, 'interactions', 'interaction-boss.json'), { force: true });
+  rmSync(join(dir, 'boss', 'boss-tyrant.json'), { force: true });
+  // disclose scene-b so PASS6 stays green
+  const hostPath = join(dir, 'host.public.json');
+  const host = JSON.parse(readFileSync(hostPath, 'utf8')) as {
+    sceneDisclosures: Record<string, unknown>;
+  };
+  host.sceneDisclosures['scene-b'] = {
+    locationLabel: '森林深处',
+    knownFactIds: [],
+    tensionKey: 'calm',
+  };
+  writeFileSync(hostPath, JSON.stringify(host, null, 2) + '\n');
+  return dir;
+}
+
+function storyOf(actor: ReturnType<typeof createRuntimeMachine>): string {
+  return (actor.getSnapshot().value as Record<string, unknown>).story as string;
+}
 
 describe('createRuntimeMachine end-to-end (T009)', () => {
   it('constructs with default ports (no real systems needed)', () => {
@@ -106,6 +198,24 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     returned[0]!.type = 'TAMPERED';
     expect(getEventLog(actor).length).toBe(before);
     expect(getEventLog(actor)[0]!.type).not.toBe('TAMPERED');
+  });
+
+  it('no-interaction STORY advances to the next scene then reaches CHAPTER_END (FIX-02/A10)', () => {
+    const dir = makeNoInteractionChapter();
+    const actor = createRuntimeMachine({ chapterRootDir: dir, seed: 's-noint' });
+    actor.send({ type: 'BOOT' });
+    // scene-start: no interaction, next -> scene-b
+    expect(storyOf(actor)).toBe('STORY_PLAYING');
+
+    // first STORY.DONE -> (no interaction, hasNextScene) TRANSITION -> scene-b -> STORY_PLAYING
+    actor.send({ type: 'STORY.DONE' });
+    expect(storyOf(actor)).toBe('STORY_PLAYING');
+
+    // second STORY.DONE -> scene-b has no next SCENE (next is ENDING) -> CHAPTER_END
+    // (without the FIX-02 scene advance, this would loop on scene-start forever)
+    actor.send({ type: 'STORY.DONE' });
+    expect(storyOf(actor)).toBe('CHAPTER_END');
+    expect(getStoryPhase(getRuntimeSnapshot(actor))).toBe('CHAPTER_END');
   });
 });
 

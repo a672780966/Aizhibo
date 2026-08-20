@@ -226,3 +226,51 @@ NONE。
 | FIX-A04 | PASS | AUDIO `PLAYING_HOST`/`ERROR` 可达测试通过，AUDIO 六态全被测试覆盖；`audioRegion.ts` 未改动 |
 
 原 A01–A07、A09、A13–A21 维持首轮已通过判定（未改动相关代码）。A10/A11/A12 的重论证据见上。
+
+---
+
+# DEV-009-FIX-02 第三轮（FIX_PACKAGE 0078）
+
+## 失败原因引用
+
+`specs/dev/DEV-009/VERDICT.md`（第二轮）Finding F-05（BLOCKING）：STORY_PLAYING 无互动分支
+（`onToTransition` / `onTransitionAdvance`）从不调用 `resolveNextScene`、不更新 `currentSceneId`，无
+互动场景永远原地循环，无法推进下一场景或 `CHAPTER_END`。AUDITOR 已独立构造真实 fixture 复现。F-01–F-04
+已 RESOLVED，本轮不重论证。
+
+## 本轮改动（FIX-02-T01，最小改动）
+
+- `storyRegion.ts` `STORY_PLAYING` 的 `'STORY.DONE'` 转移，在 `storyHasInteraction` 分支之后新增
+  `hasNextScene → TRANSITION`（`onToTransition`）与 `→ CHAPTER_END`（`onChapterEnd`）两个分支，比照
+  `RESULT_PLAYING` 的 `'NARRATIVE.DONE'` 分流模式。未改动 `storyHasInteraction`/`interactionResolved`
+  等既有 guard。
+- `machine.ts` `onToTransition` 比照 `onNextScene` 实现模式：`resolveNextScene(compiled,
+  currentSceneId, snapshot.world)` 得 `next`，`storyMove(TRANSITION, STORY.PLAYING_ENDED,
+  {nextScene})` 产事件，返回含 `currentSceneId: next ?? currentSceneId`。`onNextScene`/
+  `hasNextScene`/`resolveNextScene` 本体与 `onTransitionAdvance` 均未改动。
+- 新增测试：
+  - `storyRegion.test.ts`：结构性断言 `STORY.DONE` 现为三分支（storyHasInteraction→INTERACTION_PENDING、
+    hasNextScene→TRANSITION、→CHAPTER_END）。
+  - `machine.test.ts`：构建一个**临时无互动章节**（`os.tmpdir()` 下手写，`valid-minimal` 未被改动；
+    `scene-start`(无 interaction, next→scene-b) → `scene-b`(无 interaction, next→ending-end/ENDING)），
+    驱动 `BOOT → STORY.DONE → STORY.DONE`：先推进到 `scene-b`（`STORY_PLAYING`，否则原地循环），再因
+    `scene-b` 无下一 SCENE 而 `CHAPTER_END`（证明 `currentSceneId` 真实推进而非停留 `scene-start`）。
+
+## 命令重跑（清空 `packages/*/dist` 与 `*.tsbuildinfo` 后严格按序）
+
+| 命令 | 结果 | 关键输出 |
+|---|---|---|
+| pnpm install | PASS | 退出码 0 |
+| pnpm typecheck | PASS | `tsc -b && tsc -b --noEmit`，退出码 0 |
+| pnpm lint | PASS | `eslint .`，0 error / 0 warning，退出码 0 |
+| pnpm format:check | PASS | `All matched files use Prettier code style!`，退出码 0 |
+| pnpm build | PASS | `tsc -b`，退出码 0 |
+| pnpm test | PASS | `Test Files 67 passed (67)` / `Tests 388 passed (388)`，退出码 0；新增 2 条断言，既有 386 零回归 |
+
+## Acceptance 结果（本轮，A10 重新论证）
+
+| # | 结果 | 证据 |
+|---|---|---|
+| FIX-A01 | PASS | 无互动 `STORY_PLAYING --STORY.DONE-->` 先推进到下一场景（`scene-b`）而非原地循环，随后在无下一 SCENE 时转入 `CHAPTER_END`（machine.test.ts FIX-02 集成测试 + storyRegion.test.ts 结构性三分支断言）；既有 storyRegion/machine/interactionRegion/audioRegion 用例零回归 |
+
+原 A01–A09、A11–A21（含 FIX-01 的 FIX-A01–A04）维持已通过判定（未改动相关代码）。A10 的证据见上。

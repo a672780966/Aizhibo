@@ -118,6 +118,17 @@ describe('storyRegion (T005 + FIX-T02)', () => {
     expect(resolveNextScene(compiled, 's1', flagsOff)).toBe('fallback');
   });
 
+  it('STORY.DONE routes the no-interaction case by hasNextScene to TRANSITION or CHAPTER_END (FIX-02)', () => {
+    const done = (
+      storyRegion.states as { STORY_PLAYING: { on: { 'STORY.DONE': Record<string, unknown>[] } } }
+    ).STORY_PLAYING.on['STORY.DONE'] as Record<string, string>[];
+    expect(done).toHaveLength(3);
+    expect(done[0]!.guard).toBe('storyHasInteraction');
+    expect(done[1]!.guard).toBe('hasNextScene');
+    expect(done[1]!.target).toBe('TRANSITION');
+    expect(done[2]!.target).toBe('CHAPTER_END');
+  });
+
   it('STORY enters ERROR when chapter compilation fails (FIX-T02)', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: '/nonexistent/definitely-missing-dir',

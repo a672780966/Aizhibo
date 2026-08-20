@@ -17,20 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-006 — Action Resolution Engine（PASS 4）（待下发）
+DEV-006 — Action Resolution Engine（PASS 4）（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 均 `DONE`（接口冻结）。
-DEV-005 首轮 `AUDIT_PASS`（消息 `0058`），`NODE_RULING: PASS`（消息 `0059`）。下一可下发节点为
-DEV-006，依赖 DEV-004/DEV-005 均已满足。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-006`（消息 `0060`）已下发，Codex 施工中。
 
-新包 `packages/dice-engine` 已冻结：`fnv1a32`（FNV-1a 哈希派生骰子点数）、`parseDiceNotation`、
-`rollRaw`/`drawDie`、`resolveModifiers`、`resolveQuality`/`rollDice`，均为纯函数，无有状态 PRNG。
+本节点不新建包，追加式扩展 `packages/rule-engine`（参与规模判定 + Action Resolution 编排）与 `packages/chapter-compiler`（PASS4 Rule Coverage）。不掷骰、不实际应用效果——只消费 `dice-engine` 的结果类型、只返回 `worldEffects`/`playerEffects` 供 Kernel 后续应用。
 
 ## Current Task Package
 
-无（DEV-006 `TASK_PACKAGE` 待 Commander 起草下发）
+`specs/tasks/TASK-PACKAGE-DEV-006.md` ＋ 权威输入 Dev Spec 第 9/24/65 节、`packages/chapter-schema`（action.ts/result.ts/manifest.ts 冻结类型）、`packages/dice-engine`（`DiceRollResult` 类型对齐，不调用其函数）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`
 
@@ -59,7 +56,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：
 
 ## In Progress Nodes
 
-无。
+- DEV-006 — Action Resolution Engine（PASS 4）
 
 ## Blocked Nodes
 
@@ -73,7 +70,8 @@ DEV-005 — Dice Engine（2026-08-20）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-006 — Action Resolution Engine（PASS 4）（依赖 DEV-004/DEV-005 均已 `DONE`，待下发）
+1. DEV-006 — Action Resolution Engine（PASS 4）（IN_PROGRESS）
+2. DEV-033 — Narrative Composer（待 DEV-006 PASS）
 
 ## Project-level Blockers
 
@@ -184,6 +182,7 @@ DEV-005 — Dice Engine（2026-08-20）
 | 2026-08-20 | 收到 DEV-005 `NODE_REPORT`（消息 `0057`，`git_head` `3f19f55...`）：六条命令严格顺序全部退出码 0，53 files/313 tests（dice-engine 新增 33 条，既有 280 条零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0058`）：**PASS**。全部 Requirement/Acceptance VERIFIED 或 PASS，红线检查（A08，禁止非确定性随机源）独立通过，0 BLOCKING（Info: 2，LEDGER 落盘顺序观察 + 包级 tsconfig references 与 DEV-004 先例的判断分歧，均不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0059`，`verdict_ref: "0058"`）：**DEV-005 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-006 |
+| 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-006`（消息 `0060`）：不新建包，追加式扩展 `rule-engine`（参与规模判定 + Action Resolution 编排，含第 9 节 `ResolveInput`/`ResolveResult`）与 `chapter-compiler`（PASS4 Rule Coverage），T001–T008，A01–A20；明确本节点不掷骰、不实际应用效果，`mapsTo` 只跟一跳；记录 `ResolveInput.playerStateSummary` 省略决策（形状从未定义、无消费者）与 `worldState` 保留决策（零成本传递既有类型）；DEV-006 转 `IN_PROGRESS` |
 
 ## Authority
 

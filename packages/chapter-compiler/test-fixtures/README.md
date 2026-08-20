@@ -55,3 +55,16 @@
 
 新增目录均复制自 `valid-minimal`（主要编辑 `host.public.json`，host-isolation-leak 同步编辑
 endings/scenes/results 制造隔离性场景），纯 JSON 无生成脚本；各自通过 PASS1–PASS5（A19）。
+
+## DEV-006（PASS 4 Rule Coverage）
+
+- `coverage-gap/` — PASS 4 反例：复制自 `graph-clean`（经 SCOPE_RULING `0062` 修正后本身为
+  PASS4-clean），仅把可达 `action-follow` 所用 `results/result-follow.json` 的 `SPECIAL` 条目改回
+  `unreachable: true`。`dice-standard` 仍能摸到 `SPECIAL`（阈值 20-20），因此 PASS1–PASS3/PASS5/PASS6
+  全部通过，仅在 PASS4 层面触发 `UNREACHABLE_BUT_ROLLABLE`。
+- `coverage-clean` 正例**不新建**：复用经 `0062` 修正后的 `graph-clean`（PASS4-clean，可直接作为
+  正例），符合 Task Package §3“若确认某既有 fixture 已满足可省略改为直接复用”。
+- `valid-minimal`/`graph-clean`/`host-clean` 的 `results/result-fight.json`/`result-follow.json`：
+  经 `SCOPE_RULING 0062` 解除 Read-only 后，把 `SPECIAL` 的 `unreachable: true` 修正为完整结果条目
+  （镜像各文件 `GREAT_SUCCESS` 形状，`resultId` 新起，`narrativeId` 复用既有 `narr-follow-success`），
+  使三套 clean fixture 名副其实地 PASS4-clean。

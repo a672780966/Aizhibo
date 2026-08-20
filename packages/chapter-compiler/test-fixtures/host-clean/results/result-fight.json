@@ -34,6 +34,13 @@
       "narrativeId": "narr-follow-success",
       "visibility": "PUBLIC"
     },
-    { "quality": "SPECIAL", "unreachable": true }
+    {
+      "quality": "SPECIAL",
+      "resultId": "res-fight-special",
+      "worldEffects": [],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-success",
+      "visibility": "PUBLIC"
+    }
   ]
 }

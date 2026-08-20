@@ -1,0 +1,21 @@
+{
+  "id": "scene-tavern",
+  "visualSceneId": "vs-start",
+  "narration": ["酒馆里炉火正旺。"],
+  "characters": [],
+  "next": "scene-forest",
+  "guards": [
+    {
+      "when": {
+        "path": {
+          "container": "flags",
+          "key": "tavernVisited"
+        },
+        "op": "EXISTS"
+      },
+      "goto": "ending-nice",
+      "priority": 1
+    }
+  ],
+  "hostPolicy": "ALLOWED"
+}

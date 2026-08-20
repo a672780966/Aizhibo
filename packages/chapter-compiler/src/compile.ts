@@ -5,6 +5,7 @@ import type {
   GraphIssue,
   StateIssue,
   HiddenInfoIssue,
+  RuleCoverageIssue,
 } from './types.js';
 import { loadChapterPack } from './loader.js';
 import {
@@ -31,6 +32,7 @@ import { checkFlagExhaustiveness, checkSceneCoverage } from './pass6Exhaustivene
 import { checkIsolation } from './pass6Isolation.js';
 import { checkDisclosureSafety } from './pass6Disclosure.js';
 import { buildForbiddenLexicon, type ForbiddenLexicon } from './pass6ForbiddenLexicon.js';
+import { checkRuleCoverage } from './pass4RuleCoverage.js';
 
 export interface Pass1Result {
   schemaResult: SchemaValidationResult;
@@ -49,6 +51,7 @@ export interface CompileResult {
   graphIssues: GraphIssue[];
   stateIssues: StateIssue[];
   hiddenInfoIssues: HiddenInfoIssue[];
+  ruleCoverageIssues: RuleCoverageIssue[];
   passed: boolean;
 }
 
@@ -76,6 +79,7 @@ export function compile(rootDir: string): CompileResult {
   const pass3 = runPass3(pass1.schemaResult);
   const pass5 = runPass5(pass1.schemaResult, pass3);
   const pass6 = runPass6(pass1.schemaResult, pass3);
+  const ruleCoverageIssues = runPass4(pass1.schemaResult, pass3);
   const graphIssues = buildGraphIssues(pass3, pass1.schemaResult);
   const stateIssues = buildStateIssues(pass5, pass1.schemaResult);
   const hiddenInfoIssues = pass6.issues;
@@ -86,7 +90,8 @@ export function compile(rootDir: string): CompileResult {
     pass2.referenceIssues.length === 0 &&
     graphIssues.length === 0 &&
     stateIssues.length === 0 &&
-    hiddenInfoIssues.length === 0;
+    hiddenInfoIssues.length === 0 &&
+    ruleCoverageIssues.length === 0;
   return {
     loadIssues: issues,
     schemaResult: pass1.schemaResult,
@@ -95,8 +100,16 @@ export function compile(rootDir: string): CompileResult {
     graphIssues,
     stateIssues,
     hiddenInfoIssues,
+    ruleCoverageIssues,
     passed,
   };
+}
+
+export function runPass4(
+  schemaResult: SchemaValidationResult,
+  pass3: Pass3Result,
+): RuleCoverageIssue[] {
+  return checkRuleCoverage(schemaResult, pass3);
 }
 
 export interface Pass6Result {

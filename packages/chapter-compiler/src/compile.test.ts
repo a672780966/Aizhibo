@@ -2,6 +2,7 @@ import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { compile, runPass1, runPass2, runPass3, runPass5, runPass6 } from './compile.js';
 import { countSchemaFailures } from './pass1Schema.js';
+import { checkRuleCoverage } from './pass4RuleCoverage.js';
 import { loadChapterPack } from './loader.js';
 import type { RawChapterPack } from './types.js';
 
@@ -333,5 +334,45 @@ describe('PASS 6 hidden information integration (DEV-002A)', () => {
       expect({ fixture, trapCycles: pass3.trapCycles }).toEqual({ fixture, trapCycles: [] });
       expect({ fixture, state: pass5.unsatisfiable }).toEqual({ fixture, state: [] });
     }
+  });
+});
+
+describe('PASS 4 rule coverage integration (DEV-006 / T006)', () => {
+  it('graph-clean (fIXed per SCOPE_RULING 0062) is PASS4-clean', () => {
+    const result = compile(`${fixtureRoot}/graph-clean`);
+    expect(result.ruleCoverageIssues).toEqual([]);
+    expect(result.passed).toBe(true);
+  });
+
+  it('valid-minimal is PASS4-clean after the SPECIAL result fix', () => {
+    const result = compile(`${fixtureRoot}/valid-minimal`);
+    expect(result.ruleCoverageIssues).toEqual([]);
+    expect(result.passed).toBe(true);
+  });
+
+  it('host-clean is PASS4-clean after the SPECIAL result fix', () => {
+    const result = compile(`${fixtureRoot}/host-clean`);
+    expect(result.ruleCoverageIssues).toEqual([]);
+    expect(result.passed).toBe(true);
+  });
+
+  it('coverage-gap: rollable-but-unreachable quality blocks passed with UNREACHABLE_BUT_ROLLABLE', () => {
+    const result = compile(`${fixtureRoot}/coverage-gap`);
+    expect(result.passed).toBe(false);
+    expect(result.ruleCoverageIssues.length).toBeGreaterThan(0);
+    expect(result.ruleCoverageIssues.every((i) => i.category === 'UNREACHABLE_BUT_ROLLABLE')).toBe(
+      true,
+    );
+    // other passes stay green; only PASS4 fires for this fixture
+    expect(result.graphIssues).toEqual([]);
+    expect(result.stateIssues).toEqual([]);
+  });
+
+  it('single reachable action is reported once even with multiple referencing interactions', () => {
+    const { raw } = loadChapterPack(`${fixtureRoot}/coverage-gap`);
+    const pass1 = runPass1(raw);
+    const pass3 = runPass3(pass1.schemaResult);
+    const issues = checkRuleCoverage(pass1.schemaResult, pass3);
+    expect(issues.filter((i) => i.message.includes('action-follow')).length).toBe(1);
   });
 });

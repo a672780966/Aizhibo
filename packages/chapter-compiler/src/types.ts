@@ -94,3 +94,12 @@ export interface HiddenInfoIssue {
   message: string;
   file: string;
 }
+
+export type RuleCoverageIssueCategory = 'UNREACHABLE_BUT_ROLLABLE';
+
+export interface RuleCoverageIssue {
+  category: RuleCoverageIssueCategory;
+  severity: ReferenceIssueSeverity;
+  message: string;
+  file: string;
+}

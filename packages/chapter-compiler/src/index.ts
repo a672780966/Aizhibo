@@ -18,3 +18,4 @@ export * from './pass6Exhaustiveness.js';
 export * from './pass6Isolation.js';
 export * from './pass6Disclosure.js';
 export * from './pass6ForbiddenLexicon.js';
+export * from './pass4RuleCoverage.js';

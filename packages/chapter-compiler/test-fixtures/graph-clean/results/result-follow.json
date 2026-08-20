@@ -57,7 +57,20 @@
     },
     {
       "quality": "SPECIAL",
-      "unreachable": true
+      "resultId": "res-follow-special",
+      "worldEffects": [
+        {
+          "path": {
+            "container": "flags",
+            "key": "forestClear"
+          },
+          "op": "SET",
+          "value": true
+        }
+      ],
+      "playerEffects": [],
+      "narrativeId": "narr-follow-success",
+      "visibility": "PUBLIC"
     }
   ]
 }

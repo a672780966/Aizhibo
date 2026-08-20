@@ -1,0 +1,6 @@
+{
+  "id": "voice-guide",
+  "kind": "SPEECH",
+  "source": "RUNTIME_TTS",
+  "ttsSpec": { "voiceId": "voice-zh-female", "voiceSettings": {} }
+}

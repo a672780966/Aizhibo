@@ -1,0 +1,12 @@
+{
+  "id": "dice-standard",
+  "diceType": "d20",
+  "qualityThresholds": [
+    { "quality": "DISASTER", "min": 1, "max": 4 },
+    { "quality": "FAILURE", "min": 5, "max": 9 },
+    { "quality": "COSTLY_SUCCESS", "min": 10, "max": 13 },
+    { "quality": "SUCCESS", "min": 14, "max": 17 },
+    { "quality": "GREAT_SUCCESS", "min": 18, "max": 19 },
+    { "quality": "SPECIAL", "min": 20, "max": 20 }
+  ]
+}

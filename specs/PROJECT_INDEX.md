@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-007 — Chapter Simulator（DONE，接口冻结，`verdict_ref: "0084"`）
+DEV-010 — Persistence（`TASK_PACKAGE` 已发出，消息 `0086`，节点 `IN_PROGRESS`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 均 `DONE`（接口冻结）。DEV-010（Persistence）为下一可下发节点，只依赖已冻结的 DEV-009，留待下一轮起草 `TASK_PACKAGE`。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 均 `DONE`（接口冻结）。DEV-010 已下发（首次创建 `packages/persistence`，只建 4 张表，`node:sqlite` 写穿透 LKG，追加式扩展 `runtime-kernel`），等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-007.md` ＋ 权威输入 Dev Spec 第 61/65/69 节（Simulation Test / G02）、`DAG.md` CR-004
+`specs/tasks/TASK-PACKAGE-DEV-010.md` ＋ 权威输入 Dev Spec 第 15/18/50 节（ViewerState / LKG / Persistence 表）、`DAG.md` CR-017（含本轮起草时的执行澄清）
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`
 
 ## 通信协议
 
@@ -58,7 +58,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-010 — Persistence（`TASK_PACKAGE` 消息 `0086`）
 
 ## Blocked Nodes
 
@@ -70,7 +70,7 @@ DEV-007 — Chapter Simulator（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-010（Persistence）具备下发条件（只依赖已冻结的 DEV-009），留待下一轮起草 `TASK_PACKAGE`。
+DEV-010 `IN_PROGRESS` 中，本字段暂空。
 
 ## Project-level Blockers
 
@@ -201,6 +201,7 @@ DEV-010（Persistence）具备下发条件（只依赖已冻结的 DEV-009），
 | 2026-08-21 | 收到 DEV-007 `NODE_REPORT`（消息 `0083`，`git_head` `ef58165...`）：六条命令严格顺序全部退出码 0，70 files/396 tests（simulator 新增，既有零回归），50 局 `valid-minimal` 全部 `CHAPTER_END`，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0084`）：**PASS**。独立重跑六条命令一致；`git diff --stat 2ee7a9e ef58165` 核实恰 13 文件/605 行新增/0 删除，与 Writable Scope 精确一致；`machine.ts`/`index.ts` 纯追加，既有冻结文件/`valid-minimal`/`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 均零 diff；A14 分裂投票语义回溯 `resolveGroups` 分组逻辑确认有效；A01–A22 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`DECISIONS.md` 额外文档观察，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0085`，`verdict_ref: "0084"`）：**DEV-007 转 DONE，接口冻结**（新增 Simulator 公开接口：`getCurrentChoiceIds`/`virtualClockPort`/`virtualPlatformPort`/`generateVotes`/`runSimulation`/`SimulationReport`/`SimulationRunResult`；DEV-009 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-010（Persistence），只依赖已冻结的 DEV-009 |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-010`（消息 `0086`）：首次创建 `packages/persistence`；核实 `RuntimeSnapshot` 不透明设计无法直接持久化后，确定用 XState 原生 `getPersistedSnapshot`/`createActor(machine,{snapshot})` 作为 `persistence` 与 `runtime-kernel` 之间唯一耦合点（追加式扩展 `machine.ts`/`index.ts`）；LKG 策略定为"写穿透"，不做事件回放（回放留给 DEV-011）；只建 4 张表（`runtime_sessions`/`runtime_events`/`runtime_snapshots`/`viewer_states`），其余 6 张延后到各自首个真实消费节点；澄清 CR-017：`host_viewer_memory`/`host_running_jokes` 目前无已定义 shape，建表本身延后至 DEV-054，列约束对该节点仍强制有效（已同步更新 `DAG.md` CR-017 条目）；`node:sqlite`（Node 内置）避免新增 npm 依赖；`getHealth()` 允许用 `Date.now()`（澄清确定性红线不适用于运维遥测）；T001–T009，A01–A23；DEV-010 转 `IN_PROGRESS` |
 | 2026-08-20 | 收到 DEV-009 `NODE_REPORT`（消息 `0071`，`git_head` `cc40360...`）：六条命令严格顺序全部退出码 0，67 files/380 tests（runtime-kernel 新增 25 条，既有 355 条零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0072`）：`AUDIT_FAIL`。F-01 BLOCKING（A08：`index.ts` 经 `RuntimeContext`/`getSnapshot()` 结构性泄漏内部 Snapshot，独立 `tsc --strict` 验证泄漏真实可用，违反本节点 Forbidden Scope 明文条目）；F-02 BLOCKING（A10：`resolveGuard` 从未被调用、`scene.guards` 被忽略，`compile()` 失败→ERROR 路径无行为测试）；F-03 BLOCKING（A11：多 ActionGroup 并存无测试，`resolveGroups` 实现本身经独立脚本验证正确，纯测试缺口）；F-04 BLOCKING（A12：AUDIO `PLAYING_HOST`/`ERROR` 两态从未被测试进入）；六条命令独立重跑一致，Scope 纪律/DEV-008 冻结边界/`DECISIONS.md` 覆盖度均核验通过（Info: 3，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: FAIL`（消息 `0073`，`verdict_ref: "0072"`）：F-01–F-04 全部转 FIX，节点转 `FIX_REQUIRED` |

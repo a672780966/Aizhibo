@@ -36,7 +36,7 @@
 | 10 | DEV-033 | Narrative Composer ⬆ | DEV-006 | DONE |
 | 11 | DEV-009 | XState Runtime Kernel | DEV-008, DEV-006, DEV-033 | DONE |
 | 12 | DEV-007 | Chapter Simulator（PASS 8）⬇ | DEV-009 | DONE |
-| 13 | DEV-010 | Persistence | DEV-009 | TODO |
+| 13 | DEV-010 | Persistence | DEV-009 | IN_PROGRESS |
 | 14 | DEV-011 | Deterministic Replay | DEV-010 | TODO |
 | 15 | DEV-012 | Runtime API | DEV-011 | TODO |
 
@@ -50,6 +50,14 @@
 |---|---|---|
 | DEV-002A | Outputs 增加 `ForbiddenLexicon`（每场景禁言词表，随 Runtime Bundle 发布） | CR-010 |
 | DEV-010 | 观众相关表（`viewer_states` / `host_viewer_memory` / `host_running_jokes`）必含 `platform` 列与 `created_at` / `last_seen_at`；保留策略为**按平台配置**而非硬编码。**不实现 purge job**（属 DEV-054 / DEV-081） | CR-017 |
+
+### CR-017 执行澄清（DEV-010 起草时，2026-08-21）
+
+`viewer_states` 的 shape 已由 Dev Spec 第 15 节完整定义，本节点如期建表。但
+`host_viewer_memory`/`host_running_jokes` 目前**没有任何已定义的 shape**（AI Host 记忆模型是
+DEV-054 的产物，M5 尚未开工）——在毫无 shape 依据的情况下建表纯属猜测列结构，属于"为假设中的未来
+需求设计"。处置：**这两张表的建表本身延后到 DEV-054**，CR-017 的列约束（`platform` +
+`created_at`/`last_seen_at`）作为**对 DEV-054 未来建表的强制约束**继续有效，不因延后而失效。
 | DEV-012 | Outputs 增加：`PresentationCommand` 信封（含单调 `commandSeq`）、`PRESENTATION_RESYNC`、`RENDERER_HELLO`、`REQUEST_RESYNC`、`getPresentationState()` 投影函数（**必须派生，不得另存**） | CR-012 |
 
 M1 结束时三个对外契约全部冻结：Runtime Event（DEV-008）、Public State 可见性分区（DEV-009）、Presentation Command（DEV-012）。

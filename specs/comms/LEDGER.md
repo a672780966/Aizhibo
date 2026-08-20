@@ -105,6 +105,7 @@
 | 0083 | NODE_REPORT | OPENCODE | AUDITOR | DEV-007 | 0082 | CLOSED | Chapter Simulator 施工完成，六条命令全绿，50 局 valid-minimal 全部 CHAPTER_END；git_head=ef5816591431ea6d300600b8d507f15b2d497765 |
 | 0084 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-007 | 0083 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，DECISIONS 额外文档观察） |
 | 0085 | NODE_RULING | COMMANDER | ALL | DEV-007 | 0084 | CLOSED | ruling: PASS；DEV-007 转 DONE，接口冻结 |
+| 0086 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-010 | — | ISSUED | Persistence（首次创建 packages/persistence；只建 4 张表；node:sqlite 写穿透 LKG；追加式扩展 runtime-kernel 的 getPersistedSnapshot/restoreRuntimeMachine） |
 
 ---
 

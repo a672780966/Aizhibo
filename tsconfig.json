@@ -5,6 +5,7 @@
     { "path": "./packages/chapter-schema" },
     { "path": "./packages/runtime-kernel" },
     { "path": "./packages/chapter-compiler" },
-    { "path": "./packages/rule-engine" }
+    { "path": "./packages/rule-engine" },
+    { "path": "./packages/dice-engine" }
   ]
 }

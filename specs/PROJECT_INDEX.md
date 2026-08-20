@@ -17,15 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-005 — Dice Engine（待下发）
+DEV-005 — Dice Engine（IN_PROGRESS）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-005` 待起草下发。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-005`（消息 `0056`）已下发，Codex 施工中。
+
+新包 `packages/dice-engine`，依赖 `chapter-schema` + `rule-engine`。确定性骰子摸点用 FNV-1a 哈希派生，不用有状态 PRNG，`Math.random()` 为唯一"测试全过也判 BLOCKING"的红线。
 
 ## Current Task Package
 
-（待起草）`specs/tasks/TASK-PACKAGE-DEV-005.md`
+`specs/tasks/TASK-PACKAGE-DEV-005.md` ＋ 权威输入 Dev Spec 第 8/65 节、`packages/chapter-schema/src/dice.ts`（冻结类型来源）、`packages/runtime-kernel/src/diceEvent.ts`（字段对齐参照，不直接依赖）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）
 
@@ -53,7 +55,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004 历史记录：`specs/t
 
 ## In Progress Nodes
 
-无。
+- DEV-005 — Dice Engine
 
 ## Blocked Nodes
 
@@ -67,7 +69,8 @@ DEV-004 — State Rule Engine（2026-08-18）
 
 按 DAG Rev 2 执行序：
 
-1. DEV-005 — Dice Engine（依赖 DEV-002，已满足）
+1. DEV-005 — Dice Engine（IN_PROGRESS）
+2. DEV-006 — Action Resolution Engine（PASS 4）（待 DEV-004/DEV-005 均 PASS）
 
 ## Project-level Blockers
 
@@ -174,6 +177,7 @@ DEV-004 — State Rule Engine（2026-08-18）
 | 2026-08-18 | 收到 FIX-01 第二轮 `NODE_REPORT`（消息 `0053`，`git_head` `290d7c9...`）：`DECISIONS.md` 已以新提交入库，`84832f0` 未受任何改动，转交 `AUDITOR` 复核 |
 | 2026-08-18 | `AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0054`）：**PASS**。独立核实 `290d7c9` 为该文件首次入库、非 `--amend`、内容与首轮所见逐字一致，`REPORT.md` 证据引用断链已消除；原 A01–A15/A17/A18 无回归，0 BLOCKING |
 | 2026-08-18 | 发出 `NODE_RULING: PASS`（消息 `0055`，`verdict_ref: "0054"`）：**DEV-004 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-005 |
+| 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-005`（消息 `0056`）：新包 `packages/dice-engine`，依赖 chapter-schema + rule-engine；确定性骰子摸点（FNV-1a 哈希派生，无有状态 PRNG）+ Modifier 求值 + Quality 判定，T001–T008，A01–A21；`Math.random()` 定为唯一"测试全过也判 BLOCKING"红线；记录一处已知未认领的编译期缺口（qualityThresholds 覆盖/重叠校验），如实记录不擅自补做；DEV-005 转 `IN_PROGRESS` |
 
 ## Authority
 

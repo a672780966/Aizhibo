@@ -18,6 +18,7 @@ import {
 import { presentationRegion } from './presentationRegion.js';
 import { audioRegion } from './audioRegion.js';
 import { hostRegion, platformRegion, safetyRegion } from './placeholderRegions.js';
+import type { Snapshot } from 'xstate';
 
 export interface RuntimeContext {
   ports: Ports;
@@ -395,4 +396,25 @@ export function getCurrentChoiceIds(actor: RuntimeActor): string[] {
     (entry) => entry.value.id === scene.interactionId,
   )?.value;
   return interaction?.choices.map((choice) => choice.id) ?? [];
+}
+
+/** Return XState's complete persisted actor state without exposing its shape. */
+export function getPersistedSnapshot(actor: RuntimeActor): unknown {
+  return (actor as RuntimeActor & { getPersistedSnapshot(): unknown }).getPersistedSnapshot();
+}
+
+/** Restore a runtime actor from an XState persisted snapshot. */
+export function restoreRuntimeMachine(input: {
+  ports?: Partial<Ports>;
+  chapterRootDir: string;
+  seed: string;
+  persisted: unknown;
+}): RuntimeActor {
+  const ports: Ports = { ...defaultPorts, ...(input.ports ?? {}) };
+  const actor = createActor(makeRuntimeMachine(ports, input.chapterRootDir, input.seed), {
+    snapshot: input.persisted as Snapshot<unknown>,
+  });
+  actor.start();
+  (actor as InternalActor).getSnapshot().context.ports = ports;
+  return actor as RuntimeActor;
 }

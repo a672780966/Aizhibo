@@ -15,3 +15,4 @@ export { virtualClockPort, virtualPlatformPort } from './virtualPorts.js';
 export { generateVotes } from './simulatorVotes.js';
 export { runSimulation } from './simulator.js';
 export type { SimulationReport, SimulationRunResult } from './simulator.js';
+export { getPersistedSnapshot, restoreRuntimeMachine } from './machine.js';

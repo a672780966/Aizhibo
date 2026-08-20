@@ -63,6 +63,15 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/persistence:
+    dependencies:
+      '@interactive-story/runtime-kernel':
+        specifier: workspace:*
+        version: link:../runtime-kernel
+      '@interactive-story/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/rule-engine:
     dependencies:
       '@interactive-story/chapter-schema':

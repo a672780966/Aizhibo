@@ -54,6 +54,15 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/narrative-composer:
+    dependencies:
+      '@interactive-story/chapter-schema':
+        specifier: workspace:*
+        version: link:../chapter-schema
+      '@interactive-story/rule-engine':
+        specifier: workspace:*
+        version: link:../rule-engine
+
   packages/rule-engine:
     dependencies:
       '@interactive-story/chapter-schema':

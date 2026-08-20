@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-009 — XState Runtime Kernel（待起草 TASK_PACKAGE）
+DEV-009 — XState Runtime Kernel（`TASK_PACKAGE` 已发出，消息 `0070`，节点 `IN_PROGRESS`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。下一可下发节点为 DEV-009，`TASK_PACKAGE` 尚未起草。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。DEV-009 已下发，等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-033.md` ＋ 权威输入 Dev Spec 第 12/13 节、`SPEC-ADDENDUM-001.md` §A7（`ResultNarrative`/`NarrativeBlock` 冻结类型来源）
+`specs/tasks/TASK-PACKAGE-DEV-009.md` ＋ 权威输入 Dev Spec 第 5–8 节、`DAG.md` CR-004/CR-005/CR-008
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`
 
 ## 通信协议
 
@@ -56,7 +56,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 历史�
 
 ## In Progress Nodes
 
-无。
+- DEV-009 — XState Runtime Kernel（`TASK_PACKAGE` 消息 `0070`）
 
 ## Blocked Nodes
 
@@ -68,9 +68,7 @@ DEV-033 — Narrative Composer（2026-08-20）
 
 ## Next Eligible Nodes
 
-按 DAG Rev 2 执行序：
-
-1. DEV-009 — XState Runtime Kernel（依赖 DEV-008/DEV-006/DEV-033 均已 `DONE`，已满足；`TASK_PACKAGE` 尚未起草）
+DEV-009 `IN_PROGRESS` 中，本字段暂空。按 DAG Rev 2 执行序，DEV-009 PASS 后下一可下发节点为 DEV-007（Chapter Simulator）与 DEV-010（Persistence），两者均只依赖 DEV-009。
 
 ## Project-level Blockers
 
@@ -191,6 +189,7 @@ DEV-033 — Narrative Composer（2026-08-20）
 | 2026-08-20 | 收到 DEV-033 `NODE_REPORT`（消息 `0067`，`git_head` `49ed11c...`）：六条命令严格顺序全部退出码 0，59 files/355 tests（narrative-composer 新增 16 条，既有 339 条零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0068`）：**PASS**。A01–A16 全部 VERIFIED 或 PASS，红线检查（LLM/NLP/tone 依赖）grep 独立通过，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，`DECISIONS.md` D7 与 D3 内容重叠，纯文档观察不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0069`，`verdict_ref: "0068"`）：**DEV-033 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-009（涉及多项已批准 CR，起草 `TASK_PACKAGE` 前需重新核对相关章节，留待下一轮单独处理） |
+| 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-009`（消息 `0070`）：追加式扩展既有冻结包 `packages/runtime-kernel`；落实 CR-005（Region 重建模：STORY/INTERACTION 完整实现，PRESENTATION/AUDIO 骨架，HOST/PLATFORM/SAFETY 占位）、CR-004（四个 IO Port 接口 + 默认空实现，供 DEV-007 未来原样复用只换实现）、CR-008（Runtime Snapshot 采用不透明品牌类型 + 具名访问器落实类型层可见性分区，而非逐字段标注系统）；DICE.ROLLED/PUBLISHED 事件节奏定为简化版（同一转移内依次产出），真实节奏控制留给 DEV-037；T001–T011，A01–A21；DEV-009 转 `IN_PROGRESS` |
 
 ## Authority
 

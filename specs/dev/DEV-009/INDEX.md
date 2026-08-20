@@ -80,10 +80,14 @@ Replay 校验逻辑（DEV-011）
 - [x] T009 根机器组装
 - [x] T010 Event Log 累积（改动并入 T009 同批）
 - [x] T011 全量验证 + REPORT + commit + NODE_REPORT
+- [x] FIX-T01 收窄 Snapshot 公开类型面（F-01 / A08）
+- [x] FIX-T02 STORY guard 分支接入 + ERROR 路径测试（F-02 / A10）
+- [x] FIX-T03 多 ActionGroup 并存测试（F-03 / A11）
+- [x] FIX-T04 AUDIO 状态可达性测试（F-04 / A12）
 
 ## Current Task
 
-—（T001–T011 全部完成（T010 并入 T009 同批提交），节点 READY_FOR_REVIEW，已发 NODE_REPORT 给 AUDITOR）
+—（T001–T011 + FIX-T01–T04 全部完成，节点 READY_FOR_REVIEW，已发第二轮 NODE_REPORT 给 AUDITOR）
 
 ## Exit Criteria
 

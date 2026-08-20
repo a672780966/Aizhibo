@@ -9,4 +9,4 @@ export { presentationRegion } from './presentationRegion.js';
 export { audioRegion } from './audioRegion.js';
 export { hostRegion, platformRegion, safetyRegion } from './placeholderRegions.js';
 export { createRuntimeMachine, getRuntimeSnapshot, getEventLog } from './machine.js';
-export type { RuntimeContext, RootEvent } from './machine.js';
+export type { RuntimeActor, RootEvent } from './machine.js';

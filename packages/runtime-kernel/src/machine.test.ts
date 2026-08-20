@@ -15,6 +15,17 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     expect(getStoryPhase(getRuntimeSnapshot(actor))).toBe('BOOT');
   });
 
+  it('public actor surface does not leak internal snapshot structure (FIX-T01 / A08)', () => {
+    const actor = createRuntimeMachine({ chapterRootDir: '/tmp/none', seed: 's2' });
+    const ctx = actor.getSnapshot().context; // typed as unknown — opaque
+    // @ts-expect-error — the public context is opaque; internal fields are unreachable
+    const leak = ctx.snapshot.world.flags;
+    void leak;
+    // @ts-expect-error — and not even the snapshot itself is reachable
+    const leak2 = ctx.snapshot;
+    void leak2;
+  });
+
   it('runs the full chain: load -> scene -> interaction -> votes -> resolve -> narrative -> end', () => {
     const presentation: unknown[] = [];
     const audio: unknown[] = [];

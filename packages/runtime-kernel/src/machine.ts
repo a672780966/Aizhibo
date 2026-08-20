@@ -129,7 +129,8 @@ function interactionMove(
  */
 export interface RuntimeActor {
   send(event: RootEvent): void;
-  getSnapshot(): { value: unknown; context: RuntimeContext };
+  /** `context` is intentionally opaque (`unknown`) so the internal snapshot structure never leaks. */
+  getSnapshot(): { value: unknown; context: unknown };
 }
 
 export function createRuntimeMachine(input: {
@@ -228,7 +229,7 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
       onNextScene: assign(({ context }) => {
         const next =
           context.compiled !== null
-            ? resolveNextScene(context.compiled, context.currentSceneId)
+            ? resolveNextScene(context.compiled, context.currentSceneId, context.snapshot.world)
             : undefined;
         const emitted = storyMove(context, 'TRANSITION', 'STORY.RESULT_DONE', { nextScene: next });
         return { ...emitted, currentSceneId: next ?? context.currentSceneId };
@@ -352,17 +353,25 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
       interactionResolved: ({ context }) => context.snapshot.interactionPhase === 'RESOLVED',
       hasNextScene: ({ context }) =>
         context.compiled !== null &&
-        resolveNextScene(context.compiled, context.currentSceneId) !== undefined,
+        resolveNextScene(context.compiled, context.currentSceneId, context.snapshot.world) !==
+          undefined,
     },
   });
 }
 
 /** Read the current opaque runtime snapshot from the actor. */
 export function getRuntimeSnapshot(actor: RuntimeActor): RuntimeSnapshot {
-  return wrapSnapshot(actor.getSnapshot().context.snapshot);
+  const ctx = (actor as InternalActor).getSnapshot().context;
+  return wrapSnapshot(ctx.snapshot);
 }
 
 /** Read-only, copy-safe view of the accumulated event log. */
 export function getEventLog(actor: RuntimeActor): readonly RuntimeEvent[] {
-  return actor.getSnapshot().context.eventLog.map((e) => ({ ...e }));
+  const ctx = (actor as InternalActor).getSnapshot().context;
+  return ctx.eventLog.map((e) => ({ ...e }));
+}
+
+/** Package-internal actor view: the real context shape, not part of the public surface. */
+interface InternalActor {
+  getSnapshot(): { value: unknown; context: RuntimeContext };
 }

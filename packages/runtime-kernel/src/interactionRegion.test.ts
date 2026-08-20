@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { compile } from '@interactive-story/chapter-compiler';
+import type { InteractionNode } from '@interactive-story/chapter-schema';
 import {
   applyVote,
   buildNarrativeInputs,
@@ -72,5 +73,39 @@ describe('interactionRegion pure logic (T006)', () => {
     const { resultNarratives, blocksById } = buildNarrativeInputs(compiled);
     expect(resultNarratives.has('narr-follow-success')).toBe(true);
     expect(typeof blocksById.get('block-follow-success')?.text).toBe('string');
+  });
+
+  it('resolves two concurrent ActionGroups with independent dice + resolved results (FIX-T03 / A11)', () => {
+    const compiled = compile(fixture);
+    const world = compiled.schemaResult.initialState.passed!;
+    // hand-built interaction with two choices referencing actions that exist in the
+    // already-compiled chapter (action-follow / action-fight); no fixture modified.
+    const multi: InteractionNode = {
+      id: 'i-multi',
+      openDurationMs: 15000,
+      choices: [
+        { id: 'A', label: 'follow', actionType: 'FOLLOW', ruleId: 'action-follow' },
+        { id: 'B', label: 'fight', actionType: 'FIGHT', ruleId: 'action-fight' },
+      ],
+      diceMode: 'PER_ACTION_GROUP',
+      resultPolicy: 'multi',
+      nextScene: 'x',
+      noParticipationPolicy: { kind: 'SKIP' },
+    };
+    const outcome = resolveGroups(
+      compiled,
+      { u1: 'A', u2: 'B', u3: 'B' },
+      world,
+      'seed-multi',
+      9,
+      multi,
+    );
+    // two votes-populated groups -> two independent dice records and resolutions
+    expect(outcome.diceRecords).toHaveLength(2);
+    expect(outcome.resolved).toHaveLength(2);
+    const actionIds = outcome.resolved.map((r) => r.actionId).sort();
+    expect(actionIds).toEqual(['action-fight', 'action-follow']);
+    // each group's dice record is independent (distinct seed via group index)
+    expect(outcome.diceRecords[0]).not.toEqual(outcome.diceRecords[1]);
   });
 });

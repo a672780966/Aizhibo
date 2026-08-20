@@ -165,3 +165,64 @@ NONE。
 - **`getHealth()`（CR-019 / DECISIONS D9）**：本节点仅以访问器满足最低健康查询；统一形态由 DEV-061 规划。
 - **公开读投影 `getPublicState()`**：真正的 Public/Hidden 投影是 DEV-050（M5）职责，消费 `host.public.json`；
   本节点只提供"防止意外全量暴露"的不透明类型护栏（CR-008 中间防线）。
+
+---
+
+# DEV-009-FIX-01 第二轮（FIX_PACKAGE 0074）
+
+## 失败原因引用
+
+`specs/dev/DEV-009/VERDICT.md` Findings F-01–F-04（全部 BLOCKING），经 `NODE_RULING 0073` 转 FIX，
+按 `FIX_PACKAGE 0074`（DEV-009-FIX-01）修复。
+
+## 本轮改动（4 个 FIX Task，最小改动，不重开已通过部分）
+
+- **FIX-T01（F-01 / A08）Snapshot 收窄**：
+  - `index.ts:12` 不再导出 `RuntimeContext`（`RootEvent`/`RuntimeActor` 不含 `InternalSnapshot` 结构，
+    保留导出）。
+  - `machine.ts` `RuntimeActor.getSnapshot()` 的 `context` 字段类型改为 `unknown`；新增包内私有
+    `InternalActor` 接口（`context: RuntimeContext`），`getRuntimeSnapshot`/`getEventLog` 在实现内
+    `as InternalActor` 访问真实结构，公开类型签名不再传导 `InternalSnapshot`。
+  - `machine.test.ts` 新增 `@ts-expect-error` 测试：`actor.getSnapshot().context` 无法当作含
+    `snapshot.world` 的对象访问。
+  - `snapshot.ts` 的 `RuntimeSnapshot`/访问器设计（D3）未改动。
+  - **FIX-A01 验证**：临时脚本从包入口仅 `import type { RuntimeSnapshot }` 并尝试访问 `world`/
+    `sequenceCounter`、`import type` `RuntimeContext`/`InternalSnapshot`，`tsc --strict --noEmit`
+    全部产生类型错误（`@ts-expect-error` 均被消费、无 TS2578 未用告警）；脚本已删除（verification
+    留证于本段记录）。
+- **FIX-T02（F-02 / A10）guard 接入 + ERROR 测试**：
+  - `storyRegion.ts` `resolveNextScene(compiled, sceneId, world)`：`scene.guards` 非空时先调
+    `rule-engine.resolveGuard(scene.guards, world)`，命中则用其 `goto`，未命中回退 `scene.next`/
+    interaction.next。`machine.ts` 两个调用点传入 `context.snapshot.world`。
+  - `storyRegion.test.ts` 新增：匹配 guard 的场景转移目标由 guard `goto`（`guarded-next`）决定而非
+    `next`（`fallback`）；以及用不存在的 `chapterRootDir` 驱动 `BOOT` 使 STORY 转入 `ERROR`。
+- **FIX-T03（F-03 / A11）多 ActionGroup 测试**：
+  - `interactionRegion.test.ts` 新增：手写含两 choice（`action-follow`/`action-fight`）的
+    `InteractionNode` + 覆盖两 choice 的投票，`resolveGroups` 产出 2 个独立 dice record + 2 个
+    `ResolveResult`（actionId 分别为二者），证明多 ActionGroup 并存路径被实际驱动。`resolveGroups`
+    实现本体与 `valid-minimal` fixture 均未改动。
+- **FIX-T04（F-04 / A12）AUDIO 覆盖**：
+  - `audioRegion.test.ts` 新增：`AUDIO.PREPARE→READY→PLAY_HOST` 到达 `PLAYING_HOST`；
+    `AUDIO.PREPARE→FAIL` 到达 `ERROR`。`audioRegion.ts` 状态图本体未改动。
+
+## 命令重跑（清空 `packages/*/dist` 与 `*.tsbuildinfo` 后严格按序）
+
+| 命令 | 结果 | 关键输出 |
+|---|---|---|
+| pnpm install | PASS | 退出码 0 |
+| pnpm typecheck | PASS | `tsc -b && tsc -b --noEmit`，退出码 0 |
+| pnpm lint | PASS | `eslint .`，0 error / 0 warning，退出码 0 |
+| pnpm format:check | PASS | `All matched files use Prettier code style!`，退出码 0 |
+| pnpm build | PASS | `tsc -b`，退出码 0 |
+| pnpm test | PASS | `Test Files 67 passed (67)` / `Tests 386 passed (386)`，退出码 0；新增 6 条断言，既有 380 零回归 |
+
+## Acceptance 结果（本轮 FIX，A08/A10/A11/A12 重新论证）
+
+| # | 结果 | 证据 |
+|---|---|---|
+| FIX-A01 | PASS | 包入口不导出 `RuntimeContext`/`InternalSnapshot`；`RuntimeActor.getSnapshot().context` 为 `unknown`；临时脚本 `tsc --strict --noEmit` 外部面访问内部字段产生类型错误（见上），`machine.test.ts` `@ts-expect-error` 证明 |
+| FIX-A02 | PASS | `resolveNextScene` guard 分支测试（命中 → `guarded-next`，未命中 → `fallback`）+ ERROR 路径测试通过；既有 storyRegion/machine 用例零回归 |
+| FIX-A03 | PASS | 多 ActionGroup 并存测试通过（2 dice record + 2 ResolveResult）；`resolveGroups` 与 fixture 未改动 |
+| FIX-A04 | PASS | AUDIO `PLAYING_HOST`/`ERROR` 可达测试通过，AUDIO 六态全被测试覆盖；`audioRegion.ts` 未改动 |
+
+原 A01–A07、A09、A13–A21 维持首轮已通过判定（未改动相关代码）。A10/A11/A12 的重论证据见上。

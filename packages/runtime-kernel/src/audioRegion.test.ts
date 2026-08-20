@@ -37,4 +37,20 @@ describe('audioRegion skeleton (T007)', () => {
     actor.send({ type: 'AUDIO.UNDUCK' });
     expect((actor.getSnapshot().value as Record<string, unknown>).audio).toBe('PLAYING_STORY');
   });
+
+  it('reaches PLAYING_HOST via PREPARE->READY->PLAY_HOST (FIX-T04)', () => {
+    const actor = createRuntimeMachine({ chapterRootDir: '/tmp/none', seed: 's-host' });
+    actor.send({ type: 'AUDIO.PREPARE' });
+    actor.send({ type: 'AUDIO.READY' });
+    expect((actor.getSnapshot().value as Record<string, unknown>).audio).toBe('PLAYING_STORY');
+    actor.send({ type: 'AUDIO.PLAY_HOST' });
+    expect((actor.getSnapshot().value as Record<string, unknown>).audio).toBe('PLAYING_HOST');
+  });
+
+  it('reaches ERROR via PREPARE->FAIL (FIX-T04)', () => {
+    const actor = createRuntimeMachine({ chapterRootDir: '/tmp/none', seed: 's-err' });
+    actor.send({ type: 'AUDIO.PREPARE' });
+    actor.send({ type: 'AUDIO.FAIL' });
+    expect((actor.getSnapshot().value as Record<string, unknown>).audio).toBe('ERROR');
+  });
 });

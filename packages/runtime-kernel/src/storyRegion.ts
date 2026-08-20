@@ -1,5 +1,6 @@
 import type { CompileResult } from '@interactive-story/chapter-compiler';
-import type { SceneNode } from '@interactive-story/chapter-schema';
+import type { SceneNode, WorldState } from '@interactive-story/chapter-schema';
+import { resolveGuard } from '@interactive-story/rule-engine';
 
 /** The scene currently being performed (by id), retrieved from compiled data. */
 export function currentScene(
@@ -27,17 +28,25 @@ export function entrySceneId(compiled: CompileResult | null | undefined): string
 export function resolveNextScene(
   compiled: CompileResult | null | undefined,
   sceneId: string,
+  world: WorldState,
 ): string | undefined {
   const scene = currentScene(compiled, sceneId);
   if (scene === undefined) return undefined;
+
+  // guard-first: a matching SceneGuard's `goto` wins over the raw `next`
   let next: string | undefined;
-  if (scene.interactionId !== undefined) {
-    const interaction = compiled?.schemaResult.interactions.passed.find(
-      (i) => i.value.id === scene.interactionId,
-    )?.value;
-    next = interaction?.nextScene;
-  } else {
-    next = scene.next;
+  if (scene.guards !== undefined && scene.guards.length > 0) {
+    next = resolveGuard(scene.guards, world);
+  }
+  if (next === undefined) {
+    if (scene.interactionId !== undefined) {
+      const interaction = compiled?.schemaResult.interactions.passed.find(
+        (i) => i.value.id === scene.interactionId,
+      )?.value;
+      next = interaction?.nextScene;
+    } else {
+      next = scene.next;
+    }
   }
   if (next === undefined) return undefined;
   // only advance into another SCENE node; a BOSS/ENDING hop ends the chapter loop

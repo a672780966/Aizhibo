@@ -17,11 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-009 — XState Runtime Kernel（`TASK_PACKAGE` 已发出，消息 `0070`，节点 `IN_PROGRESS`）
+DEV-009 — XState Runtime Kernel（`FIX_PACKAGE DEV-009-FIX-01` 已发出，消息 `0074`，节点 `FIX_REQUIRED` → `IN_PROGRESS`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。DEV-009 已下发，等待 Codex 施工。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。DEV-009 首轮审计 `AUDIT_FAIL`（4 BLOCKING：A08 Snapshot 结构性泄漏、A10 guard 未接入/ERROR 无测试、A11 多 ActionGroup 无测试、A12 AUDIO 状态可达性缺口），`FIX_PACKAGE DEV-009-FIX-01` 已下发，等待 Codex 第二轮施工。
 
 ## Current Task Package
 
@@ -56,7 +56,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-- DEV-009 — XState Runtime Kernel（`TASK_PACKAGE` 消息 `0070`）
+- DEV-009 — XState Runtime Kernel（`FIX_REQUIRED` → `IN_PROGRESS`，`FIX_PACKAGE` 消息 `0074`）
 
 ## Blocked Nodes
 
@@ -68,7 +68,7 @@ DEV-033 — Narrative Composer（2026-08-20）
 
 ## Next Eligible Nodes
 
-DEV-009 `IN_PROGRESS` 中，本字段暂空。按 DAG Rev 2 执行序，DEV-009 PASS 后下一可下发节点为 DEV-007（Chapter Simulator）与 DEV-010（Persistence），两者均只依赖 DEV-009。
+DEV-009 `FIX_REQUIRED`/`IN_PROGRESS`（FIX-01）中，本字段暂空。按 DAG Rev 2 执行序，DEV-009 PASS 后下一可下发节点为 DEV-007（Chapter Simulator）与 DEV-010（Persistence），两者均只依赖 DEV-009。
 
 ## Project-level Blockers
 
@@ -190,6 +190,10 @@ DEV-009 `IN_PROGRESS` 中，本字段暂空。按 DAG Rev 2 执行序，DEV-009 
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0068`）：**PASS**。A01–A16 全部 VERIFIED 或 PASS，红线检查（LLM/NLP/tone 依赖）grep 独立通过，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，`DECISIONS.md` D7 与 D3 内容重叠，纯文档观察不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0069`，`verdict_ref: "0068"`）：**DEV-033 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-009（涉及多项已批准 CR，起草 `TASK_PACKAGE` 前需重新核对相关章节，留待下一轮单独处理） |
 | 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-009`（消息 `0070`）：追加式扩展既有冻结包 `packages/runtime-kernel`；落实 CR-005（Region 重建模：STORY/INTERACTION 完整实现，PRESENTATION/AUDIO 骨架，HOST/PLATFORM/SAFETY 占位）、CR-004（四个 IO Port 接口 + 默认空实现，供 DEV-007 未来原样复用只换实现）、CR-008（Runtime Snapshot 采用不透明品牌类型 + 具名访问器落实类型层可见性分区，而非逐字段标注系统）；DICE.ROLLED/PUBLISHED 事件节奏定为简化版（同一转移内依次产出），真实节奏控制留给 DEV-037；T001–T011，A01–A21；DEV-009 转 `IN_PROGRESS` |
+| 2026-08-20 | 收到 DEV-009 `NODE_REPORT`（消息 `0071`，`git_head` `cc40360...`）：六条命令严格顺序全部退出码 0，67 files/380 tests（runtime-kernel 新增 25 条，既有 355 条零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0072`）：`AUDIT_FAIL`。F-01 BLOCKING（A08：`index.ts` 经 `RuntimeContext`/`getSnapshot()` 结构性泄漏内部 Snapshot，独立 `tsc --strict` 验证泄漏真实可用，违反本节点 Forbidden Scope 明文条目）；F-02 BLOCKING（A10：`resolveGuard` 从未被调用、`scene.guards` 被忽略，`compile()` 失败→ERROR 路径无行为测试）；F-03 BLOCKING（A11：多 ActionGroup 并存无测试，`resolveGroups` 实现本身经独立脚本验证正确，纯测试缺口）；F-04 BLOCKING（A12：AUDIO `PLAYING_HOST`/`ERROR` 两态从未被测试进入）；六条命令独立重跑一致，Scope 纪律/DEV-008 冻结边界/`DECISIONS.md` 覆盖度均核验通过（Info: 3，均不影响判定） |
+| 2026-08-21 | 发出 `NODE_RULING: FAIL`（消息 `0073`，`verdict_ref: "0072"`）：F-01–F-04 全部转 FIX，节点转 `FIX_REQUIRED` |
+| 2026-08-21 | 发出 `FIX_PACKAGE DEV-009-FIX-01`（消息 `0074`）：四个最小 Task——收窄 `index.ts`/`RuntimeActor` 的 Snapshot 公开类型面（不得改动 `snapshot.ts` 既有设计）、STORY 接入 `resolveGuard` + 补 ERROR 路径测试、补多 ActionGroup 并存测试（不改 `resolveGroups` 实现）、补 AUDIO `PLAYING_HOST`/`ERROR` 可达性测试；不重开已通过的 A01–A07/A09/A13–A21；节点转 `IN_PROGRESS` |
 
 ## Authority
 

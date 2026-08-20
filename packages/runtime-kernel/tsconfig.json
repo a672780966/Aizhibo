@@ -4,5 +4,12 @@
     "outDir": "dist",
     "rootDir": "src"
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "references": [
+    { "path": "../chapter-schema" },
+    { "path": "../chapter-compiler" },
+    { "path": "../rule-engine" },
+    { "path": "../dice-engine" },
+    { "path": "../narrative-composer" }
+  ]
 }

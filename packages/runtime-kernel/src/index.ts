@@ -1,2 +1,12 @@
 export * from './event.js';
 export * from './diceEvent.js';
+export * from './ports.js';
+export type { RuntimeSnapshot } from './snapshot.js';
+export { getStoryPhase, getInteractionPhase, getSequenceNumber, wrapSnapshot } from './snapshot.js';
+export { storyRegion, currentScene, firstSceneId, resolveNextScene } from './storyRegion.js';
+export { interactionRegion, applyVote, resolveGroups } from './interactionRegion.js';
+export { presentationRegion } from './presentationRegion.js';
+export { audioRegion } from './audioRegion.js';
+export { hostRegion, platformRegion, safetyRegion } from './placeholderRegions.js';
+export { createRuntimeMachine, getRuntimeSnapshot, getEventLog } from './machine.js';
+export type { RuntimeContext, RootEvent } from './machine.js';

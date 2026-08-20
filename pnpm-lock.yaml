@@ -71,6 +71,24 @@ importers:
 
   packages/runtime-kernel:
     dependencies:
+      '@interactive-story/chapter-compiler':
+        specifier: workspace:*
+        version: link:../chapter-compiler
+      '@interactive-story/chapter-schema':
+        specifier: workspace:*
+        version: link:../chapter-schema
+      '@interactive-story/dice-engine':
+        specifier: workspace:*
+        version: link:../dice-engine
+      '@interactive-story/narrative-composer':
+        specifier: workspace:*
+        version: link:../narrative-composer
+      '@interactive-story/rule-engine':
+        specifier: workspace:*
+        version: link:../rule-engine
+      xstate:
+        specifier: ^5.32.5
+        version: 5.32.5
       zod:
         specifier: ^4.4.3
         version: 4.4.3
@@ -854,6 +872,9 @@ packages:
     resolution: {integrity: sha512-BN22B5eaMMI9UMtjrGd5g5eCYPpCPDUy0FJXbYsaT5zYxjFOckS53SQDE3pWkVoWpHXVb3BrYcEN4Twa55B5cA==}
     engines: {node: '>=0.10.0'}
 
+  xstate@5.32.5:
+    resolution: {integrity: sha512-ULazi1oe6wGrXl0Frb6otSlkm5HLifbbVTkMk5kkSKqz4TkxJaVpnl6jOJwKeid3ORPxYyZQgNLUSYX9q65SIA==}
+
   yocto-queue@0.1.0:
     resolution: {integrity: sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==}
     engines: {node: '>=10'}
@@ -1517,6 +1538,8 @@ snapshots:
       stackback: 0.0.2
 
   word-wrap@1.2.5: {}
+
+  xstate@5.32.5: {}
 
   yocto-queue@0.1.0: {}
 

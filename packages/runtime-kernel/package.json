@@ -15,6 +15,12 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "zod": "^4.4.3"
+    "zod": "^4.4.3",
+    "xstate": "^5.32.5",
+    "@interactive-story/chapter-schema": "workspace:*",
+    "@interactive-story/chapter-compiler": "workspace:*",
+    "@interactive-story/rule-engine": "workspace:*",
+    "@interactive-story/dice-engine": "workspace:*",
+    "@interactive-story/narrative-composer": "workspace:*"
   }
 }

@@ -17,13 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-033 — Narrative Composer（IN_PROGRESS）
+DEV-009 — XState Runtime Kernel（待起草 TASK_PACKAGE）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-033`（消息 `0066`）已下发，Codex 施工中。
-
-新包 `packages/narrative-composer`，依赖 `chapter-schema` + `rule-engine`。规范对 PRIMARY/SUPPORT/CONTEXT/DEFERRED 分级算法描述模糊，Commander 已在任务包内做出 6 条解释性设计决策并要求逐一记入 DECISIONS.md，不留给 Codex 自行解释。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。下一可下发节点为 DEV-009，`TASK_PACKAGE` 尚未起草。
 
 ## Current Task Package
 
@@ -54,10 +52,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 历史�
 - DEV-004 — State Rule Engine（DONE，`verdict_ref: "0054"`，`git_head` `290d7c9a0ef7ca5ae63ce60859dcf6d598d5ccab`）
 - DEV-005 — Dice Engine（DONE，`verdict_ref: "0058"`，`git_head` `3f19f5529468440a75aba134b71126e0a0323e6f`）
 - DEV-006 — Action Resolution Engine（PASS 4）（DONE，`verdict_ref: "0064"`，`git_head` `dc9f47f0a2ef5f415e9e63379f1310ad32c78bb1`）
+- DEV-033 — Narrative Composer（DONE，`verdict_ref: "0068"`，`git_head` `49ed11c1591f71bb69029c7db1ed7298adaad4a5`）
 
 ## In Progress Nodes
 
-- DEV-033 — Narrative Composer
+无。
 
 ## Blocked Nodes
 
@@ -65,14 +64,13 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 历史�
 
 ## Last Accepted Node
 
-DEV-006 — Action Resolution Engine（PASS 4）（2026-08-20）
+DEV-033 — Narrative Composer（2026-08-20）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-033 — Narrative Composer（IN_PROGRESS）
-2. DEV-009 — XState Runtime Kernel（待 DEV-033 PASS；另需 DEV-008/DEV-006 均已 `DONE`，已满足）
+1. DEV-009 — XState Runtime Kernel（依赖 DEV-008/DEV-006/DEV-033 均已 `DONE`，已满足；`TASK_PACKAGE` 尚未起草）
 
 ## Project-level Blockers
 
@@ -190,6 +188,9 @@ DEV-006 — Action Resolution Engine（PASS 4）（2026-08-20）
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0064`）：**PASS**。全部 Requirement/Acceptance VERIFIED 或 PASS，独立核实 BLK-005/BLK-006 处置严格按 `0062` 执行、未越权，0 BLOCKING（Info: 2，narrativeId 复用偏差 + LEDGER 落盘顺序观察，均不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0065`，`verdict_ref: "0064"`）：**DEV-006 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-033 |
 | 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-033`（消息 `0066`）：新包 `packages/narrative-composer`，依赖 chapter-schema + rule-engine；澄清 Dev Spec 第 12 节 PRIMARY/SUPPORT/CONTEXT/DEFERRED 与第 13 节 PREFIX/SUPPORT/PRIMARY/URGENCY/TRANSITION 是两个不同轴（前者是多条叙事同时产生时的分主次，后者是单条叙事内部的槱位结构，已由 ADDENDUM §A7 落地）；核实 SceneNode 无 tone 字段，不做 tone 匹配；本节点解释性设计决策数量为全项目最多，6 条规则直接写入任务包第 9 节，不留给 Codex 自行解释；DEV-033 转 `IN_PROGRESS` |
+| 2026-08-20 | 收到 DEV-033 `NODE_REPORT`（消息 `0067`，`git_head` `49ed11c...`）：六条命令严格顺序全部退出码 0，59 files/355 tests（narrative-composer 新增 16 条，既有 339 条零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0068`）：**PASS**。A01–A16 全部 VERIFIED 或 PASS，红线检查（LLM/NLP/tone 依赖）grep 独立通过，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，`DECISIONS.md` D7 与 D3 内容重叠，纯文档观察不影响判定） |
+| 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0069`，`verdict_ref: "0068"`）：**DEV-033 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-009（涉及多项已批准 CR，起草 `TASK_PACKAGE` 前需重新核对相关章节，留待下一轮单独处理） |
 
 ## Authority
 

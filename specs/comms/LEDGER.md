@@ -82,6 +82,9 @@
 | 0060 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-006 | — | CLOSED | Action Resolution Engine（PASS 4）（Codex 开工，节点转 IN_PROGRESS） |
 | 0061 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-006 | 0060 | CLOSED | blocking: BLK-005 + BLK-006，待 SCOPE_RULING（见 specs/dev/DEV-006/BLOCKERS.md） |
 | 0062 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-006 | 0061 | CLOSED | BLK-005 裁决：方案①（补全 6 个 result-*.json 的 SPECIAL 条目）；BLK-006 裁决：方案 B（本地 ResolveRollResult，不 import dice-engine，豁免 T002 #2/T004 #1） |
+| 0063 | NODE_REPORT | OPENCODE | AUDITOR | DEV-006 | 0062 | CLOSED | DEV-006 施工完成，READY_FOR_REVIEW |
+| 0064 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-006 | 0063 | CLOSED | AUDIT_PASS：0 BLOCKING，Info 2（narrativeId 复用偏差 + 落盘顺序观察） |
+| 0065 | NODE_RULING | COMMANDER | ALL | DEV-006 | 0064 | CLOSED | ruling: PASS；DEV-006 转 DONE，接口冻结 |
 
 ---
 
@@ -89,6 +92,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0062 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

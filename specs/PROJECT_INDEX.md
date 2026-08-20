@@ -17,19 +17,18 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-006 — Action Resolution Engine（PASS 4）（IN_PROGRESS）
+DEV-033 — Narrative Composer（待下发）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 均 `DONE`（接口冻结）。`TASK-PACKAGE-DEV-006`（消息 `0060`）已下发，Codex 施工中。
-
-本节点不新建包，追加式扩展 `packages/rule-engine`（参与规模判定 + Action Resolution 编排）与 `packages/chapter-compiler`（PASS4 Rule Coverage）。不掷骰、不实际应用效果——只消费 `dice-engine` 的结果类型、只返回 `worldEffects`/`playerEffects` 供 Kernel 后续应用。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 均 `DONE`（接口冻结）。
+`TASK-PACKAGE-DEV-033` 待 Commander 起草下发。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-006.md` ＋ 权威输入 Dev Spec 第 9/24/65 节、`packages/chapter-schema`（action.ts/result.ts/manifest.ts 冻结类型）、`packages/dice-engine`（`DiceRollResult` 类型对齐，不调用其函数）
+（待下发，见上）
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）
 
 ## 通信协议
 
@@ -53,10 +52,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：
 - DEV-002A — Hidden Information Validator（PASS 6）（DONE，`verdict_ref: "0046"`，`git_head` `871865475768f0f5aa38ee266dc1b3021328df36`）
 - DEV-004 — State Rule Engine（DONE，`verdict_ref: "0054"`，`git_head` `290d7c9a0ef7ca5ae63ce60859dcf6d598d5ccab`）
 - DEV-005 — Dice Engine（DONE，`verdict_ref: "0058"`，`git_head` `3f19f5529468440a75aba134b71126e0a0323e6f`）
+- DEV-006 — Action Resolution Engine（PASS 4）（DONE，`verdict_ref: "0064"`，`git_head` `dc9f47f0a2ef5f415e9e63379f1310ad32c78bb1`）
 
 ## In Progress Nodes
 
-- DEV-006 — Action Resolution Engine（PASS 4）
+无。
 
 ## Blocked Nodes
 
@@ -64,14 +64,13 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005 历史记录：
 
 ## Last Accepted Node
 
-DEV-005 — Dice Engine（2026-08-20）
+DEV-006 — Action Resolution Engine（PASS 4）（2026-08-20）
 
 ## Next Eligible Nodes
 
 按 DAG Rev 2 执行序：
 
-1. DEV-006 — Action Resolution Engine（PASS 4）（IN_PROGRESS）
-2. DEV-033 — Narrative Composer（待 DEV-006 PASS）
+1. DEV-033 — Narrative Composer（依赖 DEV-006 已 `DONE`，待下发）
 
 ## Project-level Blockers
 
@@ -183,6 +182,11 @@ DEV-005 — Dice Engine（2026-08-20）
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0058`）：**PASS**。全部 Requirement/Acceptance VERIFIED 或 PASS，红线检查（A08，禁止非确定性随机源）独立通过，0 BLOCKING（Info: 2，LEDGER 落盘顺序观察 + 包级 tsconfig references 与 DEV-004 先例的判断分歧，均不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0059`，`verdict_ref: "0058"`）：**DEV-005 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-006 |
 | 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-006`（消息 `0060`）：不新建包，追加式扩展 `rule-engine`（参与规模判定 + Action Resolution 编排，含第 9 节 `ResolveInput`/`ResolveResult`）与 `chapter-compiler`（PASS4 Rule Coverage），T001–T008，A01–A20；明确本节点不掷骰、不实际应用效果，`mapsTo` 只跟一跳；记录 `ResolveInput.playerStateSummary` 省略决策（形状从未定义、无消费者）与 `worldState` 保留决策（零成本传递既有类型）；DEV-006 转 `IN_PROGRESS` |
+| 2026-08-20 | 收到 `EXECUTOR_QUERY`（消息 `0061`，`blocking: true`）：BLK-005（PASS4 使 valid-minimal/graph-clean/host-clean 三套 clean fixture 判为非清洁——d20 能摸到 SPECIAL 但结果标 unreachable，属内容自相矛盾）+ BLK-006（rule-engine 引入 dice-engine 引用与 DEV-005 已冻结的反向引用形成项目引用环，`TS6202`）；节点转 `BLOCKED` |
+| 2026-08-20 | 独立复核后发出 `SCOPE_RULING`（消息 `0062`）：BLK-005 采纳方案①（解锁 6 个 `result-*.json` 文件，补全 SPECIAL 为完整结果条目，不删 dice 阈值）；BLK-006 采纳方案 B（rule-engine 本地定义 `ResolveRollResult`，不 import dice-engine、不加引用，镜像 `DEV-005 DECISIONS D5`"对齐是约定而非类型复用"先例，豁免 T002 #2/T004 #1 字面要求）；节点转回 `IN_PROGRESS` |
+| 2026-08-20 | 收到 DEV-006 `NODE_REPORT`（消息 `0063`，`git_head` `dc9f47f...`）：六条命令全部退出码 0，56 files/339 tests（新增 26 条，既有 313 条零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0064`）：**PASS**。全部 Requirement/Acceptance VERIFIED 或 PASS，独立核实 BLK-005/BLK-006 处置严格按 `0062` 执行、未越权，0 BLOCKING（Info: 2，narrativeId 复用偏差 + LEDGER 落盘顺序观察，均不影响判定） |
+| 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0065`，`verdict_ref: "0064"`）：**DEV-006 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-033 |
 
 ## Authority
 

@@ -10,3 +10,8 @@ export { audioRegion } from './audioRegion.js';
 export { hostRegion, platformRegion, safetyRegion } from './placeholderRegions.js';
 export { createRuntimeMachine, getRuntimeSnapshot, getEventLog } from './machine.js';
 export type { RuntimeActor, RootEvent } from './machine.js';
+export { getCurrentChoiceIds } from './machine.js';
+export { virtualClockPort, virtualPlatformPort } from './virtualPorts.js';
+export { generateVotes } from './simulatorVotes.js';
+export { runSimulation } from './simulator.js';
+export type { SimulationReport, SimulationRunResult } from './simulator.js';

@@ -382,3 +382,17 @@ export function getEventLog(actor: RuntimeActor): readonly RuntimeEvent[] {
 interface InternalActor {
   getSnapshot(): { value: unknown; context: RuntimeContext };
 }
+
+/** Return the publicly visible choices for the actor's current scene. */
+export function getCurrentChoiceIds(actor: RuntimeActor): string[] {
+  const ctx = (actor as InternalActor).getSnapshot().context;
+  if (ctx.compiled === null) return [];
+
+  const scene = currentScene(ctx.compiled, ctx.currentSceneId);
+  if (scene?.interactionId === undefined) return [];
+
+  const interaction = ctx.compiled.schemaResult.interactions.passed.find(
+    (entry) => entry.value.id === scene.interactionId,
+  )?.value;
+  return interaction?.choices.map((choice) => choice.id) ?? [];
+}

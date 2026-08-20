@@ -276,3 +276,116 @@ A10 整体正确性时独立发现一项此前两轮均未被检测到的新缺�
 论证或扩大范围。
 
 我没有修改任何项目业务代码，也没有推进任何后续 DEV 节点。
+
+---
+
+# DEV-009 VERDICT — 第三轮（FIX-02 复核，最终）
+
+> 同样由 `COMMANDER` 依附录 B2 逐字转录 `project-auditor` 输出。本轮复核 `FIX_PACKAGE`
+> 消息 `0078`（`DEV-009-FIX-02`）在第二轮 `AUDIT_VERDICT`（消息 `0076`）判定 F-05 BLOCKING
+> 后的最小修复结果，对应 `NODE_REPORT` 消息 `0079`。字段映射同上。
+
+## Audit Basis
+
+- FIX Package: 消息 `0078`（`DEV-009-FIX-02`），Allowed Files 限
+  `storyRegion.ts`/`machine.ts`/`storyRegion.test.ts`/`machine.test.ts` + 节点文档
+- 前两轮判定基线：本文件第一/二轮部分（A01–A09/A11–A21 + FIX-A01–A04 已 VERIFIED，本轮不重新
+  论证，仅核对无回归；A10 是本轮重新论证的唯一对象）
+- `git_head` 审核锚点（`NODE_REPORT` 消息 `0079` 申报）：`9a8c4656838347f709f6e363288d2cbd97a228ed`，
+  独立 `git rev-parse HEAD` 核对一致；`git merge-base --is-ancestor a4be3c4 9a8c465` 为 true，
+  `cc40360`/`a4be3c4` 两个历史提交 SHA 均未变，非 `--amend`
+
+## Independent Verification
+
+| 命令 | 退出码 | 与 NODE_REPORT 声明一致 |
+|---|---|---|
+| `pnpm install` | 0 | 一致 |
+| `pnpm typecheck` | 0 | 一致 |
+| `pnpm lint` | 0（0 error/0 warning） | 一致 |
+| `pnpm format:check` | 0 | 一致 |
+| `pnpm build` | 0 | 一致 |
+| `pnpm test` | 0，`Test Files 67 passed / Tests 388 passed` | 一致（新增 2 条，既有 386 条零回归） |
+
+## Scope Audit
+
+PASS
+
+- `git show --stat 9a8c465`：13 个文件变更，与信封 `changed_files_count: 13` 逐项吻合。源码改动仅
+  `storyRegion.ts`（+2/-1）与 `machine.ts`（+10/-3，仅 `onToTransition` 一个 action），测试改动仅
+  `storyRegion.test.ts`/`machine.test.ts`，其余为节点文档/Commander 治理文件（既定时序模式）。
+- `onNextScene`/`hasNextScene`/`resolveNextScene`/`onTransitionAdvance` 本体逐行核对：未出现在本轮
+  diff hunk 中，字节级未改动，只有 `onToTransition` 被改写，与 `FIX_PACKAGE 0078` 明文授权一致。
+- `resolveGroups`/`audioRegion.ts`/`snapshot.ts`/`index.ts` 及其余 Region 文件：`git diff a4be3c4
+  9a8c465` 零输出，确认零改动。
+- DEV-008 冻结文件与全部只读包/治理冻结包自节点开工以来全程未被触碰。
+
+## F-05 核心复现验证（独立、决定性证据）
+
+审核员用 `git worktree` 检出 FIX-01 提交 `a4be3c4`（F-05 缺陷尚未修复的源码状态），仅覆盖本轮新增
+的两个测试文件（源码保持 FIX-01 旧版本不变），构建后运行 `vitest run`：两条新测试均**真实失败**
+（`AssertionError: expected 'STORY_PLAYING' to be 'CHAPTER_END'`；guard 分支数 `2≠3`），失败方式与
+第二轮 F-05 描述的"无互动场景原地循环、无法到达 CHAPTER_END"完全吻合。随后在当前 HEAD 重跑同一套
+测试全部通过。排除了"新测试是摆设/弱断言"的可能性，构成决定性证据。临时 worktree 已清理，未对
+仓库产生持久改动。
+
+## Requirement Verification
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| `storyRegion.ts` `STORY_PLAYING`/`STORY.DONE` 新增 `hasNextScene→TRANSITION`/`→CHAPTER_END`，比照 `RESULT_PLAYING` 模式 | VERIFIED | `storyRegion.ts:88-100`，与 `RESULT_PLAYING`（113-120行）结构逐字段一致 |
+| `machine.ts` `onToTransition` 比照 `onNextScene` 计算 `resolveNextScene` 并写入 `currentSceneId` | VERIFIED | `machine.ts:219-227`，对照 `onNextScene`（236-243行） |
+| `onTransitionAdvance` 保持不变 | VERIFIED | diff 未命中，内容与 FIX-01 版本字节相同 |
+| 新增测试证明有下一场景时真实推进 | VERIFIED | `machine.test.ts` 集成测试 + F-05 核心复现验证 |
+| 新增测试证明无下一场景时转 `CHAPTER_END` | VERIFIED | 同一测试用例第二个 `STORY.DONE` 断言 |
+| 未改动只读 fixture | VERIFIED | `valid-minimal/**` 零改动；新章节写入 `os.tmpdir()` 临时目录 |
+
+## Acceptance Results
+
+| # | AUDITOR 判定 | OPENCODE 自报 | 一致 | 证据 |
+|---|---|---|---|---|
+| FIX-A01（两条新测试通过 + 既有零回归 + 六条命令全绿） | PASS | PASS | ✅ | 六条命令独立重跑一致；388/388 |
+| A10（STORY 十态整体转移逻辑，重新论证） | **PASS** | PASS | ✅ | F-05 核心复现验证：旧代码下两测试真实失败，新代码下真实通过 |
+| A01–A09、A11–A21（含 FIX-01 的 FIX-A01–A04） | PASS（无回归） | PASS | ✅ | 相关源码文件自 FIX-01 起零改动；388 条断言含既有 386 条零回归 |
+
+`INCONCLUSIVE` 项：无。
+
+## Undeclared Changes
+
+NONE。13 个变更文件与信封 `changed_files_count: 13` 完全吻合。
+
+## Findings
+
+| ID | 等级 | 内容 | 依据 |
+|---|---|---|---|
+| F-05 | RESOLVED | 第二轮 STORY 无互动分支从未推进场景——FIX-T01（FIX-02）已修复，独立 worktree 复现验证测试在缺陷存在时真实失败、修复后真实通过 | 见"F-05 核心复现验证" |
+| OBS-1 | OBSERVATION | `LEDGER.md` 未提交追加 + `0079` 消息文件未跟踪，系 Exit Procedure 时序设计，与既往节点同一模式，不构成违规 | `git status --porcelain` |
+
+## Verdict
+
+**PASS**（Blocker: 0，Major: 0，Minor: 0；FIX-A01 VERIFIED，A10 VERIFIED，原 A01–A09/A11–A21 及
+FIX-01 的 FIX-A01–A04 均无回归；Info: 1 → OBSERVATION，不影响 PASS）
+
+## Scope Discipline Check
+
+- 是否实现了 Non-goals 中明确禁止的内容：否
+- 是否提前实现了后续节点的内容：否
+- 是否引入了第 70 节禁止清单中的技术：否
+- 是否修改了权限矩阵中不属于自己的文件：否
+- 是否顺手重构了未要求改动的代码：否（`onNextScene`/`hasNextScene`/`resolveNextScene`/
+  `onTransitionAdvance`/`resolveGroups`/`audioRegion.ts`/`snapshot.ts` 均确认未改动）
+
+## Architecture / Regression / Overengineering Audit
+
+三项均 PASS。`onToTransition` 与 `onNextScene` 现为同一纯函数 `resolveNextScene` 的两处结构对称
+调用点，语义完全一致，未引入新架构面或语义不一致；本轮改动为最小必要修复（`storyRegion.ts` +2/-1
+行，`machine.ts` 仅重写 1 个 action），无过度设计；REPORT.md/VERDICT.md 前两轮内容字节级保留，
+纯 append。
+
+## Auditor Statement
+
+我只针对当前授权 DEV-009 节点及其冻结 Task Package、Requirements 和 Acceptance（含本轮
+`FIX_PACKAGE 0078` 明确要求重新论证的 A10/F-05）进行了独立审计。F-05 经独立构造等价场景（临时
+git worktree + 源码/测试拆分 overlay）复现验证确认已被真实修复。原 A01–A09、A11–A21（含 FIX-01 的
+FIX-A01–A04）经逐文件 diff 核对确认无回归。
+
+我没有修改任何项目业务代码，也没有推进任何后续 DEV 节点。

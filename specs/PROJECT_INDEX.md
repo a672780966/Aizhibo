@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-009 — XState Runtime Kernel（`FIX_PACKAGE DEV-009-FIX-02` 已发出，消息 `0078`，节点 `FIX_REQUIRED` → `IN_PROGRESS`）
+DEV-007 — Chapter Simulator（`TASK_PACKAGE` 已发出，消息 `0082`，节点 `IN_PROGRESS`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 均 `DONE`（接口冻结）。DEV-009 首轮 `AUDIT_FAIL`（4 BLOCKING，已全部 FIX-01 修复并独立复核 RESOLVED），第二轮复核又独立发现新 BLOCKING F-05（STORY_PLAYING 无互动分支从未调用 `resolveNextScene`/更新 `currentSceneId`，原地循环无法推进），`FIX_PACKAGE DEV-009-FIX-02` 已下发，等待 Codex 第三轮施工。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009 均 `DONE`（接口冻结）。DEV-007 已下发（追加式扩展 `runtime-kernel`，复用 DEV-009 statechart，仅换 platform/clock 两个 Port），等待 Codex 施工。DEV-010（Persistence）仍为并行可下发节点，留待下一轮。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-009.md` ＋ 权威输入 Dev Spec 第 5–8 节、`DAG.md` CR-004/CR-005/CR-008
+`specs/tasks/TASK-PACKAGE-DEV-007.md` ＋ 权威输入 Dev Spec 第 61/65/69 节（Simulation Test / G02）、`DAG.md` CR-004
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）
 
 ## 通信协议
 
@@ -53,10 +53,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-005 — Dice Engine（DONE，`verdict_ref: "0058"`，`git_head` `3f19f5529468440a75aba134b71126e0a0323e6f`）
 - DEV-006 — Action Resolution Engine（PASS 4）（DONE，`verdict_ref: "0064"`，`git_head` `dc9f47f0a2ef5f415e9e63379f1310ad32c78bb1`）
 - DEV-033 — Narrative Composer（DONE，`verdict_ref: "0068"`，`git_head` `49ed11c1591f71bb69029c7db1ed7298adaad4a5`）
+- DEV-009 — XState Runtime Kernel（DONE，`verdict_ref: "0080"`，`git_head` `9a8c4656838347f709f6e363288d2cbd97a228ed`）
 
 ## In Progress Nodes
 
-- DEV-009 — XState Runtime Kernel（`FIX_REQUIRED` → `IN_PROGRESS`，`FIX_PACKAGE` 消息 `0078`，第三轮）
+- DEV-007 — Chapter Simulator（`TASK_PACKAGE` 消息 `0082`）
 
 ## Blocked Nodes
 
@@ -64,11 +65,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-033 — Narrative Composer（2026-08-20）
+DEV-009 — XState Runtime Kernel（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-009 `FIX_REQUIRED`/`IN_PROGRESS`（FIX-02，第三轮）中，本字段暂空。按 DAG Rev 2 执行序，DEV-009 PASS 后下一可下发节点为 DEV-007（Chapter Simulator）与 DEV-010（Persistence），两者均只依赖 DEV-009。
+DEV-007 `IN_PROGRESS` 中。DEV-010（Persistence）仍具备下发条件（只依赖 DEV-009，与 DEV-007 互不依赖），可在 DEV-007 之前或之后下发，留待下一轮决定顺序。
 
 ## Project-level Blockers
 
@@ -190,6 +191,12 @@ DEV-009 `FIX_REQUIRED`/`IN_PROGRESS`（FIX-02，第三轮）中，本字段暂�
 | 2026-08-20 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0068`）：**PASS**。A01–A16 全部 VERIFIED 或 PASS，红线检查（LLM/NLP/tone 依赖）grep 独立通过，Scope/Regression/Overengineering Audit 均 PASS，0 BLOCKING（Info: 1，`DECISIONS.md` D7 与 D3 内容重叠，纯文档观察不影响判定） |
 | 2026-08-20 | 发出 `NODE_RULING: PASS`（消息 `0069`，`verdict_ref: "0068"`）：**DEV-033 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-009（涉及多项已批准 CR，起草 `TASK_PACKAGE` 前需重新核对相关章节，留待下一轮单独处理） |
 | 2026-08-20 | 起草并发出 `TASK_PACKAGE DEV-009`（消息 `0070`）：追加式扩展既有冻结包 `packages/runtime-kernel`；落实 CR-005（Region 重建模：STORY/INTERACTION 完整实现，PRESENTATION/AUDIO 骨架，HOST/PLATFORM/SAFETY 占位）、CR-004（四个 IO Port 接口 + 默认空实现，供 DEV-007 未来原样复用只换实现）、CR-008（Runtime Snapshot 采用不透明品牌类型 + 具名访问器落实类型层可见性分区，而非逐字段标注系统）；DICE.ROLLED/PUBLISHED 事件节奏定为简化版（同一转移内依次产出），真实节奏控制留给 DEV-037；T001–T011，A01–A21；DEV-009 转 `IN_PROGRESS` |
+| 2026-08-20 | 收到 `AUDIT_VERDICT`（消息 `0072`）：`AUDIT_FAIL`。F-01/F-02 BLOCKING（A08 Snapshot 结构性泄漏 + A10 guard 未接入/ERROR 无测试）+ F-03/F-04 BLOCKING（A11 多 ActionGroup 无测试 + A12 AUDIO 状态可达性缺口）。发出 `NODE_RULING: FAIL`（消息 `0073`）：F-01–F-04 全部转 FIX |
+| 2026-08-20 | 发出 `FIX_PACKAGE DEV-009-FIX-01`（消息 `0074`）：Snapshot 收窄 + guard 接入/ERROR 测试 + 多 ActionGroup 测试 + AUDIO 可达性测试。收到第二轮 `NODE_REPORT`（消息 `0075`），`AUDITOR` 第二轮 `AUDIT_VERDICT`（消息 `0076`）：F-01–F-04 均 RESOLVED，但复核中独立发现新问题 F-05 BLOCKING（STORY 无互动场景分支从未推进 `currentSceneId`，原地循环无法到达下一场景/CHAPTER_END） |
+| 2026-08-20 | 发出 `NODE_RULING: FAIL`（消息 `0077`）：F-05 转 FIX。发出 `FIX_PACKAGE DEV-009-FIX-02`（消息 `0078`）：STORY_PLAYING 无互动分支接入 `resolveNextScene` + `hasNextScene` guard 分流 `CHAPTER_END` |
+| 2026-08-21 | 收到第三轮 `NODE_REPORT`（消息 `0079`）。`AUDITOR` 第三轮 `AUDIT_VERDICT`（消息 `0080`）：**PASS**。独立用 `git worktree` 复现验证 F-05（缺陷态下新测试真实失败、修复后真实通过），原 A01–A09/A11–A21 及 FIX-01 的 FIX-A01–A04 无回归，0 BLOCKING |
+| 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0081`，`verdict_ref: "0080"`）：**DEV-009 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-007 与 DEV-010（互不依赖，均只依赖 DEV-009） |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-007`（消息 `0082`）：追加式扩展既有冻结包 `packages/runtime-kernel`；核对现有源码确认驱动循环精确时序后，新增 `getCurrentChoiceIds` 访问器（对 `machine.ts`/`index.ts` 的唯二追加式编辑）+ 虚拟 Port（仅换 CR-004 点名的 platform/clock）+ 确定性投票生成器 + `runSimulation` 主循环；如实记录但不修复 DEV-009 遗留的 `PlatformPort.onVote` 未接线缺口；明确 Non-goal：本节点不在 CI 里真跑 10,000+/100,000+ 局（G02 是上线前产品级 Gate，需真实 Chapter 内容），只做 50 局规模的机制回归验证；T001–T007，A01–A22；DEV-007 转 `IN_PROGRESS` |
 | 2026-08-20 | 收到 DEV-009 `NODE_REPORT`（消息 `0071`，`git_head` `cc40360...`）：六条命令严格顺序全部退出码 0，67 files/380 tests（runtime-kernel 新增 25 条，既有 355 条零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0072`）：`AUDIT_FAIL`。F-01 BLOCKING（A08：`index.ts` 经 `RuntimeContext`/`getSnapshot()` 结构性泄漏内部 Snapshot，独立 `tsc --strict` 验证泄漏真实可用，违反本节点 Forbidden Scope 明文条目）；F-02 BLOCKING（A10：`resolveGuard` 从未被调用、`scene.guards` 被忽略，`compile()` 失败→ERROR 路径无行为测试）；F-03 BLOCKING（A11：多 ActionGroup 并存无测试，`resolveGroups` 实现本身经独立脚本验证正确，纯测试缺口）；F-04 BLOCKING（A12：AUDIO `PLAYING_HOST`/`ERROR` 两态从未被测试进入）；六条命令独立重跑一致，Scope 纪律/DEV-008 冻结边界/`DECISIONS.md` 覆盖度均核验通过（Info: 3，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: FAIL`（消息 `0073`，`verdict_ref: "0072"`）：F-01–F-04 全部转 FIX，节点转 `FIX_REQUIRED` |
@@ -198,6 +205,9 @@ DEV-009 `FIX_REQUIRED`/`IN_PROGRESS`（FIX-02，第三轮）中，本字段暂�
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）第二轮 `AUDIT_VERDICT`（消息 `0076`）：`AUDIT_FAIL`。F-01–F-04 均经独立验证（含独立 `tsc --strict` 探测脚本）确认 RESOLVED；但审核员在依 FIX_PACKAGE 要求重新论证 A10 整体时独立发现新 BLOCKING **F-05**：`machine.ts` 的 `onToTransition`/`onTransitionAdvance`（STORY_PLAYING 无互动分支）从未调用 `resolveNextScene`/更新 `currentSceneId`，唯一真正推进场景的 `onNextScene` 只在互动解算后可达；独立构造无互动场景的两节点章节复现状态机原地循环、无法推进到下一场景或 `CHAPTER_END`，`valid-minimal` fixture 因唯一场景带 `interactionId` 而掩盖此路径 |
 | 2026-08-21 | 发出 `NODE_RULING: FAIL`（消息 `0077`，`verdict_ref: "0076"`）：F-01–F-04 结案（RESOLVED），F-05 转 FIX，节点转 `FIX_REQUIRED` |
 | 2026-08-21 | 发出 `FIX_PACKAGE DEV-009-FIX-02`（消息 `0078`）：单一最小 Task——`STORY_PLAYING` 无互动分支比照 `RESULT_PLAYING` 已有的 `hasNextScene` guard 分流模式接入场景推进（`onToTransition` 比照 `onNextScene` 计算并写入 `currentSceneId`，未命中转 `CHAPTER_END`）；不重开 FIX-01 已通过部分（`resolveGroups`/`audioRegion.ts`/`snapshot.ts` 均不得触碰）；节点转 `IN_PROGRESS` |
+| 2026-08-21 | 收到 DEV-009-FIX-02 第三轮 `NODE_REPORT`（消息 `0079`，`git_head` `9a8c465...`，新提交非 `--amend`，`cc40360`/`a4be3c4` 均未受影响）：F-05 修复完成，六条命令全绿 67 files/388 tests（新增 2 条，既有 386 条零回归），转交 `AUDITOR` 独立复核 |
+| 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）第三轮 `AUDIT_VERDICT`（消息 `0080`）：**PASS**。用独立 `git worktree` 检出 FIX-01 旧代码叠加本轮新测试复现：两条新测试在缺陷存在时真实失败（症状与 F-05 描述完全吻合），当前 HEAD 下重跑全部真实通过，排除测试摆设可能；`onNextScene`/`hasNextScene`/`resolveNextScene`/`onTransitionAdvance`/`resolveGroups`/`audioRegion.ts`/`snapshot.ts` 均确认字节级未改动，修复严格限于 `onToTransition` 一处；原 A01–A09/A11–A21 及 FIX-01 的 FIX-A01–A04 无回归，0 BLOCKING（Info: 1，不影响判定） |
+| 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0081`，`verdict_ref: "0080"`）：**DEV-009 转 DONE，接口冻结**（三轮审计闭环：首轮 4 BLOCKING → FIX-01 全部 RESOLVED 但复核中发现新 F-05 → FIX-02 修复 F-05 并独立复现验证）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-007（Chapter Simulator）或 DEV-010（Persistence），两者均只依赖 DEV-009，先后顺序留待下一轮决定 |
 
 ## Authority
 

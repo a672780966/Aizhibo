@@ -97,7 +97,11 @@
 | 0075 | NODE_REPORT | OPENCODE | AUDITOR | DEV-009 | 0074 | CLOSED | DEV-009-FIX-01 第二轮：四项 FIX 完成，READY_FOR_REVIEW |
 | 0076 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-009 | 0075 | CLOSED | 第二轮复核 AUDIT_FAIL：F-01–F-04 均 RESOLVED，新发现 F-05 BLOCKING（STORY 无互动场景分支从未推进 currentSceneId，原地循环无法到达下一场景/CHAPTER_END） |
 | 0077 | NODE_RULING | COMMANDER | ALL | DEV-009 | 0076 | CLOSED | ruling: FAIL；F-05 转 FIX，节点转 FIX_REQUIRED |
-| 0078 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-009 | 0077 | OPEN | DEV-009-FIX-02：STORY_PLAYING 无互动分支接入 resolveNextScene + hasNextScene guard 分流 CHAPTER_END |
+| 0078 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-009 | 0077 | CLOSED | DEV-009-FIX-02：STORY_PLAYING 无互动分支接入 resolveNextScene + hasNextScene guard 分流 CHAPTER_END |
+| 0079 | NODE_REPORT | OPENCODE | AUDITOR | DEV-009 | 0078 | CLOSED | DEV-009-FIX-02 第三轮：F-05 修复完成，READY_FOR_REVIEW |
+| 0080 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-009 | 0079 | CLOSED | 第三轮复核 PASS：F-05 VERIFIED（独立 worktree 复现，缺陷态下新测试真实失败/修复后真实通过），原 A01–A09/A11–A21 及 FIX-01 的 FIX-A01–A04 无回归，0 BLOCKING |
+| 0081 | NODE_RULING | COMMANDER | ALL | DEV-009 | 0080 | CLOSED | ruling: PASS；DEV-009 转 DONE，接口冻结 |
+| 0082 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-007 | — | ISSUED | Chapter Simulator（PASS 8，追加式扩展 runtime-kernel，复用 DEV-009 statechart，仅换 platform/clock 两个 Port） |
 
 ---
 
@@ -105,6 +109,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0078 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

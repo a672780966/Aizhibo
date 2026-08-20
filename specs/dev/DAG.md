@@ -34,8 +34,8 @@
 | 8 | DEV-005 | Dice Engine | DEV-002 | DONE |
 | 9 | DEV-006 | Action Resolution Engine（PASS 4） | DEV-004, DEV-005 | DONE |
 | 10 | DEV-033 | Narrative Composer ⬆ | DEV-006 | DONE |
-| 11 | DEV-009 | XState Runtime Kernel | DEV-008, DEV-006, DEV-033 | IN_PROGRESS |
-| 12 | DEV-007 | Chapter Simulator（PASS 8）⬇ | DEV-009 | TODO |
+| 11 | DEV-009 | XState Runtime Kernel | DEV-008, DEV-006, DEV-033 | DONE |
+| 12 | DEV-007 | Chapter Simulator（PASS 8）⬇ | DEV-009 | IN_PROGRESS |
 | 13 | DEV-010 | Persistence | DEV-009 | TODO |
 | 14 | DEV-011 | Deterministic Replay | DEV-010 | TODO |
 | 15 | DEV-012 | Runtime API | DEV-011 | TODO |

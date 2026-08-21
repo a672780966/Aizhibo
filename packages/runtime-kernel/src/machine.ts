@@ -10,6 +10,7 @@ import type { Ports } from './ports.js';
 import { defaultPorts } from './ports.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
 import { resolveVisualLayers } from './visualResolution.js';
+import { resolveCharacterPlacements } from './characterResolution.js';
 import {
   applyVote,
   buildNarrativeInputs,
@@ -216,11 +217,16 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
           context.compiled !== null && scene !== undefined
             ? resolveVisualLayers(context.compiled, scene.visualSceneId)
             : [];
+        const characters =
+          context.compiled !== null && scene !== undefined
+            ? resolveCharacterPlacements(context.compiled, scene.characters)
+            : [];
         context.ports.presentation.send({
           kind: 'SCENE_ENTER',
           sceneId: context.currentSceneId,
           visualSceneId: scene?.visualSceneId,
           layers,
+          characters,
         });
         context.ports.audio.send({ kind: 'SCENE_ENTER', sceneId: context.currentSceneId });
         return storyMove(context, 'SCENE_ENTER', 'STORY.SCENE_READY', {

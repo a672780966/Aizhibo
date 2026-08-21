@@ -1,6 +1,6 @@
 # DEV-023 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE（接口冻结，`verdict_ref: "0112"`，`git_head` `7158e2e`）
 
 ## Current Node
 
@@ -82,7 +82,8 @@ packages/runtime-kernel/src/index.ts 的任何修改（本节点无新增导出�
 
 ## Current Task
 
-T001–T006 全部完成（每完成一个 Task 立即勾选并更新本字段）。
+T001–T006 全部完成。`AUDITOR` 独立审计 `AUDIT_PASS`（消息 0112，A01–A20 全部 VERIFIED/PASS，
+0 BLOCKING，0 DEVIATION），`COMMANDER` 裁决 PASS（消息 0113）。节点 `DONE`，接口冻结。
 
 ## Exit Criteria
 
@@ -92,6 +93,6 @@ Status = READY_FOR_REVIEW；已向 AUDITOR 发出 NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-024（Choice UI）。
 
 OpenCode 禁止自行推进下一 DEV Node。

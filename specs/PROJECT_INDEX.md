@@ -17,17 +17,17 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-023 — Subtitle / Dialogue（`TASK_PACKAGE` 已发出，消息 `0110`，节点 `IN_PROGRESS`；M2 第四个节点）
+DEV-024 — Choice UI（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第五个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）均已 `DONE`（接口冻结）。DEV-023 已下发：第三次对 `onSceneEnter` 发窄范围 CR（追加 `narration` 字段），`apps/renderer` 实现场景旁白与结算叙事共用的点击推进对话框，等待 Codex 施工。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）均已 `DONE`（接口冻结）。DEV-023 对 DEV-009 冻结的 `onSceneEnter` 完成第三次窄范围 Change Request（`SCENE_ENTER` 载荷追加 `narration` 字段），`apps/renderer` 已具备场景旁白/结算叙事共用的点击推进对话框。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-023.md`
+`specs/tasks/TASK-PACKAGE-DEV-024.md` 待起草
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`
 
 ## 通信协议
 
@@ -61,10 +61,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-020 — Renderer Shell（DONE，`verdict_ref: "0100"`，`git_head` `8788347a92cbfba752de2102b0dd626d2a15a5c6`）
 - DEV-021 — Scene Renderer（DONE，`verdict_ref: "0104"`，`git_head` `d797f02`）
 - DEV-022 — Character Renderer（DONE，`verdict_ref: "0108"`，`git_head` `2909967`）
+- DEV-023 — Subtitle / Dialogue（DONE，`verdict_ref: "0112"`，`git_head` `7158e2e`）
 
 ## In Progress Nodes
 
-- DEV-023 — Subtitle / Dialogue（`TASK_PACKAGE` 消息 `0110`）
+无。
 
 ## Blocked Nodes
 
@@ -72,11 +73,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-022 — Character Renderer（2026-08-21）
+DEV-023 — Subtitle / Dialogue（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-023 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-024（Choice UI），依赖已冻结的 DEV-023。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -243,6 +244,9 @@ DEV-023 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0108`）：**PASS**。独立重跑六条命令一致；以 DEV-021 冻结提交 `7d720e0` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定在 `onSceneEnter` 一个 action 内部新增两处 + 1 行必需 import，其余全部 action 逐字节不变；`index.ts` 仅新增 2 行导出；`machine.test.ts`/`visualResolution.ts/.test.ts` 零 diff；三跳引用解析与四类防御性跳过用例经真实 fixture 验证；`composeCharacters` 五档 slot 映射/过滤/animated 三态全部覆盖；Renderer 未自行读取章节内容；无新增依赖；`packages/**`（除授权文件）、DEV-020/021 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING（Minor: 1，DEV-022/INDEX.md `Status:` 表头仍写 `IN_PROGRESS` 与实际不符，与 DEV-021 同类问题，不影响判定；Info: 2，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0109`，`verdict_ref: "0108"`）：**DEV-022 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷第二次 CR + 新增导出 `resolveCharacterPlacements` + `apps/renderer` 新增 `composeCharacters`/角色渲染；DEV-009/012/020/021 既有冻结接口未受影响）；DEV-022/INDEX.md `Status` 表头一并更正为 `DONE`，不发 FIX_PACKAGE；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-023（Subtitle / Dialogue） |
 | 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-023`（消息 `0110`）：第三次对 `onSceneEnter` 发窄范围 CR，追加 `narration` 字段（纯字符串数组，无需跨文件解析，比前两次更简单）；核实 `onStoryPlaying` 目前完全不发任何 Presentation 命令，故把场景旁白挂在 `SCENE_ENTER` 上而非新开命令类型；`apps/renderer` 实现场景旁白与结算叙事（`RESULT_PLAYING.text`，DEV-009 起已冻结不改）共用的点击推进对话框，用 `commandSeq` 大小判断显示来源；明确不实现"读完才能继续"的门控（Renderer 无回传通道，真正的节奏门控留给未来需要新 `RootEvent` 时再做）；T006 里提醒执行方主动把 `INDEX.md` 的 `Status:` 表头改对（DEV-021/022 两次都漏改，靠 Commander 裁决时顺带订正）；T001–T006，A01–A20；DEV-023 转 `IN_PROGRESS` |
+| 2026-08-22 | 收到 DEV-023 `NODE_REPORT`（消息 `0111`，`git_head` `7158e2e`）：六条命令严格顺序全部退出码 0，91 files/477 tests（renderer 新增 2 文件/12 条，既有零回归），执行期临时脚本验证 `SCENE_ENTER.narration` 与 `scene-start.json` 一致（用后即删，未改动 Read-only 的 `machine.test.ts`），`INDEX.md` `Status:` 表头本次已主动正确置为 `READY_FOR_REVIEW`，转交 `AUDITOR` 独立审计 |
+| 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0112`）：**PASS**。独立重跑六条命令一致；以 DEV-022 冻结提交 `2909967` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定为 1 行新增，其余全部 action 逐字节不变；`index.ts` 零 diff；独立复现端到端临时脚本验证，结果与申报一致；`pickDialogueLines`/`clampLineIndex`/`nextLineIndex` 全部分支与边界经真实测试核实；`packages/**`（除授权文件）、DEV-020/021/022 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING，0 DEVIATION；Info: 1，LEDGER 工作区状态观察，不影响判定 |
+| 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0113`，`verdict_ref: "0112"`）：**DEV-023 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷第三次 CR + `apps/renderer` 新增 `pickDialogueLines`/`clampLineIndex`/`nextLineIndex`/对话框渲染；DEV-009/012/020/021/022 既有冻结接口未受影响）；裁决中额外发现并修正一处未提交的 LEDGER 工作区问题（`0110` 行曾被整体替换为 `0111` 而非追加，已恢复，未进入任何提交历史，未发 FIX_PACKAGE）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-024（Choice UI） |
 
 ## Authority
 

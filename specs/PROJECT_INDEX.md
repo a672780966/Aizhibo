@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-011 — Deterministic Replay（`NODE_RULING: PASS` 已发出，消息 `0093`，节点 `DONE`，接口冻结）
+DEV-012 — Runtime API（`TASK_PACKAGE` 已发出，消息 `0094`，节点 `IN_PROGRESS`；**M1 最后一个节点**）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011 均 `DONE`（接口冻结）。下一可下发节点为 DEV-012（Runtime API），只依赖已冻结的 DEV-011。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011 均 `DONE`（接口冻结）。DEV-012 已下发（第四次追加式扩展 `runtime-kernel`：`PresentationCommand` 信封装饰器 + `ports.ts` 唯一新增字段 `onRendererHello?`），等待 Codex 施工。PASS 后 M1 全部完成，M2（DEV-020 系列）具备下发条件。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-011.md` ＋ 权威输入 Dev Spec 第 65 节（DEV-011）、Replay Test 小节、第 69 节 G03
+`specs/tasks/TASK-PACKAGE-DEV-012.md` ＋ 权威输入 Dev Spec 第 65 节（DEV-012）、`DAG.md` CR-012
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`
 
 ## 通信协议
 
@@ -60,7 +60,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-012 — Runtime API（`TASK_PACKAGE` 消息 `0094`；M1 最后一个节点）
 
 ## Blocked Nodes
 
@@ -72,7 +72,7 @@ DEV-011 — Deterministic Replay（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-012（Runtime API），只依赖已冻结的 DEV-011。
+DEV-012 `IN_PROGRESS` 中，本字段暂空。PASS 后 M1 全部完成，M2 施工组（DEV-020 系列）具备下发条件。
 
 ## Project-level Blockers
 
@@ -222,6 +222,7 @@ DEV-012（Runtime API），只依赖已冻结的 DEV-011。
 | 2026-08-21 | 收到 DEV-011 `NODE_REPORT`（消息 `0091`，`git_head` `84fb373...`）：六条命令严格顺序全部退出码 0，80 files/413 tests（replay 相关新增 3 文件/8 测试，既有零回归），`valid-minimal` 端到端重放到 `CHAPTER_END`，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0092`）：**PASS**。独立重跑六条命令一致；`git show 84fb373 --stat` 核实文件集合与 Writable Scope 精确一致；`index.ts` 仅追加 6 行导出，`runtime-kernel` 其余既有文件/`packages/persistence`/其余四个冻结包/`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 均零 diff；未修改任何状态机定义，未新增依赖；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`valid-minimal` fixture 因 `interaction-01` 效果为空导致 `interaction-boss` 实际不可达、全程仅 1 轮投票——既存 fixture 事实非本节点缺陷，多轮能力已由合成事件测试独立验证，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0093`，`verdict_ref: "0092"`）：**DEV-011 转 DONE，接口冻结**（`runtime-kernel` 新增 `extractVoteRounds`/`replayFromEventLog`/`compareEventLogs` 三个追加式导出；既有接口及 DEV-010 的 `getPersistedSnapshot`/`restoreRuntimeMachine` 未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-012（Runtime API），只依赖已冻结的 DEV-011 |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-012`（消息 `0094`）：M1 的最后一个节点，冻结第三个（也是最后一个）对外契约 Presentation Command；第四次追加式扩展 `packages/runtime-kernel`；核实所有 Presentation 命令均在已冻结 `machine.ts` action 内部直接发送后，确定用装饰器（`wrapPresentationPort`）包一层，加 `commandSeq` 信封 + 从命令流折叠得到的 `PresentationState` 投影，不改动任何既有 action 代码；`ports.ts` 唯一一次纯新增可选字段 `PresentationPort.onRendererHello?`（先例：DEV-002A 对 `hostPublic.ts` 的处置），落实 CR-012"首次连接与重连走同一条路径"——只设一个入站回调；明确"Runtime API"字面范围里的 Operator/Platform 接口不在本节点（分别是 DEV-060A/M4 的职责，消费方尚不存在）；如实记录"互动关闭无信号流向 Presentation"的既有缺口，不越权修复；T001–T005，A01–A21；DEV-012 转 `IN_PROGRESS` |
 
 ## Authority
 

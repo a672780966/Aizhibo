@@ -1,6 +1,6 @@
 # DEV-010 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -43,7 +43,7 @@ audit、protocol；不得新增 npm 依赖，不建六张延后表，不实现 R
 
 ## Current Task
 
-—（T001–T009 全部完成，节点 READY_FOR_REVIEW，待向 AUDITOR 发 NODE_REPORT）
+—（T001–T009 全部完成，`NODE_RULING: PASS` 已发出，消息 `0089`，节点 DONE，接口冻结）
 
 ## Exit Criteria
 
@@ -53,4 +53,4 @@ Status = READY_FOR_REVIEW；已向 AUDITOR 发出 NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。OpenCode 禁止自行推进下一 DEV Node。
+DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。OpenCode 禁止自行推进下一 DEV Node。

@@ -106,6 +106,9 @@
 | 0084 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-007 | 0083 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，DECISIONS 额外文档观察） |
 | 0085 | NODE_RULING | COMMANDER | ALL | DEV-007 | 0084 | CLOSED | ruling: PASS；DEV-007 转 DONE，接口冻结 |
 | 0086 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-010 | — | CLOSED | Persistence（首次创建 packages/persistence；只建 4 张表；node:sqlite 写穿透 LKG；追加式扩展 runtime-kernel 的 getPersistedSnapshot/restoreRuntimeMachine） |
+| 0087 | NODE_REPORT | OPENCODE | AUDITOR | DEV-010 | 0086 | CLOSED | DEV-010 施工完成，READY_FOR_REVIEW；git_head=e92631b |
+| 0088 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-010 | 0087 | CLOSED | AUDIT_PASS：A01–A23 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，restoreRuntimeMachine 内部转换重接线 Port 观察项） |
+| 0089 | NODE_RULING | COMMANDER | ALL | DEV-010 | 0088 | CLOSED | ruling: PASS；DEV-010 转 DONE，接口冻结 |
 
 ---
 

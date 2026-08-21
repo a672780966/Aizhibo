@@ -17,11 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-010 — Persistence（`TASK_PACKAGE` 已发出，消息 `0086`，节点 `IN_PROGRESS`）
+DEV-010 — Persistence（`NODE_RULING: PASS` 已发出，消息 `0089`，节点 `DONE`，接口冻结）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 均 `DONE`（接口冻结）。DEV-010 已下发（首次创建 `packages/persistence`，只建 4 张表，`node:sqlite` 写穿透 LKG，追加式扩展 `runtime-kernel`），等待 Codex 施工。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 均 `DONE`（接口冻结）。下一可下发节点为 DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。
 
 ## Current Task Package
 
@@ -55,10 +55,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-033 — Narrative Composer（DONE，`verdict_ref: "0068"`，`git_head` `49ed11c1591f71bb69029c7db1ed7298adaad4a5`）
 - DEV-009 — XState Runtime Kernel（DONE，`verdict_ref: "0080"`，`git_head` `9a8c4656838347f709f6e363288d2cbd97a228ed`）
 - DEV-007 — Chapter Simulator（DONE，`verdict_ref: "0084"`，`git_head` `ef5816591431ea6d300600b8d507f15b2d497765`）
+- DEV-010 — Persistence（DONE，`verdict_ref: "0088"`，`git_head` `e92631bb76863a88ead64ea51c9717ddc7667a4a`）
 
 ## In Progress Nodes
 
-- DEV-010 — Persistence（`TASK_PACKAGE` 消息 `0086`）
+无。
 
 ## Blocked Nodes
 
@@ -66,11 +67,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-007 — Chapter Simulator（2026-08-21）
+DEV-010 — Persistence（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-010 `IN_PROGRESS` 中，本字段暂空。
+DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。
 
 ## Project-level Blockers
 
@@ -213,6 +214,9 @@ DEV-010 `IN_PROGRESS` 中，本字段暂空。
 | 2026-08-21 | 收到 DEV-009-FIX-02 第三轮 `NODE_REPORT`（消息 `0079`，`git_head` `9a8c465...`，新提交非 `--amend`，`cc40360`/`a4be3c4` 均未受影响）：F-05 修复完成，六条命令全绿 67 files/388 tests（新增 2 条，既有 386 条零回归），转交 `AUDITOR` 独立复核 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）第三轮 `AUDIT_VERDICT`（消息 `0080`）：**PASS**。用独立 `git worktree` 检出 FIX-01 旧代码叠加本轮新测试复现：两条新测试在缺陷存在时真实失败（症状与 F-05 描述完全吻合），当前 HEAD 下重跑全部真实通过，排除测试摆设可能；`onNextScene`/`hasNextScene`/`resolveNextScene`/`onTransitionAdvance`/`resolveGroups`/`audioRegion.ts`/`snapshot.ts` 均确认字节级未改动，修复严格限于 `onToTransition` 一处；原 A01–A09/A11–A21 及 FIX-01 的 FIX-A01–A04 无回归，0 BLOCKING（Info: 1，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0081`，`verdict_ref: "0080"`）：**DEV-009 转 DONE，接口冻结**（三轮审计闭环：首轮 4 BLOCKING → FIX-01 全部 RESOLVED 但复核中发现新 F-05 → FIX-02 修复 F-05 并独立复现验证）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-007（Chapter Simulator）或 DEV-010（Persistence），两者均只依赖 DEV-009，先后顺序留待下一轮决定 |
+| 2026-08-21 | 收到 DEV-010 `NODE_REPORT`（消息 `0087`，`git_head` `e92631b...`）：六条命令严格顺序全部退出码 0，77 files/405 tests（persistence 新增，既有零回归），端到端崩溃恢复测试用真实 actor + 真实 `node:sqlite`，转交 `AUDITOR` 独立审计 |
+| 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0088`）：**PASS**。独立重跑六条命令一致；`git show e92631b --name-status` 核实文件集合与 Writable Scope 精确一致；`machine.ts`/`index.ts` 纯追加，恰建 4 张表、依赖仅 `runtime-kernel`/`shared`（无新增第三方依赖）；`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 及其余冻结包均零 diff；A01–A23 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`restoreRuntimeMachine` 内部转换重接线 Port 观察项，不影响判定） |
+| 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0089`，`verdict_ref: "0088"`）：**DEV-010 转 DONE，接口冻结**（首次创建的 `packages/persistence` 全部公开导出 + `runtime-kernel` 新增 `getPersistedSnapshot`/`restoreRuntimeMachine` 两个追加式导出）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010 |
 
 ## Authority
 

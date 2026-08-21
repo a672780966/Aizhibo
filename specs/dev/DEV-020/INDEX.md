@@ -1,6 +1,6 @@
 # DEV-020 INDEX
 
-Status: IN_PROGRESS
+Status: DONE（接口冻结，`verdict_ref: "0100"`，`git_head` `8788347a92cbfba752de2102b0dd626d2a15a5c6`）
 
 ## Current Node
 
@@ -75,7 +75,8 @@ eslint-plugin-react/eslint-plugin-react-hooks/react-router 等额外前端生态
 
 ## Current Task
 
-T007 已完成，节点 READY_FOR_REVIEW，NODE_REPORT 已发出（消息 0099）。
+T007 已完成。`AUDITOR` 独立审计 `AUDIT_PASS`（消息 0100，A01–A19 全部 VERIFIED/PASS，0 BLOCKING），
+`COMMANDER` 裁决 PASS（消息 0101）。节点 `DONE`，接口冻结。
 
 ## Exit Criteria
 
@@ -86,6 +87,6 @@ NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-021（Scene Renderer），在已冻结的 `apps/renderer` Shell 之上追加式扩展。
 
 OpenCode 禁止自行推进下一 DEV Node。

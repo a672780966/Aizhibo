@@ -10,6 +10,8 @@ import { composeLayers } from './render/composeLayers.js';
 import type { RenderableLayer } from './render/composeLayers.js';
 import { composeCharacters } from './render/composeCharacters.js';
 import type { RenderableCharacter } from './render/composeCharacters.js';
+import { pickDialogueLines } from './render/pickDialogueLines.js';
+import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
 
 /** WebSocket 服务端约定的地址（本节点服务端半仅由集成测试验证，无长驻进程）。 */
 export const WS_URL = 'ws://localhost:8787';
@@ -75,6 +77,14 @@ export function pickSceneCharacters(commands: PresentationCommand[]): Renderable
 export default function App() {
   const [commands, setCommands] = useState<PresentationCommand[]>([]);
   const [lastSeq, setLastSeq] = useState<number | undefined>(undefined);
+  const [lineIndex, setLineIndex] = useState(0);
+
+  const dialogue = pickDialogueLines(commands);
+
+  // 对话内容换新（`key` 变化：新 SCENE_ENTER 或新 RESULT_PLAYING）时重置阅读进度。
+  useEffect(() => {
+    setLineIndex(0);
+  }, [dialogue.key]);
 
   useEffect(() => {
     createRendererClient(browserSocket(WS_URL), {
@@ -123,6 +133,27 @@ export default function App() {
           />
         ))}
       </section>
+      {dialogue.lines.length > 0 && (
+        <section
+          aria-label="dialogue"
+          onClick={() => setLineIndex(nextLineIndex(lineIndex, dialogue.lines))}
+          style={{
+            position: 'fixed',
+            left: 0,
+            right: 0,
+            bottom: 0,
+            padding: '1rem 2rem',
+            background: 'rgba(0,0,0,0.7)',
+            color: '#fff',
+            cursor: 'pointer',
+          }}
+        >
+          <p>{dialogue.lines[clampLineIndex(lineIndex, dialogue.lines)]}</p>
+          <span>
+            第 {clampLineIndex(lineIndex, dialogue.lines) + 1} / {dialogue.lines.length} 行
+          </span>
+        </section>
+      )}
       <pre>{JSON.stringify(commands, null, 2)}</pre>
     </main>
   );

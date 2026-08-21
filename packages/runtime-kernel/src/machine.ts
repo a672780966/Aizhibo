@@ -227,6 +227,7 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
           visualSceneId: scene?.visualSceneId,
           layers,
           characters,
+          narration: scene?.narration ?? [],
         });
         context.ports.audio.send({ kind: 'SCENE_ENTER', sceneId: context.currentSceneId });
         return storyMove(context, 'SCENE_ENTER', 'STORY.SCENE_READY', {

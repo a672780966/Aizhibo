@@ -1,6 +1,6 @@
 # DEV-021 INDEX
 
-Status: IN_PROGRESS
+Status: DONE（接口冻结，`verdict_ref: "0104"`，`git_head` `d797f02`）
 
 ## Current Node
 
@@ -81,8 +81,8 @@ apps/renderer 内 DEV-020 冻结的 ws/server/main.tsx/配置文件
 
 ## Current Task
 
-T007 已完成。节点转 `READY_FOR_REVIEW`，已向 `AUDITOR` 发出 `NODE_REPORT`（消息 `0103`，
-`git_head` 见 REPORT.md）。
+T007 已完成。`AUDITOR` 独立审计 `AUDIT_PASS`（消息 0104，A01–A20 全部 VERIFIED/PASS，0 BLOCKING，
+Minor: 1 已接受并说明），`COMMANDER` 裁决 PASS（消息 0105）。节点 `DONE`，接口冻结。
 
 ## Exit Criteria
 
@@ -93,6 +93,6 @@ Status = READY_FOR_REVIEW；已向 AUDITOR 发出 NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-022（Character Renderer，固定五档 slot 站位，ADDENDUM §A9）。
 
 OpenCode 禁止自行推进下一 DEV Node。

@@ -1,6 +1,6 @@
 # DEV-012 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -52,7 +52,7 @@ PROJECT_INDEX、DAG、tasks、audit、protocol 与工具配置均未修改。不
 
 ## Current Task
 
-—（T001–T005 全部完成，等待 AUDITOR 审核）
+—（T001–T005 全部完成，`NODE_RULING: PASS` 已发出，消息 `0097`，节点 DONE，接口冻结）
 
 ## Exit Criteria
 
@@ -62,4 +62,5 @@ PROJECT_INDEX、DAG、tasks、audit、protocol 与工具配置均未修改。不
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。OpenCode 禁止自行推进下一 DEV Node。
+M1 里程碑全部完成。下一步由 Claude Commander 在 M2（演出）/M3（音频）间决定排期，两组均只依赖
+已冻结的 DEV-012。OpenCode 禁止自行推进下一 DEV Node。

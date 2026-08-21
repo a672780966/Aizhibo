@@ -32,3 +32,5 @@ export { resolveVisualLayers } from './visualResolution.js';
 export type { ResolvedVisualLayer } from './visualResolution.js';
 export { resolveCharacterPlacements } from './characterResolution.js';
 export type { ResolvedCharacterPlacement } from './characterResolution.js';
+export { resolveVisibleChoices } from './choiceResolution.js';
+export type { DisplayChoice } from './choiceResolution.js';

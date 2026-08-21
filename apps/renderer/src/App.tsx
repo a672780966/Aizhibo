@@ -12,6 +12,7 @@ import { composeCharacters } from './render/composeCharacters.js';
 import type { RenderableCharacter } from './render/composeCharacters.js';
 import { pickDialogueLines } from './render/pickDialogueLines.js';
 import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
+import { pickInteractionOpen } from './render/pickInteractionOpen.js';
 
 /** WebSocket 服务端约定的地址（本节点服务端半仅由集成测试验证，无长驻进程）。 */
 export const WS_URL = 'ws://localhost:8787';
@@ -80,11 +81,29 @@ export default function App() {
   const [lineIndex, setLineIndex] = useState(0);
 
   const dialogue = pickDialogueLines(commands);
+  const interaction = pickInteractionOpen(commands);
+  const [countdownMs, setCountdownMs] = useState<number | undefined>(undefined);
 
   // 对话内容换新（`key` 变化：新 SCENE_ENTER 或新 RESULT_PLAYING）时重置阅读进度。
   useEffect(() => {
     setLineIndex(0);
   }, [dialogue.key]);
+
+  // 新一批选项（key = 产生它的命令 commandSeq）到来时，从 openDurationMs 重新开始本地倒计时。
+  // 倒计时是纯展示反馈，不写入 Runtime Event Log、不参与游戏状态判定，允许使用裸
+  // Date.now()/setInterval（任务包 2.5 节；与 DEV-010 getHealth() 同一区分原则）。
+  useEffect(() => {
+    const duration = interaction?.openDurationMs;
+    setCountdownMs(duration ?? 0);
+    if (duration === undefined) return;
+    const startedAt = Date.now();
+    const timer = setInterval(() => {
+      const remaining = duration - (Date.now() - startedAt);
+      setCountdownMs(Math.max(remaining, 0));
+      if (remaining <= 0) clearInterval(timer);
+    }, 100);
+    return () => clearInterval(timer);
+  }, [interaction?.key]);
 
   useEffect(() => {
     createRendererClient(browserSocket(WS_URL), {
@@ -152,6 +171,31 @@ export default function App() {
           <span>
             第 {clampLineIndex(lineIndex, dialogue.lines) + 1} / {dialogue.lines.length} 行
           </span>
+        </section>
+      )}
+      {interaction !== undefined && (
+        <section
+          aria-label="choice ui"
+          style={{
+            position: 'fixed',
+            top: '1rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '0.5rem 1rem',
+            background: 'rgba(0,0,0,0.75)',
+            color: '#fff',
+          }}
+        >
+          {interaction.choices.map((choice) => (
+            <p key={choice.id} style={{ margin: '0.25rem 0' }}>
+              [{choice.id}] {choice.label}
+            </p>
+          ))}
+          {countdownMs !== undefined && (
+            <p style={{ margin: '0.25rem 0', opacity: 0.8 }}>
+              剩余 {Math.ceil(countdownMs / 1000)} 秒
+            </p>
+          )}
         </section>
       )}
       <pre>{JSON.stringify(commands, null, 2)}</pre>

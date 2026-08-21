@@ -11,6 +11,7 @@ import { defaultPorts } from './ports.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
 import { resolveVisualLayers } from './visualResolution.js';
 import { resolveCharacterPlacements } from './characterResolution.js';
+import { resolveVisibleChoices } from './choiceResolution.js';
 import {
   applyVote,
   buildNarrativeInputs,
@@ -274,7 +275,25 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
         interactionMove(context, 'ANNOUNCING', 'INTERACTION.ANNOUNCING'),
       ),
       onOpen: assign(({ context }) => {
-        context.ports.presentation.send({ kind: 'INTERACTION_OPEN' });
+        const scene =
+          context.compiled !== null
+            ? currentScene(context.compiled, context.currentSceneId)
+            : undefined;
+        const interaction =
+          context.compiled !== null && scene?.interactionId !== undefined
+            ? context.compiled.schemaResult.interactions.passed.find(
+                (i) => i.value.id === scene.interactionId,
+              )?.value
+            : undefined;
+        const choices =
+          interaction !== undefined
+            ? resolveVisibleChoices(interaction, context.snapshot.world)
+            : [];
+        context.ports.presentation.send({
+          kind: 'INTERACTION_OPEN',
+          choices,
+          openDurationMs: interaction?.openDurationMs,
+        });
         return interactionMove(context, 'OPEN', 'INTERACTION.OPEN');
       }),
       onVote: assign(({ context, event }) => {

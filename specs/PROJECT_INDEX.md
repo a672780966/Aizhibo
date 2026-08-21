@@ -17,17 +17,17 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-010 — Persistence（`NODE_RULING: PASS` 已发出，消息 `0089`，节点 `DONE`，接口冻结）
+DEV-011 — Deterministic Replay（`TASK_PACKAGE` 已发出，消息 `0090`，节点 `IN_PROGRESS`）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 均 `DONE`（接口冻结）。下一可下发节点为 DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 均 `DONE`（接口冻结）。DEV-011 已下发（第三次追加式扩展 `runtime-kernel`，复用 DEV-007 驱动循环，不接触 `persistence`），等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-010.md` ＋ 权威输入 Dev Spec 第 15/18/50 节（ViewerState / LKG / Persistence 表）、`DAG.md` CR-017（含本轮起草时的执行澄清）
+`specs/tasks/TASK-PACKAGE-DEV-011.md` ＋ 权威输入 Dev Spec 第 65 节（DEV-011）、Replay Test 小节、第 69 节 G03
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`
 
 ## 通信协议
 
@@ -59,7 +59,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-011 — Deterministic Replay（`TASK_PACKAGE` 消息 `0090`）
 
 ## Blocked Nodes
 
@@ -71,7 +71,7 @@ DEV-010 — Persistence（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。
+DEV-011 `IN_PROGRESS` 中，本字段暂空。
 
 ## Project-level Blockers
 
@@ -217,6 +217,7 @@ DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010。
 | 2026-08-21 | 收到 DEV-010 `NODE_REPORT`（消息 `0087`，`git_head` `e92631b...`）：六条命令严格顺序全部退出码 0，77 files/405 tests（persistence 新增，既有零回归），端到端崩溃恢复测试用真实 actor + 真实 `node:sqlite`，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0088`）：**PASS**。独立重跑六条命令一致；`git show e92631b --name-status` 核实文件集合与 Writable Scope 精确一致；`machine.ts`/`index.ts` 纯追加，恰建 4 张表、依赖仅 `runtime-kernel`/`shared`（无新增第三方依赖）；`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 及其余冻结包均零 diff；A01–A23 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`restoreRuntimeMachine` 内部转换重接线 Port 观察项，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0089`，`verdict_ref: "0088"`）：**DEV-010 转 DONE，接口冻结**（首次创建的 `packages/persistence` 全部公开导出 + `runtime-kernel` 新增 `getPersistedSnapshot`/`restoreRuntimeMachine` 两个追加式导出）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010 |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-011`（消息 `0090`）：第三次追加式扩展 `packages/runtime-kernel`（继 DEV-007/DEV-010 之后），不新建包、不接触 `packages/persistence`；核实 `RuntimeEvent` 是输出型日志无法直接重放后，确定重放机制是"复用 DEV-007 相同的相位驱动循环，只把随机投票换成从历史 Event Log 提取"；`compareEventLogs` 默认排除 `id`/`timestamp`（墙钟差异不代表状态发散），另要求一次注入同一 `virtualClockPort` 的全字段深比较证明最大严谨性；明确本节点与 DEV-010 LKG（崩溃恢复）的边界——完全不同的机制，互不替代；T001–T006，A01–A21；DEV-011 转 `IN_PROGRESS` |
 
 ## Authority
 

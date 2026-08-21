@@ -17,15 +17,15 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-021 — Scene Renderer（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第二个节点）
+DEV-021 — Scene Renderer（`TASK_PACKAGE` 已发出，消息 `0102`，节点 `IN_PROGRESS`；M2 第二个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结：Runtime Event（DEV-008）、Public State 可见性分区（DEV-009）、Presentation Command（DEV-012）。USER 选定 M2（演出）优先于 M3（音频）开工。DEV-020（Renderer Shell）已 `DONE`（接口冻结），`apps/renderer` 首次引入前端应用与真实 WebSocket 协议，服务端半/客户端半均已就位。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）已 `DONE`。DEV-021 已下发：对 DEV-009 冻结的 `onSceneEnter` action 发一次窄范围 Change Request（丰富 `SCENE_ENTER` 命令载荷为真实 `visualSceneId`/`layers`），`apps/renderer` 追加场景层渲染，等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-021.md` 待起草 ＋ 权威输入 Dev Spec 第 34/35 节、`DAG.md` M2 表
+`specs/tasks/TASK-PACKAGE-DEV-021.md` ＋ 权威输入 Dev Spec 第 35 节（Renderer 不维护剧情）、`chapter-schema/visuals.ts`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`
 
@@ -62,7 +62,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-021 — Scene Renderer（`TASK_PACKAGE` 消息 `0102`）
 
 ## Blocked Nodes
 
@@ -74,7 +74,7 @@ DEV-020 — Renderer Shell（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-021（Scene Renderer），依赖已冻结的 `apps/renderer`（DEV-020）。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-021 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -232,6 +232,7 @@ DEV-021（Scene Renderer），依赖已冻结的 `apps/renderer`（DEV-020）。
 | 2026-08-21 | 收到 DEV-020 `NODE_REPORT`（消息 `0099`，`git_head` `8788347...`）：六条命令严格顺序全部退出码 0，85 files/432 tests（renderer 新增 4 文件/15 条，既有零回归），真实 `ws` server+client 集成测试验证 HELLO→RESYNC seq 1→2 连续，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0100`）：**PASS**。独立重跑五条命令一致（`pnpm install` 因工作区已就位未重跑）；`git show HEAD --stat` 核实 23 个文件改动与 REPORT.md 一致；`packages/**`/根 `tsconfig.json`/治理文件均零 diff；根配置三处改动逐字核对为最小追加；`createWebSocketPresentationPort` 仅返回裸端口，`commandSeq` 信封由调用方组合已冻结的 `wrapPresentationPort` 生成、未重新实现；客户端半对 `runtime-kernel` 全部 `import type`；A01–A19 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 待处理表格观察，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0101`，`verdict_ref: "0100"`）：**DEV-020 转 DONE，接口冻结**（`apps/renderer` 服务端半 `createWebSocketPresentationPort`、客户端半 `detectSeqGap`/`createRendererClient`/`SocketLike`；`runtime-kernel` 既有冻结导出未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-021（Scene Renderer），在已冻结的 `apps/renderer` Shell 之上追加式扩展 |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-021`（消息 `0102`）：核对 `chapter-schema/visuals.ts`（`VisualScene`/`ImageAsset`）与真实 `valid-minimal` fixture（`vs-start`→`img-forest`→`assets/img/forest.png`）后发现"追加式扩展"不够用——Renderer 按第 35 节"不维护剧情"原则不能自己解析 `visualSceneId→layers→file`，必须由 Runtime 侧解析好再下发，因此改为对 DEV-009 已冻结的 `onSceneEnter` action 发一次**窄范围 Change Request**（`DAG.md` 全局约束 #4 允许的下游 CR 机制），把 `SCENE_ENTER` 命令载荷从占位丰富为真实 `visualSceneId`/`layers`；已逐一核对全部既有测试文件（`machine.test.ts` 等）确认只检查 `kind` 字符串、不依赖完整 payload 形状，向后兼容，不需要改动任何既有测试；`apps/renderer` 追加 `composeLayers` 按 `z` 排序渲染，如实记录"无静态资源服务器、图片暂时加载不出来"的已知缺口（真实资源服务是 DEV-075/部署管线的职责）；T001–T007，A01–A20；DEV-021 转 `IN_PROGRESS` |
 
 ## Authority
 

@@ -125,6 +125,7 @@
 | 0103 | NODE_REPORT | OPENCODE | AUDITOR | DEV-021 | 0102 | CLOSED | DEV-021 施工完成，READY_FOR_REVIEW；git_head=d797f02 |
 | 0104 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-021 | 0103 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED/PASS，0 BLOCKING（Minor: 1，INDEX.md Status 表头观察；Info: 2） |
 | 0105 | NODE_RULING | COMMANDER | ALL | DEV-021 | 0104 | CLOSED | ruling: PASS；DEV-021 转 DONE，接口冻结 |
+| 0106 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-022 | — | ISSUED | Character Renderer（第二次对 onSceneEnter 发窄范围 CR，追加 characters 字段；发现 characterId 是三跳引用 NPCDefinition→CharacterAsset→ImageAsset；apps/renderer 追加五档 slot 定位渲染） |
 
 ---
 

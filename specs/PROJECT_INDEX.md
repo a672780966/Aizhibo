@@ -17,15 +17,15 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-022 — Character Renderer（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第三个节点）
+DEV-022 — Character Renderer（`TASK_PACKAGE` 已发出，消息 `0106`，节点 `IN_PROGRESS`；M2 第三个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）均已 `DONE`（接口冻结）。DEV-021 对 DEV-009 冻结的 `onSceneEnter` 完成一次窄范围 Change Request（`SCENE_ENTER` 载荷丰富为真实 `visualSceneId`/`layers`），`apps/renderer` 已具备场景层渲染能力。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）均已 `DONE`（接口冻结）。DEV-022 已下发：第二次对 `onSceneEnter` 发窄范围 CR（追加 `characters` 字段），核对 `chapter-schema/npc.ts` 后发现 `characterId` 是三跳引用（`NPCDefinition→CharacterAsset→ImageAsset`），等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-022.md` 待起草 ＋ 权威输入 ADDENDUM-001 §A9（固定五档 slot 站位）
+`specs/tasks/TASK-PACKAGE-DEV-022.md` ＋ 权威输入 ADDENDUM-001 §A9/D06（固定五档 slot 站位）、`chapter-schema/npc.ts`（A8，characterId 三跳引用）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`
 
@@ -63,7 +63,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-022 — Character Renderer（`TASK_PACKAGE` 消息 `0106`）
 
 ## Blocked Nodes
 
@@ -75,7 +75,7 @@ DEV-021 — Scene Renderer（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-022（Character Renderer），依赖已冻结的 DEV-021。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-022 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -237,6 +237,7 @@ DEV-022（Character Renderer），依赖已冻结的 DEV-021。M3（音频，DEV
 | 2026-08-21 | 收到 DEV-021 `NODE_REPORT`（消息 `0103`，`git_head` `d797f02`）：六条命令严格顺序全部退出码 0，87 files/448 tests（renderer/runtime-kernel 新增 2 文件/16 条，既有零回归），端到端 `valid-minimal` 验证 `SCENE_ENTER` 的 `visualSceneId`/`layers` 与 `resolveVisualLayers` 输出一致，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0104`）：**PASS**。独立重跑六条命令一致；以 DEV-020 冻结提交 `8788347` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定在 `onSceneEnter` 一个 action 内部 + 1 行必需 import，其余全部 action/guard/类型逐字节相同；`index.ts` 仅新增 2 行导出；四个既有测试文件零 diff 且向后兼容断言核实成立；`resolveVisualLayers`/`composeLayers` 正确性与防御性处理经真实 fixture 与手工构造用例验证；Renderer 未自行读取章节内容；无新增依赖；`packages/**`（除授权文件）、DEV-020 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING（Minor: 1，DEV-021/INDEX.md `Status:` 表头仍写 `IN_PROGRESS` 与实际不符，不影响判定；Info: 2，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0105`，`verdict_ref: "0104"`）：**DEV-021 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷 CR + 新增导出 `resolveVisualLayers` + `apps/renderer` 新增 `composeLayers`；DEV-009/012/020 既有冻结接口未受影响）；DEV-021/INDEX.md `Status` 表头一并更正为 `DONE`，不发 FIX_PACKAGE；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-022（Character Renderer） |
+| 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-022`（消息 `0106`）：延续 DEV-021 模式，第二次对 `onSceneEnter` 发窄范围 CR，追加 `characters` 字段；核对 `chapter-schema/npc.ts`（ADDENDUM §A8）与真实 `valid-minimal` fixture 后发现 `CharacterPlacement.characterId` 是**三跳引用**（`characterId→NPCDefinition.characterAssetId→CharacterAsset→ImageAsset`），不是直接指向 `CharacterAsset`——原本按两跳设计会在真实数据上查不到，起草阶段即修正；`apps/renderer` 按 ADDENDUM §A9/D06 已冻结的固定五档 slot 站位模型渲染，微动效果做成通用呼吸类 CSS（无真实动画资产支撑，不按具体动画名区分，如实记入 Non-goals）；T001–T007，A01–A20；DEV-022 转 `IN_PROGRESS` |
 
 ## Authority
 

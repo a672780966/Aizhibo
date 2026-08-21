@@ -110,6 +110,9 @@
 | 0088 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-010 | 0087 | CLOSED | AUDIT_PASS：A01–A23 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，restoreRuntimeMachine 内部转换重接线 Port 观察项） |
 | 0089 | NODE_RULING | COMMANDER | ALL | DEV-010 | 0088 | CLOSED | ruling: PASS；DEV-010 转 DONE，接口冻结 |
 | 0090 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-011 | — | CLOSED | Deterministic Replay（追加式扩展 runtime-kernel；复用 DEV-007 驱动循环，投票源换成历史 Event Log；不接触 persistence） |
+| 0091 | NODE_REPORT | OPENCODE | AUDITOR | DEV-011 | 0090 | CLOSED | DEV-011 施工完成，READY_FOR_REVIEW；git_head=84fb373 |
+| 0092 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-011 | 0091 | CLOSED | AUDIT_PASS：A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，valid-minimal fixture 单轮投票观察） |
+| 0093 | NODE_RULING | COMMANDER | ALL | DEV-011 | 0092 | CLOSED | ruling: PASS；DEV-011 转 DONE，接口冻结 |
 
 ---
 

@@ -17,11 +17,11 @@ M1 — Story Machine Complete
 
 ## Current Node
 
-DEV-011 — Deterministic Replay（`TASK_PACKAGE` 已发出，消息 `0090`，节点 `IN_PROGRESS`）
+DEV-011 — Deterministic Replay（`NODE_RULING: PASS` 已发出，消息 `0093`，节点 `DONE`，接口冻结）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010 均 `DONE`（接口冻结）。DEV-011 已下发（第三次追加式扩展 `runtime-kernel`，复用 DEV-007 驱动循环，不接触 `persistence`），等待 Codex 施工。
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011 均 `DONE`（接口冻结）。下一可下发节点为 DEV-012（Runtime API），只依赖已冻结的 DEV-011。
 
 ## Current Task Package
 
@@ -56,10 +56,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-009 — XState Runtime Kernel（DONE，`verdict_ref: "0080"`，`git_head` `9a8c4656838347f709f6e363288d2cbd97a228ed`）
 - DEV-007 — Chapter Simulator（DONE，`verdict_ref: "0084"`，`git_head` `ef5816591431ea6d300600b8d507f15b2d497765`）
 - DEV-010 — Persistence（DONE，`verdict_ref: "0088"`，`git_head` `e92631bb76863a88ead64ea51c9717ddc7667a4a`）
+- DEV-011 — Deterministic Replay（DONE，`verdict_ref: "0092"`，`git_head` `84fb3733038d1f0feca024b3da2860be0c21354a`）
 
 ## In Progress Nodes
 
-- DEV-011 — Deterministic Replay（`TASK_PACKAGE` 消息 `0090`）
+无。
 
 ## Blocked Nodes
 
@@ -67,11 +68,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-010 — Persistence（2026-08-21）
+DEV-011 — Deterministic Replay（2026-08-21）
 
 ## Next Eligible Nodes
 
-DEV-011 `IN_PROGRESS` 中，本字段暂空。
+DEV-012（Runtime API），只依赖已冻结的 DEV-011。
 
 ## Project-level Blockers
 
@@ -218,6 +219,9 @@ DEV-011 `IN_PROGRESS` 中，本字段暂空。
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0088`）：**PASS**。独立重跑六条命令一致；`git show e92631b --name-status` 核实文件集合与 Writable Scope 精确一致；`machine.ts`/`index.ts` 纯追加，恰建 4 张表、依赖仅 `runtime-kernel`/`shared`（无新增第三方依赖）；`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 及其余冻结包均零 diff；A01–A23 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`restoreRuntimeMachine` 内部转换重接线 Port 观察项，不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0089`，`verdict_ref: "0088"`）：**DEV-010 转 DONE，接口冻结**（首次创建的 `packages/persistence` 全部公开导出 + `runtime-kernel` 新增 `getPersistedSnapshot`/`restoreRuntimeMachine` 两个追加式导出）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-011（Deterministic Replay），只依赖已冻结的 DEV-010 |
 | 2026-08-21 | 起草并发出 `TASK_PACKAGE DEV-011`（消息 `0090`）：第三次追加式扩展 `packages/runtime-kernel`（继 DEV-007/DEV-010 之后），不新建包、不接触 `packages/persistence`；核实 `RuntimeEvent` 是输出型日志无法直接重放后，确定重放机制是"复用 DEV-007 相同的相位驱动循环，只把随机投票换成从历史 Event Log 提取"；`compareEventLogs` 默认排除 `id`/`timestamp`（墙钟差异不代表状态发散），另要求一次注入同一 `virtualClockPort` 的全字段深比较证明最大严谨性；明确本节点与 DEV-010 LKG（崩溃恢复）的边界——完全不同的机制，互不替代；T001–T006，A01–A21；DEV-011 转 `IN_PROGRESS` |
+| 2026-08-21 | 收到 DEV-011 `NODE_REPORT`（消息 `0091`，`git_head` `84fb373...`）：六条命令严格顺序全部退出码 0，80 files/413 tests（replay 相关新增 3 文件/8 测试，既有零回归），`valid-minimal` 端到端重放到 `CHAPTER_END`，转交 `AUDITOR` 独立审计 |
+| 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0092`）：**PASS**。独立重跑六条命令一致；`git show 84fb373 --stat` 核实文件集合与 Writable Scope 精确一致；`index.ts` 仅追加 6 行导出，`runtime-kernel` 其余既有文件/`packages/persistence`/其余四个冻结包/`PROJECT_INDEX`/`DAG`/`tasks`/`audit`/`protocol` 均零 diff；未修改任何状态机定义，未新增依赖；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，`valid-minimal` fixture 因 `interaction-01` 效果为空导致 `interaction-boss` 实际不可达、全程仅 1 轮投票——既存 fixture 事实非本节点缺陷，多轮能力已由合成事件测试独立验证，不影响判定） |
+| 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0093`，`verdict_ref: "0092"`）：**DEV-011 转 DONE，接口冻结**（`runtime-kernel` 新增 `extractVoteRounds`/`replayFromEventLog`/`compareEventLogs` 三个追加式导出；既有接口及 DEV-010 的 `getPersistedSnapshot`/`restoreRuntimeMachine` 未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-012（Runtime API），只依赖已冻结的 DEV-011 |
 
 ## Authority
 

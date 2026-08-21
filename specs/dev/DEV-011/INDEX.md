@@ -1,6 +1,6 @@
 # DEV-011 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -50,7 +50,7 @@ fixtures、规范正本、PROJECT_INDEX、DAG、tasks、audit、protocol 与工�
 
 ## Current Task
 
-—（T001–T006 全部完成，节点 READY_FOR_REVIEW，待向 AUDITOR 发 NODE_REPORT）
+—（T001–T006 全部完成，`NODE_RULING: PASS` 已发出，消息 `0093`，节点 DONE，接口冻结）
 
 ## Exit Criteria
 
@@ -60,4 +60,4 @@ Status = READY_FOR_REVIEW；已向 AUDITOR 发出 NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。OpenCode 禁止自行推进下一 DEV Node。
+DEV-012（Runtime API），只依赖已冻结的 DEV-011。OpenCode 禁止自行推进下一 DEV Node。

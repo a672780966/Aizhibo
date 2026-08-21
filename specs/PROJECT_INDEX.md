@@ -17,15 +17,15 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-024 — Choice UI（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第五个节点）
+DEV-024 — Choice UI（`TASK_PACKAGE` 已发出，消息 `0114`，节点 `IN_PROGRESS`；M2 第五个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）均已 `DONE`（接口冻结）。DEV-023 对 DEV-009 冻结的 `onSceneEnter` 完成第三次窄范围 Change Request（`SCENE_ENTER` 载荷追加 `narration` 字段），`apps/renderer` 已具备场景旁白/结算叙事共用的点击推进对话框。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）均已 `DONE`（接口冻结）。DEV-024 已下发：第一次对 INTERACTION region 的 `onOpen` 发窄范围 CR（追加 `visibleIf` 过滤后的 `choices`/`openDurationMs`），Choice UI 是展示非交互（真实投票走 Twitch 聊天，M4 未建），等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-024.md` 待起草
+`specs/tasks/TASK-PACKAGE-DEV-024.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`
 
@@ -65,7 +65,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-024 — Choice UI（`TASK_PACKAGE` 消息 `0114`）
 
 ## Blocked Nodes
 
@@ -77,7 +77,7 @@ DEV-023 — Subtitle / Dialogue（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-024（Choice UI），依赖已冻结的 DEV-023。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-024 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -247,6 +247,7 @@ DEV-024（Choice UI），依赖已冻结的 DEV-023。M3（音频，DEV-030 起�
 | 2026-08-22 | 收到 DEV-023 `NODE_REPORT`（消息 `0111`，`git_head` `7158e2e`）：六条命令严格顺序全部退出码 0，91 files/477 tests（renderer 新增 2 文件/12 条，既有零回归），执行期临时脚本验证 `SCENE_ENTER.narration` 与 `scene-start.json` 一致（用后即删，未改动 Read-only 的 `machine.test.ts`），`INDEX.md` `Status:` 表头本次已主动正确置为 `READY_FOR_REVIEW`，转交 `AUDITOR` 独立审计 |
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0112`）：**PASS**。独立重跑六条命令一致；以 DEV-022 冻结提交 `2909967` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定为 1 行新增，其余全部 action 逐字节不变；`index.ts` 零 diff；独立复现端到端临时脚本验证，结果与申报一致；`pickDialogueLines`/`clampLineIndex`/`nextLineIndex` 全部分支与边界经真实测试核实；`packages/**`（除授权文件）、DEV-020/021/022 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING，0 DEVIATION；Info: 1，LEDGER 工作区状态观察，不影响判定 |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0113`，`verdict_ref: "0112"`）：**DEV-023 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷第三次 CR + `apps/renderer` 新增 `pickDialogueLines`/`clampLineIndex`/`nextLineIndex`/对话框渲染；DEV-009/012/020/021/022 既有冻结接口未受影响）；裁决中额外发现并修正一处未提交的 LEDGER 工作区问题（`0110` 行曾被整体替换为 `0111` 而非追加，已恢复，未进入任何提交历史，未发 FIX_PACKAGE）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-024（Choice UI） |
+| 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-024`（消息 `0114`）：第一次对 INTERACTION region 的 `onOpen`（而非此前四次 CR 都在改的 STORY region `onSceneEnter`）发窄范围 CR，追加 `choices`/`openDurationMs`；核对 `chapter-schema/interaction.ts` 确认 `Choice.id`（`A`/`B`/`C`/`D`）就是观众要在 Twitch 聊天里打的字母，`visibleIf` 条件过滤必须在 Runtime 侧完成（Renderer 拿不到 `WorldState`）；明确产品事实——Choice UI 是 OBS Browser Source 采集进直播画面的展示，不是可点击控件，真实投票走 Twitch 聊天（M4 未建）；`apps/renderer` 展示选项列表 + 本地倒计时（允许用 `Date.now()`，纯 UI 反馈不适用确定性红线）；不做实时票数展示（延后）；T001–T006，A01–A20；DEV-024 转 `IN_PROGRESS` |
 
 ## Authority
 

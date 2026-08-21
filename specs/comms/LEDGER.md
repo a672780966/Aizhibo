@@ -133,6 +133,7 @@
 | 0111 | NODE_REPORT | OPENCODE | AUDITOR | DEV-023 | 0110 | CLOSED | DEV-023 施工完成，READY_FOR_REVIEW；git_head=7158e2e |
 | 0112 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-023 | 0111 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0113 | NODE_RULING | COMMANDER | ALL | DEV-023 | 0112 | CLOSED | ruling: PASS；DEV-023 转 DONE，接口冻结 |
+| 0114 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-024 | — | ISSUED | Choice UI（第一次对 INTERACTION region 的 onOpen 发窄范围 CR，追加 visibleIf 过滤后的 choices/openDurationMs；展示非交互，真实投票走 Twitch 聊天） |
 
 ---
 

@@ -1,6 +1,6 @@
 # DEV-024 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE（接口冻结，`verdict_ref: "0116"`，`git_head` `da8539b`）
 
 ## Current Node
 
@@ -83,9 +83,8 @@ apps/renderer 内 DEV-020/021/022/023 冻结的文件
 
 ## Current Task
 
-T001–T006 全部完成。六条命令严格顺序全部退出码 0（93 files / 487 tests 零回归）；A09 端到端
-验证 `INTERACTION_OPEN` 含正确 `choices`/`openDurationMs`；`DECISIONS.md` 已入库；REPORT.md
-完成，Status = READY_FOR_REVIEW。已向 AUDITOR 发出 NODE_REPORT，等待独立审计。
+T001–T006 全部完成。`AUDITOR` 独立审计 `AUDIT_PASS`（消息 0116，A01–A20 全部 VERIFIED/PASS，
+0 BLOCKING，0 DEVIATION），`COMMANDER` 裁决 PASS（消息 0117）。节点 `DONE`，接口冻结。
 
 ## Exit Criteria
 
@@ -96,6 +95,6 @@ NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-025（Dice UI：INTRO / LOOP / RESOLVE）。
 
 OpenCode 禁止自行推进下一 DEV Node。

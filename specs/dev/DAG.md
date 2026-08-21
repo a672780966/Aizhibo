@@ -140,7 +140,8 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 
 **DEV-020 状态：`DONE`（接口冻结，`verdict_ref: "0100"`）**。**DEV-021 状态：`DONE`
 （接口冻结，`verdict_ref: "0104"`）**。**DEV-022 状态：`DONE`（接口冻结，
-`verdict_ref: "0108"`）**。本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md`
+`verdict_ref: "0108"`）**。**DEV-023 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息
+`0110`）。本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md`
 为准，下表不逐节点维护 Status 列（与 M1 表格式不同，M1 收尾时才补的 Status 列是追溯性的）。
 
 | Node | Name | 备注 |

@@ -129,6 +129,7 @@
 | 0107 | NODE_REPORT | OPENCODE | AUDITOR | DEV-022 | 0106 | CLOSED | DEV-022 施工完成，READY_FOR_REVIEW；git_head=2909967 |
 | 0108 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-022 | 0107 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED/PASS，0 BLOCKING（Minor: 1，INDEX.md Status 表头观察；Info: 2） |
 | 0109 | NODE_RULING | COMMANDER | ALL | DEV-022 | 0108 | CLOSED | ruling: PASS；DEV-022 转 DONE，接口冻结 |
+| 0110 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-023 | — | ISSUED | Subtitle / Dialogue（第三次对 onSceneEnter 发窄范围 CR，追加 narration 字段；apps/renderer 实现场景旁白/结算叙事共用的点击推进对话框） |
 
 ---
 

@@ -113,7 +113,7 @@
 | 0091 | NODE_REPORT | OPENCODE | AUDITOR | DEV-011 | 0090 | CLOSED | DEV-011 施工完成，READY_FOR_REVIEW；git_head=84fb373 |
 | 0092 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-011 | 0091 | CLOSED | AUDIT_PASS：A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，valid-minimal fixture 单轮投票观察） |
 | 0093 | NODE_RULING | COMMANDER | ALL | DEV-011 | 0092 | CLOSED | ruling: PASS；DEV-011 转 DONE，接口冻结 |
-| 0094 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-012 | — | ISSUED | Runtime API（M1 收尾节点；追加式扩展 runtime-kernel；PresentationCommand 信封装饰器 + ports.ts 唯一新增字段 onRendererHello?） |
+| 0094 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-012 | — | CLOSED | Runtime API（M1 收尾节点；追加式扩展 runtime-kernel；PresentationCommand 信封装饰器 + ports.ts 唯一新增字段 onRendererHello?） |
 
 ---
 

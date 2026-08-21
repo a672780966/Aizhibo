@@ -23,6 +23,7 @@ export interface PlatformPort {
 /** Command payloads are loosely typed: the concrete command schema is DEV-028's job. */
 export interface PresentationPort {
   send(command: unknown): void;
+  onRendererHello?(handler: () => void): void;
 }
 
 /** Loose command payloads; concrete audio command schema is DEV-030's job. */

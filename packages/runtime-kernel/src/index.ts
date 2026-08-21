@@ -20,5 +20,11 @@ export { extractVoteRounds } from './voteExtraction.js';
 export type { VoteRound } from './voteExtraction.js';
 export { replayFromEventLog } from './replay.js';
 export type { ReplayResult } from './replay.js';
+export { wrapPresentationPort } from './presentationCommand.js';
+export type {
+  PresentationCommand,
+  PresentationState,
+  SequencedPresentationPort,
+} from './presentationCommand.js';
 export { compareEventLogs } from './replayCompare.js';
 export type { ReplayDivergence } from './replayCompare.js';

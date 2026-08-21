@@ -1,7 +1,9 @@
-import type { PresentationCommand } from '@interactive-story/runtime-kernel';
+import type { PresentationCommand, ResolvedVisualLayer } from '@interactive-story/runtime-kernel';
 import { useEffect, useState } from 'react';
 import { createRendererClient } from './ws/client.js';
 import type { SocketLike } from './ws/client.js';
+import { composeLayers } from './render/composeLayers.js';
+import type { RenderableLayer } from './render/composeLayers.js';
 
 /** WebSocket 服务端约定的地址（本节点服务端半仅由集成测试验证，无长驻进程）。 */
 export const WS_URL = 'ws://localhost:8787';
@@ -28,6 +30,24 @@ export function appendCommand(
   return [...commands, next];
 }
 
+/**
+ * 取最近一条 `SCENE_ENTER` 命令里的 visual layers 并合成渲染层（纯函数，便于无 DOM
+ * 测试）。Runtime（`onSceneEnter`）已把 `visualSceneId → layers → file` 解析完毕随命令
+ * 下发；这里只做布局合成，不读任何章节文件（Dev Spec §35）。没有 SCENE_ENTER 命令时
+ * 返回空数组。
+ */
+export function pickSceneLayers(commands: PresentationCommand[]): RenderableLayer[] {
+  for (let i = commands.length - 1; i >= 0; i -= 1) {
+    const command = commands[i]?.command;
+    if (typeof command !== 'object' || command === null) continue;
+    const candidate = command as { kind?: unknown; layers?: unknown };
+    if (candidate.kind !== 'SCENE_ENTER') continue;
+    if (!Array.isArray(candidate.layers)) continue;
+    return composeLayers(candidate.layers as ResolvedVisualLayer[]);
+  }
+  return [];
+}
+
 export default function App() {
   const [commands, setCommands] = useState<PresentationCommand[]>([]);
   const [lastSeq, setLastSeq] = useState<number | undefined>(undefined);
@@ -45,6 +65,16 @@ export default function App() {
     <main>
       <h1>Renderer Shell</h1>
       <p>last commandSeq: {lastSeq ?? '—'}</p>
+      <section aria-label="scene layers" style={{ position: 'relative' }}>
+        {pickSceneLayers(commands).map((layer) => (
+          <img
+            key={layer.assetId}
+            src={layer.file}
+            alt={layer.assetId}
+            style={{ position: 'absolute', zIndex: layer.zIndex }}
+          />
+        ))}
+      </section>
       <pre>{JSON.stringify(commands, null, 2)}</pre>
     </main>
   );

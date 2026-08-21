@@ -9,6 +9,7 @@ import { wrapSnapshot } from './snapshot.js';
 import type { Ports } from './ports.js';
 import { defaultPorts } from './ports.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
+import { resolveVisualLayers } from './visualResolution.js';
 import {
   applyVote,
   buildNarrativeInputs,
@@ -207,7 +208,20 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
         storyMove(context, 'SCENE_ENTER', 'STORY.CHAPTER_LOADED'),
       ),
       onSceneEnter: assign(({ context }) => {
-        context.ports.presentation.send({ kind: 'SCENE_ENTER', sceneId: context.currentSceneId });
+        const scene =
+          context.compiled !== null
+            ? currentScene(context.compiled, context.currentSceneId)
+            : undefined;
+        const layers =
+          context.compiled !== null && scene !== undefined
+            ? resolveVisualLayers(context.compiled, scene.visualSceneId)
+            : [];
+        context.ports.presentation.send({
+          kind: 'SCENE_ENTER',
+          sceneId: context.currentSceneId,
+          visualSceneId: scene?.visualSceneId,
+          layers,
+        });
         context.ports.audio.send({ kind: 'SCENE_ENTER', sceneId: context.currentSceneId });
         return storyMove(context, 'SCENE_ENTER', 'STORY.SCENE_READY', {
           sceneId: context.currentSceneId,

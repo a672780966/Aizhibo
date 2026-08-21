@@ -28,3 +28,5 @@ export type {
 } from './presentationCommand.js';
 export { compareEventLogs } from './replayCompare.js';
 export type { ReplayDivergence } from './replayCompare.js';
+export { resolveVisualLayers } from './visualResolution.js';
+export type { ResolvedVisualLayer } from './visualResolution.js';

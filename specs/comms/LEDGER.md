@@ -117,6 +117,7 @@
 | 0095 | NODE_REPORT | OPENCODE | AUDITOR | DEV-012 | 0094 | CLOSED | DEV-012 施工完成，READY_FOR_REVIEW；git_head=7b82e60 |
 | 0096 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-012 | 0095 | CLOSED | AUDIT_PASS：A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 2） |
 | 0097 | NODE_RULING | COMMANDER | ALL | DEV-012 | 0096 | CLOSED | ruling: PASS；DEV-012 转 DONE，接口冻结；M1 里程碑全部完成 |
+| 0098 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-020 | — | ISSUED | Renderer Shell（M2 首个节点；新建 apps/renderer，React+Vite+WebSocket；仅消费已冻结的 runtime-kernel PresentationCommand/wrapPresentationPort；根配置三处最小改动） |
 
 ---
 

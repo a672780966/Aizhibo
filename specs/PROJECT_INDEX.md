@@ -13,21 +13,21 @@
 
 ## Current Milestone
 
-M1 — Story Machine Complete
+M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成）
 
 ## Current Node
 
-DEV-012 — Runtime API（`NODE_RULING: PASS` 已发出，消息 `0097`，节点 `DONE`，接口冻结；**M1 里程碑全部完成**）
+DEV-020 — Renderer Shell（`TASK_PACKAGE` 已发出，消息 `0098`，节点 `IN_PROGRESS`；M2 第一个节点）
 
 ## Current Status
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012 均 `DONE`（接口冻结）。**M1 — Story Machine Complete 里程碑全部 15 个节点完成**，三个对外契约全部冻结：Runtime Event（DEV-008）、Public State 可见性分区（DEV-009）、Presentation Command（DEV-012）。M2（演出）与 M3（音频）均具备下发条件，互不依赖，排期顺序待下一轮决定。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结：Runtime Event（DEV-008）、Public State 可见性分区（DEV-009）、Presentation Command（DEV-012）。USER 选定 M2（演出）优先于 M3（音频）开工。DEV-020 已下发（新建 `apps/renderer`，React+Vite+WebSocket，仅消费已冻结的 `runtime-kernel` 导出），等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-012.md` ＋ 权威输入 Dev Spec 第 65 节（DEV-012）、`DAG.md` CR-012
+`specs/tasks/TASK-PACKAGE-DEV-020.md` ＋ 权威输入 Dev Spec 第 34/35 节（Renderer/Renderer 不维护剧情）、`DAG.md` CR-012
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`
 
 ## 通信协议
 
@@ -61,7 +61,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-020 — Renderer Shell（`TASK_PACKAGE` 消息 `0098`；M2 第一个节点）
 
 ## Blocked Nodes
 
@@ -73,7 +73,7 @@ DEV-012 — Runtime API（2026-08-21）
 
 ## Next Eligible Nodes
 
-M1 已全部完成。M2（演出，DEV-020 起）与 M3（音频，DEV-030 起）均具备下发条件，互不依赖，排期顺序待下一轮决定。
+DEV-020 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -227,6 +227,7 @@ M1 已全部完成。M2（演出，DEV-020 起）与 M3（音频，DEV-030 起�
 | 2026-08-21 | 收到 DEV-012 `NODE_REPORT`（消息 `0095`，`git_head` `7b82e60...`）：六条命令严格顺序全部退出码 0，81 files/417 tests（presentationCommand 新增，既有零回归），`commandSeq` 严格自增含 RESYNC 占号、`onRendererHello` 触发 RESYNC 内容与 `getState()` 深等，转交 `AUDITOR` 独立审计 |
 | 2026-08-21 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0096`）：**PASS**。独立重跑六条命令一致；`git diff df676c9 HEAD` 核实文件集合恰 10 个，与 Writable Scope 精确一致；`ports.ts` 仅新增 1 行可选方法，`index.ts` 仅追加 6 行导出，`machine.ts`/`presentationRegion.ts` 及其余四个冻结包均零 diff；CR-012 红线独立核实通过——`getState()` 为即时折叠投影、无独立缓存，未违反"必须派生，不得另存"；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 2，`getState()` O(n) 重折叠性能观察 + 端到端测试未逐步断言 commandSeq 精确值，均不影响判定） |
 | 2026-08-21 | 发出 `NODE_RULING: PASS`（消息 `0097`，`verdict_ref: "0096"`）：**DEV-012 转 DONE，接口冻结**（`runtime-kernel` 新增 `wrapPresentationPort`/`PresentationCommand`/`PresentationState`/`SequencedPresentationPort` 四个追加式导出 + `ports.ts` 的 `onRendererHello?` 可选字段）；同步更新本文件与 `DAG.md`；**M1 — Story Machine Complete 里程碑全部完成**；下一可下发为 M2（演出，DEV-020 起）或 M3（音频，DEV-030 起），互不依赖，排期顺序留待下一轮决定 |
+| 2026-08-21 | USER 报告 M1 全部 15 个节点完工；就 M2/M3 排期顺序征询 USER 意见，**USER 选定 M2（演出）优先**。起草并发出 `TASK_PACKAGE DEV-020`（消息 `0098`）：M2 第一个节点，全项目首次引入前端应用（React+Vite）、真实网络协议（WebSocket）、新增运行时 npm 依赖；新建 `apps/renderer`（`packages/**` 全部只读，纯粹消费已冻结的 `runtime-kernel` 导出），服务端半用 `ws` 包装 `wrapPresentationPort` 提供真实 `PresentationPort`，客户端半做 `RENDERER_HELLO` 握手 + `commandSeq` 跳空检测；核对根级 `tsc -b`/`eslint`/`vitest` 配置后确定唯三必要改动（`vitest.config.ts` include 追加 `apps/*` glob、`eslint.config.js` files 追加 `.tsx`、根 `package.json` 的 `typecheck` 脚本追加一步，`apps/renderer` 不加入根 `tsconfig.json` 的 composite `references`）；范围收紧为"Shell only"，不做真实场景/角色渲染（DEV-021+ 的职责）；T001–T007，A01–A19；DEV-020 转 `IN_PROGRESS` |
 
 ## Authority
 

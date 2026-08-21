@@ -136,7 +136,11 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 
 ## 第二施工组：演出（M2 — Presentation Complete）
 
-前置：DEV-012
+前置：DEV-012（已满足，2026-08-21 M1 全部完成后 USER 选定 M2 优先于 M3 开工）
+
+**DEV-020 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0098`）。本组内节点状态以
+`specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准，下表不逐节点维护 Status 列
+（与 M1 表格式不同，M1 收尾时才补的 Status 列是追溯性的）。
 
 | Node | Name | 备注 |
 |---|---|---|

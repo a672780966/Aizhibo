@@ -8,6 +8,7 @@
     { "path": "./packages/rule-engine" },
     { "path": "./packages/dice-engine" },
     { "path": "./packages/narrative-composer" },
-    { "path": "./packages/persistence" }
+    { "path": "./packages/persistence" },
+    { "path": "./packages/audio-engine" }
   ]
 }

@@ -23,9 +23,14 @@ Package 原文。**第 1/2 节务必先读**：`DICE.*` 事件目前只写进 Ru
   `buildNarrativeInputs` 之前新增 `DICE_RESULT` 下发。只下发展示相关字段
   （`diceType`/`rawValue`/`modifier`/`finalValue`/`quality`），丢弃 `seed`/
   `rollIndex`/`appliedModifiers`（重放/内部记账字段，不用于展示，与 DEV-024 丢弃
-  `Choice.actionType`/`ruleId` 同一原则）。这些字段本来就是 `DICE.PUBLISHED`
-  （`visibility: 'PUBLIC'`）已经承认对观众公开的信息，下发不构成新的信息泄露——
-  只是把已经判定为公开的数据从 Event Log 也转发一份到 Presentation 通道。
+  `Choice.actionType`/`ruleId` 同一原则）。`DICE_RESULT` 的安全性来自 `onResolve`
+  内**显式手写、只含五个具名字段**的对象字面量（非展开 `record`、非信任事件整体
+  可见性标注）——冻结的 `DICE.PUBLISHED` 事件（`machine.ts:349-352`）实际与
+  `HIDDEN` 的 `DICE.ROLLED` 共用同一未裁剪的 `record` 对象，其 `visibility:'PUBLIC'`
+  标注**不代表**该 record 的每个字段都已被审计为对观众安全；`quality` 亦从未在
+  `DiceRollRecordPayloadSchema` 中被声明为正式字段。这正是本节点不能简单转发/展开
+  该事件 payload、而必须手写白名单的原因（FIX-01 更正，依 `AUDIT_VERDICT` 消息
+  `0120` BLOCKING-01）。
   ```typescript
   context.ports.presentation.send({
     kind: 'DICE_RESULT',

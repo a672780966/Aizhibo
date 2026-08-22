@@ -4,7 +4,8 @@ Status: READY_FOR_REVIEW
 
 ## Current Node
 
-DEV-025 — Dice UI
+DEV-025 — Dice UI（第二轮：DEV-025-FIX-01 已提交——依 `AUDIT_VERDICT` 消息 `0120`
+BLOCKING-01 更正 `REQUIREMENTS.md` §2.2 与 `DECISIONS.md` D2 的安全论证措辞，不改源码）
 
 ## Objective
 

@@ -15,10 +15,17 @@
 丢弃 `seed`/`rollIndex`/`appliedModifiers`（重放/内部记账字段，不用于展示，与 DEV-024
 丢弃 `Choice.actionType`/`ruleId` 同一原则）。
 
-且这些字段本来就是 `DICE.PUBLISHED`（`visibility: 'PUBLIC'`）已经承认对观众公开的信息
-——本节点只是把已经判定为公开的数据从 Event Log 也转发一份到 Presentation 通道，**不
-构成新的信息泄露**。`seed` 虽在 `DICE.ROLLED`（HIDDEN）里出现，但它从未以 PUBLIC 可见
-性存在过，因此不下发。
+且这些字段的安全性来自 `onResolve` 内**显式手写、只含五个具名字段**的对象字面量（非
+展开 `record`、非信任事件整体可见性标注）。冻结的 `DICE.PUBLISHED` 事件
+（`machine.ts:349-352`）实际与 `HIDDEN` 的 `DICE.ROLLED` 共用同一未裁剪的 `record`
+对象——同一 `record`（含 `seed`/`rollIndex`/`appliedModifiers`）被 `flatMap` 三次
+复用、仅更换 `visibility` 标签：也就是说 `seed` 事实上以 PUBLIC 可见性出现在
+`DICE.PUBLISHED` 里，PUBLIC 标注**不代表**该 record 的每个字段都已被审计为对观众
+安全；`quality` 也从未在 `DiceRollRecordPayloadSchema`（`diceEvent.ts`，冻结）中被
+声明为 `DICE.PUBLISHED` 的正式字段。这正说明本节点为什么不能简单转发/展开该事件
+payload、而必须手写五字段白名单——`DICE_RESULT` 的安全性完全来自这一白名单选择。
+（FIX-01 更正，依 `AUDIT_VERDICT` 消息 `0120` BLOCKING-01；代码行为不变，本节点
+从未泄露 `seed`，但此前的论证文字确实错述了冻结代码的事实。）
 
 ## D3 — `quality` 可能是 `undefined`：picker 边界过滤
 

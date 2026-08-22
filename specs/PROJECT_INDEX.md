@@ -17,17 +17,17 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-027 — BGM / SFX（`TASK_PACKAGE` 已发出，消息 `0130`，节点 `IN_PROGRESS`；M2 第八个节点）
+DEV-027 — BGM / SFX（`NODE_RULING: PASS` 已发出，消息 `0133`，节点 `DONE`，接口冻结；M2 第八个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-026 均已 `DONE`（接口冻结）。DEV-027 已下发：第五次对 `onSceneEnter` 的 presentation `send` 发窄范围 CR（追加 `audio` 字段），刻意不给 `Ports.audio` 建独立传输（留给 DEV-032/M3），等待 Codex 施工。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-027 均已 `DONE`（接口冻结）。M2 现在只剩 DEV-028（Presentation Command Bus），下一可下发节点。
 
 ## Current Task Package
 
 `specs/tasks/TASK-PACKAGE-DEV-027.md`
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`
 
 ## 通信协议
 
@@ -65,10 +65,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-024 — Choice UI（DONE，`verdict_ref: "0116"`，`git_head` `da8539b`）
 - DEV-025 — Dice UI（DONE，`verdict_ref: "0124"`，`git_head` `4c2ed0a`；首轮 `0120` FAIL → `DEV-025-FIX-01` → 二轮 PASS）
 - DEV-026 — Camera / Transition（DONE，`verdict_ref: "0128"`，`git_head` `30ea37b248c5f551aa44272d9b3ef3510c7ce81c`）
+- DEV-027 — BGM / SFX（DONE，`verdict_ref: "0132"`，`git_head` `08b22389a3b2708f8f489ba6981d997754ed6a4c`）
 
 ## In Progress Nodes
 
-- DEV-027 — BGM / SFX（`TASK_PACKAGE` 消息 `0130`）
+无。
 
 ## Blocked Nodes
 
@@ -76,11 +77,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-026 — Camera / Transition（2026-08-22）
+DEV-027 — BGM / SFX（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-027 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-028（Presentation Command Bus），只依赖已冻结的 DEV-027；信封契约已在 DEV-012 冻结。PASS 后 M2 全部完成。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待排期。
 
 ## Project-level Blockers
 
@@ -266,6 +267,9 @@ DEV-027 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0128`）：**PASS**。独立 `git diff 63541d8 30ea37b` 核实 14 个文件改动精确落在 Writable Scope；`machine.ts` 逐行核对只在 `onSceneEnter` 新增 `cameraPreset`（+1 行必需 import），历次 CR 遗留代码与其余全部 action 逐字节不变；独立编写临时端到端测试验证 `SCENE_ENTER` 含 `cameraPreset: undefined`（`vs-start` 未设置，如实反映，验证后已删除临时代码）；独立核实 `App.tsx` 唯一"删除"行是同一 `<section>` 开标签被格式化为多行（加 props，非逻辑删除）；`resolveVisualLayers`（DEV-021 冻结）未被触碰；独立重跑六条命令（97 files/505 tests）；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，不影响判定） |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0129`，`verdict_ref: "0128"`）：**DEV-026 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷第四次 CR + 新增导出 `resolveCameraPreset` + `apps/renderer` 新增 `cameraPreset.ts`/`pickSceneMeta.ts`/镜头转场渲染；DEV-009/012/020/021/022/023/024/025 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-027（BGM / SFX） |
 | 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-027`（消息 `0130`）：第五次对 `onSceneEnter` 发窄范围 CR，追加 `audio` 字段（场景级 BGM/环境音，解析自已冻结的 `AudioAsset`）；核实 `Ports.audio` 至今仍是 no-op（`apps/renderer` 只给 `Ports.presentation` 接了 WebSocket），判断现在给 `Ports.audio` 建独立传输是抢在 DEV-032（M3，声道仲裁）之前搭一套很可能被推翻重做的基础设施——过度设计；处置为 BGM/环境音走已经在工作、已测试过的 Presentation 通道，`onSceneEnter` 里既有的 `audio.send(...)` 那一行与 `ports.ts`/`audioRegion.ts` 一律不碰；明确不实现事件触发型 SFX（无 schema/信号支撑，留待未来另一次 CR）；T001–T007，A01–A21；DEV-027 转 `IN_PROGRESS` |
+| 2026-08-22 | 收到 DEV-027 `NODE_REPORT`（消息 `0131`，`git_head` `08b2238...`），转交 `AUDITOR` 独立审计 |
+| 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0132`）：**PASS**。独立 `git diff 097f863 08b22389` 核实 13 个文件改动精确落在 Writable Scope；逐行核对 `machine.ts` 的 `onSceneEnter` presentation `send` 只新增 `audio` 一行，紧随其后独立的 `context.ports.audio.send(...)` 逐字节未变；独立编写临时端到端测试驱动真实 `createRuntimeMachine`+`valid-minimal`，验证 `SCENE_ENTER` 含正确 `audio.bgm`/`audio.ambience` 且与 `Ports.audio` 隔离（验证后已删除临时代码）；独立核实 `resolveSceneAudio` 对 `RUNTIME_TTS` 资产防御性跳过；`ports.ts`/`audioRegion.ts` 零 diff；独立重跑六条命令（99 files/515 tests）；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，不影响判定） |
+| 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0133`，`verdict_ref: "0132"`）：**DEV-027 转 DONE，接口冻结**（`onSceneEnter` presentation `send` 第五次 CR + 新增导出 `resolveSceneAudio` + `apps/renderer` 新增 `pickSceneAudio`/`<audio>` 播放渲染；DEV-009/012/020/021/022/023/024/025/026 既有冻结接口未受影响；`Ports.audio`/`audioRegion.ts` 未被触碰）；同步更新本文件与 `DAG.md`；M2 现在只剩 DEV-028（Presentation Command Bus） |
 
 ## Authority
 

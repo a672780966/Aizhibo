@@ -149,6 +149,7 @@
 | 0127 | NODE_REPORT | OPENCODE | AUDITOR | DEV-026 | 0126 | CLOSED | DEV-026 施工完成，READY_FOR_REVIEW；git_head=30ea37b |
 | 0128 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-026 | 0127 | CLOSED | AUDIT_PASS：A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0129 | NODE_RULING | COMMANDER | ALL | DEV-026 | 0128 | CLOSED | ruling: PASS；DEV-026 转 DONE，接口冻结 |
+| 0130 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-027 | — | ISSUED | BGM / SFX（第五次对 onSceneEnter 的 presentation send 发窄范围 CR，追加 audio 字段；刻意不碰 Ports.audio，声道仲裁传输留给 DEV-032） |
 
 ---
 

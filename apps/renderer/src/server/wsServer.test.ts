@@ -73,4 +73,58 @@ describe('createWebSocketPresentationPort（真实 ws server + client 集成）'
     expect(resync.commandSeq).toBe(2);
     expect((resync.command as { state?: PresentationState }).state).toEqual({ phase: 'READY' });
   });
+
+  it('真实断线重连：close 后全新连接重发 RENDERER_HELLO 走同一路径，commandSeq 延续且 state 反映断线前最新折叠状态', async () => {
+    const { wss, url } = startServer();
+    servers.push(wss);
+    const port = wrapPresentationPort(createWebSocketPresentationPort(wss));
+
+    const client1 = await connect(url);
+    clients.push(client1);
+    client1.send(JSON.stringify({ type: 'RENDERER_HELLO' }));
+    const resync1 = await waitForMessage(client1);
+    expect(resync1.commandSeq).toBe(1);
+    expect((resync1.command as { state?: PresentationState }).state).toEqual({ phase: 'LOADING' });
+
+    port.send({ kind: 'PRES_READY' });
+    const ready = await waitForMessage(client1);
+    expect(ready.commandSeq).toBe(2);
+    expect(ready.command).toEqual({ kind: 'PRES_READY' });
+
+    // 真实断线：关闭连接并等待关闭完成，再从客户端数组中移除（afterEach 的 close 幂等）
+    const closed = new Promise<void>((resolve) => client1.once('close', () => resolve()));
+    client1.close();
+    await closed;
+    clients.splice(clients.indexOf(client1), 1);
+
+    // 重连：全新连接，重发 RENDERER_HELLO——同一个 helloHandler，同一条代码路径
+    const client2 = await connect(url);
+    clients.push(client2);
+    client2.send(JSON.stringify({ type: 'RENDERER_HELLO' }));
+
+    const resync2 = await waitForMessage(client2);
+    expect(resync2.commandSeq).toBe(3); // commandSeq 延续此前计数，不重置为 1
+    expect((resync2.command as { kind?: string }).kind).toBe('PRESENTATION_RESYNC');
+    expect((resync2.command as { state?: PresentationState }).state).toEqual({ phase: 'READY' });
+  });
+
+  it('多客户端分发一致性：一次 port.send 广播给全部在线连接，各客户端收到内容一致的命令', async () => {
+    const { wss, url } = startServer();
+    servers.push(wss);
+    const port = wrapPresentationPort(createWebSocketPresentationPort(wss));
+
+    const client1 = await connect(url);
+    clients.push(client1);
+    const client2 = await connect(url);
+    clients.push(client2);
+
+    // 先挂好两个客户端的等待器，再发一次命令，避免竞态
+    const got1 = waitForMessage(client1);
+    const got2 = waitForMessage(client2);
+    port.send({ kind: 'PRES_READY' });
+
+    const [m1, m2] = await Promise.all([got1, got2]);
+    expect(m1).toEqual(m2); // 广播内容一致：commandSeq/command 均相同
+    expect(m1).toEqual({ commandSeq: 1, command: { kind: 'PRES_READY' } });
+  });
 });

@@ -153,7 +153,7 @@
 | 0131 | NODE_REPORT | OPENCODE | AUDITOR | DEV-027 | 0130 | CLOSED | DEV-027 施工完成，READY_FOR_REVIEW；git_head=08b2238 |
 | 0132 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-027 | 0131 | CLOSED | AUDIT_PASS：A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0133 | NODE_RULING | COMMANDER | ALL | DEV-027 | 0132 | CLOSED | ruling: PASS；DEV-027 转 DONE，接口冻结 |
-| 0134 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-028 | — | ISSUED | Presentation Command Bus（M2 最后一个节点；仅补测试——真实断线重连/同连接 RESYNC 幂等性/多客户端分发一致性，不新增生产代码） |
+| 0134 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-028 | — | CLOSED | Presentation Command Bus（M2 最后一个节点；仅补测试——真实断线重连/同连接 RESYNC 幂等性/多客户端分发一致性，不新增生产代码） |
 
 ---
 

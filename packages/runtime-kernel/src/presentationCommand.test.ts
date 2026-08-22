@@ -80,4 +80,33 @@ describe('wrapPresentationPort', () => {
     expect(port.getState().lastResultText).toBeTypeOf('string');
     expect(sent.every((entry) => entry.commandSeq > 0)).toBe(true);
   });
+
+  it('同连接连续两次 RESYNC 请求幂等：commandSeq 各自递增、state 内容相同', () => {
+    const sent: PresentationCommand[] = [];
+    let hello: (() => void) | undefined;
+    const port = wrapPresentationPort({
+      send: (command) => sent.push(command as PresentationCommand),
+      onRendererHello: (handler) => {
+        hello = handler;
+      },
+    });
+
+    port.send({ kind: 'SCENE_ENTER', sceneId: 'scene-start' });
+    port.send({ kind: 'PRES_READY' });
+
+    // 同一连接、不重连，连续两次 RESYNC 请求（中间无任何新的 send）
+    hello?.();
+    hello?.();
+
+    const resyncs = sent.filter(
+      (entry) => (entry.command as { kind?: string }).kind === 'PRESENTATION_RESYNC',
+    );
+    expect(resyncs).toHaveLength(2);
+    expect(resyncs.map((entry) => entry.commandSeq)).toEqual([3, 4]); // 各自递增，不重复、不跳号
+    expect(resyncs[0]?.command).toEqual(resyncs[1]?.command); // state 内容完全相同（折叠状态未变）
+    expect(resyncs[0]?.command).toEqual({
+      kind: 'PRESENTATION_RESYNC',
+      state: { phase: 'READY', currentSceneId: 'scene-start' },
+    });
+  });
 });

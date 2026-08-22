@@ -17,17 +17,17 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-026 — Camera / Transition（`TASK_PACKAGE` 已发出，消息 `0126`，节点 `IN_PROGRESS`；M2 第七个节点）
+DEV-026 — Camera / Transition（`NODE_RULING: PASS` 已发出，消息 `0129`，节点 `DONE`，接口冻结；M2 第七个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-025 均已 `DONE`（接口冻结）。DEV-026 已下发：第四次对 `onSceneEnter` 发窄范围 CR（追加 `cameraPreset`），转场不新增 schema 字段，等待 Codex 施工。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-026 均已 `DONE`（接口冻结）。下一可下发节点为 DEV-027（BGM / SFX），只依赖已冻结的 DEV-026。
 
 ## Current Task Package
 
 `specs/tasks/TASK-PACKAGE-DEV-026.md`
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`
 
 ## 通信协议
 
@@ -64,10 +64,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-023 — Subtitle / Dialogue（DONE，`verdict_ref: "0112"`，`git_head` `7158e2e`）
 - DEV-024 — Choice UI（DONE，`verdict_ref: "0116"`，`git_head` `da8539b`）
 - DEV-025 — Dice UI（DONE，`verdict_ref: "0124"`，`git_head` `4c2ed0a`；首轮 `0120` FAIL → `DEV-025-FIX-01` → 二轮 PASS）
+- DEV-026 — Camera / Transition（DONE，`verdict_ref: "0128"`，`git_head` `30ea37b248c5f551aa44272d9b3ef3510c7ce81c`）
 
 ## In Progress Nodes
 
-- DEV-026 — Camera / Transition（`TASK_PACKAGE` 消息 `0126`）
+无。
 
 ## Blocked Nodes
 
@@ -75,11 +76,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-025 — Dice UI（2026-08-22）
+DEV-026 — Camera / Transition（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-026 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-027（BGM / SFX），只依赖已冻结的 DEV-026。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -261,6 +262,9 @@ DEV-026 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）第二轮 `AUDIT_VERDICT`（消息 `0124`）：**PASS**。独立读取 `machine.ts:331-362`/`diceEvent.ts` schema 全文核实新论证与代码事实完全吻合，未发现新的事实错误；FIX-A01/A02 均 VERIFIED，`git diff 770276f 4c2ed0a` 确认源码零改动；原 A01–A07/A09–A14/A16–A19 无回归（额外自愿重跑 `pnpm typecheck`/`pnpm test`：94 files/494 tests，与首轮一致）；0 BLOCKING |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0125`，`verdict_ref: "0124"`）：**DEV-025 转 DONE，接口冻结**（`onLock`/`onResolve` 两处 CR + `apps/renderer` 新增 `pickDiceState`/INTRO-LOOP-RESOLVE 三阶段渲染；DEV-009/012/020/021/022/023/024 既有冻结接口未受影响）；`REQUIREMENTS.md`/`DECISIONS.md` 的更正论证成为未来节点（尤其 DEV-037）的权威参考；既有 `DICE.PUBLISHED` 携带 `seed` 的架构不一致记入 Future Consideration，供未来 CR/DEV-037 评估；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-026（Camera / Transition） |
 | 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-026`（消息 `0126`）：第四次对 `onSceneEnter` 发窄范围 CR，追加 `cameraPreset`（`VisualScene.cameraPreset`，已冻结的纯字符串键）；核对全部 `chapter-schema` 源码确认不存在任何"转场预设"字段，处置为转场不是章节可配置数据，而是 Renderer 每次收到新场景时统一套用的一种内置淡入效果，不新增 schema 字段也不需要额外 CR；`resolveCameraPreset` 设计为新增纯函数而非扩展 DEV-021 已冻结的 `resolveVisualLayers` 返回值形状，接受少量重复查找换取不打开已冻结接口；`apps/renderer` 内置 preset→CSS 映射表，未收录预设一律安全回退不抛异常；T001–T007，A01–A21；DEV-026 转 `IN_PROGRESS` |
+| 2026-08-22 | 收到 DEV-026 `NODE_REPORT`（消息 `0127`，`git_head` `30ea37b...`），转交 `AUDITOR` 独立审计 |
+| 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0128`）：**PASS**。独立 `git diff 63541d8 30ea37b` 核实 14 个文件改动精确落在 Writable Scope；`machine.ts` 逐行核对只在 `onSceneEnter` 新增 `cameraPreset`（+1 行必需 import），历次 CR 遗留代码与其余全部 action 逐字节不变；独立编写临时端到端测试验证 `SCENE_ENTER` 含 `cameraPreset: undefined`（`vs-start` 未设置，如实反映，验证后已删除临时代码）；独立核实 `App.tsx` 唯一"删除"行是同一 `<section>` 开标签被格式化为多行（加 props，非逻辑删除）；`resolveVisualLayers`（DEV-021 冻结）未被触碰；独立重跑六条命令（97 files/505 tests）；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，不影响判定） |
+| 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0129`，`verdict_ref: "0128"`）：**DEV-026 转 DONE，接口冻结**（`onSceneEnter` 的 `SCENE_ENTER` 载荷第四次 CR + 新增导出 `resolveCameraPreset` + `apps/renderer` 新增 `cameraPreset.ts`/`pickSceneMeta.ts`/镜头转场渲染；DEV-009/012/020/021/022/023/024/025 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-027（BGM / SFX） |
 
 ## Authority
 

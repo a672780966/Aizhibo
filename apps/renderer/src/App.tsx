@@ -13,6 +13,7 @@ import type { RenderableCharacter } from './render/composeCharacters.js';
 import { pickDialogueLines } from './render/pickDialogueLines.js';
 import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
 import { pickInteractionOpen } from './render/pickInteractionOpen.js';
+import { pickDiceState } from './render/pickDiceState.js';
 
 /** WebSocket 服务端约定的地址（本节点服务端半仅由集成测试验证，无长驻进程）。 */
 export const WS_URL = 'ws://localhost:8787';
@@ -82,7 +83,12 @@ export default function App() {
 
   const dialogue = pickDialogueLines(commands);
   const interaction = pickInteractionOpen(commands);
+  const dice = pickDiceState(commands);
   const [countdownMs, setCountdownMs] = useState<number | undefined>(undefined);
+  // 骰子 UI 的本地 LOOP 状态：收到 `DICE_INTRO`（且 key=新 seq）时进入"摇骰子动画"视觉
+  // 状态，维持到 `DICE_RESULT`（真实数据）到达为止。纯本地视觉过渡，不是等待服务端
+  // （真实节奏控制是 DEV-037 的职责，DECISIONS D1）。
+  const [rolling, setRolling] = useState(false);
 
   // 对话内容换新（`key` 变化：新 SCENE_ENTER 或新 RESULT_PLAYING）时重置阅读进度。
   useEffect(() => {
@@ -106,6 +112,10 @@ export default function App() {
   }, [interaction?.key]);
 
   useEffect(() => {
+    setRolling(dice.phase === 'INTRO');
+  }, [dice.key, dice.phase]);
+
+  useEffect(() => {
     createRendererClient(browserSocket(WS_URL), {
       onCommand: (envelope) => {
         setLastSeq(envelope.commandSeq);
@@ -125,6 +135,14 @@ export default function App() {
         }
         .character-animated {
           animation: breathe 3s ease-in-out infinite;
+        }
+        @keyframes dice-spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+        .dice-rolling {
+          display: inline-block;
+          animation: dice-spin 0.6s linear infinite;
         }
       `}</style>
       <section aria-label="scene layers" style={{ position: 'relative' }}>
@@ -195,6 +213,43 @@ export default function App() {
             <p style={{ margin: '0.25rem 0', opacity: 0.8 }}>
               剩余 {Math.ceil(countdownMs / 1000)} 秒
             </p>
+          )}
+        </section>
+      )}
+      {dice.phase !== 'IDLE' && (
+        <section
+          aria-label="dice ui"
+          style={{
+            position: 'fixed',
+            top: '4.5rem',
+            left: '50%',
+            transform: 'translateX(-50%)',
+            padding: '0.5rem 1rem',
+            background: 'rgba(0,0,0,0.75)',
+            color: '#fff',
+            textAlign: 'center',
+          }}
+        >
+          {rolling ? (
+            <span className="dice-rolling" role="status">
+              🎲 摇骰中…
+            </span>
+          ) : (
+            dice.results.map((d) => (
+              <p
+                key={`${d.diceType}-${d.finalValue}-${d.rawValue}`}
+                style={{ margin: '0.25rem 0' }}
+              >
+                {d.diceType}：{d.rawValue}
+                {d.modifier > 0
+                  ? ` + ${d.modifier}`
+                  : d.modifier < 0
+                    ? ` - ${Math.abs(d.modifier)}`
+                    : ''}
+                {' = '}
+                {d.finalValue}（{d.quality}）
+              </p>
+            ))
           )}
         </section>
       )}

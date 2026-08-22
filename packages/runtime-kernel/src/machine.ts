@@ -304,7 +304,10 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
         ]);
         return { ...emitted, votes };
       }),
-      onLock: assign(({ context }) => interactionMove(context, 'LOCKING', 'INTERACTION.LOCKING')),
+      onLock: assign(({ context }) => {
+        context.ports.presentation.send({ kind: 'DICE_INTRO' });
+        return interactionMove(context, 'LOCKING', 'INTERACTION.LOCKING');
+      }),
       onResolve: assign(({ context }) => {
         if (context.compiled === null) return {};
         const scene = currentScene(context.compiled, context.currentSceneId);
@@ -325,6 +328,16 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
           context.snapshot.sequenceCounter,
           interaction,
         );
+        context.ports.presentation.send({
+          kind: 'DICE_RESULT',
+          results: outcome.diceRecords.map((d) => ({
+            diceType: d.diceType,
+            rawValue: d.rawValue,
+            modifier: d.modifier,
+            finalValue: d.finalValue,
+            quality: d.quality,
+          })),
+        });
         const { resultNarratives, blocksById } = buildNarrativeInputs(context.compiled);
         const narratives: ResultNarrative[] = outcome.resolved
           .map((r) => resultNarratives.get(r.narrativeId))

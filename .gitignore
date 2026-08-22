@@ -10,4 +10,5 @@ coverage/
 .env
 .env.*
 .claude/
+.codex/
 .codebase-memory/

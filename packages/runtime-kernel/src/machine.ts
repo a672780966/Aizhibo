@@ -10,6 +10,7 @@ import type { Ports } from './ports.js';
 import { defaultPorts } from './ports.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
 import { resolveVisualLayers } from './visualResolution.js';
+import { resolveCameraPreset } from './cameraResolution.js';
 import { resolveCharacterPlacements } from './characterResolution.js';
 import { resolveVisibleChoices } from './choiceResolution.js';
 import {
@@ -229,6 +230,10 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
           layers,
           characters,
           narration: scene?.narration ?? [],
+          cameraPreset:
+            context.compiled !== null && scene !== undefined
+              ? resolveCameraPreset(context.compiled, scene.visualSceneId)
+              : undefined,
         });
         context.ports.audio.send({ kind: 'SCENE_ENTER', sceneId: context.currentSceneId });
         return storyMove(context, 'SCENE_ENTER', 'STORY.SCENE_READY', {

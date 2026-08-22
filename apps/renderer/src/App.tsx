@@ -14,6 +14,8 @@ import { pickDialogueLines } from './render/pickDialogueLines.js';
 import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
 import { pickInteractionOpen } from './render/pickInteractionOpen.js';
 import { pickDiceState } from './render/pickDiceState.js';
+import { resolveCameraPresetStyle } from './render/cameraPreset.js';
+import { pickCameraPreset, pickSceneEnterKey } from './render/pickSceneMeta.js';
 
 /** WebSocket 服务端约定的地址（本节点服务端半仅由集成测试验证，无长驻进程）。 */
 export const WS_URL = 'ws://localhost:8787';
@@ -84,6 +86,9 @@ export default function App() {
   const dialogue = pickDialogueLines(commands);
   const interaction = pickInteractionOpen(commands);
   const dice = pickDiceState(commands);
+  // 镜头 preset（纯字符串键 → 写死的 CSS 变换）与场景切换 key（React 重挂载触发淡入）。
+  const sceneEnterKey = pickSceneEnterKey(commands);
+  const cameraStyle = resolveCameraPresetStyle(pickCameraPreset(commands));
   const [countdownMs, setCountdownMs] = useState<number | undefined>(undefined);
   // 骰子 UI 的本地 LOOP 状态：收到 `DICE_INTRO`（且 key=新 seq）时进入"摇骰子动画"视觉
   // 状态，维持到 `DICE_RESULT`（真实数据）到达为止。纯本地视觉过渡，不是等待服务端
@@ -144,8 +149,20 @@ export default function App() {
           display: inline-block;
           animation: dice-spin 0.6s linear infinite;
         }
+        @keyframes fadeIn {
+          from { opacity: 0; }
+          to { opacity: 1; }
+        }
       `}</style>
-      <section aria-label="scene layers" style={{ position: 'relative' }}>
+      <section
+        aria-label="scene layers"
+        key={sceneEnterKey}
+        style={{
+          position: 'relative',
+          transform: cameraStyle.transform,
+          animation: 'fadeIn 0.5s ease-out',
+        }}
+      >
         {pickSceneLayers(commands).map((layer) => (
           <img
             key={layer.assetId}

@@ -14,7 +14,7 @@
 | A07 | `noopTtsProviderPort.synthesize(...)` 恒定 resolve 为 `{ok:false, reason:string}`，不抛异常 | 测试检查 |
 | A08 | `TtsSynthesisResult` 可辨识联合的两个分支类型收窄正确 | 测试 + typecheck |
 | A09 | `resolveAudioSource.ts`/`AudioResolutionPorts.hasTtsProvider` 逐字节未变 | git diff 比对 |
-| A10 | `packages/runtime-kernel/**`、`apps/renderer/**` 未被修改 | git diff 比对 |
+| A10 | `packages/runtime-kernel/**`、`apps/renderer/**` 未被修改（本节点零接线） | git diff 比对 |
 | A11 | 未新增任何 npm 依赖 | 文件检查 |
 | A12 | `DECISIONS.md` 存在，覆盖第 6 节列出的全部要点 | 文件检查 |
 | A13 | `specs/dev/DEV-034/` 节点文档齐全（含 `DECISIONS.md`，已入库），`INDEX.md` T001–T003 全部勾选，`Status:` 表头改为 `READY_FOR_REVIEW` | 文件 + 文本检查 |

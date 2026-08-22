@@ -170,7 +170,7 @@
 | 0147 | NODE_REPORT | OPENCODE | AUDITOR | DEV-032 | 0146 | CLOSED | DEV-032 施工完成，READY_FOR_REVIEW（git_head=e3f7ccb；STORY 侧两 action 接线 AUDIO 六态骨架，新增 5 测试，537→542 零回归） |
 | 0148 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-032 | 0147 | CLOSED | AUDIT_PASS：A01–A20 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0149 | NODE_RULING | COMMANDER | ALL | DEV-032 | 0148 | CLOSED | ruling: PASS；DEV-032 转 DONE，接口冻结 |
-| 0150 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-034 | — | ISSUED | TTS Provider Interface（只定义 TtsProviderPort 契约，不实现真实调用，不接入任何调用点） |
+| 0150 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-034 | — | CLOSED | TTS Provider Interface（只定义 TtsProviderPort 契约，不实现真实调用，不接入任何调用点） |
 
 ---
 

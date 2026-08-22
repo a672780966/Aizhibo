@@ -1,6 +1,6 @@
 # DEV-034 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -13,45 +13,54 @@ DEV-034 — TTS Provider Interface
 不实现任何真实 HTTP/流式调用（DEV-035 的职责），不接入任何调用点（`resolveAudioSource`/
 `runtime-kernel` 均不改动）。
 
-## Allowed Scope
+## Allowed Scope / Read-only Scope / Forbidden Scope
+
+Writable Scope：
 
 ```
 packages/audio-engine/src/ttsProvider.ts        （新增）
 packages/audio-engine/src/ttsProvider.test.ts   （新增）
 packages/audio-engine/src/index.ts              （追加导出）
+```
+
+Writable Scope — 节点文档与通信：
+
+```
 specs/dev/DEV-034/INDEX.md、REQUIREMENTS.md、ACCEPTANCE.md、REPORT.md、DECISIONS.md
-specs/comms/LEDGER.md（仅追加）
+specs/comms/LEDGER.md（仅追加；0150 行开工标记 ISSUED→CLOSED 为唯一允许的原地位改）
 specs/comms/NNNN-OPENCODE-to-*.md（仅自己发出的消息）
 ```
 
-## Read-only Scope
+Read-only Scope：
 
 ```
 packages/audio-engine/src/resolveAudioSource.ts（DEV-030 冻结，不得改动）
-packages/runtime-kernel/**、apps/renderer/**
-其余同既有节点惯例
+packages/runtime-kernel/**（不接入任何调用点，全部只读）
+apps/renderer/**（本节点与 Renderer 无关）
+其余同既有节点惯例（chapter-schema 等其他包、根配置、specs/baseline、audit、
+  protocol、specs/PROJECT_INDEX.md、specs/dev/DAG.md、specs/tasks/**）
 ```
 
-## Forbidden Scope
+Forbidden Scope：
 
 ```
 修改 resolveAudioSource.ts / AudioResolutionPorts.hasTtsProvider
 把 TtsProviderPort 接入 runtime-kernel 任何 action 或 Ports
-实现任何真实 HTTP/网络调用
-在接口里暴露具体的流式原语
-新增任何 npm 依赖
+实现任何真实 HTTP/网络调用（DEV-035 的职责）
+在接口里暴露具体的流式原语（Task Package 第 2.1 节理由）
+新增任何 npm 依赖（含任何 HTTP 客户端库）
 新建 getHealth()
 ```
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 ttsProvider.ts + 测试
-- [ ] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 ttsProvider.ts + 测试
+- [x] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001（每完成一个 Task 立即勾选并更新本字段）
+（全部完成，等待 AUDITOR 审计）
 
 ## Exit Criteria
 

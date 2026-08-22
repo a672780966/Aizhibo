@@ -1,6 +1,6 @@
 # DEV-032 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -50,13 +50,13 @@ packages/runtime-kernel/src 内除 machine.ts/machine.test.ts/storyRegion.ts 外
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 machine.ts + storyRegion.ts 两处 CR + 集成测试
-- [ ] T003 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 machine.ts + storyRegion.ts 两处 CR + 集成测试
+- [x] T003 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001（每完成一个 Task 立即勾选并更新本字段）
+无（T001–T003 全部完成，Status = READY_FOR_REVIEW）
 
 ## Exit Criteria
 

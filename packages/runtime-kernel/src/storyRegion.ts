@@ -108,13 +108,20 @@ export const storyRegion = {
       ],
     },
     RESOLUTION_PENDING: {
-      always: { target: 'RESULT_PLAYING', actions: 'onResultPlaying' },
+      always: {
+        target: 'RESULT_PLAYING',
+        actions: ['onResultPlaying', 'onAudioChannelForResult'],
+      },
     },
     RESULT_PLAYING: {
       on: {
         'NARRATIVE.DONE': [
-          { guard: 'hasNextScene', target: 'TRANSITION', actions: 'onNextScene' },
-          { target: 'CHAPTER_END', actions: 'onChapterEnd' },
+          {
+            guard: 'hasNextScene',
+            target: 'TRANSITION',
+            actions: ['onNextScene', 'onAudioChannelStop'],
+          },
+          { target: 'CHAPTER_END', actions: ['onChapterEnd', 'onAudioChannelStop'] },
         ],
       },
     },

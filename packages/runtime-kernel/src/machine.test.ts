@@ -266,6 +266,132 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
   });
 });
 
+/**
+ * Build a throwaway chapter where interaction-01's nextScene points at a real
+ * SCENE node (scene-b), so RESULT_PLAYING's NARRATIVE.DONE takes the
+ * hasNextScene branch (valid-minimal itself goes straight to CHAPTER_END).
+ */
+function makeInteractionNextSceneChapter(): string {
+  const dir = mkdtempSync(join(tmpdir(), 'dev032-nextscene-'));
+  cpSync(fixture, dir, { recursive: true });
+  const interactionPath = join(dir, 'interactions', 'interaction-01.json');
+  const interaction = JSON.parse(readFileSync(interactionPath, 'utf8')) as { nextScene: string };
+  interaction.nextScene = 'scene-b';
+  writeFileSync(interactionPath, JSON.stringify(interaction, null, 2) + '\n');
+  writeFileSync(
+    join(dir, 'scenes', 'scene-b.json'),
+    JSON.stringify(
+      {
+        id: 'scene-b',
+        visualSceneId: 'vs-start',
+        narration: ['你深入森林。'],
+        characters: [{ characterId: 'npc-guide', slot: 'CENTER', visible: true }],
+        next: 'ending-end',
+        hostPolicy: 'ALLOWED',
+      },
+      null,
+      2,
+    ) + '\n',
+  );
+  const graphPath = join(dir, 'story.graph.json');
+  const graph = JSON.parse(readFileSync(graphPath, 'utf8')) as { nodes: unknown[] };
+  graph.nodes.push({ id: 'scene-b', kind: 'SCENE', file: 'scenes/scene-b.json' });
+  writeFileSync(graphPath, JSON.stringify(graph, null, 2) + '\n');
+  // disclose scene-b so PASS6 stays green
+  const hostPath = join(dir, 'host.public.json');
+  const host = JSON.parse(readFileSync(hostPath, 'utf8')) as {
+    sceneDisclosures: Record<string, unknown>;
+  };
+  host.sceneDisclosures['scene-b'] = {
+    locationLabel: '森林深处',
+    knownFactIds: [],
+    tensionKey: 'calm',
+  };
+  writeFileSync(hostPath, JSON.stringify(host, null, 2) + '\n');
+  return dir;
+}
+
+const hitPorts = {
+  audioResolution: {
+    findPregenerated: () => 'assets/pregen/narration.mp3',
+    findCached: () => undefined,
+    hasTtsProvider: () => false,
+  },
+};
+
+function regionOf(actor: ReturnType<typeof createRuntimeMachine>, region: string): unknown {
+  return (actor.getSnapshot().value as Record<string, unknown>)[region];
+}
+
+describe('DEV-032: AUDIO region channel arbitration from STORY', () => {
+  it('A07: injected hit ports -> full LOCK chain reaches PLAYING_STORY with zero manual AUDIO.* sends', () => {
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-a32-hit',
+      ports: hitPorts,
+    });
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+    runToResolution(actor);
+    expect(storyOf(actor)).toBe('RESULT_PLAYING');
+    expect(regionOf(actor, 'audio')).toBe('PLAYING_STORY');
+  });
+
+  it('A08: default ports (SUBTITLE_ONLY) -> full LOCK chain keeps AUDIO in IDLE', () => {
+    const actor = createRuntimeMachine({ chapterRootDir: fixture, seed: 's-a32-idle' });
+    runToResolution(actor);
+    expect(storyOf(actor)).toBe('RESULT_PLAYING');
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+  });
+
+  it('A09: PLAYING_STORY then NARRATIVE.DONE with next scene -> AUDIO back to IDLE', () => {
+    const dir = makeInteractionNextSceneChapter();
+    const actor = createRuntimeMachine({
+      chapterRootDir: dir,
+      seed: 's-a32-next',
+      ports: hitPorts,
+    });
+    runToResolution(actor);
+    expect(regionOf(actor, 'audio')).toBe('PLAYING_STORY');
+    actor.send({ type: 'NARRATIVE.DONE' });
+    expect(storyOf(actor)).toBe('STORY_PLAYING'); // hasNextScene -> TRANSITION -> scene-b
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+  });
+
+  it('A10: PLAYING_STORY then NARRATIVE.DONE straight to CHAPTER_END -> AUDIO back to IDLE', () => {
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-a32-end',
+      ports: hitPorts,
+    });
+    runToResolution(actor);
+    expect(regionOf(actor, 'audio')).toBe('PLAYING_STORY');
+    actor.send({ type: 'NARRATIVE.DONE' });
+    expect(storyOf(actor)).toBe('CHAPTER_END');
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+  });
+
+  it('A11: no-interaction STORY.DONE -> CHAPTER_END path never touches AUDIO (stays IDLE)', () => {
+    const dir = makeNoInteractionChapter();
+    const audio: unknown[] = [];
+    const actor = createRuntimeMachine({
+      chapterRootDir: dir,
+      seed: 's-a32-noint',
+      ports: { ...hitPorts, audio: { send: (c) => audio.push(c) } },
+    });
+    actor.send({ type: 'BOOT' });
+    actor.send({ type: 'STORY.DONE' });
+    expect(storyOf(actor)).toBe('STORY_PLAYING');
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+    actor.send({ type: 'STORY.DONE' });
+    expect(storyOf(actor)).toBe('CHAPTER_END');
+    expect(regionOf(actor, 'audio')).toBe('IDLE');
+    // no AUDIO_PREPARING/PLAY/STOP command was ever sent on this path
+    expect(audio.filter((c) => String((c as { kind: string }).kind).startsWith('AUDIO_'))).toEqual(
+      [],
+    );
+  });
+});
+
 /** Drive the actor through BOOT..RESOLVED (the common prefix used by several tests). */
 function runToResolution(actor: ReturnType<typeof createRuntimeMachine>): void {
   actor.send({ type: 'BOOT' });

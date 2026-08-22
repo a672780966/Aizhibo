@@ -1,4 +1,4 @@
-import { assign, createActor, createMachine, type MachineConfig } from 'xstate';
+import { assign, createActor, createMachine, enqueueActions, type MachineConfig } from 'xstate';
 import { compile, type CompileResult } from '@interactive-story/chapter-compiler';
 import type { ResultNarrative, WorldState } from '@interactive-story/chapter-schema';
 import { composeResultSetNarration } from '@interactive-story/narrative-composer';
@@ -414,6 +414,19 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
       audioError: assign(({ context }) => {
         context.ports.audio.send({ kind: 'AUDIO_ERROR' });
         return {};
+      }),
+      // Cross-region channel arbitration (DEV-032): the STORY region raises
+      // AUDIO.* events into the frozen AUDIO region topology. No real async
+      // TTS exists yet (DEV-034/035), so PREPARE->READY folds synchronously.
+      onAudioChannelForResult: enqueueActions(({ context, enqueue }) => {
+        const audio = context.resultAudio;
+        const needsChannel = audio !== undefined && audio.source !== 'SUBTITLE_ONLY';
+        if (!needsChannel) return;
+        enqueue.raise({ type: 'AUDIO.PREPARE' });
+        enqueue.raise({ type: 'AUDIO.READY' });
+      }),
+      onAudioChannelStop: enqueueActions(({ enqueue }) => {
+        enqueue.raise({ type: 'AUDIO.STOP' });
       }),
       audioDuck: assign(({ context }) => {
         context.ports.audio.send({ kind: 'AUDIO_DUCK' });

@@ -17,15 +17,15 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-026 — Camera / Transition（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第七个节点）
+DEV-026 — Camera / Transition（`TASK_PACKAGE` 已发出，消息 `0126`，节点 `IN_PROGRESS`；M2 第七个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）、DEV-024（Choice UI）、DEV-025（Dice UI）均已 `DONE`（接口冻结）。DEV-025 首轮审计 `AUDIT_FAIL`（`REQUIREMENTS.md`/`DECISIONS.md` 安全论证事实有误，代码本身安全，Commander 自认 Task Package 撰写错误），经 `FIX_PACKAGE DEV-025-FIX-01` 更正文档措辞后二轮 `AUDIT_PASS`。`apps/renderer` 已具备 INTRO→LOOP→RESOLVE 三阶段骰子 UI。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-025 均已 `DONE`（接口冻结）。DEV-026 已下发：第四次对 `onSceneEnter` 发窄范围 CR（追加 `cameraPreset`），转场不新增 schema 字段，等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-026.md` 待起草
+`specs/tasks/TASK-PACKAGE-DEV-026.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）
 
@@ -67,7 +67,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-026 — Camera / Transition（`TASK_PACKAGE` 消息 `0126`）
 
 ## Blocked Nodes
 
@@ -79,7 +79,7 @@ DEV-025 — Dice UI（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-026（Camera / Transition），依赖已冻结的 DEV-025。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-026 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -260,6 +260,7 @@ DEV-026（Camera / Transition），依赖已冻结的 DEV-025。M3（音频，DE
 | 2026-08-22 | 收到 DEV-025-FIX-01 第二轮 `NODE_REPORT`（消息 `0123`，`git_head` `4c2ed0a`）：新论证准确陈述——安全性来自 `onResolve` 显式五字段白名单，`DICE.PUBLISHED`/`DICE.ROLLED` 共用同一未裁剪 record 且 `seed` 确实以 PUBLIC 标记出现，`quality` 从未在 schema 中声明；仅改动 `REQUIREMENTS.md`/`DECISIONS.md`/`INDEX.md` 三文件，零源码改动，转交 `AUDITOR` 二轮独立审计 |
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）第二轮 `AUDIT_VERDICT`（消息 `0124`）：**PASS**。独立读取 `machine.ts:331-362`/`diceEvent.ts` schema 全文核实新论证与代码事实完全吻合，未发现新的事实错误；FIX-A01/A02 均 VERIFIED，`git diff 770276f 4c2ed0a` 确认源码零改动；原 A01–A07/A09–A14/A16–A19 无回归（额外自愿重跑 `pnpm typecheck`/`pnpm test`：94 files/494 tests，与首轮一致）；0 BLOCKING |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0125`，`verdict_ref: "0124"`）：**DEV-025 转 DONE，接口冻结**（`onLock`/`onResolve` 两处 CR + `apps/renderer` 新增 `pickDiceState`/INTRO-LOOP-RESOLVE 三阶段渲染；DEV-009/012/020/021/022/023/024 既有冻结接口未受影响）；`REQUIREMENTS.md`/`DECISIONS.md` 的更正论证成为未来节点（尤其 DEV-037）的权威参考；既有 `DICE.PUBLISHED` 携带 `seed` 的架构不一致记入 Future Consideration，供未来 CR/DEV-037 评估；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-026（Camera / Transition） |
+| 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-026`（消息 `0126`）：第四次对 `onSceneEnter` 发窄范围 CR，追加 `cameraPreset`（`VisualScene.cameraPreset`，已冻结的纯字符串键）；核对全部 `chapter-schema` 源码确认不存在任何"转场预设"字段，处置为转场不是章节可配置数据，而是 Renderer 每次收到新场景时统一套用的一种内置淡入效果，不新增 schema 字段也不需要额外 CR；`resolveCameraPreset` 设计为新增纯函数而非扩展 DEV-021 已冻结的 `resolveVisualLayers` 返回值形状，接受少量重复查找换取不打开已冻结接口；`apps/renderer` 内置 preset→CSS 映射表，未收录预设一律安全回退不抛异常；T001–T007，A01–A21；DEV-026 转 `IN_PROGRESS` |
 
 ## Authority
 

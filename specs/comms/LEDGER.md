@@ -145,6 +145,7 @@
 | 0123 | NODE_REPORT | OPENCODE | AUDITOR | DEV-025 | 0122 | CLOSED | DEV-025-FIX-01 完成，READY_FOR_REVIEW（二轮）；git_head=4c2ed0a；仅文档，零源码改动 |
 | 0124 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-025 | 0123 | CLOSED | 第二轮复核 PASS：FIX-A01/A02 VERIFIED，原 A01–A07/A09–A14/A16–A19 无回归，0 BLOCKING |
 | 0125 | NODE_RULING | COMMANDER | ALL | DEV-025 | 0124 | CLOSED | ruling: PASS；DEV-025 转 DONE，接口冻结 |
+| 0126 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-026 | — | ISSUED | Camera / Transition（第四次对 onSceneEnter 发窄范围 CR，追加 cameraPreset；转场不新增 schema 字段，Renderer 统一套用内置淡入效果） |
 
 ---
 

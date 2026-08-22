@@ -188,3 +188,121 @@ NONE
 审核方式：直调 `project-auditor` subagent。原始输出（AUDIT_FAIL，Blocker 0 / Major 1 /
 Minor 0 / Info 1）由 Commander 逐字转录、按附录 B2 字段映射表映射为上表，未改写、未删减、
 未解读其结论。
+
+---
+
+# DEV-025 VERDICT — 第二轮（FIX-01 复核）
+
+> 同样由 `COMMANDER` 依附录 B2 逐字转录 `project-auditor` 输出。本轮复核 `FIX_PACKAGE`
+> 消息 `0122`（`DEV-025-FIX-01`）在首轮 `AUDIT_VERDICT`（消息 `0120`）判定 BLOCKING-01
+> 后的最小修复结果，对应 `NODE_REPORT` 消息 `0123`。字段映射同上：`BLOCKER`/`MAJOR` →
+> `BLOCKING`，`MINOR` → `DEVIATION`，`INFO` → `OBSERVATION`。
+
+## Audit Basis
+
+- FIX Package: 消息 `0122`（`DEV-025-FIX-01`），Allowed Files 限
+  `specs/dev/DEV-025/REQUIREMENTS.md`（仅 §2.2）与 `specs/dev/DEV-025/DECISIONS.md`（仅 D2）
+- `git_head` 审核锚点（`NODE_REPORT` 消息 `0123` 申报）：`4c2ed0a`，父提交为首轮交付
+  `770276f`
+
+## Scope Audit
+
+PASS
+
+- `git show 4c2ed0a --stat`：恰改动 `specs/dev/DEV-025/{DECISIONS.md, INDEX.md,
+  REQUIREMENTS.md}` 三个文件（21 insertions / 8 deletions），无其它文件。
+- `git diff 770276f 4c2ed0a -- packages apps` 输出为空——全部源码相对首轮交付零改动。
+- `git diff 770276f 4c2ed0a --name-only -- '*.ts' '*.tsx' '*.json'` 输出为空——本次改动
+  不涉及任何 `.ts`/`.tsx`/配置 `.json` 文件。
+- `git show 4c2ed0a -- REQUIREMENTS.md DECISIONS.md` 逐行核对：改动精确限于 §2.2 与 D2
+  两段被 BLOCKING-01 推翻的论证文字，其余段落（五字段列表、D1/D3/D4/D5/D6、Non-goals、
+  Task Order 等）原样未动。
+- `INDEX.md` 改动只是在 "Current Node" 一行追加一句记录 FIX-01 的说明文字，Status 字段
+  语义未变（仍为 `READY_FOR_REVIEW`），符合 Exit Procedure 要求。
+
+## Requirement Verification（FIX-A01 专项）
+
+| Requirement | Status | Evidence |
+|---|---|---|
+| 不再声称五字段"本来就是 DICE.PUBLISHED 已公开信息" | VERIFIED | `git show 4c2ed0a` diff：该句已整体删除，全文 grep 该短语零命中（仅 VERDICT.md 中作为历史引述存在，属预期） |
+| 不再声称"seed 从未以 PUBLIC 可见性存在过" | VERIFIED | 同上，该句已删除；新文字反向明确承认"`seed` 事实上以 PUBLIC 可见性出现在 `DICE.PUBLISHED` 里" |
+| 准确陈述安全性来自 `onResolve` 显式五字段白名单，而非信任事件整体 PUBLIC 标注 | VERIFIED | 独立读取 `machine.ts:331-340`：`onResolve` 内 `send` 调用确为只含五个具名字段的对象字面量映射，无展开、无泄漏，与新文字陈述一致 |
+| 准确陈述 `machine.ts:349-352` 真实行为（同一 record 被 REQUESTED/ROLLED/PUBLISHED 三次复用，仅换 visibility） | VERIFIED | 独立读取 `machine.ts:349-352`：`outcome.diceRecords.flatMap((record) => [...])` 同一 `record` 引用被三次复用，仅 `visibility`/`type` 不同，与新文字逐字一致 |
+| 准确陈述 `quality` 从未在 `DiceRollRecordPayloadSchema` 中被声明为正式字段 | VERIFIED | 独立读取 `diceEvent.ts:12-19`：该 schema 仅声明 `seed/rollIndex/diceType/rawValue/modifier/finalValue` 六字段，确未包含 `quality`/`appliedModifiers`；对照 `dice-engine/src/index.ts:20-29` 的 `DiceRollResult` 接口，两者确是未被 schema 声明的"搭车"属性 |
+
+未发现新论证中存在第二类事实错误——新文字表述与代码事实（`machine.ts`/`diceEvent.ts`/
+`dice-engine` 三处独立核实）完全吻合，未审计出与首轮不同的新问题。
+
+## Acceptance Verification
+
+| Acceptance Item | Result | Evidence |
+|---|---|---|
+| FIX-A01：改动真实非空、准确反映三条事实、不含被推翻论证 | PASS | 见上表逐条独立核实 |
+| FIX-A02：两文件之外全部为空（含全部源码/其余节点文档） | PASS | `git show 4c2ed0a --stat` 仅 3 文件；`git diff 770276f 4c2ed0a -- packages apps` 为空 |
+| 原 A01–A07/A09–A14/A16–A19（首轮已 VERIFIED，本轮不重新验收） | 维持 PASS | 本轮零源码改动，无重新开放必要 |
+
+## Verification Commands
+
+审核员额外自愿重跑（FIX_PACKAGE 未强制要求，因零源码改动）：
+
+| Command | Result | Notes |
+|---|---|---|
+| `git diff 770276f 4c2ed0a --name-only -- '*.ts' '*.tsx' '*.json'` | PASS（空输出） | 确认无代码/配置文件改动 |
+| `pnpm typecheck` | PASS | 全部通过，无错误输出 |
+| `pnpm test` | PASS | 94 files / 494 tests，与首轮基线完全一致 |
+
+## Architecture Audit
+
+PASS
+
+- 本轮为纯文档修正，未涉及任何架构相关代码路径。新论证准确区分了"事件 visibility
+  标注"与"字段级安全审计"两个概念，不再制造"PUBLIC 事件=全字段安全"这一危险的可复用
+  错误模式，消除了首轮 VERDICT 中指出的"未来节点可能援引错误先例"的风险。
+
+## Regression Audit
+
+PASS
+
+- 零源码改动，`pnpm test` 494/494 通过，与首轮基线完全一致，无退化。
+
+## Overengineering Audit
+
+PASS
+
+- 本轮只做最小文档修正，未引入任何新增内容、抽象或范围扩张。
+
+## Findings
+
+| ID | 等级 | 内容 | 依据 |
+|---|---|---|---|
+| OBSERVATION-01 | OBSERVATION | `VERDICT.md` 中仍原样保留首轮 BLOCKING-01 的错误论证原文（作为审计历史引述），这是预期且正确的（审计记录不应篡改历史），不构成问题，仅供 Commander 归档时留意区分"历史引述"与"当前生效文档" | 工作区/文档状态观察 |
+
+## Verdict
+
+**PASS**（Blocker: 0，Major: 0；FIX-A01/FIX-A02 均 VERIFIED，原 A01–A07/A09–A14/A16–A19
+无回归，Scope/Architecture/Regression/Overengineering Audit 均 PASS；Minor: 0；
+Info: 1 → OBSERVATION，不影响 PASS）
+
+## Scope Discipline Check
+
+- 是否实现了 Non-goals 中明确禁止的内容：否
+- 是否提前实现了后续节点的内容：否
+- 是否引入了第 70 节禁止清单中的技术：否
+- 是否修改了权限矩阵中不属于自己的文件：否（提交 `4c2ed0a` 仅含 `FIX_PACKAGE 0122`
+  Allowed Files 内的两处文档章节 + `INDEX.md` 状态记录）
+- 是否顺手重构了未要求改动的代码：否
+
+## Auditor Statement
+
+我只针对当前授权 DEV-025 节点第二轮 FIX-01（消息 `0123`，`in_reply_to 0122`，
+`git_head 4c2ed0a`）及其冻结的 `FIX_PACKAGE` 与 Requirements/Acceptance 进行了独立审计。
+我独立读取了 `machine.ts:300-362`、`diceEvent.ts` 全文、`dice-engine/src/index.ts:1-45`，
+逐条核实新论证陈述与代码事实一致；独立运行 `git diff`（含扩展名过滤）、`pnpm typecheck`、
+`pnpm test`，未依赖 OpenCode 的转述结论。我没有修改任何项目业务代码或文档，也没有推进
+任何后续 DEV 节点。
+
+---
+
+审核方式：直调 `project-auditor` subagent。原始输出（AUDIT_PASS，Blocker 0 / Major 0 /
+Minor 0 / Info 1）由 Commander 逐字转录、按附录 B2 字段映射表映射为上表，未改写、未删减、
+未解读其结论。

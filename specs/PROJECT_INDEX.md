@@ -17,17 +17,17 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-025 — Dice UI（INTRO / LOOP / RESOLVE）（`TASK_PACKAGE` 已发出，消息 `0118`，节点 `IN_PROGRESS`；M2 第六个节点）
+DEV-026 — Camera / Transition（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第七个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）、DEV-024（Choice UI）均已 `DONE`（接口冻结）。DEV-025 已下发：INTERACTION region 首次对 `onLock`/`onResolve` 发窄范围 CR（追加 `DICE_INTRO`/裁剪后的 `DICE_RESULT`），LOOP 阶段为本地视觉过渡，等待 Codex 施工。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）、DEV-024（Choice UI）、DEV-025（Dice UI）均已 `DONE`（接口冻结）。DEV-025 首轮审计 `AUDIT_FAIL`（`REQUIREMENTS.md`/`DECISIONS.md` 安全论证事实有误，代码本身安全，Commander 自认 Task Package 撰写错误），经 `FIX_PACKAGE DEV-025-FIX-01` 更正文档措辞后二轮 `AUDIT_PASS`。`apps/renderer` 已具备 INTRO→LOOP→RESOLVE 三阶段骰子 UI。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-025.md`
+`specs/tasks/TASK-PACKAGE-DEV-026.md` 待起草
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）
 
 ## 通信协议
 
@@ -63,10 +63,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-022 — Character Renderer（DONE，`verdict_ref: "0108"`，`git_head` `2909967`）
 - DEV-023 — Subtitle / Dialogue（DONE，`verdict_ref: "0112"`，`git_head` `7158e2e`）
 - DEV-024 — Choice UI（DONE，`verdict_ref: "0116"`，`git_head` `da8539b`）
+- DEV-025 — Dice UI（DONE，`verdict_ref: "0124"`，`git_head` `4c2ed0a`；首轮 `0120` FAIL → `DEV-025-FIX-01` → 二轮 PASS）
 
 ## In Progress Nodes
 
-- DEV-025 — Dice UI（`TASK_PACKAGE` 消息 `0118`）
+无。
 
 ## Blocked Nodes
 
@@ -74,11 +75,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-024 — Choice UI（2026-08-22）
+DEV-025 — Dice UI（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-025 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-026（Camera / Transition），依赖已冻结的 DEV-025。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -252,7 +253,13 @@ DEV-025 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具
 | 2026-08-22 | 收到 DEV-024 `NODE_REPORT`（消息 `0115`，`git_head` `da8539b`）：六条命令严格顺序全部退出码 0，93 files/487 tests（runtime-kernel/renderer 新增 2 文件/10 条，既有零回归），执行期临时脚本验证 `INTERACTION_OPEN` 含 `choices:[{id:'A',label:'跟随向导'}]`/`openDurationMs:15000` 与 `interaction-01.json` 一致（用后即删），`INDEX.md` `Status:` 表头本次已主动正确置为 `READY_FOR_REVIEW`，转交 `AUDITOR` 独立审计 |
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0116`）：**PASS**。独立重跑六条命令一致；以 `TASK_PACKAGE DEV-024` 下发提交 `80a7fad` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定为 `onOpen` 一处 + 1 行必需 import，INTERACTION 其余全部 action 与 STORY 的 `onSceneEnter`（含三次 CR 遗留）逐字节不变；`index.ts` 仅新增 2 行导出；独立阅读 `App.tsx` 源码确认渲染为 `<p>` 文本、无 `onClick`/`button`，符合非交互展示约束；`resolveVisibleChoices` 的 AND 语义核实与 `rule-engine`/`chapter-schema` 既有约定一致、非本节点发明；独立复现端到端临时脚本验证，结果与申报一致；本地倒计时核实为单向值，不违反确定性红线；`packages/**`（除授权文件）、DEV-020/021/022/023 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING，0 DEVIATION；Info: 1，LEDGER 工作区状态观察，不影响判定 |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0117`，`verdict_ref: "0116"`）：**DEV-024 转 DONE，接口冻结**（INTERACTION region `onOpen` 的 `INTERACTION_OPEN` 载荷首次 CR + 新增导出 `resolveVisibleChoices` + `apps/renderer` 新增 `pickInteractionOpen`/非交互选项展示 + 本地倒计时；DEV-009/012/020/021/022/023 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-025（Dice UI：INTRO / LOOP / RESOLVE） |
-| 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-025`（消息 `0118`）：核对 `machine.ts` 确认 `DICE.*` 事件目前只写进 Event Log、从不转发给 Presentation，本节点是第一次让骰子数据流向 Renderer；两处窄范围 CR——`onLock` 追加纯信号 `DICE_INTRO`、`onResolve` 追加裁剪后的 `DICE_RESULT`（`diceType`/`rawValue`/`modifier`/`finalValue`/`quality`，丢弃 `seed`/`rollIndex`/`appliedModifiers` 等内部记账字段，`DICE.PUBLISHED` 本就是 PUBLIC 可见性，下发不构成新的信息泄露）；核对 `DAG.md` 确认 DEV-037（M3，尚未建）才是真正的节奏控制器，本节点的 LOOP 阶段明确设计为 Renderer 本地纯视觉过渡（服务端只给 INTRO/RESOLVE 两个真实信号），不越权实现真实等待；T001–T005，A01–A19；DEV-025 转 `IN_PROGRESS` |
+| 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-025`（消息 `0118`）：核对 `machine.ts` 确认 `DICE.*` 事件目前只写进 Event Log、从不转发给 Presentation，本节点是第一次让骰子数据流向 Renderer；两处窄范围 CR——`onLock` 追加纯信号 `DICE_INTRO`、`onResolve` 追加裁剪后的 `DICE_RESULT`（`diceType`/`rawValue`/`modifier`/`finalValue`/`quality`，丢弃 `seed`/`rollIndex`/`appliedModifiers` 等内部记账字段，`DICE.PUBLISHED` 本就是 PUBLIC 可见性，下发不构成新的信息泄露）；核对 `DAG.md` 确认 DEV-037（M3，尚未建）才是真正的节奏控制器，本节点的 LOOP 阶段明确设计为 Renderer 本地纯视觉过渡（服务端只给 INTRO/RESOLVE 两个真实信号），不越权实现真实等待；T001–T005，A01–A19；DEV-025 转 `IN_PROGRESS`（**注**：本行"`DICE.PUBLISHED` 本就是 PUBLIC 可见性，下发不构成新的信息泄露"这一论证后经 0120/0121 审计裁决确认事实有误，见下方两行；本行按 append-only 纪律保留原文不改，供审计追溯） |
+| 2026-08-22 | 收到 DEV-025 `NODE_REPORT`（消息 `0119`，`git_head` `770276f`）：六条命令严格顺序全部退出码 0，94 files/494 tests（renderer 新增 1 文件/7 条，既有零回归），执行期临时脚本验证 `DICE_INTRO` 在 `LOCK` 后、`DICE_RESULT` 在 `LOCKED` 后依次出现且五字段裁剪正确，转交 `AUDITOR` 独立审计 |
+| 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0120`）：**FAIL**。1 项 BLOCKING（映射自 MAJOR）——`REQUIREMENTS.md` §2.2 与 `DECISIONS.md` D2 记录的安全论证事实有误：声称下发字段"本来就是 `DICE.PUBLISHED`（PUBLIC）已公开信息"、"`seed` 从未以 PUBLIC 可见性存在过"，均被冻结代码 `machine.ts:349-352` 推翻——该代码用与 `HIDDEN` 的 `DICE.ROLLED` 完全相同的 record 对象发出 `visibility:'PUBLIC'` 的 `DICE.PUBLISHED`，`seed` 确实包含其中；`quality` 也从未在 schema 中被声明为 PUBLIC 字段。**已交付代码本身安全**（`onResolve` 显式手写五字段白名单，`apps/renderer` 从不读取 `getEventLog`，无实际数据泄露），finding 针对文档中记录的安全论证准确性。归因：该有误论证逐字源自 Commander 本人撰写的 Task Package §2.2（即上一行 0118 记录中的同一句话），非 OpenCode 施工缺陷 |
+| 2026-08-22 | 发出 `NODE_RULING: FAIL`（消息 `0121`）：BLOCKING-01 转 FIX，Commander 承认 Task Package §2.2 撰写错误；随即发出 `FIX_PACKAGE DEV-025-FIX-01`（消息 `0122`），要求仅更正 `REQUIREMENTS.md` §2.2 与 `DECISIONS.md` D2 的论证措辞，不改任何源码 |
+| 2026-08-22 | 收到 DEV-025-FIX-01 第二轮 `NODE_REPORT`（消息 `0123`，`git_head` `4c2ed0a`）：新论证准确陈述——安全性来自 `onResolve` 显式五字段白名单，`DICE.PUBLISHED`/`DICE.ROLLED` 共用同一未裁剪 record 且 `seed` 确实以 PUBLIC 标记出现，`quality` 从未在 schema 中声明；仅改动 `REQUIREMENTS.md`/`DECISIONS.md`/`INDEX.md` 三文件，零源码改动，转交 `AUDITOR` 二轮独立审计 |
+| 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）第二轮 `AUDIT_VERDICT`（消息 `0124`）：**PASS**。独立读取 `machine.ts:331-362`/`diceEvent.ts` schema 全文核实新论证与代码事实完全吻合，未发现新的事实错误；FIX-A01/A02 均 VERIFIED，`git diff 770276f 4c2ed0a` 确认源码零改动；原 A01–A07/A09–A14/A16–A19 无回归（额外自愿重跑 `pnpm typecheck`/`pnpm test`：94 files/494 tests，与首轮一致）；0 BLOCKING |
+| 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0125`，`verdict_ref: "0124"`）：**DEV-025 转 DONE，接口冻结**（`onLock`/`onResolve` 两处 CR + `apps/renderer` 新增 `pickDiceState`/INTRO-LOOP-RESOLVE 三阶段渲染；DEV-009/012/020/021/022/023/024 既有冻结接口未受影响）；`REQUIREMENTS.md`/`DECISIONS.md` 的更正论证成为未来节点（尤其 DEV-037）的权威参考；既有 `DICE.PUBLISHED` 携带 `seed` 的架构不一致记入 Future Consideration，供未来 CR/DEV-037 评估；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-026（Camera / Transition） |
 
 ## Authority
 

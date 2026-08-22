@@ -1,6 +1,6 @@
 # DEV-025 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE（接口冻结，`verdict_ref: "0124"`，`git_head` `4c2ed0a`）
 
 ## Current Node
 
@@ -81,7 +81,11 @@ packages/runtime-kernel/src/index.ts 的任何修改（本节点无新增导出�
 
 ## Current Task
 
-T005（全部 Task 已完成，NODE_REPORT 已发出）
+T005（全部 Task 已完成）。第一轮 `AUDITOR` 审计 `AUDIT_FAIL`（消息 0120，BLOCKING-01：
+`REQUIREMENTS.md` §2.2/`DECISIONS.md` D2 安全论证事实有误，代码本身安全），`COMMANDER`
+裁决 FAIL 并发 `FIX_PACKAGE DEV-025-FIX-01`（消息 0122）。FIX-01 完成后第二轮 `AUDITOR`
+审计 `AUDIT_PASS`（消息 0124，FIX-A01/A02 全部 VERIFIED，0 BLOCKING），`COMMANDER` 裁决
+PASS（消息 0125）。节点 `DONE`，接口冻结。
 
 ## Exit Criteria
 
@@ -92,6 +96,6 @@ NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-026（Camera / Transition，仅 preset 键映射，不做镜头 DSL）。
 
 OpenCode 禁止自行推进下一 DEV Node。

@@ -35,3 +35,5 @@ export type { ResolvedCharacterPlacement } from './characterResolution.js';
 export { resolveVisibleChoices } from './choiceResolution.js';
 export type { DisplayChoice } from './choiceResolution.js';
 export { resolveCameraPreset } from './cameraResolution.js';
+export { resolveSceneAudio } from './audioResolution.js';
+export type { ResolvedAudio, SceneAudio } from './audioResolution.js';

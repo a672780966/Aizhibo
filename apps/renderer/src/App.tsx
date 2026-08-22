@@ -14,6 +14,7 @@ import { pickDialogueLines } from './render/pickDialogueLines.js';
 import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
 import { pickInteractionOpen } from './render/pickInteractionOpen.js';
 import { pickDiceState } from './render/pickDiceState.js';
+import { pickSceneAudio } from './render/pickSceneAudio.js';
 import { resolveCameraPresetStyle } from './render/cameraPreset.js';
 import { pickCameraPreset, pickSceneEnterKey } from './render/pickSceneMeta.js';
 
@@ -32,6 +33,11 @@ export function browserSocket(url: string): SocketLike {
       ws.onmessage = (event: MessageEvent) => handler(String(event.data));
     },
   };
+}
+
+/** 音量夹到 [0,1]：gain 若提供了超范围数值需 clamp，防御性处理（任务包 2.3 节）。 */
+export function clampVolume(gain: number | undefined): number {
+  return Math.min(1, Math.max(0, gain ?? 1));
 }
 
 /** App 的命令收集逻辑（纯函数，便于无 DOM 测试）：追加一条信封到渲染列表。 */
@@ -89,6 +95,10 @@ export default function App() {
   // 镜头 preset（纯字符串键 → 写死的 CSS 变换）与场景切换 key（React 重挂载触发淡入）。
   const sceneEnterKey = pickSceneEnterKey(commands);
   const cameraStyle = resolveCameraPresetStyle(pickCameraPreset(commands));
+  // 场景级 BGM/环境音（来自最近一条 SCENE_ENTER 的 audio 字段，走 Presentation 通道）。
+  const sceneAudio = pickSceneAudio(commands);
+  // 提前取出窄化后的 BGM（ref 回调闭包内 TS 会重新放宽可选链）。
+  const sceneBgm = sceneAudio.bgm;
   const [countdownMs, setCountdownMs] = useState<number | undefined>(undefined);
   // 骰子 UI 的本地 LOOP 状态：收到 `DICE_INTRO`（且 key=新 seq）时进入"摇骰子动画"视觉
   // 状态，维持到 `DICE_RESULT`（真实数据）到达为止。纯本地视觉过渡，不是等待服务端
@@ -187,6 +197,29 @@ export default function App() {
           />
         ))}
       </section>
+      {sceneBgm !== undefined && (
+        <audio
+          key={sceneBgm.id}
+          src={sceneBgm.file}
+          autoPlay
+          loop={sceneBgm.loop ?? true}
+          ref={(el) => {
+            // volume 是 HTMLMediaElement 的 JS 属性而非 JSX prop，用 ref 设置（任务包 2.3 节）。
+            if (el) el.volume = clampVolume(sceneBgm.gain);
+          }}
+        />
+      )}
+      {sceneAudio.ambience.map((track) => (
+        <audio
+          key={track.id}
+          src={track.file}
+          autoPlay
+          loop={track.loop ?? true}
+          ref={(el) => {
+            if (el) el.volume = clampVolume(track.gain);
+          }}
+        />
+      ))}
       {dialogue.lines.length > 0 && (
         <section
           aria-label="dialogue"

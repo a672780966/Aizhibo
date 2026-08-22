@@ -167,6 +167,53 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     expect(audio.some((c) => (c as { kind: string }).kind === 'SCENE_ENTER')).toBe(true);
   });
 
+  it('DEV-031: default ports → RESULT_PLAYING carries honest SUBTITLE_ONLY audio', () => {
+    const presentation: unknown[] = [];
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-ra-default',
+      ports: { presentation: { send: (c) => presentation.push(c) } },
+    });
+    runToResolution(actor);
+    const resultPlaying = presentation.find(
+      (c) => (c as { kind: string }).kind === 'RESULT_PLAYING',
+    ) as {
+      kind: string;
+      text: string;
+      audio?: { source: string };
+    };
+    // The fixture's interaction resolves to at least one narrative with non-empty
+    // text, so the audio field must be present and honestly SUBTITLE_ONLY.
+    expect(resultPlaying.text).not.toBe('');
+    expect(resultPlaying.audio).toEqual({ source: 'SUBTITLE_ONLY' });
+  });
+
+  it('DEV-031: injected audioResolution ports flow through to RESULT_PLAYING.audio', () => {
+    const presentation: unknown[] = [];
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-ra-inject',
+      ports: {
+        presentation: { send: (c) => presentation.push(c) },
+        audioResolution: {
+          findPregenerated: (request) =>
+            request.voiceId === 'narrator-default' ? 'assets/pregen/narration.mp3' : undefined,
+          findCached: () => undefined,
+          hasTtsProvider: () => false,
+        },
+      },
+    });
+    runToResolution(actor);
+    const resultPlaying = presentation.find(
+      (c) => (c as { kind: string }).kind === 'RESULT_PLAYING',
+    ) as { kind: string; audio?: { source: string; file?: string } };
+    // Proves the wiring is live: the injected port's answer reaches the command.
+    expect(resultPlaying.audio).toEqual({
+      source: 'PREGENERATED',
+      file: 'assets/pregen/narration.mp3',
+    });
+  });
+
   it('DICE.* events carry the required visibility (PUBLIC/HIDDEN/PUBLIC)', () => {
     const actor = createRuntimeMachine({ chapterRootDir: fixture, seed: 's-v' });
     runToResolution(actor);

@@ -8,6 +8,8 @@ import type { InternalSnapshot, RuntimeSnapshot } from './snapshot.js';
 import { wrapSnapshot } from './snapshot.js';
 import type { Ports } from './ports.js';
 import { defaultPorts } from './ports.js';
+import type { AudioResolutionResult } from '@interactive-story/audio-engine';
+import { resolveResultAudio } from './resultAudioResolution.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
 import { resolveVisualLayers } from './visualResolution.js';
 import { resolveCameraPreset } from './cameraResolution.js';
@@ -37,6 +39,7 @@ export interface RuntimeContext {
   votes: Record<string, string>;
   resolved: ResolveResult[];
   narrationText: string;
+  resultAudio: AudioResolutionResult | undefined;
 }
 
 export type RootEvent =
@@ -168,6 +171,7 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
       votes: {},
       resolved: [],
       narrationText: '',
+      resultAudio: undefined,
     },
     states: {
       story: storyRegion,
@@ -263,7 +267,11 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
         storyMove(context, 'RESOLUTION_PENDING', 'STORY.INTERACTION_RESOLVED'),
       ),
       onResultPlaying: assign(({ context }) => {
-        context.ports.presentation.send({ kind: 'RESULT_PLAYING', text: context.narrationText });
+        context.ports.presentation.send({
+          kind: 'RESULT_PLAYING',
+          text: context.narrationText,
+          audio: context.resultAudio,
+        });
         return storyMove(context, 'RESULT_PLAYING', 'STORY.RESULT_PLAYING');
       }),
       onNextScene: assign(({ context }) => {
@@ -362,10 +370,16 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
           { type: 'DICE.PUBLISHED', payload: record, visibility: 'PUBLIC' },
         ]);
         const emitted = emitLog(context, [...diceEntries]);
+        const resultAudio = resolveResultAudio(
+          outcome.resolved,
+          narrationText,
+          context.ports.audioResolution,
+        );
         return {
           ...emitted,
           resolved: outcome.resolved,
           narrationText,
+          resultAudio,
           votes: {},
           snapshot: { ...emitted.snapshot, interactionPhase: 'LOCKED', world: outcome.nextWorld },
         };

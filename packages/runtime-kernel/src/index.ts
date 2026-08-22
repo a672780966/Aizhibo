@@ -37,3 +37,5 @@ export type { DisplayChoice } from './choiceResolution.js';
 export { resolveCameraPreset } from './cameraResolution.js';
 export { resolveSceneAudio } from './audioResolution.js';
 export type { ResolvedAudio, SceneAudio } from './audioResolution.js';
+export { resolveResultAudio } from './resultAudioResolution.js';
+export type { AudioResolutionResult, AudioResolutionSource } from '@interactive-story/audio-engine';

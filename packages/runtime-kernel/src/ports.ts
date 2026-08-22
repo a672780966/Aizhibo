@@ -31,11 +31,21 @@ export interface AudioPort {
   send(command: unknown): void;
 }
 
+/**
+ * Result-narration audio source decision (DEV-031). Re-exported from
+ * `@interactive-story/audio-engine` (DEV-030's frozen CR-018 chain); the kernel
+ * only wires it into `Ports`, never re-implements it.
+ */
+import type { AudioResolutionPorts } from '@interactive-story/audio-engine';
+import { noopAudioResolutionPorts } from '@interactive-story/audio-engine';
+
 export interface Ports {
   clock: ClockPort;
   platform: PlatformPort;
   presentation: PresentationPort;
   audio: AudioPort;
+  /** DEV-030's four-level resolution chain ports; defaults report "unavailable". */
+  audioResolution: AudioResolutionPorts;
 }
 
 /** Real system clock — the only ClockPort that touches the actual time. */
@@ -61,4 +71,5 @@ export const defaultPorts: Ports = {
   platform: noopPlatformPort,
   presentation: noopPresentationPort,
   audio: noopAudioPort,
+  audioResolution: noopAudioResolutionPorts,
 };

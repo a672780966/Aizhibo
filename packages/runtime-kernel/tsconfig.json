@@ -10,6 +10,7 @@
     { "path": "../chapter-compiler" },
     { "path": "../rule-engine" },
     { "path": "../dice-engine" },
-    { "path": "../narrative-composer" }
+    { "path": "../narrative-composer" },
+    { "path": "../audio-engine" }
   ]
 }

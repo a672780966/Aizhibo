@@ -21,6 +21,7 @@
     "@interactive-story/chapter-compiler": "workspace:*",
     "@interactive-story/rule-engine": "workspace:*",
     "@interactive-story/dice-engine": "workspace:*",
-    "@interactive-story/narrative-composer": "workspace:*"
+    "@interactive-story/narrative-composer": "workspace:*",
+    "@interactive-story/audio-engine": "workspace:*"
   }
 }

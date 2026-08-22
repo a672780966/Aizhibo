@@ -1,6 +1,6 @@
 # DEV-031 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -64,16 +64,16 @@ specs/comms/ 中所有非 OPENCODE 发出的消息文件
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 runtime-kernel 依赖声明 + Ports 追加字段
-- [ ] T003 resolveResultAudio
-- [ ] T004 machine.ts 两处 CR + 集成测试
-- [ ] T005 index.ts 导出 + Renderer pickResultAudio + App.tsx
-- [ ] T006 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 runtime-kernel 依赖声明 + Ports 追加字段
+- [x] T003 resolveResultAudio
+- [x] T004 machine.ts 两处 CR + 集成测试
+- [x] T005 index.ts 导出 + Renderer pickResultAudio + App.tsx
+- [x] T006 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001（每完成一个 Task 立即勾选并更新本字段）
+T001–T006 全部完成
 
 ## Exit Criteria
 

@@ -113,6 +113,9 @@ importers:
 
   packages/runtime-kernel:
     dependencies:
+      '@interactive-story/audio-engine':
+        specifier: workspace:*
+        version: link:../audio-engine
       '@interactive-story/chapter-compiler':
         specifier: workspace:*
         version: link:../chapter-compiler

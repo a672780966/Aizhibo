@@ -15,6 +15,7 @@ import { clampLineIndex, nextLineIndex } from './render/lineIndex.js';
 import { pickInteractionOpen } from './render/pickInteractionOpen.js';
 import { pickDiceState } from './render/pickDiceState.js';
 import { pickSceneAudio } from './render/pickSceneAudio.js';
+import { pickResultAudio } from './render/pickResultAudio.js';
 import { resolveCameraPresetStyle } from './render/cameraPreset.js';
 import { pickCameraPreset, pickSceneEnterKey } from './render/pickSceneMeta.js';
 
@@ -97,6 +98,8 @@ export default function App() {
   const cameraStyle = resolveCameraPresetStyle(pickCameraPreset(commands));
   // 场景级 BGM/环境音（来自最近一条 SCENE_ENTER 的 audio 字段，走 Presentation 通道）。
   const sceneAudio = pickSceneAudio(commands);
+  // Result 叙事一次性语音播报（DEV-031）：仅 PREGENERATED/CACHE 命中且有 file 时渲染。
+  const resultAudio = pickResultAudio(commands);
   // 提前取出窄化后的 BGM（ref 回调闭包内 TS 会重新放宽可选链）。
   const sceneBgm = sceneAudio.bgm;
   const [countdownMs, setCountdownMs] = useState<number | undefined>(undefined);
@@ -220,6 +223,14 @@ export default function App() {
           }}
         />
       ))}
+      {resultAudio !== undefined &&
+        (resultAudio.source === 'PREGENERATED' || resultAudio.source === 'CACHE') &&
+        resultAudio.file !== undefined && (
+          // 一次性叙事播报，不 loop；key 复用 dialogue.key 拼接 file，新播报到达时
+          // React 重挂载元素、重新播放。RUNTIME_TTS/SUBTITLE_ONLY 不渲染任何元素
+          // （字幕由对话框承担；实际 TTS 调用是 DEV-034/035 的职责）。
+          <audio key={`${dialogue.key}-${resultAudio.file}`} src={resultAudio.file} autoPlay />
+        )}
       {dialogue.lines.length > 0 && (
         <section
           aria-label="dialogue"

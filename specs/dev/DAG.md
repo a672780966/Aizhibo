@@ -169,6 +169,9 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 
 前置：DEV-012。**DEV-033 已移出本组至 M1（CR-007）。**
 
+**DEV-030 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0138`）。本组内节点状态以
+`specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准。
+
 | Node | Name | 备注 |
 |---|---|---|
 | DEV-030 | Audio Manifest | **定义全系统统一音频解析链**（CR-018）：`PREGENERATED → CACHE → RUNTIME_TTS → SUBTITLE_ONLY` |

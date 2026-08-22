@@ -13,19 +13,19 @@
 
 ## Current Milestone
 
-M2 — Presentation Complete：**已于 2026-08-23 全部 9 节点完成**（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成）。下一里程碑排期待定。
+M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation Complete 已于 2026-08-23 全部 9 节点完成）
 
 ## Current Node
 
-无（M2 刚收尾，下一节点待 `USER` 指示或 `COMMANDER` 下一轮起草时决定；候选见 Next Eligible Nodes）
+DEV-030 — Audio Manifest（`TASK_PACKAGE` 已发出，消息 `0138`，节点 `IN_PROGRESS`；M3 第一个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。**M2 全部 9 个节点（DEV-020～028）均已 `DONE`（接口冻结）**：`apps/renderer` 现已具备完整演出层——场景背景、角色站位、对话字幕、选项展示、骰子 UI、镜头/转场、音频信号，外加 CR-012 要求的重连/幂等/广播三属性测试覆盖。DEV-028（本节点零生产代码改动，只补测试）经独立审计确认三个新场景真实有效，PASS 后正式宣告 M2 完成。M2 期间共 1 次 `NODE_RULING: FAIL`（DEV-025，Commander 自己的 Task Package 安全论证撰写有误，代码本身安全，经 FIX-01 一轮更正后 PASS），其余 8 个节点首轮即 PASS。
+M1 全部 15 个节点、M2 全部 9 个节点均 `DONE`（接口冻结）。DEV-030 已下发：首次创建 `packages/audio-engine`，定义 CR-018 四级音频解析决策链（纯函数 + 可注入 Port），全部默认 Port 返回"不可用"，不接入任何真实 TTS/缓存，等待 Codex 施工。
 
 ## Current Task Package
 
-无（M2 已完工，下一 Task Package 待定）
+`specs/tasks/TASK-PACKAGE-DEV-030.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`
 
@@ -70,7 +70,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-030 — Audio Manifest（`TASK_PACKAGE` 消息 `0138`；M3 第一个节点）
 
 ## Blocked Nodes
 
@@ -82,7 +82,7 @@ DEV-028 — Presentation Command Bus（2026-08-23）
 
 ## Next Eligible Nodes
 
-**M2 全部 9 个节点已完成。** M3（音频，DEV-030 起）具备下发条件（只依赖已冻结的 DEV-012）；M4（Twitch）依赖 M2+M3，M2 已满足其前置之一。下一步排期（M3 优先，或 M3/M4 交叉安排）留待 `USER` 指示或 `COMMANDER` 下一轮起草时决定。
+DEV-030 `IN_PROGRESS` 中，本字段暂空。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
 
 ## Project-level Blockers
 
@@ -275,6 +275,7 @@ DEV-028 — Presentation Command Bus（2026-08-23）
 | 2026-08-23 | 收到 DEV-028 `NODE_REPORT`（消息 `0135`，`git_head` `ebf4b1d`）：六条命令严格顺序全部退出码 0，99 files/518 tests（新增 3 条：断线重连/RESYNC 幂等性/多客户端分发一致性，既有零回归），零生产代码改动，转交 `AUDITOR` 独立审计 |
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0136`）：**PASS**。独立重跑六条命令一致；`git diff c3f50c1 ebf4b1d` 核实仅两个测试文件改动、零生产代码/依赖 diff；亲自对照 `wsServer.ts`/`presentationCommand.ts` 生产代码逻辑核实三个新场景均为真实、非平凡验证（断线重连确认走同一 `helloHandler` 共享闭包、幂等性确认 `getState()` 的 `foldState` 重放非硬编码、多客户端确认 `send()` 对 `wss.clients` 无条件遍历确属广播）；单独隔离重跑三个新用例逐一通过；`noUncheckedIndexedAccess` 类型修正核实未削弱断言强度；A01–A17 全部 VERIFIED/PASS，0 BLOCKING；Info: 1，不影响判定。审核员确认本次 PASS 代表 M2 里程碑整体完成 |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0137`，`verdict_ref: "0136"`）：**DEV-028 转 DONE，接口冻结**；`wsServer.test.ts`/`presentationCommand.test.ts` 新增 3 用例冻结为 CR-012 三属性的回归基线；**宣告 M2 — Presentation Complete 全部 9 个节点（DEV-020～028）完成**——`apps/renderer` 现具备完整演出层（场景/角色/字幕/选项/骰子/镜头转场/音频信号）+ 重连/幂等/广播测试覆盖；M2 期间共 1 次 FAIL（DEV-025，Commander 自己的安全论证撰写有误，代码本身安全，一轮 FIX 后 PASS），其余 8 个节点首轮即 PASS；同步更新本文件与 `DAG.md`；下一步（M3 音频 DEV-030 起，或与 M4 交叉排期）留待 USER 指示 |
+| 2026-08-23 | USER 指示下发下一节点。选定 M3（音频，DEV-030 起）。起草并发出 `TASK_PACKAGE DEV-030`（消息 `0138`）：首次创建 `packages/audio-engine`；定义 CR-018 四级音频解析决策链（`PREGENERATED → CACHE → RUNTIME_TTS → SUBTITLE_ONLY`）为纯函数 + 可注入 Port，核实 DEV-034/035/036/074 均尚未建，默认 Port 全部返回"不可用"，任何请求如实 fallthrough 到 `SUBTITLE_ONLY`；明确本节点决策链只服务 SPEECH（叙事旁白），BGM/SFX/AMBIENCE 已由 DEV-027 完整处理不重复；刻意不依赖 `chapter-schema`（决策链是通用逻辑，不应反向依赖章节数据形状）；`CR-019`（getHealth）判定不适用（纯函数无 IO，同 DEV-001/005 先例）；拼接听感原型验证需要真实 TTS 输出，现在没有，明确不在本节点做；不把决策函数接入 `runtime-kernel`——留给未来节点组合新 Port 实现，不需要对本函数发 CR；T001–T004，A01–A21；DEV-030 转 `IN_PROGRESS` |
 
 ## Authority
 

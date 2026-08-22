@@ -157,6 +157,7 @@
 | 0135 | NODE_REPORT | OPENCODE | AUDITOR | DEV-028 | 0134 | CLOSED | DEV-028 施工完成，READY_FOR_REVIEW（git_head=ebf4b1d；新增 3 测试，515→518 零回归） |
 | 0136 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-028 | 0135 | CLOSED | AUDIT_PASS：A01–A17 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0137 | NODE_RULING | COMMANDER | ALL | DEV-028 | 0136 | CLOSED | ruling: PASS；DEV-028 转 DONE，接口冻结；**M2 — Presentation Complete 全部完成** |
+| 0138 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-030 | — | ISSUED | Audio Manifest（M3 首个节点；首次创建 packages/audio-engine；定义 CR-018 四级解析链纯函数，全部默认 Port 返回不可用，不接入任何真实 TTS/缓存） |
 
 ---
 

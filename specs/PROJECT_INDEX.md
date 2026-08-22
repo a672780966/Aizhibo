@@ -17,15 +17,15 @@ M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 �
 
 ## Current Node
 
-DEV-025 — Dice UI（INTRO / LOOP / RESOLVE）（下一可下发节点，`TASK_PACKAGE` 待起草；M2 第六个节点）
+DEV-025 — Dice UI（INTRO / LOOP / RESOLVE）（`TASK_PACKAGE` 已发出，消息 `0118`，节点 `IN_PROGRESS`；M2 第六个节点）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）、DEV-024（Choice UI）均已 `DONE`（接口冻结）。DEV-024 对 DEV-009 冻结的 INTERACTION region `onOpen` 完成首次窄范围 Change Request（`INTERACTION_OPEN` 载荷追加 `visibleIf` 过滤后的 `choices`/`openDurationMs`），`apps/renderer` 已具备非交互选项展示 + 本地倒计时。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020（Renderer Shell）、DEV-021（Scene Renderer）、DEV-022（Character Renderer）、DEV-023（Subtitle / Dialogue）、DEV-024（Choice UI）均已 `DONE`（接口冻结）。DEV-025 已下发：INTERACTION region 首次对 `onLock`/`onResolve` 发窄范围 CR（追加 `DICE_INTRO`/裁剪后的 `DICE_RESULT`），LOOP 阶段为本地视觉过渡，等待 Codex 施工。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-025.md` 待起草
+`specs/tasks/TASK-PACKAGE-DEV-025.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`
 
@@ -66,7 +66,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-025 — Dice UI（`TASK_PACKAGE` 消息 `0118`）
 
 ## Blocked Nodes
 
@@ -78,7 +78,7 @@ DEV-024 — Choice UI（2026-08-22）
 
 ## Next Eligible Nodes
 
-DEV-025（Dice UI：INTRO / LOOP / RESOLVE），依赖已冻结的 DEV-024。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
+DEV-025 `IN_PROGRESS` 中，本字段暂空。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待 M2 排期空隙或 USER 指示时下发。
 
 ## Project-level Blockers
 
@@ -252,6 +252,7 @@ DEV-025（Dice UI：INTRO / LOOP / RESOLVE），依赖已冻结的 DEV-024。M3�
 | 2026-08-22 | 收到 DEV-024 `NODE_REPORT`（消息 `0115`，`git_head` `da8539b`）：六条命令严格顺序全部退出码 0，93 files/487 tests（runtime-kernel/renderer 新增 2 文件/10 条，既有零回归），执行期临时脚本验证 `INTERACTION_OPEN` 含 `choices:[{id:'A',label:'跟随向导'}]`/`openDurationMs:15000` 与 `interaction-01.json` 一致（用后即删），`INDEX.md` `Status:` 表头本次已主动正确置为 `READY_FOR_REVIEW`，转交 `AUDITOR` 独立审计 |
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0116`）：**PASS**。独立重跑六条命令一致；以 `TASK_PACKAGE DEV-024` 下发提交 `80a7fad` 为基线逐行核对 `git diff`——`machine.ts` 改动精确限定为 `onOpen` 一处 + 1 行必需 import，INTERACTION 其余全部 action 与 STORY 的 `onSceneEnter`（含三次 CR 遗留）逐字节不变；`index.ts` 仅新增 2 行导出；独立阅读 `App.tsx` 源码确认渲染为 `<p>` 文本、无 `onClick`/`button`，符合非交互展示约束；`resolveVisibleChoices` 的 AND 语义核实与 `rule-engine`/`chapter-schema` 既有约定一致、非本节点发明；独立复现端到端临时脚本验证，结果与申报一致；本地倒计时核实为单向值，不违反确定性红线；`packages/**`（除授权文件）、DEV-020/021/022/023 冻结文件、根配置、治理文件全部零 diff；A01–A20 全部 VERIFIED/PASS，0 BLOCKING，0 DEVIATION；Info: 1，LEDGER 工作区状态观察，不影响判定 |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0117`，`verdict_ref: "0116"`）：**DEV-024 转 DONE，接口冻结**（INTERACTION region `onOpen` 的 `INTERACTION_OPEN` 载荷首次 CR + 新增导出 `resolveVisibleChoices` + `apps/renderer` 新增 `pickInteractionOpen`/非交互选项展示 + 本地倒计时；DEV-009/012/020/021/022/023 既有冻结接口未受影响）；同步更新本文件与 `DAG.md`；下一可下发节点为 DEV-025（Dice UI：INTRO / LOOP / RESOLVE） |
+| 2026-08-22 | 起草并发出 `TASK_PACKAGE DEV-025`（消息 `0118`）：核对 `machine.ts` 确认 `DICE.*` 事件目前只写进 Event Log、从不转发给 Presentation，本节点是第一次让骰子数据流向 Renderer；两处窄范围 CR——`onLock` 追加纯信号 `DICE_INTRO`、`onResolve` 追加裁剪后的 `DICE_RESULT`（`diceType`/`rawValue`/`modifier`/`finalValue`/`quality`，丢弃 `seed`/`rollIndex`/`appliedModifiers` 等内部记账字段，`DICE.PUBLISHED` 本就是 PUBLIC 可见性，下发不构成新的信息泄露）；核对 `DAG.md` 确认 DEV-037（M3，尚未建）才是真正的节奏控制器，本节点的 LOOP 阶段明确设计为 Renderer 本地纯视觉过渡（服务端只给 INTRO/RESOLVE 两个真实信号），不越权实现真实等待；T001–T005，A01–A19；DEV-025 转 `IN_PROGRESS` |
 
 ## Authority
 

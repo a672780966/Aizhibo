@@ -13,21 +13,21 @@
 
 ## Current Milestone
 
-M2 — Presentation Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成）
+M2 — Presentation Complete：**已于 2026-08-23 全部 9 节点完成**（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成）。下一里程碑排期待定。
 
 ## Current Node
 
-DEV-028 — Presentation Command Bus（`TASK_PACKAGE` 已发出，消息 `0134`，节点 `IN_PROGRESS`；**M2 最后一个节点**）
+无（M2 刚收尾，下一节点待 `USER` 指示或 `COMMANDER` 下一轮起草时决定；候选见 Next Eligible Nodes）
 
 ## Current Status
 
-M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。DEV-020～DEV-027 均已 `DONE`（接口冻结）。DEV-028 已下发：核实"序号分配"（DEV-012）与"分发"（DEV-020）均已实现，本节点只补齐 CR-012 要求、此前未测的真实断线重连/RESYNC 幂等性/多客户端分发一致性测试，不新增生产代码，等待 Codex 施工。PASS 后 M2 全部完成。
+M1 全部 15 个节点 `DONE`（接口冻结），三个对外契约全部冻结。**M2 全部 9 个节点（DEV-020～028）均已 `DONE`（接口冻结）**：`apps/renderer` 现已具备完整演出层——场景背景、角色站位、对话字幕、选项展示、骰子 UI、镜头/转场、音频信号，外加 CR-012 要求的重连/幂等/广播三属性测试覆盖。DEV-028（本节点零生产代码改动，只补测试）经独立审计确认三个新场景真实有效，PASS 后正式宣告 M2 完成。M2 期间共 1 次 `NODE_RULING: FAIL`（DEV-025，Commander 自己的 Task Package 安全论证撰写有误，代码本身安全，经 FIX-01 一轮更正后 PASS），其余 8 个节点首轮即 PASS。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-028.md`
+无（M2 已完工，下一 Task Package 待定）
 
-DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`
+DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`
 
 ## 通信协议
 
@@ -66,10 +66,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-025 — Dice UI（DONE，`verdict_ref: "0124"`，`git_head` `4c2ed0a`；首轮 `0120` FAIL → `DEV-025-FIX-01` → 二轮 PASS）
 - DEV-026 — Camera / Transition（DONE，`verdict_ref: "0128"`，`git_head` `30ea37b248c5f551aa44272d9b3ef3510c7ce81c`）
 - DEV-027 — BGM / SFX（DONE，`verdict_ref: "0132"`，`git_head` `08b22389a3b2708f8f489ba6981d997754ed6a4c`）
+- DEV-028 — Presentation Command Bus（DONE，`verdict_ref: "0136"`，`git_head` `ebf4b1d`）**——M2 里程碑最后一个节点**
 
 ## In Progress Nodes
 
-- DEV-028 — Presentation Command Bus（`TASK_PACKAGE` 消息 `0134`；M2 最后一个节点）
+无。
 
 ## Blocked Nodes
 
@@ -77,11 +78,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-027 — BGM / SFX（2026-08-22）
+DEV-028 — Presentation Command Bus（2026-08-23）
 
 ## Next Eligible Nodes
 
-DEV-028 `IN_PROGRESS` 中，本字段暂空。PASS 后 M2 全部完成。M3（音频，DEV-030 起）仍具备下发条件（只依赖已冻结的 DEV-012），留待排期。
+**M2 全部 9 个节点已完成。** M3（音频，DEV-030 起）具备下发条件（只依赖已冻结的 DEV-012）；M4（Twitch）依赖 M2+M3，M2 已满足其前置之一。下一步排期（M3 优先，或 M3/M4 交叉安排）留待 `USER` 指示或 `COMMANDER` 下一轮起草时决定。
 
 ## Project-level Blockers
 
@@ -271,6 +272,9 @@ DEV-028 `IN_PROGRESS` 中，本字段暂空。PASS 后 M2 全部完成。M3（�
 | 2026-08-22 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0132`）：**PASS**。独立 `git diff 097f863 08b22389` 核实 13 个文件改动精确落在 Writable Scope；逐行核对 `machine.ts` 的 `onSceneEnter` presentation `send` 只新增 `audio` 一行，紧随其后独立的 `context.ports.audio.send(...)` 逐字节未变；独立编写临时端到端测试驱动真实 `createRuntimeMachine`+`valid-minimal`，验证 `SCENE_ENTER` 含正确 `audio.bgm`/`audio.ambience` 且与 `Ports.audio` 隔离（验证后已删除临时代码）；独立核实 `resolveSceneAudio` 对 `RUNTIME_TTS` 资产防御性跳过；`ports.ts`/`audioRegion.ts` 零 diff；独立重跑六条命令（99 files/515 tests）；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，不影响判定） |
 | 2026-08-22 | 发出 `NODE_RULING: PASS`（消息 `0133`，`verdict_ref: "0132"`）：**DEV-027 转 DONE，接口冻结**（`onSceneEnter` presentation `send` 第五次 CR + 新增导出 `resolveSceneAudio` + `apps/renderer` 新增 `pickSceneAudio`/`<audio>` 播放渲染；DEV-009/012/020/021/022/023/024/025/026 既有冻结接口未受影响；`Ports.audio`/`audioRegion.ts` 未被触碰）；同步更新本文件与 `DAG.md`；M2 现在只剩 DEV-028（Presentation Command Bus） |
 | 2026-08-23 | 起草并发出 `TASK_PACKAGE DEV-028`（消息 `0134`）：核对既有 `wsServer.test.ts`/`presentationCommand.test.ts` 全部用例后确认"序号分配"（DEV-012）与"分发"（DEV-020）均已实现且测过，`DAG.md` 要求的"RESYNC 幂等性测试"是唯一真正缺失的部分——从未用真实 `client.close()`+新建连接验证过断线重连、从未测过同连接连续两次 `RENDERER_HELLO` 的幂等性、从未测过多客户端同时在线的分发一致性；判定本节点**不需要新增任何生产代码**，Writable Scope 收窄为仅两个测试文件的追加式扩展；明确若测试过程中发现真实 bug 要发 `EXECUTOR_QUERY`，不得自行修复；T001–T005，A01–A17；DEV-028 转 `IN_PROGRESS` |
+| 2026-08-23 | 收到 DEV-028 `NODE_REPORT`（消息 `0135`，`git_head` `ebf4b1d`）：六条命令严格顺序全部退出码 0，99 files/518 tests（新增 3 条：断线重连/RESYNC 幂等性/多客户端分发一致性，既有零回归），零生产代码改动，转交 `AUDITOR` 独立审计 |
+| 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0136`）：**PASS**。独立重跑六条命令一致；`git diff c3f50c1 ebf4b1d` 核实仅两个测试文件改动、零生产代码/依赖 diff；亲自对照 `wsServer.ts`/`presentationCommand.ts` 生产代码逻辑核实三个新场景均为真实、非平凡验证（断线重连确认走同一 `helloHandler` 共享闭包、幂等性确认 `getState()` 的 `foldState` 重放非硬编码、多客户端确认 `send()` 对 `wss.clients` 无条件遍历确属广播）；单独隔离重跑三个新用例逐一通过；`noUncheckedIndexedAccess` 类型修正核实未削弱断言强度；A01–A17 全部 VERIFIED/PASS，0 BLOCKING；Info: 1，不影响判定。审核员确认本次 PASS 代表 M2 里程碑整体完成 |
+| 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0137`，`verdict_ref: "0136"`）：**DEV-028 转 DONE，接口冻结**；`wsServer.test.ts`/`presentationCommand.test.ts` 新增 3 用例冻结为 CR-012 三属性的回归基线；**宣告 M2 — Presentation Complete 全部 9 个节点（DEV-020～028）完成**——`apps/renderer` 现具备完整演出层（场景/角色/字幕/选项/骰子/镜头转场/音频信号）+ 重连/幂等/广播测试覆盖；M2 期间共 1 次 FAIL（DEV-025，Commander 自己的安全论证撰写有误，代码本身安全，一轮 FIX 后 PASS），其余 8 个节点首轮即 PASS；同步更新本文件与 `DAG.md`；下一步（M3 音频 DEV-030 起，或与 M4 交叉排期）留待 USER 指示 |
 
 ## Authority
 

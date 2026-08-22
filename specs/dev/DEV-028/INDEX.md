@@ -1,6 +1,6 @@
 # DEV-028 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE（接口冻结，`verdict_ref: "0136"`，`git_head` `ebf4b1d`）
 
 ## Current Node
 
@@ -67,7 +67,9 @@ packages/* 下任何目录的修改
 
 ## Current Task
 
-T005（全部 Task 已完成，NODE_REPORT 已发出）
+T005（全部 Task 已完成）。`AUDITOR` 独立审计 `AUDIT_PASS`（消息 0136，A01–A17 全部
+VERIFIED/PASS，0 BLOCKING），`COMMANDER` 裁决 PASS（消息 0137）。节点 `DONE`，接口
+冻结。**M2 — Presentation Complete 全部完成。**
 
 ## Exit Criteria
 
@@ -77,6 +79,7 @@ AUDITOR 发出 NODE_REPORT。
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定——**PASS 即代表 M2 全部完成**。
+M2 全部完成。下一步排期（M3 音频优先，或与 M4 交叉安排）留待 `USER` 指示或
+`COMMANDER` 下一轮起草时决定。
 
 OpenCode 禁止自行推进下一 DEV Node。

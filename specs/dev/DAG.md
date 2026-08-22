@@ -170,6 +170,8 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 前置：DEV-012。**DEV-033 已移出本组至 M1（CR-007）。**
 
 **DEV-030 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0141`，`verdict_ref: "0140"`）。
+**DEV-031 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0142`，把 `resolveAudioSource`
+接入 Result 叙事路径；不实现 Chapter Intro/Boss/Ending 类 Master Audio）。
 本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准。
 
 | Node | Name | 备注 |

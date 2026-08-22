@@ -17,17 +17,21 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-待下发（M3 第二个节点 DEV-031 — Master Audio Player；是否下发留待 `USER`/`COMMANDER` 下一轮决定）
+DEV-031 — Master Audio Player（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0142`）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 第一个节点 DEV-030 均 `DONE`（接口冻结）。
 `packages/audio-engine` 已建立，`resolveAudioSource` CR-018 四级音频解析决策链（纯函数
 + 可注入 Port）冻结，全部默认 Port 返回"不可用"，未接入任何真实 TTS/缓存。
+DEV-031 施工中：把 `resolveAudioSource` 接入 Result 叙事路径（`onResolve`/
+`onResultPlaying`），不实现 Chapter Intro/Boss/Ending 类 Master Audio（无现成叙事
+发射点）。本轮起执行侧调用由 Commander 通过 `pi -p --no-session` 自动接管
+（USER 已确认，DEV-030 人工对照轮已完成）。
 
 ## Current Task Package
 
-无（DEV-030 已 DONE，下一节点 Task Package 尚未起草）
+`specs/comms/0142-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-031.md` + `specs/tasks/TASK-PACKAGE-DEV-031.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -73,7 +77,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+DEV-031 — Master Audio Player（`TASK_PACKAGE` 消息 `0142`）
 
 ## Blocked Nodes
 
@@ -282,6 +286,7 @@ DEV-031 — Master Audio Player（M3 第二个节点，见 `DAG.md`）。M4（Tw
 | 2026-08-23 | 收到 DEV-030 `NODE_REPORT`（消息 `0139`，`git_head` `8ca4f05`）：六条命令严格顺序全部退出码 0，100 files/524 tests（新增 6 条：A07/A08/A09 全覆盖，既有零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0140`）：**PASS**。独立 `git diff 51f9806 8ca4f05` 核实全部改动落在 Writable Scope；亲自阅读 `resolveAudioSource.ts` 全文确认零 IO 且决策语义为"先命中先用"而非"选最优"；核实 `package.json` 无 `dependencies` 字段、全包 grep 零 `getHealth`、`runtime-kernel` 零匹配 `audio-engine`（确认未接线）；独立重跑六条命令（100 files/524 tests）；A01–A21 全部 VERIFIED/PASS，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，不影响判定） |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0141`，`verdict_ref: "0140"`）：**DEV-030 转 DONE，接口冻结**（首次创建 `packages/audio-engine`，交付 `resolveAudioSource`/`AudioResolutionRequest`/`AudioResolutionResult`/`AudioResolutionPorts`/`AudioResolutionSource`/`noopAudioResolutionPorts`；零依赖、零真实 IO、未接入 `runtime-kernel`）；同步更新本文件与 `DAG.md`；下一节点 DEV-031（Master Audio Player）已具备下发条件，留待下一轮决定 |
+| 2026-08-23 | USER 指示先自动执行一轮观察效果。起草并发出 `TASK_PACKAGE DEV-031`（消息 `0142`）：通读 Dev Spec 第 27/28/29 节与冻结的 `machine.ts` 后核实第 28 节 "Master Audio" 四类内容（Chapter Intro/关键剧情/NPC 关键对白/Boss 登场/Boss 核心对白/情绪高潮/Ending）目前没有任何叙事发射代码，实现它们需要发明尚不存在的结局/Boss 叙事选择逻辑，判定为超出范围；改为把 `resolveAudioSource` 接入唯一已端到端产出真实文本的路径——Result 叙事（`onResolve` 计算 + `onResultPlaying` 下发），两处窄范围 CR（precedent DEV-025）；新增纯函数 `resolveResultAudio`（`packages/runtime-kernel/src/resultAudioResolution.ts`），`contentId` 按 `resolved` 原顺序拼接 `narrativeId`（不排序，因为顺序影响合成文本）；`Ports` 追加式新增 `audioResolution` 字段，`Ports.audio`/`audioRegion.ts`（DEV-027/032 领域）不动；`voiceId`/`voiceSettings` 采用占位符（`narrator-default`/`{}`），因 `composeResultSetNarration` 输出单段文本，逐句配音需要独立更大的架构变更，明确记入未来重开边界而非当前缺陷；Renderer 新增 `pickResultAudio` + 一次性播放 `<audio>`（key 复用既有 `dialogue.key`），不新增 workspace 依赖；`CR-019` 判定不适用（纯函数扩展无新增真实 IO）；T001–T006，A01–A22；DEV-031 转 `IN_PROGRESS`。**本节点起执行侧由 Commander 通过 `pi -p --no-session` 自动调用**（USER 确认 DEV-030 人工对照轮完成后接管），不再需要 USER 手动复制粘贴交接行 |
 
 ## Authority
 

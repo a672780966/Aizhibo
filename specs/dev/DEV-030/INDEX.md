@@ -1,6 +1,6 @@
 # DEV-030 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -69,7 +69,7 @@ apps/**（本节点不改 Renderer）
 
 ## Current Task
 
-T004（全部 Task 已完成，NODE_REPORT 已发出）
+无（节点已 DONE，接口冻结）
 
 ## Exit Criteria
 
@@ -78,6 +78,7 @@ T004（全部 Task 已完成，NODE_REPORT 已发出）
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-031 — Master Audio Player（按 `specs/dev/DAG.md`；是否下发留待 `USER`/`COMMANDER`
+下一轮决定）。
 
 OpenCode 禁止自行推进下一 DEV Node。

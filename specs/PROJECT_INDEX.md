@@ -17,21 +17,20 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-待下发（M3 第四个节点 DEV-034 — TTS Provider Interface；USER 指示的 3 轮自动化
-对照第 2 轮，即将下发）
+DEV-034 — TTS Provider Interface（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0150`）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前三个节点 DEV-030/031/032 均 `DONE`
 （接口冻结）。AUDIO region 六态骨架（DEV-009）已接上第一个真实触发源——
-DEV-031 的 `resultAudio`，`resultAudio.source !== 'SUBTITLE_ONLY'` 时自动
-`IDLE→PREPARING→PLAYING_STORY`，`NARRATIVE.DONE` 时自动回到 `IDLE`；默认 Ports
-下仍诚实保持 `IDLE`（无真实 TTS/预生成）。**DEV-031/DEV-032 均全程由 Commander
-通过 `pi -p --no-session` 自动调用执行侧完成**，首轮均 PASS，0 BLOCKING。
+DEV-031 的 `resultAudio`。**DEV-031/DEV-032 均全程由 Commander 通过
+`pi -p --no-session` 自动调用执行侧完成**，首轮均 PASS，0 BLOCKING。DEV-034
+施工中（USER 指示 3 轮自动化对照的第 3 轮）：在 `packages/audio-engine` 新增
+`TtsProviderPort` 契约，不实现真实调用、不接入任何调用点。
 
 ## Current Task Package
 
-无（DEV-032 已 DONE，下一节点 Task Package 尚未起草）
+`specs/comms/0150-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-034.md` + `specs/tasks/TASK-PACKAGE-DEV-034.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -79,7 +78,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+DEV-034 — TTS Provider Interface（`TASK_PACKAGE` 消息 `0150`）
 
 ## Blocked Nodes
 
@@ -296,6 +295,7 @@ DEV-034 — TTS Provider Interface（M3 第四个节点，见 `DAG.md`；`DEV-03
 | 2026-08-23 | Commander 通过 `pi -p --no-session` 自动调用执行侧（后台运行），`pi` 自主完成 T001–T003 并提交 `git_head` `e3f7ccb`，发出 `NODE_REPORT`（消息 `0147`）：537→542 测试（新增 5，零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0148`）：**PASS**。独立 `git diff 21de194 e3f7ccb` 核实 6 个改动文件精确落在 Writable Scope，`storyRegion.ts` 只有 3 处 actions 数组追加、拓扑零改动，Forbidden Scope 全部空 diff；单独重跑 A07–A11 五条新增集成测试逐条确认：A07 注入命中自动到达 PLAYING_STORY、A08 默认 SUBTITLE_ONLY 确实拦在 IDLE（门槛真的生效）、A09 用内联临时章节（`mkdtempSync`/`cpSync`，未落盘进仓库 fixture）真实覆盖 hasNextScene 分支、A10/A11 分别验证直达 CHAPTER_END 分支与无互动路径全程 IDLE 且零 AUDIO 命令；`audioRegion.ts`/`Ports.audio` 载荷逐字节未变；独立重跑六条命令（102 files/542 tests）；A01–A20 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，同既有先例） |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0149`，`verdict_ref: "0148"`）：**DEV-032 转 DONE，接口冻结**（AUDIO region 六态骨架接上第一个真实触发源；`audioRegion.ts` 本身与 `Ports.audio` 载荷形状均未受影响；PLAYING_HOST/DUCKED/BGM 均正确延后）；同步更新本文件与 `DAG.md`；**自动化对照第 2 轮结论：DEV-032 全程由 `pi -p --no-session` 自动调用，首轮即 PASS，0 BLOCKING，与 DEV-031 表现一致**；下一节点 DEV-034（TTS Provider Interface）即将下发（第 3 轮） |
+| 2026-08-23 | 起草并发出 `TASK_PACKAGE DEV-034`（消息 `0150`，USER 指示 3 轮自动化对照的第 3 轮）：核对 `DAG.md` 第 186/187 行确认"HTTP Streaming（第 30 节）"的真实实现记在 DEV-035 名下，DEV-034 只定义契约；核对 Rev 2 冻结 17 包列表无独立 tts 包，交付物落在 `packages/audio-engine` 新增文件而非新包；设计 `TtsProviderPort`/`TtsSynthesisRequest`/`TtsSynthesisResult`（可辨识联合）/`noopTtsProviderPort`，接口刻意不暴露流式/HTTP 原语（避免替 DEV-035 做技术选型）；`TtsSynthesisRequest` 刻意不复用 `AudioResolutionRequest`（概念不同：一个是合成调用，一个是缓存决策）；本节点不接入任何调用点，`resolveAudioSource.ts`/`AudioResolutionPorts.hasTtsProvider`（DEV-030 冻结）不改动；`CR-019` 不适用；T001–T003，A01–A16；DEV-034 转 `IN_PROGRESS`。执行侧继续由 `pi -p --no-session` 自动调用 |
 
 ## Authority
 

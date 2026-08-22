@@ -175,6 +175,8 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 叙事 `onResolve`/`onResultPlaying`）。
 **DEV-032 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0149`，
 `verdict_ref: "0148"`；AUDIO region 六态骨架接上第一个真实触发源）。
+**DEV-034 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0150`，只定义
+`TtsProviderPort` 契约，不接入任何调用点）。
 本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准。
 
 | Node | Name | 备注 |

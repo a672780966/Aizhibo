@@ -17,22 +17,21 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-DEV-032 — Audio State Region（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0146`）
+待下发（M3 第四个节点 DEV-034 — TTS Provider Interface；USER 指示的 3 轮自动化
+对照第 2 轮，即将下发）
 
 ## Current Status
 
-M1 全部 15 个节点、M2 全部 9 个节点、M3 前两个节点 DEV-030/DEV-031 均 `DONE`
-（接口冻结）。`resolveAudioSource`（DEV-030）已首次真实接入 Runtime——接入点为
-Result 叙事（`onResolve`/`onResultPlaying`），`Ports.audioResolution` 追加式新增，
-默认仍诚实产出 `SUBTITLE_ONLY`。**DEV-031 全程由 Commander 通过
-`pi -p --no-session` 自动调用执行侧完成**（USER 确认 DEV-030 人工对照轮后接管），
-首轮即 PASS，0 BLOCKING，自动化机制验证有效。DEV-032 施工中：把 AUDIO region
-骨架（DEV-009 冻结六态）接上第一个真实触发源。USER 要求连续跑 3 轮自动化观察
-效果，本节点为其中第 1 轮。
+M1 全部 15 个节点、M2 全部 9 个节点、M3 前三个节点 DEV-030/031/032 均 `DONE`
+（接口冻结）。AUDIO region 六态骨架（DEV-009）已接上第一个真实触发源——
+DEV-031 的 `resultAudio`，`resultAudio.source !== 'SUBTITLE_ONLY'` 时自动
+`IDLE→PREPARING→PLAYING_STORY`，`NARRATIVE.DONE` 时自动回到 `IDLE`；默认 Ports
+下仍诚实保持 `IDLE`（无真实 TTS/预生成）。**DEV-031/DEV-032 均全程由 Commander
+通过 `pi -p --no-session` 自动调用执行侧完成**，首轮均 PASS，0 BLOCKING。
 
 ## Current Task Package
 
-`specs/comms/0146-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-032.md` + `specs/tasks/TASK-PACKAGE-DEV-032.md`
+无（DEV-032 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -76,10 +75,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-028 — Presentation Command Bus（DONE，`verdict_ref: "0136"`，`git_head` `ebf4b1d`）**——M2 里程碑最后一个节点**
 - DEV-030 — Audio Manifest（DONE，`verdict_ref: "0140"`，`git_head` `8ca4f05a3e1d5b84c590feb7d99063b459c39627`）**——M3 第一个节点**
 - DEV-031 — Master Audio Player（DONE，`verdict_ref: "0144"`，`git_head` `b09ff6024a706839ca7af1ef3f53f6e6debf1d5c`）
+- DEV-032 — Audio State Region（DONE，`verdict_ref: "0148"`，`git_head` `e3f7ccbf7fc3e5675b6f45b8278ec5c033dc90d4`）
 
 ## In Progress Nodes
 
-DEV-032 — Audio State Region（`TASK_PACKAGE` 消息 `0146`）
+无。
 
 ## Blocked Nodes
 
@@ -87,11 +87,11 @@ DEV-032 — Audio State Region（`TASK_PACKAGE` 消息 `0146`）
 
 ## Last Accepted Node
 
-DEV-031 — Master Audio Player（2026-08-23）
+DEV-032 — Audio State Region（2026-08-23）
 
 ## Next Eligible Nodes
 
-DEV-032 — Audio State Region（M3 第三个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
+DEV-034 — TTS Provider Interface（M3 第四个节点，见 `DAG.md`；`DEV-033` 已移至 M1）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
 
 ## Project-level Blockers
 
@@ -293,6 +293,9 @@ DEV-032 — Audio State Region（M3 第三个节点，见 `DAG.md`）。M4（Twi
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0144`）：**PASS**。独立 `git diff 0b6269d b09ff602` 核实 17 个改动文件精确落在 Writable Scope，Forbidden Scope 全部 0 diff；逐行核对 `machine.ts` 只改 `onResolve`/`onResultPlaying` 两处；亲自阅读 `resultAudioResolution.ts` 确认空输入返回 `undefined`、`contentId` 保序不排序、结果原样透传；独立验证 A10（顺序敏感 Port 证明 `'a+b'` 命中、`'b+a'` 不命中）与 A12/A13（默认/注入两种机器级集成测试均真实生效，非死代码）；`packages/audio-engine/src/resolveAudioSource.ts`（DEV-030 冻结）逐字节未变；独立重跑六条命令（102 files/537 tests）；A01–A22 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，与 DEV-030 同一先例，不影响判定） |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0145`，`verdict_ref: "0144"`）：**DEV-031 转 DONE，接口冻结**（`resolveResultAudio` 首次把 DEV-030 决策链接入 Runtime；`Ports.audioResolution` 追加式新增；Renderer 新增 `pickResultAudio` + 一次性播放音频元素；`Ports.audio`/`audioRegion.ts`/`packages/audio-engine/**` 未受影响）；同步更新本文件与 `DAG.md`；**自动化对照结论：本节点全程由 Commander 通过 `pi -p --no-session` 自动调用，无人工复制粘贴，首轮即 PASS，产出质量与此前人工跑的 DEV-030 一致，自动化机制验证有效**；下一节点 DEV-032（Audio State Region）已具备下发条件，留待下一轮决定 |
 | 2026-08-23 | USER 指示连续跑 3 轮自动化观察效果（本行为第 1 轮）。起草并发出 `TASK_PACKAGE DEV-032`（消息 `0146`）：核实 `audioRegion.ts`（DEV-009 冻结六态：IDLE/PREPARING/PLAYING_STORY/PLAYING_HOST/DUCKED/ERROR）自建立起从未被真实驱动过——`AUDIO.*` 事件只在测试里手动 `actor.send`，DEV-027（BGM/SFX）与 DEV-031（Result 音频）均明确不碰 `Ports.audio`；判定本节点是 DAG.md 里第一个、也是唯一被点名"按声道占用建模"的节点，把 AUDIO region 接上唯一现存的真实信号——DEV-031 计算的 `context.resultAudio`；设计为 `storyRegion.ts` 三处转移的 `actions` 数组各追加一个新 action 名（不改状态拓扑），`machine.ts` 用 `enqueueActions`/`raise` 实现 `onAudioChannelForResult`（门槛 `source !== 'SUBTITLE_ONLY'`，同步折叠 PREPARE→READY，因无真实异步 TTS，明确记入未来重开边界）与 `onAudioChannelStop`（无条件 raise AUDIO.STOP，IDLE 态收到是安全空操作）；PLAYING_HOST/DUCKED（AI Host 触发，M5 不存在）与 BGM/环境音（DEV-027，Presentation 通道）明确排除在外；`audioRegion.ts` 本身与 `Ports.audio` 载荷形状零改动；T001–T003，A01–A20；DEV-032 转 `IN_PROGRESS`。执行侧继续由 `pi -p --no-session` 自动调用 |
+| 2026-08-23 | Commander 通过 `pi -p --no-session` 自动调用执行侧（后台运行），`pi` 自主完成 T001–T003 并提交 `git_head` `e3f7ccb`，发出 `NODE_REPORT`（消息 `0147`）：537→542 测试（新增 5，零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0148`）：**PASS**。独立 `git diff 21de194 e3f7ccb` 核实 6 个改动文件精确落在 Writable Scope，`storyRegion.ts` 只有 3 处 actions 数组追加、拓扑零改动，Forbidden Scope 全部空 diff；单独重跑 A07–A11 五条新增集成测试逐条确认：A07 注入命中自动到达 PLAYING_STORY、A08 默认 SUBTITLE_ONLY 确实拦在 IDLE（门槛真的生效）、A09 用内联临时章节（`mkdtempSync`/`cpSync`，未落盘进仓库 fixture）真实覆盖 hasNextScene 分支、A10/A11 分别验证直达 CHAPTER_END 分支与无互动路径全程 IDLE 且零 AUDIO 命令；`audioRegion.ts`/`Ports.audio` 载荷逐字节未变；独立重跑六条命令（102 files/542 tests）；A01–A20 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，LEDGER 工作区状态观察，同既有先例） |
+| 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0149`，`verdict_ref: "0148"`）：**DEV-032 转 DONE，接口冻结**（AUDIO region 六态骨架接上第一个真实触发源；`audioRegion.ts` 本身与 `Ports.audio` 载荷形状均未受影响；PLAYING_HOST/DUCKED/BGM 均正确延后）；同步更新本文件与 `DAG.md`；**自动化对照第 2 轮结论：DEV-032 全程由 `pi -p --no-session` 自动调用，首轮即 PASS，0 BLOCKING，与 DEV-031 表现一致**；下一节点 DEV-034（TTS Provider Interface）即将下发（第 3 轮） |
 
 ## Authority
 

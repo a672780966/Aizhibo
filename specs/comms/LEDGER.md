@@ -166,6 +166,7 @@
 | 0143 | NODE_REPORT | OPENCODE | AUDITOR | DEV-031 | 0142 | CLOSED | DEV-031 施工完成，READY_FOR_REVIEW（git_head=b09ff60；接入 resolveAudioSource 至 Result 叙事，新增 13 测试，524→537 零回归） |
 | 0144 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-031 | 0143 | CLOSED | AUDIT_PASS：A01–A22 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，LEDGER 工作区状态观察） |
 | 0145 | NODE_RULING | COMMANDER | ALL | DEV-031 | 0144 | CLOSED | ruling: PASS；DEV-031 转 DONE，接口冻结 |
+| 0146 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-032 | — | ISSUED | Audio State Region（把 AUDIO region 骨架接上第一个真实触发源：DEV-031 的 resultAudio；不实现 PLAYING_HOST/DUCKED） |
 
 ---
 
@@ -173,6 +174,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0146 |
 | AUDITOR | — |
 | COMMANDER | — |

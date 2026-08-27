@@ -1,6 +1,6 @@
 # DEV-035 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -48,13 +48,13 @@ packages/runtime-kernel/**、apps/renderer/**
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 elevenLabsTtsProvider.ts + 测试
-- [ ] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 elevenLabsTtsProvider.ts + 测试
+- [x] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001
+（全部完成，等待 AUDITOR 审计）
 
 ## Exit Criteria
 

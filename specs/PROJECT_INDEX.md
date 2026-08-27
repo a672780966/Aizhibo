@@ -17,23 +17,19 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-待下发（M3 第五个节点 DEV-035 — Result TTS；USER 指示的 3 轮自动化对照已全部
-完成，是否继续下发留待下一轮决定）
+DEV-035 — Result TTS（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0154`）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前四个节点 DEV-030/031/032/034 均 `DONE`
-（接口冻结）。`packages/audio-engine` 新增 `TtsProviderPort` 契约（DEV-034），
-尚未接入任何调用点。**USER 指示的 3 轮自动化对照（DEV-031/032/034）全部完成**：
-DEV-031/032 各 1 次 `pi -p --no-session` 调用即一次性完整完成、首轮 PASS；
-DEV-034 第一次调用中途停止（T001/T002 完成、T003 未做），Commander 用工作区
-实际状态重新下达续做指令后第二次完整完成，PASS。三轮审计结果均 0 BLOCKING/0
-MAJOR，产出代码质量与既往人工执行一致；DEV-034 暴露了单次调用不保证一次性
-跑完整个 Task Package 的情况，留待 USER 决定后续自动化策略。
+（接口冻结）。USER 指示再跑 5 轮自动化。DEV-035 施工中（第 1/5 轮）：首次实现
+真实的 `TtsProviderPort`（ElevenLabs HTTP Streaming），USER 已裁决密钥可选，
+未配置时退化为 DEV-034 的 `noopTtsProviderPort`；不接入 `runtime-kernel`
+任何调用点（异步编排是 DEV-037 的职责）。
 
 ## Current Task Package
 
-无（DEV-034 已 DONE，下一节点 Task Package 尚未起草）
+`specs/comms/0154-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-035.md` + `specs/tasks/TASK-PACKAGE-DEV-035.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -82,7 +78,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+DEV-035 — Result TTS（`TASK_PACKAGE` 消息 `0154`）
 
 ## Blocked Nodes
 
@@ -303,6 +299,7 @@ DEV-035 — Result TTS（M3 第五个节点，见 `DAG.md`）。M4（Twitch）�
 | 2026-08-23 | 第一次 `pi -p --no-session` 调用只完成 T001/T002（`ttsProvider.ts`/`.test.ts` 创建、`index.ts` 追加导出）即中途停止，未跑验证命令、未提交、未发 NODE_REPORT。Commander 用 `git status`/`git diff` 核实工作区实际状态后，发出第二次续做指令（不重新设计，只要求按已授权的 Task Package 完成剩余 T003），第二次调用完整跑完六条命令、填 REPORT、提交 `git_head` `0d7adb1`、发出 `NODE_REPORT`（消息 `0151`）：542→544 测试（新增 2，零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0152`）：**PASS**。独立 `git diff 90f7b46 0d7adb1` 核实 9 个改动文件精确落在 Writable Scope；`resolveAudioSource.ts` blob hash 逐字节比对确认未变；亲自阅读 `ttsProvider.ts` 确认可辨识联合、零流式原语、`noopTtsProviderPort` 恒定诚实失败不抛异常、零外部 import；独立重跑六条命令（103 files/544 tests）；A01–A16 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（`REPORT.md`"Changed Files"标题写 6 个文件但正文列出 10 个，文本自身不自洽，不影响实际交付范围，接受并说明）、Info 2（两次调用过程观察 + LEDGER 工作区状态观察） |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0153`，`verdict_ref: "0152"`）：**DEV-034 转 DONE，接口冻结**（`TtsProviderPort` 契约定义完成，零外部依赖、零真实 IO、未接入任何调用点；MINOR 项接受并说明，不转 FIX）；同步更新本文件与 `DAG.md`。**USER 指示的 3 轮自动化对照全部完成**：DEV-031/032 各 1 次调用一次性完整完成、首轮 PASS；DEV-034 第一次调用中途停止（T001/T002 完成、T003 未做），Commander 用工作区实际状态重新下达续做指令后第二次完整完成、PASS。三轮审计结果均 0 BLOCKING/0 MAJOR，产出质量与既往人工执行一致；DEV-034 暴露单次调用不保证一次性跑完整个 Task Package 的情况，留待 USER 决定后续自动化策略（详见消息 `0153`）；下一节点 DEV-035（Result TTS）留待下一轮决定 |
+| 2026-08-23 | USER 指示再跑 5 轮。DEV-035（Result TTS）是全项目第一次引入真实外部网络依赖（付费 TTS 厂商），属于需要 USER 裁决的产品分叉，用 `AskUserQuestion` 征询后 USER 选择"按 ElevenLabs 实现，密钥可选"。核对 Dev Spec 第 31 节 Dice Buffer 流程确认真实异步 TTS 调用的编排（等待/降级）是 DEV-037 的职责，`onResolve`/`onResultPlaying`（已冻结）目前是完全同步的 action，接入真实异步调用需要独立一次更大的 CR，本节点不做；起草并发出 `TASK_PACKAGE DEV-035`（消息 `0154`）：`createElevenLabsTtsProvider`（原生 fetch 流式调用，零新增依赖，内容哈希幂等命名文件）+ `createOptionalElevenLabsTtsProvider`（无 key 时原样返回 DEV-034 的 `noopTtsProviderPort` 本体）+ `getElevenLabsHealth`（CR-019 本包首次真正适用，主动探测 `/v1/user`，不消耗合成配额）；测试全程零真实网络请求，全部用注入 `fetchImpl`；T001–T003，A01–A21；DEV-035 转 `IN_PROGRESS`（5 轮自动化的第 1 轮）。执行侧继续由 `pi -p --no-session` 自动调用 |
 
 ## Authority
 

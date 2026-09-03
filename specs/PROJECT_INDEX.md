@@ -17,19 +17,22 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-DEV-036 — Audio Cache（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0158`）
+待下发（M3 第七个节点 DEV-037 — Dice Buffer Controller；USER 已授权跨里程碑
+自动推进，无需逐节点确认，即将下发）
 
 ## Current Status
 
-M1 全部 15 个节点、M2 全部 9 个节点、M3 前五个节点 DEV-030/031/032/034/035 均
-`DONE`（接口冻结）。DEV-036 施工中（5 轮自动化第 2 轮）：实现第 51 节要求的
-完整缓存 key（`hash(voiceModelVersion+voiceId+text+voiceSettings)`），修正
-DEV-035 自身幂等哈希缺少 `voiceModelVersion` 的已知缺口；`voiceModelVersion`
-作为部署级常量放在构造参数，不进入已冻结的 `AudioResolutionRequest`；不接入
-任何调用点。执行侧起改用 `pi --provider commandcode --model
-deepseek/deepseek-v4-flash`（USER 提供的新可用 key）。
+M1 全部 15 个节点、M2 全部 9 个节点、M3 前六个节点
+DEV-030/031/032/034/035/036 均 `DONE`（接口冻结）。DEV-036 交付第 51 节完整
+缓存 key 算法（`voiceModelVersion` 作为部署级构造参数，跨模型版本隔离已
+端到端验证），未接入任何调用点。**USER 已授权：M3 收尾后自动开始 M4，不需要
+逐节点确认；暂不绑定任何真实账号/密钥，未来涉及外部服务的节点一律按占位/
+noop 模式实现**。执行侧使用 `pi --provider commandcode --model
+deepseek/deepseek-v4-flash`。
 
 ## Current Task Package
+
+无（DEV-036 已 DONE，下一节点 Task Package 尚未起草）
 
 `specs/comms/0158-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-036.md` + `specs/tasks/TASK-PACKAGE-DEV-036.md`
 
@@ -78,10 +81,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-032 — Audio State Region（DONE，`verdict_ref: "0148"`，`git_head` `e3f7ccbf7fc3e5675b6f45b8278ec5c033dc90d4`）
 - DEV-034 — TTS Provider Interface（DONE，`verdict_ref: "0152"`，`git_head` `0d7adb19c966fe723c06b98e4a8428d1876e2af9`）
 - DEV-035 — Result TTS（DONE，`verdict_ref: "0156"`，`git_head` `e8e32069f2fdaee4e062d559f2e02acc8290d51e`）
+- DEV-036 — Audio Cache（DONE，`verdict_ref: "0160"`，`git_head` `9684275b1dfb593f81ac522097f0ba617f4c9d01`）
 
 ## In Progress Nodes
 
-DEV-036 — Audio Cache（`TASK_PACKAGE` 消息 `0158`）
+无。
 
 ## Blocked Nodes
 
@@ -89,11 +93,11 @@ DEV-036 — Audio Cache（`TASK_PACKAGE` 消息 `0158`）
 
 ## Last Accepted Node
 
-DEV-035 — Result TTS（2026-08-27）
+DEV-036 — Audio Cache（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-036 — Audio Cache（M3 第六个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
+DEV-037 — Dice Buffer Controller（M3 第七个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
 
 ## Project-level Blockers
 
@@ -307,6 +311,10 @@ DEV-036 — Audio Cache（M3 第六个节点，见 `DAG.md`）。M4（Twitch）�
 | 2026-08-27 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0156`）：**PASS**。独立 `git diff 921248a e8e3206` 核实 6 个改动文件精确落在 Writable Scope；`git hash-object` 逐字节比对确认 `ttsProvider.ts`/`resolveAudioSource.ts` 未变；亲自阅读源码确认请求构造正确、错误路径不抛异常、内容哈希幂等命名、**`createOptionalElevenLabsTtsProvider` 无 key 时用 `.toBe(noopTtsProviderPort)` 严格身份相等验证**（不是行为相同的另一份实现）、`getElevenLabsHealth` 四种结果分支全部覆盖、零第三方 HTTP 库；独立重跑六条命令（104 files/551 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 0155 行结构性错位——追加在待处理表分隔线之后、待处理表未同步清空，Commander 已随裁决一并修正，不转 FIX），Info 1 |
 | 2026-08-27 | 发出 `NODE_RULING: PASS`（消息 `0157`，`verdict_ref: "0156"`）：**DEV-035 转 DONE，接口冻结**（ElevenLabs `TtsProviderPort` 真实实现，密钥可选，未接入 `runtime-kernel`；`ttsProvider.ts`/`resolveAudioSource.ts` 冻结接口未受影响）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正 0155 行位置与待处理表）；**5 轮自动化第 1 轮结论：一次调用即完整完成，首轮 PASS，与 DEV-031/032 表现一致**；下一节点 DEV-036（Audio Cache，5 轮自动化第 2 轮）即将下发 |
 | 2026-08-27 | USER 告知 `pi` 现已配置可用 key，走 `commandcode` provider 的 `deepseek/deepseek-v4-flash` 模型（`pi --list-models`/`pi auth check` 确认 `status:"ready"`）；`pi` 默认 provider 是 `google`，之后每次派工均需显式带 `--provider commandcode --model deepseek/deepseek-v4-flash`，已记入 pipeline 记忆文件。起草并发出 `TASK_PACKAGE DEV-036`（消息 `0158`）：核对 Dev Spec 第 51 节缓存 key 公式（`hash(voiceModelVersion+voiceId+text+voiceSettings)`），发现 DEV-035 自身为幂等命名用的 `sha256(voiceId:text)` 哈希缺少 `voiceModelVersion` 与完整 `voiceSettings`，本节点补上规范要求的完整正确算法（两套哈希用途不同，不合并）；`voiceModelVersion` 设计为 `createAudioCache` 的构造参数（部署级常量），不进入已冻结的 `AudioResolutionRequest`；`findCached` 用目录前缀扫描不假设固定扩展名，`store` 用 `fs.copyFileSync` 保留源文件扩展名；`getAudioCacheHealth` 为 CR-019 本模块首次真正适用，参照 `persistence.getHealth`（DEV-010 先例）风格；核心验证要求跨 `voiceModelVersion` 共享同一 `cacheDir` 互不串扰的端到端测试；不接入任何调用点；T001–T003，A01–A21；DEV-036 转 `IN_PROGRESS`（5 轮自动化第 2 轮）|
+| 2026-08-27 | USER 追加两条标准指令：M3 收尾后自动开始 M4，无需逐节点确认（"按你的来就行"）；暂不绑定任何真实账号/密钥，未来涉及外部服务的节点一律占位/noop 实现即可。均已记入 pipeline 记忆文件，作为后续节点默认行为 |
+| 2026-09-04 | Commander 通过 `pi --provider commandcode --model deepseek/deepseek-v4-flash -p --no-session` 自动调用执行侧（后台运行），`pi` 一次调用即完整完成 T001–T003 并提交 `git_head` `9684275`，发出 `NODE_REPORT`（消息 `0159`）：551→560 测试（新增 9，零回归），转交 `AUDITOR` 独立审计 |
+| 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0160`）：**PASS**。独立 `git diff 2d25464 9684275` 核实 7 个改动文件精确落在 Writable Scope；blob hash 比对确认三个冻结文件未变、`AudioResolutionRequest` 未新增字段；亲自阅读源码确认 `voiceSettings` 键排序序列化、仅 `voiceModelVersion` 不同即得不同 key、`findCached`/`store` 正确处理边界情况、**跨模型版本隔离用两个真实 `AudioCache` 实例端到端验证**（非仅测试文字）；独立重跑六条命令（105 files/560 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 待处理表未同步，已随裁决修正，不转 FIX），Info 1 |
+| 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0161`，`verdict_ref: "0160"`）：**DEV-036 转 DONE，接口冻结**（第 51 节完整缓存 key 算法首个实现；三个冻结文件与 `runtime-kernel`/renderer 均未受影响；接入 `AudioResolutionPorts.findCached` 留给未来节点）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正待处理表）；**5 轮自动化第 3 轮（DEV-037）即将下发，M3 尚余 DEV-037/038**，按 USER 指示无需逐节点确认，收尾后自动转入 M4 |
 
 ## Authority
 

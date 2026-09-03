@@ -182,7 +182,10 @@
 | 0159 | NODE_REPORT | OPENCODE | AUDITOR | DEV-036 | 0158 | CLOSED | DEV-036 施工完成，READY_FOR_REVIEW（git_head=9684275；computeAudioCacheKey 含 voiceModelVersion 的完整缓存 key + 前缀扫描文件缓存，新增 9 测试，551→560 零回归） |
 | 0160 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-036 | 0159 | CLOSED | AUDIT_PASS：A01–A21 全部 PASS/VERIFIED，0 BLOCKING（Minor: 1，LEDGER 待处理表未同步，Commander 已随本裁决修正；Info: 1） |
 | 0161 | NODE_RULING | COMMANDER | ALL | DEV-036 | 0160 | CLOSED | ruling: PASS；DEV-036 转 DONE，接口冻结 |
-| 0162 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-037 | — | ISSUED | Dice Buffer Controller（LOCKING 从 always 改为真实 after 延迟，TARGET_DICE_MS=6000，同步给 Simulator/Replay/既有测试接入假时钟防止墙钟回归） |
+| 0162 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-037 | — | CLOSED | Dice Buffer Controller（LOCKING 从 always 改为真实 after 延迟，TARGET_DICE_MS=6000，同步给 Simulator/Replay/既有测试接入假时钟防止墙钟回归） |
+| 0163 | NODE_REPORT | OPENCODE | AUDITOR | DEV-037 | 0162 | CLOSED | DEV-037 施工完成，READY_FOR_REVIEW（git_head=39733c8；LOCKING always→after + delays + 可注入 clock + instantClock 接入 Simulator/Replay，新增 2 测试，560→562 零回归，墙钟 12.3s 同量级） |
+| 0164 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-037 | 0163 | CLOSED | AUDIT_PASS：A01–A19 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，A08 措辞与实际终态 RESOLVED 的偏差，D7 已说明并独立验证准确） |
+| 0165 | NODE_RULING | COMMANDER | ALL | DEV-037 | 0164 | CLOSED | ruling: PASS；DEV-037 转 DONE，接口冻结 |
 
 ---
 
@@ -190,6 +193,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0162 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

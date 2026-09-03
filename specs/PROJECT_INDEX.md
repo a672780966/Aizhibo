@@ -17,22 +17,20 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-DEV-037 — Dice Buffer Controller（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0162`）
+待下发（M3 最后一个节点 DEV-038 — Audio Ducking；USER 已授权跨里程碑自动
+推进，即将下发，5 轮自动化第 4 轮）
 
 ## Current Status
 
-M1 全部 15 个节点、M2 全部 9 个节点、M3 前六个节点
-DEV-030/031/032/034/035/036 均 `DONE`（接口冻结）。DEV-037 施工中（5 轮
-自动化第 3 轮）：把 `interactionRegion.ts` 里自 DEV-009 起空置的 `LOCKING`
-占位状态接上真实骰子节奏延迟（`TARGET_DICE_MS=6000`，第 31 节示例值），
-`AUDIO_READY` 安全阀分支因无真实信号暂不实现；同步给 Simulator/Replay/
-既有测试接入假时钟，防止本节点自己引入测试套件墙钟耗时回归。
+M1 全部 15 个节点、M2 全部 9 个节点、M3 前七个节点
+DEV-030/031/032/034/035/036/037 均 `DONE`（接口冻结）。DEV-037 交付
+`LOCKING` 首次真实延迟（`TARGET_DICE_MS=6000`），Simulator/Replay/既有
+测试均已验证零性能回归；`AUDIO_READY` 安全阀分支仍待未来节点。M3 只剩
+DEV-038，完成后按 USER 指示自动转入 M4。
 
 ## Current Task Package
 
-`specs/comms/0162-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-037.md` + `specs/tasks/TASK-PACKAGE-DEV-037.md`
-
-`specs/comms/0158-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-036.md` + `specs/tasks/TASK-PACKAGE-DEV-036.md`
+无（DEV-037 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -80,10 +78,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-034 — TTS Provider Interface（DONE，`verdict_ref: "0152"`，`git_head` `0d7adb19c966fe723c06b98e4a8428d1876e2af9`）
 - DEV-035 — Result TTS（DONE，`verdict_ref: "0156"`，`git_head` `e8e32069f2fdaee4e062d559f2e02acc8290d51e`）
 - DEV-036 — Audio Cache（DONE，`verdict_ref: "0160"`，`git_head` `9684275b1dfb593f81ac522097f0ba617f4c9d01`）
+- DEV-037 — Dice Buffer Controller（DONE，`verdict_ref: "0164"`，`git_head` `39733c8c1658fadbe873d01a52ddf70b5868c273`）
 
 ## In Progress Nodes
 
-DEV-037 — Dice Buffer Controller（`TASK_PACKAGE` 消息 `0162`）
+无。
 
 ## Blocked Nodes
 
@@ -91,11 +90,11 @@ DEV-037 — Dice Buffer Controller（`TASK_PACKAGE` 消息 `0162`）
 
 ## Last Accepted Node
 
-DEV-036 — Audio Cache（2026-09-04）
+DEV-037 — Dice Buffer Controller（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-037 — Dice Buffer Controller（M3 第七个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
+DEV-038 — Audio Ducking（M3 最后一个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
 
 ## Project-level Blockers
 
@@ -314,6 +313,9 @@ DEV-037 — Dice Buffer Controller（M3 第七个节点，见 `DAG.md`）。M4�
 | 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0160`）：**PASS**。独立 `git diff 2d25464 9684275` 核实 7 个改动文件精确落在 Writable Scope；blob hash 比对确认三个冻结文件未变、`AudioResolutionRequest` 未新增字段；亲自阅读源码确认 `voiceSettings` 键排序序列化、仅 `voiceModelVersion` 不同即得不同 key、`findCached`/`store` 正确处理边界情况、**跨模型版本隔离用两个真实 `AudioCache` 实例端到端验证**（非仅测试文字）；独立重跑六条命令（105 files/560 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 待处理表未同步，已随裁决修正，不转 FIX），Info 1 |
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0161`，`verdict_ref: "0160"`）：**DEV-036 转 DONE，接口冻结**（第 51 节完整缓存 key 算法首个实现；三个冻结文件与 `runtime-kernel`/renderer 均未受影响；接入 `AudioResolutionPorts.findCached` 留给未来节点）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正待处理表）；**5 轮自动化第 3 轮（DEV-037）即将下发，M3 尚余 DEV-037/038**，按 USER 指示无需逐节点确认，收尾后自动转入 M4 |
 | 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-037`（消息 `0162`，5 轮自动化第 3 轮）：核对 `interactionRegion.ts` 发现 `LOCKING` 状态自 DEV-009 冻结起一直是瞬时 `always` 转移，是刻意预留的真实节奏控制插入点；核对 DEV-030/031/034/035/036 均未把真实 TTS 决策/调用接入 `onResolve`（系统里没有 `AUDIO_READY` 信号），因此 CR-018 的"延迟安全阀"分支现在造不出来，本节点只实现"常态"分支——`LOCKING` 改为 `after` 延迟转移，固定按 Dev Spec 第 31 节示例值 `TARGET_DICE_MS=6000`；识别关键工程风险：真实延迟若不处理会拖垮 DEV-007 Simulator 与既有测试套件的墙钟耗时，设计 `createRuntimeMachine`/`restoreRuntimeMachine` 新增可选 XState `clock` 参数（不传时用真实时钟，生产行为不变），`virtualPorts.ts` 新增 `instantClock`（立即触发假时钟），并要求 `simulator.ts`/`replay.ts`/四个既有 LOCK 相关测试文件全部接入，只追加字段不改判定逻辑；验证要求记录型假时钟证明延迟值正确 + vitest 假定时器证明默认时钟下真实延迟行为；不提前定义未使用的 `minDiceMs`/`maxDiceMs`；T001–T004，A01–A19；DEV-037 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用 |
+| 2026-09-04 | 第一次 `pi -p --no-session` 调用因上游流中断失败（"Upstream stream ended before terminal chunk"，`commandcode` provider 侧临时网络问题，非任务/代码问题），工作区未留任何残留改动；用同一份指令原样重新派工，第二次调用成功，一次性完整完成 T001–T004 并提交 `git_head` `39733c8`，发出 `NODE_REPORT`（消息 `0163`）：560→562 测试（新增 2，零回归），`pnpm test` 墙钟 12.3s（与 DEV-036 基线 ~13s 同量级）。执行方自陈三处技术说明：XState 顶层不导出 `Clock` 类型改为本地镜像（D5）、延迟到点后稳定态是 `RESOLVED` 而非 `LOCKED`（因既有 `LOCKED→RESOLVED` 的 `always` 边同微步折叠，D7）、`packages/persistence/src/recovery.test.ts` 不受影响（D9）；转交 `AUDITOR` 独立审计，特别要求逐一独立复核这三处说明而非直接采信 |
+| 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0164`）：**PASS**。独立 `git diff a98a2e1 39733c8` 核实 14 个改动文件精确落在 Writable Scope，`interactionRegion.ts` diff 恰 4 行仅涉及 `LOCKING`；逐行核对四个既有 LOCK 测试文件确认零处改动既有断言、只追加 `clock` 字段；独立重跑六条命令（105 files/562 tests，墙钟 13.35s/14.7s，同量级未回归）；**D5/D7/D9 三处技术说明逐一独立复核证实站得住脚**（直接检查 xstate 类型声明确认 `Clock` 确实不在顶层导出、独立复现 A08 假定时器测试确认终态确为 `RESOLVED`、独立单独重跑 `recovery.test.ts` 确认 43ms 无挂起）；A01–A19 全部 PASS/VERIFIED，0 BLOCKING/MAJOR/MINOR，Info 1（A08 措辞与实际终态偏差，已由 D7 说明，不影响判定）；LEDGER 格式本轮首次一次到位 |
+| 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0165`，`verdict_ref: "0164"`）：**DEV-037 转 DONE，接口冻结**（`LOCKING` 首次接上真实延迟，系统第一次出现非瞬时状态转移；`onResolve`/`LOCKED`/其余状态拓扑均未受影响；Simulator/Replay/既有测试证实零性能回归；`AUDIO_READY` 安全阀分支留给未来节点）；同步更新本文件与 `DAG.md`；**M3 只剩 DEV-038（Audio Ducking）**，即将下发（5 轮自动化第 4 轮），完成后按 USER 指示自动转入 M4，无需逐节点确认 |
 
 ## Authority
 

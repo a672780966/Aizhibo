@@ -1,6 +1,7 @@
 import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import { createRuntimeMachine } from './machine.js';
+import { instantClock } from './virtualPorts.js';
 import { type PresentationCommand, wrapPresentationPort } from './presentationCommand.js';
 
 const fixture = fileURLToPath(
@@ -67,6 +68,7 @@ describe('wrapPresentationPort', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 'dev-012-e2e',
+      clock: instantClock,
       ports: { presentation: port },
     });
 

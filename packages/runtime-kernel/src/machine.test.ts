@@ -2,9 +2,11 @@ import { cpSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:f
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 import type { RuntimeEvent } from './event.js';
-import { createRuntimeMachine, getEventLog, getRuntimeSnapshot } from './machine.js';
+import { createRuntimeMachine, getEventLog, getRuntimeSnapshot, type Clock } from './machine.js';
+import { instantClock } from './virtualPorts.js';
+import { TARGET_DICE_MS } from './diceTiming.js';
 import { getStoryPhase, getInteractionPhase } from './snapshot.js';
 
 const fixture = fileURLToPath(
@@ -124,6 +126,7 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 's1',
+      clock: instantClock,
       ports: {
         presentation: { send: (c) => presentation.push(c) },
         audio: { send: (c) => audio.push(c) },
@@ -172,6 +175,7 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 's-ra-default',
+      clock: instantClock,
       ports: { presentation: { send: (c) => presentation.push(c) } },
     });
     runToResolution(actor);
@@ -193,6 +197,7 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 's-ra-inject',
+      clock: instantClock,
       ports: {
         presentation: { send: (c) => presentation.push(c) },
         audioResolution: {
@@ -215,7 +220,11 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
   });
 
   it('DICE.* events carry the required visibility (PUBLIC/HIDDEN/PUBLIC)', () => {
-    const actor = createRuntimeMachine({ chapterRootDir: fixture, seed: 's-v' });
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-v',
+      clock: instantClock,
+    });
     runToResolution(actor);
     const log = getEventLog(actor);
     const dice = log.filter((e) => e.type.startsWith('DICE.'));
@@ -229,7 +238,11 @@ describe('createRuntimeMachine end-to-end (T009)', () => {
   });
 
   it('getEventLog sequence is strictly monotonic with no gaps, and is copy-safe', () => {
-    const actor = createRuntimeMachine({ chapterRootDir: fixture, seed: 's-seq' });
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-seq',
+      clock: instantClock,
+    });
     runToResolution(actor);
     const log = getEventLog(actor);
     for (let i = 1; i < log.length; i++) {
@@ -328,6 +341,7 @@ describe('DEV-032: AUDIO region channel arbitration from STORY', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 's-a32-hit',
+      clock: instantClock,
       ports: hitPorts,
     });
     expect(regionOf(actor, 'audio')).toBe('IDLE');
@@ -337,7 +351,11 @@ describe('DEV-032: AUDIO region channel arbitration from STORY', () => {
   });
 
   it('A08: default ports (SUBTITLE_ONLY) -> full LOCK chain keeps AUDIO in IDLE', () => {
-    const actor = createRuntimeMachine({ chapterRootDir: fixture, seed: 's-a32-idle' });
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's-a32-idle',
+      clock: instantClock,
+    });
     runToResolution(actor);
     expect(storyOf(actor)).toBe('RESULT_PLAYING');
     expect(regionOf(actor, 'audio')).toBe('IDLE');
@@ -348,6 +366,7 @@ describe('DEV-032: AUDIO region channel arbitration from STORY', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: dir,
       seed: 's-a32-next',
+      clock: instantClock,
       ports: hitPorts,
     });
     runToResolution(actor);
@@ -361,6 +380,7 @@ describe('DEV-032: AUDIO region channel arbitration from STORY', () => {
     const actor = createRuntimeMachine({
       chapterRootDir: fixture,
       seed: 's-a32-end',
+      clock: instantClock,
       ports: hitPorts,
     });
     runToResolution(actor);
@@ -401,3 +421,61 @@ function runToResolution(actor: ReturnType<typeof createRuntimeMachine>): void {
   actor.send({ type: 'VOTE', viewerId: 'u2', choiceId: 'A' });
   actor.send({ type: 'LOCK' });
 }
+
+describe('DEV-037: LOCKING dice pacing delay', () => {
+  it('A07: a recording clock observes the DICE_PACING delay request equals TARGET_DICE_MS', () => {
+    const requested: number[] = [];
+    const recordingClock: Clock = {
+      setTimeout: (_fn, timeout) => {
+        requested.push(timeout as number);
+        return 0;
+      },
+      clearTimeout: () => {},
+    };
+    const actor = createRuntimeMachine({
+      chapterRootDir: fixture,
+      seed: 's037-record',
+      clock: recordingClock,
+    });
+    actor.send({ type: 'BOOT' });
+    actor.send({ type: 'STORY.DONE' });
+    actor.send({ type: 'INTERACTION.OPEN' });
+    actor.send({ type: 'VOTE', viewerId: 'u1', choiceId: 'A' });
+    actor.send({ type: 'LOCK' });
+    expect(requested).toContain(TARGET_DICE_MS);
+  });
+
+  it('A08: with the default (real) clock, LOCKING stays until TARGET_DICE_MS then resolves', () => {
+    vi.useFakeTimers();
+    try {
+      const presentation: unknown[] = [];
+      // no `clock` passed -> XState default (real) clock, intercepted by fake timers
+      const actor = createRuntimeMachine({
+        chapterRootDir: fixture,
+        seed: 's037-real',
+        ports: { presentation: { send: (c) => presentation.push(c) } },
+      });
+      actor.send({ type: 'BOOT' });
+      actor.send({ type: 'STORY.DONE' });
+      actor.send({ type: 'INTERACTION.OPEN' });
+      actor.send({ type: 'VOTE', viewerId: 'u1', choiceId: 'A' });
+      actor.send({ type: 'LOCK' });
+      expect((actor.getSnapshot().value as Record<string, unknown>).interaction).toBe('LOCKING');
+
+      vi.advanceTimersByTime(TARGET_DICE_MS - 1);
+      expect((actor.getSnapshot().value as Record<string, unknown>).interaction).toBe('LOCKING');
+      // onResolve has not fired yet — the delay is a real gate, not a no-op
+      expect(presentation.some((c) => (c as { kind: string }).kind === 'DICE_RESULT')).toBe(false);
+
+      vi.advanceTimersByTime(1);
+      // The frozen LOCKED -> RESOLVED always edge folds synchronously with the
+      // after-transition, so the stable post-delay state is RESOLVED; what the
+      // delay boundary proves is that onResolve ran only now, not on LOCK send.
+      expect((actor.getSnapshot().value as Record<string, unknown>).interaction).toBe('RESOLVED');
+      // onResolve ran: DICE_RESULT made it to the presentation port
+      expect(presentation.some((c) => (c as { kind: string }).kind === 'DICE_RESULT')).toBe(true);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+});

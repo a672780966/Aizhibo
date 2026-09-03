@@ -2,7 +2,7 @@ import { createRuntimeMachine, getCurrentChoiceIds, getRuntimeSnapshot } from '.
 import { defaultPorts, noopAudioPort, noopPresentationPort } from './ports.js';
 import { getInteractionPhase, getStoryPhase } from './snapshot.js';
 import { generateVotes } from './simulatorVotes.js';
-import { virtualClockPort, virtualPlatformPort } from './virtualPorts.js';
+import { virtualClockPort, virtualPlatformPort, instantClock } from './virtualPorts.js';
 
 export interface SimulationRunResult {
   runIndex: number;
@@ -56,6 +56,7 @@ function runOne(input: {
   const actor = createRuntimeMachine({
     chapterRootDir: input.chapterRootDir,
     seed: input.seed,
+    clock: instantClock,
     ports: {
       ...defaultPorts,
       clock: virtualClockPort,

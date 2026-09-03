@@ -146,7 +146,9 @@ export const interactionRegion = {
       },
     },
     LOCKING: {
-      always: { target: 'LOCKED', actions: 'onResolve' },
+      after: {
+        DICE_PACING: { target: 'LOCKED', actions: 'onResolve' },
+      },
     },
     LOCKED: {
       always: { target: 'RESOLVED', actions: 'onResolved' },

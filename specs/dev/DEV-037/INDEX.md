@@ -1,6 +1,6 @@
 # DEV-037 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -57,14 +57,14 @@ apps/renderer/**、packages/audio-engine/**
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 diceTiming.ts + interactionRegion.ts + machine.ts
-- [ ] T003 virtualPorts.ts + simulator.ts/replay.ts 接入 + 既有测试更新
-- [ ] T004 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
+- [x] T001 节点文档
+- [x] T002 diceTiming.ts + interactionRegion.ts + machine.ts
+- [x] T003 virtualPorts.ts + simulator.ts/replay.ts 接入 + 既有测试更新
+- [x] T004 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT
 
 ## Current Task
 
-T001
+T004（已完成）
 
 ## Exit Criteria
 

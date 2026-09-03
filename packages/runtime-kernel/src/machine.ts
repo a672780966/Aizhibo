@@ -1,4 +1,24 @@
-import { assign, createActor, createMachine, enqueueActions, type MachineConfig } from 'xstate';
+import {
+  assign,
+  createActor,
+  createMachine,
+  enqueueActions,
+  type MachineConfig,
+  type ParameterizedObject,
+  type ProvidedActor,
+} from 'xstate';
+
+/**
+ * XState's clock abstraction: an object with `setTimeout`/`clearTimeout` used
+ * by the actor scheduler for delayed transitions. XState v5 does not export
+ * the `Clock` interface from its public entry (it lives in an internal
+ * declaration file), so we mirror its structural shape here — the runtime
+ * actor options accept any object satisfying it.
+ */
+export interface Clock {
+  setTimeout(fn: (...args: unknown[]) => void, timeout: number): unknown;
+  clearTimeout(id: unknown): void;
+}
 import { compile, type CompileResult } from '@interactive-story/chapter-compiler';
 import type { ResultNarrative, WorldState } from '@interactive-story/chapter-schema';
 import { composeResultSetNarration } from '@interactive-story/narrative-composer';
@@ -8,6 +28,7 @@ import type { InternalSnapshot, RuntimeSnapshot } from './snapshot.js';
 import { wrapSnapshot } from './snapshot.js';
 import type { Ports } from './ports.js';
 import { defaultPorts } from './ports.js';
+import { TARGET_DICE_MS } from './diceTiming.js';
 import type { AudioResolutionResult } from '@interactive-story/audio-engine';
 import { resolveResultAudio } from './resultAudioResolution.js';
 import { currentScene, firstSceneId, resolveNextScene, storyRegion } from './storyRegion.js';
@@ -146,9 +167,15 @@ export function createRuntimeMachine(input: {
   ports?: Partial<Ports>;
   chapterRootDir: string;
   seed: string;
+  clock?: Clock;
 }): RuntimeActor {
   const ports: Ports = { ...defaultPorts, ...(input.ports ?? {}) };
-  const actor = createActor(makeRuntimeMachine(ports, input.chapterRootDir, input.seed));
+  const actorOptions: { clock?: Clock } = {};
+  if (input.clock !== undefined) actorOptions.clock = input.clock;
+  const actor = createActor(
+    makeRuntimeMachine(ports, input.chapterRootDir, input.seed),
+    actorOptions,
+  );
   actor.start();
   return actor as RuntimeActor;
 }
@@ -156,7 +183,14 @@ export function createRuntimeMachine(input: {
 function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) {
   const sessionId = `session-${seed}`;
 
-  const config: MachineConfig<RuntimeContext, RootEvent> = {
+  const config: MachineConfig<
+    RuntimeContext,
+    RootEvent,
+    ProvidedActor,
+    ParameterizedObject,
+    ParameterizedObject,
+    'DICE_PACING'
+  > = {
     id: 'runtime',
     type: 'parallel',
     context: {
@@ -454,6 +488,9 @@ function makeRuntimeMachine(ports: Ports, chapterRootDir: string, seed: string) 
         resolveNextScene(context.compiled, context.currentSceneId, context.snapshot.world) !==
           undefined,
     },
+    delays: {
+      DICE_PACING: () => TARGET_DICE_MS,
+    },
   });
 }
 
@@ -499,11 +536,17 @@ export function restoreRuntimeMachine(input: {
   chapterRootDir: string;
   seed: string;
   persisted: unknown;
+  clock?: Clock;
 }): RuntimeActor {
   const ports: Ports = { ...defaultPorts, ...(input.ports ?? {}) };
-  const actor = createActor(makeRuntimeMachine(ports, input.chapterRootDir, input.seed), {
+  const actorOptions: { snapshot: Snapshot<unknown>; clock?: Clock } = {
     snapshot: input.persisted as Snapshot<unknown>,
-  });
+  };
+  if (input.clock !== undefined) actorOptions.clock = input.clock;
+  const actor = createActor(
+    makeRuntimeMachine(ports, input.chapterRootDir, input.seed),
+    actorOptions,
+  );
   actor.start();
   (actor as InternalActor).getSnapshot().context.ports = ports;
   return actor as RuntimeActor;

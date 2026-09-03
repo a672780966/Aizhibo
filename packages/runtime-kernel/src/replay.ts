@@ -3,6 +3,7 @@ import {
   createRuntimeMachine,
   getEventLog,
   getRuntimeSnapshot,
+  type Clock,
   type RuntimeActor,
 } from './machine.js';
 import type { Ports } from './ports.js';
@@ -19,6 +20,7 @@ export function replayFromEventLog(input: {
   seed: string;
   recordedEvents: readonly RuntimeEvent[];
   ports?: Partial<Ports>;
+  clock?: Clock;
   maxSteps?: number;
 }): ReplayResult {
   const rounds = extractVoteRounds(input.recordedEvents);
@@ -26,11 +28,13 @@ export function replayFromEventLog(input: {
     chapterRootDir: string;
     seed: string;
     ports?: Partial<Ports>;
+    clock?: Clock;
   } = {
     chapterRootDir: input.chapterRootDir,
     seed: input.seed,
   };
   if (input.ports !== undefined) actorInput.ports = input.ports;
+  if (input.clock !== undefined) actorInput.clock = input.clock;
 
   const actor = createRuntimeMachine(actorInput);
   const maxSteps = input.maxSteps ?? 200;

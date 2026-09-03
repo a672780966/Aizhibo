@@ -7,6 +7,7 @@ import {
   getInteractionPhase,
   getRuntimeSnapshot,
   getStoryPhase,
+  instantClock,
   replayFromEventLog,
   systemClockPort,
   virtualClockPort,
@@ -26,6 +27,7 @@ function driveFixedVote(input: {
   const actor = createRuntimeMachine({
     chapterRootDir: input.chapterRootDir,
     seed: input.seed,
+    clock: instantClock,
     ...(input.clock === undefined ? {} : { ports: { clock: input.clock } }),
   });
   actor.send({ type: 'BOOT' });
@@ -63,6 +65,7 @@ describe('replayFromEventLog', () => {
     const result = replayFromEventLog({
       chapterRootDir: fixture,
       seed: 'replay-e2e',
+      clock: instantClock,
       recordedEvents,
     });
     expect(getStoryPhase(getRuntimeSnapshot(result.actor))).toBe('CHAPTER_END');
@@ -78,6 +81,7 @@ describe('replayFromEventLog', () => {
       replayFromEventLog({
         chapterRootDir: fixture,
         seed: 'replay-mismatch',
+        clock: instantClock,
         recordedEvents: withoutVotes,
       }),
     ).toThrow(/requires vote round 0/);
@@ -94,6 +98,7 @@ describe('replay determinism', () => {
     const replayedEvents = replayFromEventLog({
       chapterRootDir: fixture,
       seed: 'virtual-replay',
+      clock: instantClock,
       recordedEvents,
       ports: { clock: relativeVirtualClock() },
     }).replayedEvents;
@@ -105,6 +110,7 @@ describe('replay determinism', () => {
     const replayedEvents = replayFromEventLog({
       chapterRootDir: fixture,
       seed: 'system-replay',
+      clock: instantClock,
       recordedEvents,
       ports: { clock: systemClockPort },
     }).replayedEvents;

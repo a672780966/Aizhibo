@@ -9,6 +9,7 @@ import {
   getEventLog,
   getRuntimeSnapshot,
   getStoryPhase,
+  instantClock,
 } from './index.js';
 import { generateVotes } from './simulatorVotes.js';
 import { runSimulation } from './simulator.js';
@@ -77,7 +78,11 @@ describe('runSimulation', () => {
       ];
       writeFileSync(interactionPath, JSON.stringify(interaction) + '\n');
 
-      const actor = createRuntimeMachine({ chapterRootDir: dir, seed: 'split' });
+      const actor = createRuntimeMachine({
+        chapterRootDir: dir,
+        seed: 'split',
+        clock: instantClock,
+      });
       actor.send({ type: 'BOOT' });
       actor.send({ type: 'STORY.DONE' });
       actor.send({ type: 'INTERACTION.OPEN' });

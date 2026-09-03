@@ -105,6 +105,8 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/platform-twitch: {}
+
   packages/rule-engine:
     dependencies:
       '@interactive-story/chapter-schema':

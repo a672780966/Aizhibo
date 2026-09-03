@@ -223,8 +223,9 @@ DEV-032 `DECISIONS.md` D3 明确记录的测试用 `actor.send` 手动驱动）�
 裁定；2026-09-04 Commander 判定 M4 具备下发条件，USER 已授权跨里程碑自动
 推进，无需逐节点确认）。
 
-**DEV-040 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，见
-`specs/comms/LEDGER.md`）。
+**DEV-040 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0169`，
+`verdict_ref: "0168"`；`platform-twitch` 包首次创建，`TwitchAuthPort` 真实
+refresh_token→access_token 实现，凭据可选退化为 noop）。
 
 | Node | Name |
 |---|---|

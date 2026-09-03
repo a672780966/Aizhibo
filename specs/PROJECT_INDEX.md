@@ -17,8 +17,7 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-040 — Twitch OAuth（`IN_PROGRESS`，消息 `0166`；M4 第一个节点，5 轮
-自动化第 4 轮）
+无（DEV-040 已 DONE，下一节点 DEV-041 尚未起草）
 
 ## Current Status
 
@@ -31,15 +30,16 @@ DEV-030/031/032/034/035/036/037 均 `DONE`（接口冻结）。DEV-037 交付
 `audioRegion.ts` 的 `PLAYING_HOST` 状态自 DEV-009 起从未被任何真实代码路径
 进入过；在 Host 真实存在前实现这条触发逻辑等同于给结构上不可达的状态编写
 监听器，与本项目"不写投机性代码"的一贯纪律冲突，详见 `DAG.md` M3 章节的
-裁定说明。**判定 M3 在真实可施工范围内已完成，M4（前置 M2+M3）具备下发
-条件**，USER 已授权跨里程碑自动推进，无需逐节点确认，M4 已开工。
+裁定说明。M4 已开工，**DEV-040（Twitch OAuth）已 `DONE`（接口冻结）**：
+新建 `platform-twitch` 包，`TwitchAuthPort` 真实 refresh_token→access_token
+实现，凭据可选退化为 noop；审计发现 1 处 Major（执行方多提交一次把
+LEDGER/NODE_REPORT 也提交了，内容干净但偏离既有惯例），Commander 已裁决
+PASS 并记录制度修复（今后 dispatch 提示词禁止执行方自行提交
+LEDGER/NODE_REPORT）。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-040.md`（新建 `platform-twitch` 包，
-`TwitchAuthPort` 真实实现——refresh_token 换 access_token，凭据可选退化为
-`noopTwitchAuthPort`；不实现交互式授权首次获取、EventSub/Chat 客户端、
-token 缓存调度）
+无（DEV-040 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -88,10 +88,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-035 — Result TTS（DONE，`verdict_ref: "0156"`，`git_head` `e8e32069f2fdaee4e062d559f2e02acc8290d51e`）
 - DEV-036 — Audio Cache（DONE，`verdict_ref: "0160"`，`git_head` `9684275b1dfb593f81ac522097f0ba617f4c9d01`）
 - DEV-037 — Dice Buffer Controller（DONE，`verdict_ref: "0164"`，`git_head` `39733c8c1658fadbe873d01a52ddf70b5868c273`）
+- DEV-040 — Twitch OAuth（DONE，`verdict_ref: "0168"`，`git_head` `4670bd5adf54bf9346d462caa2187c1a0357a8b9`）**——M4 第一个节点**
 
 ## In Progress Nodes
 
-- DEV-040 — Twitch OAuth（`IN_PROGRESS`，消息 `0166`；M4 第一个节点）
+无。
 
 ## Blocked Nodes
 
@@ -100,11 +101,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-037 — Dice Buffer Controller（2026-09-04）
+DEV-040 — Twitch OAuth（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-041 — EventSub Client（待 DEV-040 `DONE` 后由 Claude Commander 起草）。
+DEV-041 — EventSub Client（M4 第二个节点，待 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -329,6 +330,9 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0165`，`verdict_ref: "0164"`）：**DEV-037 转 DONE，接口冻结**（`LOCKING` 首次接上真实延迟，系统第一次出现非瞬时状态转移；`onResolve`/`LOCKED`/其余状态拓扑均未受影响；Simulator/Replay/既有测试证实零性能回归；`AUDIO_READY` 安全阀分支留给未来节点）；同步更新本文件与 `DAG.md`；**M3 只剩 DEV-038（Audio Ducking）**，即将下发（5 轮自动化第 4 轮），完成后按 USER 指示自动转入 M4，无需逐节点确认 |
 | 2026-09-04 | 研究 DEV-038（Audio Ducking）真实可施工性时发现现实冲突：核对 `audioRegion.ts`（DEV-009 冻结）确认 `PLAYING_HOST` 状态只有 `AUDIO.STOP→IDLE` 一条转移，`DUCKED` 只能从 `PLAYING_STORY` 经 `AUDIO.DUCK` 到达；`ls packages/` 验证 `ai-host`/`platform-twitch` 均不存在；`PLAYING_HOST` 自 DEV-009 起从未被任何真实代码路径进入（仅 DEV-032 `DECISIONS.md` D3 记录的测试手动 `actor.send`）。判定 DEV-038 需要的真实触发信号（Host 是否在播）在 Host 真实存在前不可得，实现它等同于给结构上不可达的状态写监听器，属于 DEV-032 D3 已明确排除、留给"Host 存在之后"的工作，与"不写投机性代码"的一贯纪律冲突；**裁定 DEV-038 转 `BLOCKED`（暂缓，非施工失败），推迟到 M5 `ai-host` 包真实存在之后再排期**，不计入本轮 5 轮自动化。判定 M3 在真实可施工范围内（DEV-030/031/032/034/035/036/037）已完成，M4（前置 M2+M3）具备下发条件，同步更新 `DAG.md`/本文件 |
 | 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-040`（消息 `0166`，M4 第一个节点，5 轮自动化第 4 轮）：核对 `DAG.md` 第 339 行"保留 17 包"清单确认 `platform-twitch` 是本节点要新建的包，仓库目前无任何可复用代码；核对 Dev Spec 第 43/44/45 节确认 `LivePlatformAdapter`（DEV-041/042/046 职责）与本节点无关，第 45 节"必须支持"列表把 `OAuth refresh` 列为独立能力点；设计为 DEV-034+035 模式的合并版（因 DAG 只列一个 Twitch OAuth 节点）——`TwitchAuthPort` 契约 + `createTwitchAuthProvider`（原生 fetch 调用 Twitch 官方 `/oauth2/token` 端点，`grant_type=refresh_token`，零新增依赖）+ `createOptionalTwitchAuthProvider`（三个环境变量任一缺失退化为 `noopTwitchAuthPort` 本体）+ `getTwitchAuthHealth`（CR-019 本包首次适用，复用 `getAccessToken` 本身做探测，不额外引入 `/oauth2/validate`）；应用 USER"不绑定真实账号/密钥，占位就行"标准指示，并明确记录 Twitch 交互式登录同意是一次性人工操作、不是代码职责；明确排除 EventSub/Chat/token 缓存调度/交互式授权首次获取；T001–T003，A01–A21；DEV-040 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用 |
+| 2026-09-04 | 首次 `pi -p --no-session` 调用因 `commandcode` provider 侧会话投递基础设施故障（"no session-stable thenable send"）静默退出，exit code 0 但零实际改动（无提交、无文件、工作区干净）；核实无残留后用同一份指令原样重试，第二次调用成功，完整完成 T001–T003；执行方发出 `NODE_REPORT`（消息 `0167`）：562→574 测试（新增 12，零回归），六条命令全部退出码 0；转交 `AUDITOR` 独立审计 |
+| 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0168`）：**AUDIT_FAIL**，唯一原因是 A19（"恰 1 条提交"）——实际执行方多做了一次提交（`11d4cb1` 实现主体 + `4670bd5` 仅 LEDGER 追加与执行方自己的 NODE_REPORT 消息，零代码/零依赖/零 Forbidden Scope），偏离 DEV-037 建立的"LEDGER/NODE_REPORT 留待 Commander 收尾一并提交"惯例；其余 A01–A18/A20–A21 全部独立 VERIFIED（含独立重跑五条命令、逐行核对身份等价/请求构造/错误处理/健康探测），Architecture/Regression/Overengineering 三项均 PASS，Major 1/Info 1 |
+| 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0169`，`verdict_ref: "0168"`，采纳 Auditor 提出的选项 (a)）：**DEV-040 转 DONE，接口冻结**——A19 按其防越界的立法意图认定成立（第二次提交内容 100% 限定在 Writable Scope 授权文件内，不存在 A19 意在防范的风险），不选择重写已落地的本地提交历史；**制度修复**：记录进 Commander 操作记忆，今后每次 `pi` dispatch 提示词必须显式禁止执行方自行提交 LEDGER.md/NODE_REPORT 消息文件，留给 Commander 收尾统一提交；同步更新本文件与 `DAG.md`；**M4 首个节点完成，USER"再做 5 轮"指示（DEV-035/036/037 + DEV-038 现实核对与推迟 + DEV-040）已达成**，向 USER 汇报本轮结果小结后再决定是否继续 |
 
 ## Authority
 

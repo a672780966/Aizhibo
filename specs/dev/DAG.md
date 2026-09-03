@@ -185,6 +185,20 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 **DEV-037 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0165`，
 `verdict_ref: "0164"`；`LOCKING` 首次接上真实延迟，Simulator/Replay/既有
 测试均已验证零性能回归）。
+**DEV-038 状态：`BLOCKED`（暂缓，非施工失败）**——2026-09-04 Commander 现实
+核对：`audioRegion.ts`（DEV-009 冻结）里 `PLAYING_HOST` 状态只有
+`AUDIO.STOP→IDLE` 一条转移，没有任何 `PLAYING_HOST→DUCKED` 边；`DUCKED` 只能
+从 `PLAYING_STORY` 经 `AUDIO.DUCK` 到达。DEV-038 的产品描述（第 38 节
+"Story 开始 → Host 自动压低/停止"）需要的真实触发信号是"当前是否有 Host 音频
+在播"，但 `ai-host`/`platform-twitch` 两个包均**尚未创建**（`ls packages/`
+验证），`PLAYING_HOST` 状态自 DEV-009 起从未被任何真实代码路径进入过（仅
+DEV-032 `DECISIONS.md` D3 明确记录的测试用 `actor.send` 手动驱动）。在 Host
+真实存在之前实现这条触发逻辑，等同于给一个结构上不可达的状态编写监听器——
+这正是 DEV-032 D3 主动排除、留给"Host 真实存在之后"的那类工作，与本项目
+"不写投机性/不可达代码"的一贯纪律冲突。**裁定：DEV-038 推迟到 M5（AI Host，
+`ai-host` 包创建、Host 有真实音频信号）之后再排期，不在本轮（5 轮自动化）
+内施工**。M3 其余 7 个节点（DEV-030/031/032/034/035/036/037）均已 `DONE`，
+判定 M3 在"真实可施工范围"内已完成，M4（前置 M2+M3）具备下发条件。
 本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准。
 
 | Node | Name | 备注 |
@@ -197,7 +211,7 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 | DEV-035 | Result TTS | **按兜底形态建造，非主路径**（CR-018）。HTTP Streaming（第 30 节） |
 | DEV-036 | Audio Cache | Key 含 voiceModelVersion（第 51 节）。服务兜底 TTS 与 Host TTS |
 | DEV-037 | Dice Buffer Controller | **重定位为节奏控制器 + 延迟安全阀**（CR-018）。常态按 `targetDiceMs` 走叙事节奏 |
-| DEV-038 | Audio Ducking | |
+| DEV-038 | Audio Ducking | **`BLOCKED`（暂缓）**，等待 M5 `ai-host` 包真实存在，见上方裁定说明 |
 
 **拼接听感验证要求**（CR-018）：DEV-030 / DEV-033 阶段必须做一次块拼接听感原型（十余条真实块试听），确认可接受后才在 DEV-074 投入全章节生成。不可接受时的退回方案：仅预生成 `PRIMARY` 块，其余走运行时 TTS。
 
@@ -205,7 +219,12 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 
 ## 第四施工组：Twitch（M4 — Twitch Complete）
 
-前置：M2 + M3
+前置：M2 + M3（M3 真实可施工范围已完成，DEV-038 推迟至 M5 后，详见上方 M3
+裁定；2026-09-04 Commander 判定 M4 具备下发条件，USER 已授权跨里程碑自动
+推进，无需逐节点确认）。
+
+**DEV-040 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，见
+`specs/comms/LEDGER.md`）。
 
 | Node | Name |
 |---|---|

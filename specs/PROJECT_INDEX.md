@@ -13,24 +13,33 @@
 
 ## Current Milestone
 
-M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation Complete 已于 2026-08-23 全部 9 节点完成）
+M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实可施工范围已于 2026-09-04 完成，DEV-038 推迟至 M5，见下）
 
 ## Current Node
 
-待下发（M3 最后一个节点 DEV-038 — Audio Ducking；USER 已授权跨里程碑自动
-推进，即将下发，5 轮自动化第 4 轮）
+DEV-040 — Twitch OAuth（`IN_PROGRESS`，消息 `0166`；M4 第一个节点，5 轮
+自动化第 4 轮）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前七个节点
 DEV-030/031/032/034/035/036/037 均 `DONE`（接口冻结）。DEV-037 交付
 `LOCKING` 首次真实延迟（`TARGET_DICE_MS=6000`），Simulator/Replay/既有
-测试均已验证零性能回归；`AUDIO_READY` 安全阀分支仍待未来节点。M3 只剩
-DEV-038，完成后按 USER 指示自动转入 M4。
+测试均已验证零性能回归；`AUDIO_READY` 安全阀分支仍待未来节点。**DEV-038
+（Audio Ducking）已判定 `BLOCKED`（暂缓，非施工失败）**：其真实触发信号
+（Host 音频是否在播）依赖 `ai-host` 包，该包尚未创建（M5 未开工），
+`audioRegion.ts` 的 `PLAYING_HOST` 状态自 DEV-009 起从未被任何真实代码路径
+进入过；在 Host 真实存在前实现这条触发逻辑等同于给结构上不可达的状态编写
+监听器，与本项目"不写投机性代码"的一贯纪律冲突，详见 `DAG.md` M3 章节的
+裁定说明。**判定 M3 在真实可施工范围内已完成，M4（前置 M2+M3）具备下发
+条件**，USER 已授权跨里程碑自动推进，无需逐节点确认，M4 已开工。
 
 ## Current Task Package
 
-无（DEV-037 已 DONE，下一节点 Task Package 尚未起草）
+`specs/tasks/TASK-PACKAGE-DEV-040.md`（新建 `platform-twitch` 包，
+`TwitchAuthPort` 真实实现——refresh_token 换 access_token，凭据可选退化为
+`noopTwitchAuthPort`；不实现交互式授权首次获取、EventSub/Chat 客户端、
+token 缓存调度）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -82,11 +91,12 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-040 — Twitch OAuth（`IN_PROGRESS`，消息 `0166`；M4 第一个节点）
 
 ## Blocked Nodes
 
-无。
+- DEV-038 — Audio Ducking（`BLOCKED`，暂缓非施工失败；依赖 M5 `ai-host` 包
+  真实存在，见 `DAG.md` M3 章节裁定说明；不计入本轮 5 轮自动化）
 
 ## Last Accepted Node
 
@@ -94,7 +104,8 @@ DEV-037 — Dice Buffer Controller（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-038 — Audio Ducking（M3 最后一个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
+DEV-041 — EventSub Client（待 DEV-040 `DONE` 后由 Claude Commander 起草）。
+DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
 
@@ -316,6 +327,8 @@ DEV-038 — Audio Ducking（M3 最后一个节点，见 `DAG.md`）。M4（Twitc
 | 2026-09-04 | 第一次 `pi -p --no-session` 调用因上游流中断失败（"Upstream stream ended before terminal chunk"，`commandcode` provider 侧临时网络问题，非任务/代码问题），工作区未留任何残留改动；用同一份指令原样重新派工，第二次调用成功，一次性完整完成 T001–T004 并提交 `git_head` `39733c8`，发出 `NODE_REPORT`（消息 `0163`）：560→562 测试（新增 2，零回归），`pnpm test` 墙钟 12.3s（与 DEV-036 基线 ~13s 同量级）。执行方自陈三处技术说明：XState 顶层不导出 `Clock` 类型改为本地镜像（D5）、延迟到点后稳定态是 `RESOLVED` 而非 `LOCKED`（因既有 `LOCKED→RESOLVED` 的 `always` 边同微步折叠，D7）、`packages/persistence/src/recovery.test.ts` 不受影响（D9）；转交 `AUDITOR` 独立审计，特别要求逐一独立复核这三处说明而非直接采信 |
 | 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0164`）：**PASS**。独立 `git diff a98a2e1 39733c8` 核实 14 个改动文件精确落在 Writable Scope，`interactionRegion.ts` diff 恰 4 行仅涉及 `LOCKING`；逐行核对四个既有 LOCK 测试文件确认零处改动既有断言、只追加 `clock` 字段；独立重跑六条命令（105 files/562 tests，墙钟 13.35s/14.7s，同量级未回归）；**D5/D7/D9 三处技术说明逐一独立复核证实站得住脚**（直接检查 xstate 类型声明确认 `Clock` 确实不在顶层导出、独立复现 A08 假定时器测试确认终态确为 `RESOLVED`、独立单独重跑 `recovery.test.ts` 确认 43ms 无挂起）；A01–A19 全部 PASS/VERIFIED，0 BLOCKING/MAJOR/MINOR，Info 1（A08 措辞与实际终态偏差，已由 D7 说明，不影响判定）；LEDGER 格式本轮首次一次到位 |
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0165`，`verdict_ref: "0164"`）：**DEV-037 转 DONE，接口冻结**（`LOCKING` 首次接上真实延迟，系统第一次出现非瞬时状态转移；`onResolve`/`LOCKED`/其余状态拓扑均未受影响；Simulator/Replay/既有测试证实零性能回归；`AUDIO_READY` 安全阀分支留给未来节点）；同步更新本文件与 `DAG.md`；**M3 只剩 DEV-038（Audio Ducking）**，即将下发（5 轮自动化第 4 轮），完成后按 USER 指示自动转入 M4，无需逐节点确认 |
+| 2026-09-04 | 研究 DEV-038（Audio Ducking）真实可施工性时发现现实冲突：核对 `audioRegion.ts`（DEV-009 冻结）确认 `PLAYING_HOST` 状态只有 `AUDIO.STOP→IDLE` 一条转移，`DUCKED` 只能从 `PLAYING_STORY` 经 `AUDIO.DUCK` 到达；`ls packages/` 验证 `ai-host`/`platform-twitch` 均不存在；`PLAYING_HOST` 自 DEV-009 起从未被任何真实代码路径进入（仅 DEV-032 `DECISIONS.md` D3 记录的测试手动 `actor.send`）。判定 DEV-038 需要的真实触发信号（Host 是否在播）在 Host 真实存在前不可得，实现它等同于给结构上不可达的状态写监听器，属于 DEV-032 D3 已明确排除、留给"Host 存在之后"的工作，与"不写投机性代码"的一贯纪律冲突；**裁定 DEV-038 转 `BLOCKED`（暂缓，非施工失败），推迟到 M5 `ai-host` 包真实存在之后再排期**，不计入本轮 5 轮自动化。判定 M3 在真实可施工范围内（DEV-030/031/032/034/035/036/037）已完成，M4（前置 M2+M3）具备下发条件，同步更新 `DAG.md`/本文件 |
+| 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-040`（消息 `0166`，M4 第一个节点，5 轮自动化第 4 轮）：核对 `DAG.md` 第 339 行"保留 17 包"清单确认 `platform-twitch` 是本节点要新建的包，仓库目前无任何可复用代码；核对 Dev Spec 第 43/44/45 节确认 `LivePlatformAdapter`（DEV-041/042/046 职责）与本节点无关，第 45 节"必须支持"列表把 `OAuth refresh` 列为独立能力点；设计为 DEV-034+035 模式的合并版（因 DAG 只列一个 Twitch OAuth 节点）——`TwitchAuthPort` 契约 + `createTwitchAuthProvider`（原生 fetch 调用 Twitch 官方 `/oauth2/token` 端点，`grant_type=refresh_token`，零新增依赖）+ `createOptionalTwitchAuthProvider`（三个环境变量任一缺失退化为 `noopTwitchAuthPort` 本体）+ `getTwitchAuthHealth`（CR-019 本包首次适用，复用 `getAccessToken` 本身做探测，不额外引入 `/oauth2/validate`）；应用 USER"不绑定真实账号/密钥，占位就行"标准指示，并明确记录 Twitch 交互式登录同意是一次性人工操作、不是代码职责；明确排除 EventSub/Chat/token 缓存调度/交互式授权首次获取；T001–T003，A01–A21；DEV-040 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用 |
 
 ## Authority
 

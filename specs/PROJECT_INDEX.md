@@ -17,19 +17,20 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-DEV-035 — Result TTS（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0154`）
+待下发（M3 第六个节点 DEV-036 — Audio Cache；USER 指示 5 轮自动化的第 2 轮，即将下发）
 
 ## Current Status
 
-M1 全部 15 个节点、M2 全部 9 个节点、M3 前四个节点 DEV-030/031/032/034 均 `DONE`
-（接口冻结）。USER 指示再跑 5 轮自动化。DEV-035 施工中（第 1/5 轮）：首次实现
-真实的 `TtsProviderPort`（ElevenLabs HTTP Streaming），USER 已裁决密钥可选，
-未配置时退化为 DEV-034 的 `noopTtsProviderPort`；不接入 `runtime-kernel`
-任何调用点（异步编排是 DEV-037 的职责）。
+M1 全部 15 个节点、M2 全部 9 个节点、M3 前五个节点 DEV-030/031/032/034/035 均
+`DONE`（接口冻结）。DEV-035 交付 ElevenLabs `TtsProviderPort` 真实实现（密钥
+可选，无 key 时严格等于 DEV-034 的 `noopTtsProviderPort`），未接入
+`runtime-kernel`（异步编排留给 DEV-037）。USER 指示的 5 轮自动化：第 1 轮
+（DEV-035）一次调用即完整完成、首轮 PASS（1 MINOR，LEDGER 结构性错位，
+Commander 已修正，不转 FIX）。
 
 ## Current Task Package
 
-`specs/comms/0154-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-035.md` + `specs/tasks/TASK-PACKAGE-DEV-035.md`
+无（DEV-035 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -75,10 +76,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-031 — Master Audio Player（DONE，`verdict_ref: "0144"`，`git_head` `b09ff6024a706839ca7af1ef3f53f6e6debf1d5c`）
 - DEV-032 — Audio State Region（DONE，`verdict_ref: "0148"`，`git_head` `e3f7ccbf7fc3e5675b6f45b8278ec5c033dc90d4`）
 - DEV-034 — TTS Provider Interface（DONE，`verdict_ref: "0152"`，`git_head` `0d7adb19c966fe723c06b98e4a8428d1876e2af9`）
+- DEV-035 — Result TTS（DONE，`verdict_ref: "0156"`，`git_head` `e8e32069f2fdaee4e062d559f2e02acc8290d51e`）
 
 ## In Progress Nodes
 
-DEV-035 — Result TTS（`TASK_PACKAGE` 消息 `0154`）
+无。
 
 ## Blocked Nodes
 
@@ -86,11 +88,11 @@ DEV-035 — Result TTS（`TASK_PACKAGE` 消息 `0154`）
 
 ## Last Accepted Node
 
-DEV-034 — TTS Provider Interface（2026-08-23）
+DEV-035 — Result TTS（2026-08-27）
 
 ## Next Eligible Nodes
 
-DEV-035 — Result TTS（M3 第五个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
+DEV-036 — Audio Cache（M3 第六个节点，见 `DAG.md`）。M4（Twitch）依赖 M2+M3，M2 已满足其前置之一，M3 尚未完成。
 
 ## Project-level Blockers
 
@@ -300,6 +302,9 @@ DEV-035 — Result TTS（M3 第五个节点，见 `DAG.md`）。M4（Twitch）�
 | 2026-08-23 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0152`）：**PASS**。独立 `git diff 90f7b46 0d7adb1` 核实 9 个改动文件精确落在 Writable Scope；`resolveAudioSource.ts` blob hash 逐字节比对确认未变；亲自阅读 `ttsProvider.ts` 确认可辨识联合、零流式原语、`noopTtsProviderPort` 恒定诚实失败不抛异常、零外部 import；独立重跑六条命令（103 files/544 tests）；A01–A16 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（`REPORT.md`"Changed Files"标题写 6 个文件但正文列出 10 个，文本自身不自洽，不影响实际交付范围，接受并说明）、Info 2（两次调用过程观察 + LEDGER 工作区状态观察） |
 | 2026-08-23 | 发出 `NODE_RULING: PASS`（消息 `0153`，`verdict_ref: "0152"`）：**DEV-034 转 DONE，接口冻结**（`TtsProviderPort` 契约定义完成，零外部依赖、零真实 IO、未接入任何调用点；MINOR 项接受并说明，不转 FIX）；同步更新本文件与 `DAG.md`。**USER 指示的 3 轮自动化对照全部完成**：DEV-031/032 各 1 次调用一次性完整完成、首轮 PASS；DEV-034 第一次调用中途停止（T001/T002 完成、T003 未做），Commander 用工作区实际状态重新下达续做指令后第二次完整完成、PASS。三轮审计结果均 0 BLOCKING/0 MAJOR，产出质量与既往人工执行一致；DEV-034 暴露单次调用不保证一次性跑完整个 Task Package 的情况，留待 USER 决定后续自动化策略（详见消息 `0153`）；下一节点 DEV-035（Result TTS）留待下一轮决定 |
 | 2026-08-23 | USER 指示再跑 5 轮。DEV-035（Result TTS）是全项目第一次引入真实外部网络依赖（付费 TTS 厂商），属于需要 USER 裁决的产品分叉，用 `AskUserQuestion` 征询后 USER 选择"按 ElevenLabs 实现，密钥可选"。核对 Dev Spec 第 31 节 Dice Buffer 流程确认真实异步 TTS 调用的编排（等待/降级）是 DEV-037 的职责，`onResolve`/`onResultPlaying`（已冻结）目前是完全同步的 action，接入真实异步调用需要独立一次更大的 CR，本节点不做；起草并发出 `TASK_PACKAGE DEV-035`（消息 `0154`）：`createElevenLabsTtsProvider`（原生 fetch 流式调用，零新增依赖，内容哈希幂等命名文件）+ `createOptionalElevenLabsTtsProvider`（无 key 时原样返回 DEV-034 的 `noopTtsProviderPort` 本体）+ `getElevenLabsHealth`（CR-019 本包首次真正适用，主动探测 `/v1/user`，不消耗合成配额）；测试全程零真实网络请求，全部用注入 `fetchImpl`；T001–T003，A01–A21；DEV-035 转 `IN_PROGRESS`（5 轮自动化的第 1 轮）。执行侧继续由 `pi -p --no-session` 自动调用 |
+| 2026-08-27 | Commander 通过 `pi -p --no-session` 自动调用执行侧（后台运行），`pi` 一次调用即完整完成 T001–T003 并提交 `git_head` `e8e3206`，发出 `NODE_REPORT`（消息 `0155`）：544→551 测试（新增 7，零回归），转交 `AUDITOR` 独立审计 |
+| 2026-08-27 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0156`）：**PASS**。独立 `git diff 921248a e8e3206` 核实 6 个改动文件精确落在 Writable Scope；`git hash-object` 逐字节比对确认 `ttsProvider.ts`/`resolveAudioSource.ts` 未变；亲自阅读源码确认请求构造正确、错误路径不抛异常、内容哈希幂等命名、**`createOptionalElevenLabsTtsProvider` 无 key 时用 `.toBe(noopTtsProviderPort)` 严格身份相等验证**（不是行为相同的另一份实现）、`getElevenLabsHealth` 四种结果分支全部覆盖、零第三方 HTTP 库；独立重跑六条命令（104 files/551 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 0155 行结构性错位——追加在待处理表分隔线之后、待处理表未同步清空，Commander 已随裁决一并修正，不转 FIX），Info 1 |
+| 2026-08-27 | 发出 `NODE_RULING: PASS`（消息 `0157`，`verdict_ref: "0156"`）：**DEV-035 转 DONE，接口冻结**（ElevenLabs `TtsProviderPort` 真实实现，密钥可选，未接入 `runtime-kernel`；`ttsProvider.ts`/`resolveAudioSource.ts` 冻结接口未受影响）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正 0155 行位置与待处理表）；**5 轮自动化第 1 轮结论：一次调用即完整完成，首轮 PASS，与 DEV-031/032 表现一致**；下一节点 DEV-036（Audio Cache，5 轮自动化第 2 轮）即将下发 |
 
 ## Authority
 

@@ -174,7 +174,10 @@
 | 0151 | NODE_REPORT | OPENCODE | AUDITOR | DEV-034 | 0150 | CLOSED | DEV-034 施工完成，READY_FOR_REVIEW（git_head=0d7adb1；新增 ttsProvider 契约 + noop 诚实失败实现，新增 2 测试，542→544 零回归） |
 | 0152 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-034 | 0151 | CLOSED | AUDIT_PASS：A01–A16 全部 PASS/VERIFIED，0 BLOCKING（Minor: 1，REPORT.md 文件计数文本不自洽，接受并说明；Info: 2） |
 | 0153 | NODE_RULING | COMMANDER | ALL | DEV-034 | 0152 | CLOSED | ruling: PASS；DEV-034 转 DONE，接口冻结 |
-| 0154 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-035 | — | ISSUED | Result TTS（ElevenLabs HTTP Streaming 真实实现，USER 裁决密钥可选，不接入 runtime-kernel） |
+| 0154 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-035 | — | CLOSED | Result TTS（ElevenLabs HTTP Streaming 真实实现，USER 裁决密钥可选，不接入 runtime-kernel） |
+| 0155 | NODE_REPORT | OPENCODE | AUDITOR | DEV-035 | 0154 | CLOSED | DEV-035 施工完成，READY_FOR_REVIEW（git_head=e8e3206；ElevenLabs Provider 真实实现，注入 fetchImpl 零真实网络请求，新增 7 测试，544→551 零回归） |
+| 0156 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-035 | 0155 | CLOSED | AUDIT_PASS：A01–A21 全部 PASS/VERIFIED，0 BLOCKING（Minor: 1，LEDGER 0155 行位置/待处理表未同步，Commander 已随本裁决修正；Info: 1） |
+| 0157 | NODE_RULING | COMMANDER | ALL | DEV-035 | 0156 | CLOSED | ruling: PASS；DEV-035 转 DONE，接口冻结 |
 
 ---
 
@@ -182,6 +185,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0154 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

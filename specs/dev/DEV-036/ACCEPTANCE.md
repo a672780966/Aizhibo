@@ -17,7 +17,7 @@
 | A10 | `store`→`findCached` 往返：路径可读、内容一致、扩展名与源文件一致 | 测试检查 |
 | A11 | 两个不同 `voiceModelVersion` 共享 `cacheDir` 互不串扰（端到端真实临时目录） | 测试检查 |
 | A12 | `getAudioCacheHealth` 可写目录→`OK`；不可写/非法路径→`DOWN`，不抛异常 | 测试检查 |
-| A13 | `AudioResolutionRequest` 未新增 `voiceModelVersion` 字段 | git diff 比对 |
+| A13 | `AudioResolutionRequest` 未新增 `voiceModelVersion` 字段（未被修改） | git diff 比对 |
 | A14 | `resolveAudioSource.ts`/`ttsProvider.ts`/`elevenLabsTtsProvider.ts` 逐字节未变 | git diff 比对 |
 | A15 | `packages/runtime-kernel/**`、`apps/renderer/**` 未被修改 | git diff 比对 |
 | A16 | 未新增任何 npm 依赖 | 文件检查 |

@@ -17,22 +17,20 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-待下发（M3 第七个节点 DEV-037 — Dice Buffer Controller；USER 已授权跨里程碑
-自动推进，无需逐节点确认，即将下发）
+DEV-037 — Dice Buffer Controller（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0162`）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前六个节点
-DEV-030/031/032/034/035/036 均 `DONE`（接口冻结）。DEV-036 交付第 51 节完整
-缓存 key 算法（`voiceModelVersion` 作为部署级构造参数，跨模型版本隔离已
-端到端验证），未接入任何调用点。**USER 已授权：M3 收尾后自动开始 M4，不需要
-逐节点确认；暂不绑定任何真实账号/密钥，未来涉及外部服务的节点一律按占位/
-noop 模式实现**。执行侧使用 `pi --provider commandcode --model
-deepseek/deepseek-v4-flash`。
+DEV-030/031/032/034/035/036 均 `DONE`（接口冻结）。DEV-037 施工中（5 轮
+自动化第 3 轮）：把 `interactionRegion.ts` 里自 DEV-009 起空置的 `LOCKING`
+占位状态接上真实骰子节奏延迟（`TARGET_DICE_MS=6000`，第 31 节示例值），
+`AUDIO_READY` 安全阀分支因无真实信号暂不实现；同步给 Simulator/Replay/
+既有测试接入假时钟，防止本节点自己引入测试套件墙钟耗时回归。
 
 ## Current Task Package
 
-无（DEV-036 已 DONE，下一节点 Task Package 尚未起草）
+`specs/comms/0162-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-037.md` + `specs/tasks/TASK-PACKAGE-DEV-037.md`
 
 `specs/comms/0158-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-036.md` + `specs/tasks/TASK-PACKAGE-DEV-036.md`
 
@@ -85,7 +83,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+DEV-037 — Dice Buffer Controller（`TASK_PACKAGE` 消息 `0162`）
 
 ## Blocked Nodes
 
@@ -315,6 +313,7 @@ DEV-037 — Dice Buffer Controller（M3 第七个节点，见 `DAG.md`）。M4�
 | 2026-09-04 | Commander 通过 `pi --provider commandcode --model deepseek/deepseek-v4-flash -p --no-session` 自动调用执行侧（后台运行），`pi` 一次调用即完整完成 T001–T003 并提交 `git_head` `9684275`，发出 `NODE_REPORT`（消息 `0159`）：551→560 测试（新增 9，零回归），转交 `AUDITOR` 独立审计 |
 | 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0160`）：**PASS**。独立 `git diff 2d25464 9684275` 核实 7 个改动文件精确落在 Writable Scope；blob hash 比对确认三个冻结文件未变、`AudioResolutionRequest` 未新增字段；亲自阅读源码确认 `voiceSettings` 键排序序列化、仅 `voiceModelVersion` 不同即得不同 key、`findCached`/`store` 正确处理边界情况、**跨模型版本隔离用两个真实 `AudioCache` 实例端到端验证**（非仅测试文字）；独立重跑六条命令（105 files/560 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 待处理表未同步，已随裁决修正，不转 FIX），Info 1 |
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0161`，`verdict_ref: "0160"`）：**DEV-036 转 DONE，接口冻结**（第 51 节完整缓存 key 算法首个实现；三个冻结文件与 `runtime-kernel`/renderer 均未受影响；接入 `AudioResolutionPorts.findCached` 留给未来节点）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正待处理表）；**5 轮自动化第 3 轮（DEV-037）即将下发，M3 尚余 DEV-037/038**，按 USER 指示无需逐节点确认，收尾后自动转入 M4 |
+| 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-037`（消息 `0162`，5 轮自动化第 3 轮）：核对 `interactionRegion.ts` 发现 `LOCKING` 状态自 DEV-009 冻结起一直是瞬时 `always` 转移，是刻意预留的真实节奏控制插入点；核对 DEV-030/031/034/035/036 均未把真实 TTS 决策/调用接入 `onResolve`（系统里没有 `AUDIO_READY` 信号），因此 CR-018 的"延迟安全阀"分支现在造不出来，本节点只实现"常态"分支——`LOCKING` 改为 `after` 延迟转移，固定按 Dev Spec 第 31 节示例值 `TARGET_DICE_MS=6000`；识别关键工程风险：真实延迟若不处理会拖垮 DEV-007 Simulator 与既有测试套件的墙钟耗时，设计 `createRuntimeMachine`/`restoreRuntimeMachine` 新增可选 XState `clock` 参数（不传时用真实时钟，生产行为不变），`virtualPorts.ts` 新增 `instantClock`（立即触发假时钟），并要求 `simulator.ts`/`replay.ts`/四个既有 LOCK 相关测试文件全部接入，只追加字段不改判定逻辑；验证要求记录型假时钟证明延迟值正确 + vitest 假定时器证明默认时钟下真实延迟行为；不提前定义未使用的 `minDiceMs`/`maxDiceMs`；T001–T004，A01–A19；DEV-037 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用 |
 
 ## Authority
 

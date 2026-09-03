@@ -182,6 +182,7 @@
 | 0159 | NODE_REPORT | OPENCODE | AUDITOR | DEV-036 | 0158 | CLOSED | DEV-036 施工完成，READY_FOR_REVIEW（git_head=9684275；computeAudioCacheKey 含 voiceModelVersion 的完整缓存 key + 前缀扫描文件缓存，新增 9 测试，551→560 零回归） |
 | 0160 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-036 | 0159 | CLOSED | AUDIT_PASS：A01–A21 全部 PASS/VERIFIED，0 BLOCKING（Minor: 1，LEDGER 待处理表未同步，Commander 已随本裁决修正；Info: 1） |
 | 0161 | NODE_RULING | COMMANDER | ALL | DEV-036 | 0160 | CLOSED | ruling: PASS；DEV-036 转 DONE，接口冻结 |
+| 0162 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-037 | — | ISSUED | Dice Buffer Controller（LOCKING 从 always 改为真实 after 延迟，TARGET_DICE_MS=6000，同步给 Simulator/Replay/既有测试接入假时钟防止墙钟回归） |
 
 ---
 
@@ -189,6 +190,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0162 |
 | AUDITOR | — |
 | COMMANDER | — |

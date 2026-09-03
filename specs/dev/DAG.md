@@ -182,6 +182,8 @@ G06 由此获得三道防线：编译期（DEV-002A）、类型层（DEV-009）�
 不接入 runtime-kernel）。
 **DEV-036 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0161`，
 `verdict_ref: "0160"`；第 51 节完整缓存 key 算法，跨模型版本隔离已验证）。
+**DEV-037 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0162`，`LOCKING`
+接上真实骰子节奏延迟）。
 本组内节点状态以 `specs/comms/LEDGER.md`/`specs/PROJECT_INDEX.md` 为准。
 
 | Node | Name | 备注 |

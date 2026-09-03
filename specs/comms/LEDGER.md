@@ -186,7 +186,8 @@
 | 0163 | NODE_REPORT | OPENCODE | AUDITOR | DEV-037 | 0162 | CLOSED | DEV-037 施工完成，READY_FOR_REVIEW（git_head=39733c8；LOCKING always→after + delays + 可注入 clock + instantClock 接入 Simulator/Replay，新增 2 测试，560→562 零回归，墙钟 12.3s 同量级） |
 | 0164 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-037 | 0163 | CLOSED | AUDIT_PASS：A01–A19 全部 PASS/VERIFIED，0 BLOCKING（Info: 1，A08 措辞与实际终态 RESOLVED 的偏差，D7 已说明并独立验证准确） |
 | 0165 | NODE_RULING | COMMANDER | ALL | DEV-037 | 0164 | CLOSED | ruling: PASS；DEV-037 转 DONE，接口冻结 |
-| 0166 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-040 | — | ISSUED | Twitch OAuth（M4 第一个节点；新建 platform-twitch 包，refresh_token 换 access_token，凭据可选退化为 noop；DEV-038 因依赖 M5 ai-host 已推迟） |
+| 0166 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-040 | — | CLOSED | Twitch OAuth（M4 第一个节点；新建 platform-twitch 包，refresh_token 换 access_token，凭据可选退化为 noop；DEV-038 因依赖 M5 ai-host 已推迟） |
+| 0167 | NODE_REPORT | OPENCODE | AUDITOR | DEV-040 | 0166 | OPEN | DEV-040 施工完成，READY_FOR_REVIEW（git_head=11d4cb1；platform-twitch 包：refresh_token 换 access_token，凭据可选退化为 noop 本体 + 主动健康探测，注入 fetchImpl 零真实网络请求，新增 12 测试，562→574 零回归） |
 
 ---
 
@@ -194,6 +195,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0166 |
-| AUDITOR | — |
+| OPENCODE | — |
+| AUDITOR | 0167 |
 | COMMANDER | — |

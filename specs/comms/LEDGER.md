@@ -178,6 +178,7 @@
 | 0155 | NODE_REPORT | OPENCODE | AUDITOR | DEV-035 | 0154 | CLOSED | DEV-035 施工完成，READY_FOR_REVIEW（git_head=e8e3206；ElevenLabs Provider 真实实现，注入 fetchImpl 零真实网络请求，新增 7 测试，544→551 零回归） |
 | 0156 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-035 | 0155 | CLOSED | AUDIT_PASS：A01–A21 全部 PASS/VERIFIED，0 BLOCKING（Minor: 1，LEDGER 0155 行位置/待处理表未同步，Commander 已随本裁决修正；Info: 1） |
 | 0157 | NODE_RULING | COMMANDER | ALL | DEV-035 | 0156 | CLOSED | ruling: PASS；DEV-035 转 DONE，接口冻结 |
+| 0158 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-036 | — | ISSUED | Audio Cache（第 51 节完整缓存 key 算法，修正 DEV-035 幂等哈希缺少 voiceModelVersion 的缺口，不接入任何调用点） |
 
 ---
 
@@ -185,6 +186,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0158 |
 | AUDITOR | — |
 | COMMANDER | — |

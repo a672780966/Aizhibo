@@ -17,20 +17,21 @@ M3 — Audio Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 1
 
 ## Current Node
 
-待下发（M3 第六个节点 DEV-036 — Audio Cache；USER 指示 5 轮自动化的第 2 轮，即将下发）
+DEV-036 — Audio Cache（`IN_PROGRESS`，`TASK_PACKAGE` 消息 `0158`）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前五个节点 DEV-030/031/032/034/035 均
-`DONE`（接口冻结）。DEV-035 交付 ElevenLabs `TtsProviderPort` 真实实现（密钥
-可选，无 key 时严格等于 DEV-034 的 `noopTtsProviderPort`），未接入
-`runtime-kernel`（异步编排留给 DEV-037）。USER 指示的 5 轮自动化：第 1 轮
-（DEV-035）一次调用即完整完成、首轮 PASS（1 MINOR，LEDGER 结构性错位，
-Commander 已修正，不转 FIX）。
+`DONE`（接口冻结）。DEV-036 施工中（5 轮自动化第 2 轮）：实现第 51 节要求的
+完整缓存 key（`hash(voiceModelVersion+voiceId+text+voiceSettings)`），修正
+DEV-035 自身幂等哈希缺少 `voiceModelVersion` 的已知缺口；`voiceModelVersion`
+作为部署级常量放在构造参数，不进入已冻结的 `AudioResolutionRequest`；不接入
+任何调用点。执行侧起改用 `pi --provider commandcode --model
+deepseek/deepseek-v4-flash`（USER 提供的新可用 key）。
 
 ## Current Task Package
 
-无（DEV-035 已 DONE，下一节点 Task Package 尚未起草）
+`specs/comms/0158-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-036.md` + `specs/tasks/TASK-PACKAGE-DEV-036.md`
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -80,7 +81,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+DEV-036 — Audio Cache（`TASK_PACKAGE` 消息 `0158`）
 
 ## Blocked Nodes
 
@@ -305,6 +306,7 @@ DEV-036 — Audio Cache（M3 第六个节点，见 `DAG.md`）。M4（Twitch）�
 | 2026-08-27 | Commander 通过 `pi -p --no-session` 自动调用执行侧（后台运行），`pi` 一次调用即完整完成 T001–T003 并提交 `git_head` `e8e3206`，发出 `NODE_REPORT`（消息 `0155`）：544→551 测试（新增 7，零回归），转交 `AUDITOR` 独立审计 |
 | 2026-08-27 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0156`）：**PASS**。独立 `git diff 921248a e8e3206` 核实 6 个改动文件精确落在 Writable Scope；`git hash-object` 逐字节比对确认 `ttsProvider.ts`/`resolveAudioSource.ts` 未变；亲自阅读源码确认请求构造正确、错误路径不抛异常、内容哈希幂等命名、**`createOptionalElevenLabsTtsProvider` 无 key 时用 `.toBe(noopTtsProviderPort)` 严格身份相等验证**（不是行为相同的另一份实现）、`getElevenLabsHealth` 四种结果分支全部覆盖、零第三方 HTTP 库；独立重跑六条命令（104 files/551 tests）；A01–A21 全部 PASS/VERIFIED，0 BLOCKING/MAJOR，1 MINOR（LEDGER 0155 行结构性错位——追加在待处理表分隔线之后、待处理表未同步清空，Commander 已随裁决一并修正，不转 FIX），Info 1 |
 | 2026-08-27 | 发出 `NODE_RULING: PASS`（消息 `0157`，`verdict_ref: "0156"`）：**DEV-035 转 DONE，接口冻结**（ElevenLabs `TtsProviderPort` 真实实现，密钥可选，未接入 `runtime-kernel`；`ttsProvider.ts`/`resolveAudioSource.ts` 冻结接口未受影响）；同步更新本文件、`DAG.md` 与 `LEDGER.md`（修正 0155 行位置与待处理表）；**5 轮自动化第 1 轮结论：一次调用即完整完成，首轮 PASS，与 DEV-031/032 表现一致**；下一节点 DEV-036（Audio Cache，5 轮自动化第 2 轮）即将下发 |
+| 2026-08-27 | USER 告知 `pi` 现已配置可用 key，走 `commandcode` provider 的 `deepseek/deepseek-v4-flash` 模型（`pi --list-models`/`pi auth check` 确认 `status:"ready"`）；`pi` 默认 provider 是 `google`，之后每次派工均需显式带 `--provider commandcode --model deepseek/deepseek-v4-flash`，已记入 pipeline 记忆文件。起草并发出 `TASK_PACKAGE DEV-036`（消息 `0158`）：核对 Dev Spec 第 51 节缓存 key 公式（`hash(voiceModelVersion+voiceId+text+voiceSettings)`），发现 DEV-035 自身为幂等命名用的 `sha256(voiceId:text)` 哈希缺少 `voiceModelVersion` 与完整 `voiceSettings`，本节点补上规范要求的完整正确算法（两套哈希用途不同，不合并）；`voiceModelVersion` 设计为 `createAudioCache` 的构造参数（部署级常量），不进入已冻结的 `AudioResolutionRequest`；`findCached` 用目录前缀扫描不假设固定扩展名，`store` 用 `fs.copyFileSync` 保留源文件扩展名；`getAudioCacheHealth` 为 CR-019 本模块首次真正适用，参照 `persistence.getHealth`（DEV-010 先例）风格；核心验证要求跨 `voiceModelVersion` 共享同一 `cacheDir` 互不串扰的端到端测试；不接入任何调用点；T001–T003，A01–A21；DEV-036 转 `IN_PROGRESS`（5 轮自动化第 2 轮）|
 
 ## Authority
 

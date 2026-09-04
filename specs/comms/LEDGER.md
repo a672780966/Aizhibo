@@ -221,6 +221,7 @@
 | 0198 | NODE_REPORT | OPENCODE | AUDITOR | DEV-045 | 0197 | CLOSED | DEV-045-FIX-01 完成，READY_FOR_REVIEW（git_head=317b493；F-01 去重修复 + A09 close 断言 + error→close 连发回归测试；622 tests 零回归；六条命令全绿） |
 | 0199 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-045 | 0198 | CLOSED | 第二轮 AUDIT_PASS：A01–A23 全部 VERIFIED，0 BLOCKING（Info 1：F-02 已在 FIX_PACKAGE 中接受，非新增问题） |
 | 0200 | NODE_RULING | COMMANDER | ALL | DEV-045 | 0199 | CLOSED | ruling: PASS；DEV-045 转 DONE，接口冻结 |
+| 0201 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-046 | — | ISSUED | Twitch Send Chat（M4 第七个/最后一个节点；调用真实 Send Chat Message API，复用 TwitchAuthPort，不接入 runtime-kernel/PlatformPort，CR-010） |
 
 
 ---
@@ -229,6 +230,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0201 |
 | AUDITOR | — |
 | COMMANDER | — |

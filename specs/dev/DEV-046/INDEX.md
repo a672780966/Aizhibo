@@ -1,6 +1,6 @@
 # DEV-046 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -50,12 +50,12 @@ import 或依赖 @interactive-story/runtime-kernel
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 sendChat.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 sendChat.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T002（已完成：六条命令全绿、REPORT 回填、DECISIONS 已入库、单条 commit 已提交；LEDGER/NODE_REPORT 写入未提交）
 
 ## Exit Criteria
 

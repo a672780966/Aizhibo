@@ -202,6 +202,10 @@
 | 0179 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-042 | 0178 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0180 | NODE_RULING | COMMANDER | ALL | DEV-042 | 0179 | CLOSED | ruling: PASS；DEV-042 转 DONE，接口冻结 |
 | 0181 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-043 | — | ISSUED | Message Deduplication（M4 第四个节点；有界内存去重包装 TwitchChatNotification 层 onNotification，Dev Spec 明确必须做） |
+| 0182 | NODE_REPORT | OPENCODE | AUDITOR | DEV-043 | 0181 | CLOSED | DEV-043 施工完成，READY_FOR_REVIEW（git_head=66741f3；messageDedup.ts Set+FIFO 有界去重 + createDedupingOnNotification 包装 notification 层；新增 7 测试 601→608 零回归；六条命令全绿） |
+| 0183 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-043 | 0182 | CLOSED | AUDIT_FAIL：1 Major（A09 测试场景无效，未真正区分续命 vs 不续命）/1 Minor（REPORT.md 文件计数），实现本身未发现问题 |
+| 0184 | NODE_RULING | COMMANDER | ALL | DEV-043 | 0183 | CLOSED | ruling: FAIL；F-01（MAJOR）转 FIX，F-02（MINOR）随 FIX 修正 |
+| 0185 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-043 | 0184 | ISSUED | DEV-043-FIX-01：重写 A09 测试场景（真正验证不续命）+ 修正 REPORT.md 文件计数 |
 
 
 ---
@@ -210,6 +214,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0181 |
+| OPENCODE | 0185 |
 | AUDITOR | — |
 | COMMANDER | — |

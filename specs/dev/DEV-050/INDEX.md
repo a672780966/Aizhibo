@@ -1,6 +1,6 @@
 # DEV-050 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -53,13 +53,13 @@ packages/dice-engine/src/index.ts（Read-only，仅核对字段名）
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 publicState.ts 核心实现 + 测试
-- [ ] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 publicState.ts 核心实现 + 测试
+- [x] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T003（完成）
 
 ## Exit Criteria
 

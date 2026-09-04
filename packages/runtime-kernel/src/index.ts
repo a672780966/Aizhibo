@@ -40,3 +40,5 @@ export { resolveSceneAudio } from './audioResolution.js';
 export type { ResolvedAudio, SceneAudio } from './audioResolution.js';
 export { resolveResultAudio } from './resultAudioResolution.js';
 export type { AudioResolutionResult, AudioResolutionSource } from '@interactive-story/audio-engine';
+export { getPublicState, isFactSafeToDisclose } from './publicState.js';
+export type { PublicRuntimeState, PublicChoice, PublicDiceResult } from './publicState.js';

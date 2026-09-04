@@ -10,6 +10,7 @@
     { "path": "./packages/narrative-composer" },
     { "path": "./packages/persistence" },
     { "path": "./packages/audio-engine" },
+    { "path": "./packages/platform-core" },
     { "path": "./packages/platform-twitch" }
   ]
 }

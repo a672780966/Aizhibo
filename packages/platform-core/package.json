@@ -1,5 +1,5 @@
 {
-  "name": "@interactive-story/platform-twitch",
+  "name": "@interactive-story/platform-core",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -10,10 +10,6 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     }
-  },
-  "dependencies": {
-    "xstate": "^5.32.5",
-    "@interactive-story/platform-core": "workspace:*"
   },
   "scripts": {
     "build": "tsc -b"

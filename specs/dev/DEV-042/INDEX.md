@@ -1,6 +1,6 @@
 # DEV-042 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -60,13 +60,13 @@ packages/runtime-kernel/src/ports.ts（Read-only，理解边界用，不得修�
 
 ## Task Order
 
-- [ ] T001 节点文档 + platform-core 包骨架
-- [ ] T002 platform-core 类型定义 + chatMessageAdapter.ts + 测试
-- [ ] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档 + platform-core 包骨架
+- [x] T002 platform-core 类型定义 + chatMessageAdapter.ts + 测试
+- [x] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+（全部完成，等待 AUDITOR 审计）
 
 ## Exit Criteria
 

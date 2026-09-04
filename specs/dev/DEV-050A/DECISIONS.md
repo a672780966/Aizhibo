@@ -140,3 +140,32 @@ A13 对应此条验收。若未来某接入方想让"被拒原因"也参与统�
   - C5 默认频率段：独立 gate + 注入 clock，`rateLimit` 全默认，窗口
     内放行 5 条 → 第 6 条 DROP RATE_LIMIT → 快进超 60000ms → 恢复
     ALLOW。
+
+## D7 — FIX-02：FIX-01 回归测试为何无效，及正确的文本构造（FIX-A02）
+
+**审计发现（AUDIT_VERDICT 0219，1 Major，采纳转 FIX-02）**：FIX-01
+补的 lastIndex 回归测试**不能区分"修复生效"与"修复被撤销"**，不构成
+有效回归证明。逐字符核算：第一段文本 `'this contains badword here'`
+里 `badword` 起止于索引 14-21，匹配后 `lastIndex` 变为 21；第二段
+文本 `'another message with badword inside'` 里 `badword` **恰好也从
+索引 21 开始**。全局（`g` 标志，非粘滞 `y`）`.test()` 从 `lastIndex`
+向后搜索，并不要求命中位置与 `lastIndex` 精确对齐，只要"从该位置往
+后能找到"即可——因此第二段命中位置恰好不早于遗留 `lastIndex`，即使
+撤销 `pattern.lastIndex = 0;` 修复，测试也会"巧合地"通过。缺陷不在
+实现代码（`lastIndex` 重置本身正确），而在测试文本的索引关系选取
+不当。
+
+**本轮正确构造（逐字符核算）**：第一段 `'aaaaaaaaaaaaaaaaaaaa
+badword'`（20 个 `a` + 空格 + `badword`），`badword` 位于索引 21-27，
+匹配后 `lastIndex` 变为 28；第二段 `'badword
+zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'`，`badword` 位于索引 0-6——
+**严格早于**遗留 `lastIndex=28`，且末尾 z 填充段不含任何 `badword`。
+若修复被撤销，第二次 `.test()` 从索引 28 往后搜索这段文本将找不到
+开头的 `badword` → 错误判定未命中 → ALLOW（暴露 bug）；修复生效时
+重置到 0，正确命中 → DROP。
+
+**自我验证方法（FIX_PACKAGE 0221 要求）**：构造完成后，临时把
+`egressGate.ts` 中 `pattern.lastIndex = 0;` 注释掉重跑该测试——
+第二条断言真实失败（收到 `{decision:'ALLOW'}` 而非预期 DROP）；
+随后恢复该行重跑——测试通过。两步实测确认新文本能真正证伪"未修复"
+场景，测试因此是有效的回归证明。

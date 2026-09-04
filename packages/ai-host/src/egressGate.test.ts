@@ -75,8 +75,11 @@ describe('createEgressGate', () => {
   it('C3: a stateful global regex correctly drops the same forbidden text on consecutive attempts (regression for DEV-050A-FIX-01)', () => {
     const pattern = /badword/g;
     const gate = createEgressGate(baseConfig({ platformDenylist: [pattern] }));
+
+    // 第一段：'badword' 出现在索引 21-27（'aaaaaaaaaaaaaaaaaaaa badword' ——
+    // 20 个 'a' + 1 个空格 + 'badword'），匹配后 lastIndex 变为 28。
     const first = gate.attempt({
-      text: 'this contains badword here',
+      text: 'aaaaaaaaaaaaaaaaaaaa badword',
       sceneId: 'scene-x',
       permission: 'ALLOWED',
     });
@@ -86,8 +89,14 @@ describe('createEgressGate', () => {
       matchedTerm: 'badword',
     });
 
+    // 第二段：'badword' 出现在索引 0-6（字符串开头），远早于遗留的
+    // lastIndex=28；末尾填充一段不含 'badword' 的字符，确保从索引 28
+    // 往后搜索绝对找不到任何命中。若修复被撤销（不重置 lastIndex），
+    // 从 28 往后搜索这段文本会找不到开头的 'badword'，从而错误地判定
+    // 未命中 → ALLOW（暴露 bug）；修复生效时会重置到 0，正确找到并
+    // DROP。
     const second = gate.attempt({
-      text: 'another message with badword inside',
+      text: 'badword zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz',
       sceneId: 'scene-x',
       permission: 'ALLOWED',
     });

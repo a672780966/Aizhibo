@@ -237,3 +237,75 @@ denylist matching`。恰 1 条新提交；`git add` 仅列本 FIX Writable Scope
 
 NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；见
 `specs/comms/0218-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-050A-FIX-01.md`。
+
+---
+
+## FIX-02 轮次（DEV-050A-FIX-02）
+
+### 背景
+
+`AUDIT_VERDICT`（消息 `0219`）对 FIX-01 复核：AUDIT_FAIL，1 Major
+（FIX-A02）——lastIndex 回归测试不能区分修复前后，撤销修复也会
+"巧合通过"，测试无效；实现代码本身（`pattern.lastIndex = 0`）确认
+正确。`NODE_RULING`（`0220`）裁决转 FIX；修复按 `FIX_PACKAGE`
+（`0221`）FIX-1 实施。
+
+### 修复内容（纯测试文本重构，零实现改动）
+
+仅替换 `egressGate.test.ts` 中 C3 lastIndex 回归测试的两段文本：
+
+- 第一段 `'aaaaaaaaaaaaaaaaaaaa badword'`：`badword` 位于索引 21-27
+  （20 个 `a` + 空格 + `badword`），匹配后 `lastIndex` 变为 28。
+- 第二段 `'badword zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'`：`badword`
+  位于索引 0-6，**严格早于**遗留 `lastIndex=28`；末尾 z 填充段不含
+  任何 `badword`。若修复被撤销，第二次 `.test()` 从索引 28 向后搜索
+  找不到开头的 `badword` → 误判 ALLOW（暴露 bug）；修复生效时重置
+  到 0 → 正确 DROP。
+
+根因与构造核算全文见 `DECISIONS.md` D7。
+
+### 自我验证方法（FIX-Package 要求）
+
+1. 新文本就位、修复行存在：重跑该测试 → **PASS**。
+2. 临时注释掉 `egressGate.ts` 的 `pattern.lastIndex = 0;`：重跑 →
+   **FAIL**——第二条断言收到 `{decision:'ALLOW'}` 而非预期 DROP
+   （测试在缺陷态下真实失败，证明能证伪"未修复"场景）。
+3. 恢复该行（未提交临时改动）：重跑 → **PASS**。
+
+两步实测确认新文本能真正区分修复前后，回归测试从此有效。
+
+### FIX-02 Acceptance Results
+
+| # | 结果 | 依据 |
+|---|---|---|
+| FIX-A01 | PASS | 六条命令全部退出码 0，114 files / 664 tests 零回归 |
+| FIX-A02 | PASS | 临时撤销修复行 → 测试 FAIL（second 收到 ALLOW）；恢复 → PASS |
+| FIX-A03 | PASS | `egressGate.ts` 实现零改动；其余既有测试零改动（仅替换一条测试内文本） |
+| FIX-A04 | PASS | `git log` 新增恰 1 条提交，首行 `DEV-050A-FIX-02: fix ineffective lastIndex regression test` |
+
+### FIX-02 Changed Files（本 FIX 提交共 3 个文件）
+
+```text
+packages/ai-host/src/egressGate.test.ts       （仅替换 C3 回归测试两段文本）
+specs/dev/DEV-050A/DECISIONS.md               （追加 D7）
+specs/dev/DEV-050A/REPORT.md                  （本文件，追加 FIX-02 轮次）
+```
+
+### FIX-02 Tests Executed
+
+六条命令按序执行，全部退出码 0：`pnpm install` / `pnpm typecheck` /
+`pnpm lint` / `pnpm format:check` / `pnpm build` / `pnpm test` →
+114 test files passed，664 tests passed（与 FIX-01 相同——本轮零新增
+零删除测试，仅改一条既有测试的字符串内容）。
+
+### FIX-02 Commit
+
+提交信息首行：`DEV-050A-FIX-02: fix ineffective lastIndex regression
+test`。恰 1 条新提交；`git add` 仅列本 FIX Writable Scope 内 3 个
+文件，未使用 `git add -A`。LEDGER 追加行与 NODE_REPORT 消息文件
+（`specs/comms/`）写入工作区但未提交。
+
+### FIX-02 Handoff
+
+NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；见
+`specs/comms/0222-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-050A-FIX-02.md`。

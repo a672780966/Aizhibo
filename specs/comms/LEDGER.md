@@ -234,6 +234,10 @@
 | 0211 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050 | 0210 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED，0 BLOCKING |
 | 0212 | NODE_RULING | COMMANDER | ALL | DEV-050 | 0211 | CLOSED | ruling: PASS；DEV-050 转 DONE，接口冻结 |
 | 0213 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-050A | — | ISSUED | Host Egress Gate（M5 第二个节点，CR-010；新建 ai-host 包，五道确定性检查 C1-C5 短路判定 ALLOW/DROP） |
+| 0214 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050A | 0213 | CLOSED | DEV-050A 施工完成，READY_FOR_REVIEW（git_head=27ec7e2；新建 ai-host 包 + egressGate C1-C5 短路 + 10 测试，661 tests 零回归；六条命令全绿） |
+| 0215 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0214 | CLOSED | AUDIT_FAIL：1 Blocker（C3 正则 lastIndex 副作用导致 g/y 标志正则绕过检测，真实安全缺陷）+ 2 Major（A13/A16 测试覆盖不足），全部采纳转 FIX |
+| 0216 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0215 | CLOSED | ruling: FAIL；F-01/F-02/F-03 全部转 FIX |
+| 0217 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050A | 0216 | ISSUED | DEV-050A-FIX-01：修复 C3 正则 lastIndex 无条件重置 + 补 A13 DROP 不污染历史测试 + 补 A16 默认值直接测试 |
 
 
 ---
@@ -242,6 +246,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0213 |
+| OPENCODE | 0217 |
 | AUDITOR | — |
 | COMMANDER | — |

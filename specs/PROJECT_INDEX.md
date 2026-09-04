@@ -21,7 +21,7 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-050 — Public State Gateway（IN_PROGRESS，`TASK_PACKAGE` 消息 `0205`）
+无（DEV-050 已 DONE，下一节点 DEV-050A 尚未起草）
 
 ## Current Status
 
@@ -29,17 +29,15 @@ M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
 DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 `ai-host` 包真实存在，详见
 `DAG.md` M3 章节）。M5（AI Host，10 节点）第一个节点 DEV-050（Public
-State Gateway）已下发，`IN_PROGRESS`——`packages/runtime-kernel` 自
-M1 起首次被授权修改（新增 `getPublicState()` 投影函数 + PASS 6 运行时
-对偶断言，仅追加不改动既有导出，DEV-009 DECISIONS D3 明确留给本节点
-的职责）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。USER
-已授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
+State Gateway）已 `DONE`（首轮 FAIL→FIX→PASS）——`runtime-kernel` 自
+M1 起首次授权修改，新增 `getPublicState()` 投影函数 + PASS 6 运行时
+对偶断言，实现过程中发现并修复两个真实缺陷。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
+不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-050.md`（消息 `0205`，`ISSUED`）——
-`getPublicState()` 投影函数 + `isFactSafeToDisclose` 运行时对偶断言，
-`runtime-kernel` 仅追加不改动既有导出。
+无（DEV-050 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -95,10 +93,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-044 — Interaction Aggregator（DONE，`verdict_ref: "0191"`，`git_head` `af19967e3e3a0cd7e754b20aa42afa82faf1e9a4`；首轮 AUDIT_PASS）
 - DEV-045 — Twitch Reconnect（DONE，`verdict_ref: "0199"`，`git_head` `317b493c5b5ca4d5bef27e74d66a4906b79fbb27`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 - DEV-046 — Twitch Send Chat（DONE，`verdict_ref: "0203"`，`git_head` `4b63a3d9ea05f4f5a5fd8ae565509bb276352e5e`；首轮 AUDIT_PASS）**——M4 里程碑最后一个节点**
+- DEV-050 — Public State Gateway（DONE，`verdict_ref: "0211"`，`git_head` `15b819fb14b8a7b3217606accb1ecfefa937a824`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）**——M5 第一个节点**
 
 ## In Progress Nodes
 
-- DEV-050 — Public State Gateway（`TASK_PACKAGE` 消息 `0205`，`ISSUED`）
+无。
 
 ## Blocked Nodes
 
@@ -107,11 +106,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-046 — Twitch Send Chat（2026-09-05）**——M4 里程碑全部 7 个节点完成**
+DEV-050 — Public State Gateway（2026-09-05）
 
 ## Next Eligible Nodes
 
-DEV-050A — Host Egress Gate（M5 第二个节点，待 DEV-050 DONE 后起草；依赖 DEV-050 + DEV-002A 词表产物）。
+DEV-050A — Host Egress Gate（M5 第二个节点，待 Claude Commander 起草；依赖 DEV-050 + DEV-002A 词表产物）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -363,6 +362,7 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-05 | 起草并发出 `TASK_PACKAGE DEV-046`（消息 `0201`，M4 第七个/最后一个节点）：核对 `runtime-kernel/src/ports.ts`（DEV-009/012 冻结）`PlatformPort.sendChat(msg): Promise<void>` 从未被真实实现驱动；核对 `DAG.md` 第 264 行 CR-010 附加约束——本节点不得暴露 Host 可直接调用的出站接口，Host 发言需经尚未创建的 M5 `DEV-050A Egress Gate`；设计 `sendChat.ts` 复用 DEV-040 `twitchAuth.ts` 的诚实结果类型模式，调用真实 `POST /helix/chat/messages`；关键设计决策：不提供 `getXxxHealth()` 主动探测函数（与 `twitchAuth.ts` 不同——发聊天消息有真实公开副作用，用它做健康检查等同于向观众刷屏，不可接受）；不做本地消息校验/截断/重试；T001–T002，A01–A22；DEV-046 转 `IN_PROGRESS` |
 | 2026-09-05 | 执行方完成 DEV-046，`git_head` `4b63a3d`：112 files/630 tests（622→630，+8），六条命令全绿，恰 1 条提交。`AUDITOR` 首轮 `AUDIT_PASS`（消息 `0203`），A01–A22 全部 VERIFIED，0 Blocker/0 Major/0 Minor/0 Info，特别核验 CR-010 合规（`TwitchSendChat` 未 import/实现 `PlatformPort`，无任何 Host/runtime-kernel 可达接线）。`NODE_RULING: PASS`（消息 `0204`）：**DEV-046 转 DONE，接口冻结**。**M4（Twitch Complete）里程碑全部 7 个节点（DEV-040~046）完成**；下一里程碑 M5（AI Host Complete，10 节点）具备起草条件 |
 | 2026-09-05 | 起草并发出 `TASK_PACKAGE DEV-050`（消息 `0205`，M5 第一个节点）：核对 `runtime-kernel/src/snapshot.ts`（DEV-009 冻结）`RuntimeSnapshot` 不透明品牌类型 + 具名访问器设计，`DECISIONS.md` D3 原文明确"`getPublicState()` 读投影是 DEV-050（M5）的职责"——本节点是 `runtime-kernel` 自 M1 起首次被授权修改，且仅限新增一个文件 + `index.ts` 追加两行；核对 Dev Spec 第 38 节 `PublicRuntimeState`"例如"形状，逐字段核对全仓库冻结 Schema 后取舍：实现 `currentLocation`/`knownFacts`（经运行时对偶断言过滤）/`currentChoices`/`publishedDice`/`currentTension`/`storyPhase`/`interactionPhase`；省略 `chapterTitle`（无数据源）/`currentChoiceCounts`（投票计数从未导出，属新增能力非投影）/`visiblePlayerCondition`（无数据源）/`PublicPhase` 枚举（未定义映射规则，直接复用既有 `storyPhase`/`interactionPhase`）；设计"PASS 6 运行时对偶断言"`isFactSafeToDisclose`（mirrors 编译期 `pass6Disclosure.ts` 的 default-reject 判定，读当前 `WorldState` 而非静态可达性）；T001–T003，A01–A24；DEV-050 转 `IN_PROGRESS` |
+| 2026-09-05 | 执行方完成 DEV-050 主交付，`git_head` `8101edc`：113 files/651 tests（630→651，+21），六条命令全绿，恰 1 条提交，`git diff` 证明 `runtime-kernel` 除 `index.ts` 追加两行外零改动。T002 实测发现并修复两个真实缺陷：①`resolveWorldStateKey` 漏 `danger.*` 容器（用 `pass5ReachableState.ts` 与真实 fixture `host.public.json` 交叉核实后补齐）；②`getCurrentChoiceIds` 场景驱动非阶段门控，导致 `currentChoices` 在互动尚未真正 OPEN 时提前泄漏（用 probe 实测验证后修复：门控 `interactionPhase==='OPEN'`）。`AUDITOR` 首轮 `AUDIT_FAIL`（消息 `0207`）：A14（MAJOR）`publishedDice` 测试只验证形状未验证"排除 HIDDEN `DICE.ROLLED` 记录"，采纳转 FIX。`FIX_PACKAGE DEV-050-FIX-01`（消息 `0209`）补三段式断言（存在性+数量一一对应+防回归哨兵），第二轮 `AUDIT_PASS`（消息 `0211`）。`NODE_RULING: PASS`（消息 `0212`）：**DEV-050 转 DONE，接口冻结**；M5 下一个节点 DEV-050A（Host Egress Gate）具备下发条件 |
 
 ## Authority
 

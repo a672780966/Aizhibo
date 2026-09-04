@@ -274,10 +274,13 @@ Send Chat Message API，未接入 `runtime-kernel`/`PlatformPort`，CR-010）。
 
 前置：DEV-046
 
-**DEV-050 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0205`；
-`runtime-kernel` 自 M1 起首次授权修改，新增 `getPublicState()` 投影
-函数 + PASS 6 运行时对偶断言 `isFactSafeToDisclose`，仅追加不改动
-任何既有导出）。
+**DEV-050 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0212`，
+`verdict_ref: "0211"`；首轮 `AUDIT_FAIL`→`FIX-01`→第二轮
+`AUDIT_PASS`；`runtime-kernel` 自 M1 起首次授权修改，新增
+`getPublicState()` 投影函数 + PASS 6 运行时对偶断言
+`isFactSafeToDisclose`，仅追加不改动任何既有导出；实现过程中发现并
+修复两个真实缺陷：`resolveWorldStateKey` 漏 `danger.*` 容器、
+`getCurrentChoiceIds` 场景驱动导致 `currentChoices` 提前泄漏）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

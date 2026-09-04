@@ -230,6 +230,9 @@
 | 0207 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050 | 0206 | CLOSED | AUDIT_FAIL：1 Major（F-01 publishedDice 缺少排除 HIDDEN DICE.ROLLED 记录的直接断言，实现正确但测试未证明防回归能力），采纳转 FIX |
 | 0208 | NODE_RULING | COMMANDER | ALL | DEV-050 | 0207 | CLOSED | ruling: FAIL；F-01（MAJOR）转 FIX |
 | 0209 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050 | 0208 | ISSUED | DEV-050-FIX-01：补 publishedDice 排除 HIDDEN DICE.ROLLED 记录的三段式断言（存在性+数量一一对应+不等于未过滤总数） |
+| 0210 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050 | 0209 | CLOSED | DEV-050-FIX-01 完成，READY_FOR_REVIEW（git_head=15b819f；三段式断言补齐：HIDDEN DICE.ROLLED 存在且被排除 + 数量一一对应 + 回归哨兵；651 tests 零回归；publicState.ts 实现零改动） |
+| 0211 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050 | 0210 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED，0 BLOCKING |
+| 0212 | NODE_RULING | COMMANDER | ALL | DEV-050 | 0211 | CLOSED | ruling: PASS；DEV-050 转 DONE，接口冻结 |
 
 
 ---
@@ -238,6 +241,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0209 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

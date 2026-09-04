@@ -17,7 +17,8 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-041 — EventSub Client（`IN_PROGRESS`，消息 `0170`；M4 第二个节点）
+DEV-041 — EventSub Client（`IN_PROGRESS`，第一轮 `AUDIT_FAIL`；
+`DEV-041-FIX-01` 已下发，消息 `0174`；M4 第二个节点）
 
 ## Current Status
 
@@ -28,21 +29,24 @@ Ducking）已判定 `BLOCKED`**（暂缓非施工失败，依赖 M5 `ai-host` �
 `DONE`**（接口冻结）——新建 `platform-twitch` 包，`TwitchAuthPort` 真实
 refresh_token→access_token 实现，凭据可选退化为 noop；审计发现 1 处 Major
 （执行方多提交一次），Commander 已裁决 PASS 并记录制度修复。**DEV-041
-（EventSub Client）已下发，`IN_PROGRESS`**：新增 Dev Spec 第 45 节八态
+（EventSub Client）第一轮 `AUDIT_FAIL`**：新增 Dev Spec 第 45 节八态
 XState 连接生命周期机器，真实 WebSocket + Helix 订阅创建 API，首次消费
 `TwitchAuthPort`；不做 NormalizedChatMessage 转换/去重/真正重连算法/发送
-消息（分属 DEV-042/043/045/046）。**AUDITOR 角色自本节点起改为 `opencode`
-CLI 自定义 agent（`.opencode/agent/auditor.md`，模型 `openai/gpt-5.6-terra`），
-取代直接调用 Claude Code `project-auditor` subagent**——已用 DEV-040 做过
-一次独立复审验证可用（真实跑通五条命令，独立发现一处 DEV-040 Task Package
-未声明 `pnpm-lock.yaml` 的 Scope 疏漏）。USER 已授权：配置完成后自动推进，
-除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续占位处理。
+消息（分属 DEV-042/043/045/046）；`opencode`/`gpt-5.6-terra` AUDITOR 第一次
+真实审计一个新节点，发现 1 Blocker（A01 未跑，审计工具白名单疏漏，已修正）
++ 2 Major（A07/A11/A13/A14/A15 测试覆盖不足，A13 完全零覆盖；NODE_REPORT
+正文引用了不存在的 commit hash）+ 1 Minor；已裁决 FAIL，`DEV-041-FIX-01`
+已下发补齐测试覆盖与文档错误。**AUDITOR 角色自 DEV-041 起改为 `opencode`
+CLI 自定义 agent**（`.opencode/agent/auditor.md`，模型 `openai/gpt-5.6-terra`），
+取代直接调用 Claude Code `project-auditor` subagent。USER 已授权：配置完成
+后自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续
+占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-041.md`（新增 `createEventSubClient`——Dev
-Spec 第 45 节八态 XState 机器，真实 WebSocket/Helix 调用，零新增第三方依赖；
-不实现 NormalizedChatMessage/去重/真正重连/发送消息）
+`specs/comms/0174-COMMANDER-to-OPENCODE-FIX_PACKAGE-DEV-041.md`
+（`DEV-041-FIX-01`：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT
+commit hash 引用 + REPORT.md 文件计数文字）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -338,6 +342,10 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0169`，`verdict_ref: "0168"`，采纳 Auditor 提出的选项 (a)）：**DEV-040 转 DONE，接口冻结**——A19 按其防越界的立法意图认定成立（第二次提交内容 100% 限定在 Writable Scope 授权文件内，不存在 A19 意在防范的风险），不选择重写已落地的本地提交历史；**制度修复**：记录进 Commander 操作记忆，今后每次 `pi` dispatch 提示词必须显式禁止执行方自行提交 LEDGER.md/NODE_REPORT 消息文件，留给 Commander 收尾统一提交；同步更新本文件与 `DAG.md`；**M4 首个节点完成，USER"再做 5 轮"指示（DEV-035/036/037 + DEV-038 现实核对与推迟 + DEV-040）已达成**，向 USER 汇报本轮结果小结后再决定是否继续 |
 | 2026-09-04 | USER 指示"审核交给 opencode 使用 gpt 5.6 terra"：AUDITOR 角色改为直接调用 `opencode` CLI 自定义 agent（`c:\Users\admin\Music\Aizhibo\.opencode\agent\auditor.md`，与 `.claude/` 同样加入 `.gitignore`，模型固定 `openai/gpt-5.6-terra`），取代直接调用 Claude Code `project-auditor` subagent；agent 系统提示词是 `project-auditor.md` 完整审计守则的原样迁移。配置过程中发现关键限制：给自定义 `mode: primary` agent 的 frontmatter 显式写 `tools:`/`permission:` 会导致 Bash 工具完全不可用（连 `git status` 都执行不了），最终去掉这两个字段、只保留 `description`/`mode`/`model`，代价是 Scope/危险命令约束从"引擎强制"降级为"纪律层面自我约束"（与执行方 `pi` 处于同一信任模型）；用 DEV-040（已 DONE）做了一次独立复审验证：真实跑通 `pnpm typecheck/lint/test/build/format:check` 五条命令（106 files/574 tests 全绿），独立发现 DEV-040 Task Package 遗漏把 `pnpm-lock.yaml` 列入 Writable Scope 的疏漏（本次 DEV-041 Task Package 已据此修正，显式声明该文件）；随后 USER 指示"配置结束以后自动推进 只要不是产品本身出问题就可以推进，key 这些都可以先占位"，据此不再逐节点确认，继续下发 DEV-041 |
 | 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-041`（消息 `0170`，M4 第二个节点）：核对 `packages/platform-twitch/`（DEV-040 建立）现状确认只有 `TwitchAuthPort` 四个符号，无任何 WebSocket/HTTP 客户端代码；核对全仓库 grep `NormalizedChatMessage` 零匹配，确认这个类型从未被定义过，只在 `DAG.md` 第 242 行 CR-017 裁决的产品性文字里提到字段形状，属于 DEV-042（Chat Message Adapter）的产出，不是本节点的；核对 `DAG.md` 把 `DEV-043`（去重，"必须做"）与 `DEV-045`（Reconnect）列为独立后续节点，本节点因此只需让状态机可达 `RECONNECTING`/`DEGRADED`（可达性，参照 DEV-009 VERDICT F-04 的教训），不需要实现真正的指数退避重试或去重存储；核对全仓库无 `ws`/`websocket` 第三方依赖，根 `package.json` 要求 Node ≥22（原生 `WebSocket`/`fetch` 已够用），`runtime-kernel` 已依赖 `xstate@^5.32.5`（本节点复用同版本建模连接生命周期，不算新引入未审查依赖）；设计 `createEventSubClient`——Dev Spec 第 45 节八态 XState 机器，真实 WebSocket 连接 + Helix `channel.chat.message` 订阅创建 API 调用，首次真实消费 DEV-040 的 `TwitchAuthPort`（凭据不可用时诚实转 `ERROR`，不构造连接）；notification 帧原样转发不做字段转换/去重；明确排除 `NormalizedChatMessage`/去重/真正重连算法/发送消息/`LivePlatformAdapter` 组装（分属 DEV-042/043/045/046）；新增 Constraint 8（T003 提交后不要再单独提交 LEDGER/NODE_REPORT，弥补 DEV-040 的教训）与显式声明 `pnpm-lock.yaml` 入 Writable Scope（弥补 DEV-040 的疏漏）；T001–T003，A01–A24；DEV-041 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用；审计侧改为 `opencode run --agent auditor --model openai/gpt-5.6-terra --auto` |
+| 2026-09-04 | `pi -p --no-session`（长复杂提示词）连续 5 次派工全部静默失败（`[workflow-delivery] no session-stable thenable send...` 或空输出，零实际改动），换用 `--session-id` 持久会话 + 拆成十余个小步骤逐步派工（每步只做一件具体的事：节点文档→类型骨架→XState 机器骨架→connect/disconnect 接线→Helix 订阅→notification/keepalive/reconnect→依赖声明→T003 六命令+提交）后全部成功——判定根因是单次任务过大/过复杂时该 provider 的会话投递机制会静默失效，短小步骤规避了这个问题；记录进 Commander 操作记忆，作为本项目对 `pi` 派工的新增标准做法 |
+| 2026-09-04 | 执行方 `pi` 完成 DEV-041 T001–T003，`git_head` `fab2d4f`：新建 `packages/platform-twitch/src/eventSubClient.ts`（八态 XState 机器 + 真实 WebSocket/Helix 调用）+ 测试，107 files/583 tests（574→583，+9），六条命令全绿；正确遵守新增 Constraint 8——LEDGER 追加行与 NODE_REPORT 消息文件（`0171`）留在工作区未提交，仅这一条实现提交。转交 `AUDITOR`（`opencode run --agent auditor --model openai/gpt-5.6-terra --auto`）独立审计 |
+| 2026-09-04 | `AUDITOR` 首次真实审计新节点，`AUDIT_VERDICT`（消息 `0172`）：**AUDIT_FAIL**，1 Blocker（A01 未跑——发现审计 agent 自己的命令白名单遗漏 `pnpm install --frozen-lockfile`，Commander 侧配置疏漏，当场修正 `.opencode/agent/auditor.md`）+2 Major（A07/A11/A13/A14/A15 五项测试覆盖不足，其中 **A13"非本地 WebSocket 关闭/错误→ERROR"完全零测试覆盖**；NODE_REPORT 消息 `0171` 正文第 27 行引用了一个用 `git show` 验证不存在的假 commit hash，与 frontmatter 矛盾）+1 Minor（REPORT.md 文件计数文字 7 vs 实际 8 个文件不自洽）；Scope/Architecture/Regression/Overengineering 四项均 PASS，独立重跑五条命令（`pnpm install` 因白名单疏漏未跑）全绿 |
+| 2026-09-04 | 发出 `NODE_RULING: FAIL`（消息 `0173`，`verdict_ref: "0172"`）：F-01（BLOCKER，A01）**接受并说明**——根因是本轮才建立的新 AUDITOR 工具本身的命令白名单不全，非 DEV-041 交付缺陷，已修正配置文件，下一轮即可验证；F-02/F-03（MAJOR，测试覆盖不足 + NODE_REPORT 错误引用）**转 FIX**；F-04（MINOR）随 FIX 一并修正。发出 `FIX_PACKAGE DEV-041-FIX-01`（消息 `0174`）：要求补齐五项测试缺口（中间态断言、watchdog 时长关联验证、A13 的 error/非本地 close 两条测试、非 CONNECTED 态 disconnect、getHealth 剩余五态）+ 修正两处文档错误，明确不得 rebase/修改既有 `fab2d4f` 提交，新提交单独追加；DEV-041 保持 `IN_PROGRESS` 状态，继续由 `pi` 按同样的持久会话+小步骤方式施工 |
 
 ## Authority
 

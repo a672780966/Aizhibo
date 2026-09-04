@@ -226,7 +226,9 @@ DEV-032 `DECISIONS.md` D3 明确记录的测试用 `actor.send` 手动驱动）�
 **DEV-040 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0169`，
 `verdict_ref: "0168"`；`platform-twitch` 包首次创建，`TwitchAuthPort` 真实
 refresh_token→access_token 实现，凭据可选退化为 noop）。
-**DEV-041 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，消息 `0170`）。
+**DEV-041 状态：`IN_PROGRESS`，第一轮 `AUDIT_FAIL`**（消息 `0172`，
+`ruling: FAIL`，消息 `0173`；`DEV-041-FIX-01` 已下发，消息 `0174`，
+补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT commit hash 引用）。
 
 | Node | Name |
 |---|---|

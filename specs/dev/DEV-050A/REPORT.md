@@ -110,14 +110,14 @@ A13 被 DROP 尝试不计入 C4/C5 历史、A14 C1→C5 短路顺序（超长 + 
 | A06 | `pnpm test` 退出码 0；既有全部测试零回归 | PASS | 114 files / 661 tests；DEV-050-FIX-01 基线 651 全绿 + 新增 10 |
 | A07 | `permission:'MUTED'` 恒定 DROP（PERMISSION），与文本内容无关 | PASS | 测试 #1：无害文本 + MUTED → `{DROP, PERMISSION}` |
 | A08 | 命中 `forbiddenLexicon.always`/`bySceneId` → DROP（HIDDEN_LEXICON），大小写/空白容错 | PASS | 测试 #2/#3：`' the SECRET ending  '` → matchedTerm `'Secret Ending'`；`'I know the Boss Name'` scene-1 命中 / scene-2 全新实例 ALLOW |
-| A09 | 命中 `platformDenylist` → DROP（PLATFORM_DENYLIST） | PASS | 测试 #3b：`/badword/i` 命中 `'BadWord'` → matchedTerm `'badword'` |
+| A09 | 命中 `platformDenylist` → DROP（PLATFORM_DENYLIST） | PASS | 测试 #3b：`/badword/i` 命中 `'BadWord'` → matchedTerm `'badword'`；FIX-01 补测：同一个 `/badword/g` 实例连续两次不同文本命中均 DROP（回归，见 FIX 轮次） |
 | A10 | 重复文本（规范化后相同）第二次 → DROP（DUPLICATE） | PASS | 测试 #4：`'Hello There'` ALLOW → `'  HELLO there  '` DROP DUPLICATE → 不同文本 ALLOW |
 | A11 | 超长文本 → DROP（LENGTH） | PASS | 测试 #5：11 字符 > 10 → LENGTH；恰 10 → ALLOW |
 | A12 | 频率超限 → DROP（RATE_LIMIT），窗口过期后恢复放行 | PASS | 测试 #6：注入 clock，t=0/100 两条 ALLOW → t=200 第三条 RATE_LIMIT → t=1300（超 1000ms 窗口）第四条 ALLOW |
-| A13 | 被 DROP 的尝试不计入 C4/C5 历史状态 | PASS | 测试 #7：3 次 MUTED 必拒后，`maxLines:1` 下合法文本仍 ALLOW |
+| A13 | 被 DROP 的尝试不计入 C4/C5 历史状态 | PASS | 测试 #7：3 次 MUTED 必拒后，`maxLines:1` 下合法文本仍 ALLOW；FIX-01 补测：MUTED 丢弃的文本改 ALLOWED 再试 → ALLOW（不误判 DUPLICATE，见 FIX 轮次） |
 | A14 | 同时触发多条规则时按 C1→C5 顺序返回最先命中的 rule | PASS | 测试 #8：超长（>5）且含 `'Secret Ending'` → 返回 HIDDEN_LEXICON（C2 先于 C5） |
 | A15 | 全部通过 → `{decision:'ALLOW'}` | PASS | 测试 #4/#5/#6/#7 各 ALLOW 断言 |
-| A16 | 可选配置项缺省值符合第 2.1 节（20/200/5-per-60000ms） | PASS | 测试 #9：缺省下 200 字符 ALLOW / 201 字符 LENGTH；20 行缓冲与 5/60000ms 由 #4/#6/#7 隐含覆盖 |
+| A16 | 可选配置项缺省值符合第 2.1 节（20/200/5-per-60000ms） | PASS | 测试 #9：缺省下 200 字符 ALLOW / 201 字符 LENGTH；FIX-01 补测：默认 20 槽 C4 容量（20 条填满 → 第 21 条挤出 → 重复第 1 条恢复 ALLOW）与默认 5-per-60000ms C5 上限（第 6 条 RATE_LIMIT → 窗口过期恢复 ALLOW）直接验证（见 FIX 轮次） |
 | A17 | `packages/chapter-compiler/**`、`packages/runtime-kernel/**` 未被修改 | PASS | 提交前 `git diff --stat` 为空；提交内容不含两包（§6） |
 | A18 | 未接入 runtime-kernel 事件日志/DEV-046/DEV-057 | PASS | 源码检查：egressGate.ts 无 runtime-kernel import；D2（§5）说明 HOST.UTTERANCE_DROPPED 仅由返回值携带 |
 | A19 | 未新增第三方 npm 依赖；未创建 `ai-host` 外的新包 | PASS | package.json 仅 workspace 依赖；新增包仅 `packages/ai-host` |
@@ -164,3 +164,76 @@ Gate 接入 runtime-kernel 事件日志（D2）；没有实现文本改写/脱�
 
 NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；审核锚点与交付快照见
 `specs/comms/0214-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-050A.md`。
+
+---
+
+## FIX-01 轮次（DEV-050A-FIX-01）
+
+### 背景
+
+`AUDIT_VERDICT`（消息 `0215`）：AUDIT_FAIL，1 Blocker（F-01）+ 2 Major
+（F-02/F-03），全部采纳；`NODE_RULING`（`0216`）裁决转 FIX。修复按
+`FIX_PACKAGE`（`0217`）FIX-1~FIX-4 实施，本节点文档相应更新。
+
+### FIX-1 — C3 lastIndex 确定性修复（F-01 BLOCKER）
+
+`egressGate.ts` C3 检查：`RegExp.prototype.test()` 对带 `g`/`y` 标志的
+正则实例会推进 `lastIndex`，同一实例跨多次 `attempt()` 复用时可对
+同一段违规文本产生"第一次命中、第二次漏判放行"的不确定结果——真实
+的安全网关绕过路径。修复为每次 `.test()` 前无条件
+`pattern.lastIndex = 0;`（对非 g/y 正则无副作用 no-op，统一处理）。
+根因与修复全文见 `DECISIONS.md` D5。
+
+### FIX-2/3/4 — 补齐 A13/A16 直接覆盖 + g 标志回归测试（F-02/F-03 MAJOR）
+
+`egressGate.test.ts` 新增 3 条测试（13 → 16 条，均只新增、零改动既有
+断言；缺陷态下会真实失败、修复态下真实通过）：
+
+| 新增测试 | 锁定验收 | 场景 |
+|---|---|---|
+| C3 g 标志回归（FIX-2） | A09 | 同一个 `/badword/g` 实例跨两次不同文本尝试，两次都 DROP PLATFORM_DENYLIST（修复前第二次会漏判） |
+| A13 不污染 C4（FIX-3） | A13 | MUTED 丢弃 `'Hello World'` → 同一文本 ALLOWED 再试 → ALLOW（若进了 C4 缓冲会误判 DUPLICATE） |
+| A16 默认值本身（FIX-4） | A16 | 默认 20 槽 C4：20 条填满 → 重复第 1 条仍 DUPLICATE → 第 21 条挤出 → 重复第 1 条恢复 ALLOW；默认 5-per-60000ms C5：5 条后第 6 条 RATE_LIMIT → 窗口过期恢复 ALLOW |
+
+FIX-4 的 C4 段将 `rateLimit` 放宽为 100/60000ms（`recentLinesLimit`
+保持默认 20 不动）——若 C4 段也用默认 5/60s 频率上限，第 6 条连续
+放行即被 RATE_LIMIT 拦下，20 槽环形缓冲永远填不满，C4 容量语义无法
+独立验证；C5 默认值由同测试独立 gate2 段验证。该构造已在测试内注释
+说明。
+
+### FIX 轮次 Acceptance Results（增量，首轮已 PASS 项不回退）
+
+| # | 判定 | 结果 | 依据 |
+|---|---|---|---|
+| A09 | 命中 `platformDenylist` → DROP（PLATFORM_DENYLIST） | PASS（原 FAIL 转 PASS） | FIX-2 回归测试：g 标志正则连续两次均 DROP |
+| A13 | 被 DROP 的尝试不计入 C4/C5 历史状态 | PASS（原 MAJOR 缺口补全） | FIX-3 测试：MUTED 丢弃文本改 ALLOWED 再试 → ALLOW |
+| A16 | 可选配置项缺省值符合第 2.1 节（20/200/5-per-60000ms） | PASS（原 MAJOR 缺口补全） | FIX-4 测试：默认 20 槽容量 + 默认 5-per-60000ms 上限直接验证 |
+| FIX-A01 | 六条命令全部退出码 0，既有全部测试零回归 | PASS | 114 files / 664 tests（661 基线 + 新增 3），见下 |
+
+### FIX 轮次 Changed Files（本 FIX 提交共 4 个文件）
+
+```text
+packages/ai-host/src/egressGate.ts            （C3 lastIndex 重置，1 行）
+packages/ai-host/src/egressGate.test.ts       （新增 3 条测试，13 → 16）
+specs/dev/DEV-050A/DECISIONS.md               （追加 D5/D6）
+specs/dev/DEV-050A/REPORT.md                  （本文件，追加 FIX 轮次）
+```
+
+### FIX 轮次 Tests Executed
+
+六条命令按序执行，全部退出码 0：`pnpm install` / `pnpm typecheck` /
+`pnpm lint` / `pnpm format:check` / `pnpm build` / `pnpm test` →
+114 test files passed，664 tests passed（首轮 661 全绿 + 新增 3，
+零回归）。
+
+### FIX 轮次 Commit
+
+提交信息首行：`DEV-050A-FIX-01: reset regex lastIndex for deterministic
+denylist matching`。恰 1 条新提交；`git add` 仅列本 FIX Writable Scope
+内 4 个文件，未使用 `git add -A`。LEDGER 追加行与 NODE_REPORT 消息
+文件（`specs/comms/`）写入工作区但未提交。
+
+### FIX 轮次 Handoff
+
+NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；见
+`specs/comms/0218-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-050A-FIX-01.md`。

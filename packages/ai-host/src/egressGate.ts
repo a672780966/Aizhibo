@@ -61,6 +61,7 @@ export function createEgressGate(config: EgressGateConfig): EgressGate {
 
       // C3: Platform denylist
       for (const pattern of platformDenylist) {
+        pattern.lastIndex = 0;
         if (pattern.test(input.text)) {
           return { decision: 'DROP', rule: 'PLATFORM_DENYLIST', matchedTerm: pattern.source };
         }

@@ -72,6 +72,115 @@ describe('createEgressGate', () => {
     });
   });
 
+  it('C3: a stateful global regex correctly drops the same forbidden text on consecutive attempts (regression for DEV-050A-FIX-01)', () => {
+    const pattern = /badword/g;
+    const gate = createEgressGate(baseConfig({ platformDenylist: [pattern] }));
+    const first = gate.attempt({
+      text: 'this contains badword here',
+      sceneId: 'scene-x',
+      permission: 'ALLOWED',
+    });
+    expect(first).toEqual({
+      decision: 'DROP',
+      rule: 'PLATFORM_DENYLIST',
+      matchedTerm: 'badword',
+    });
+
+    const second = gate.attempt({
+      text: 'another message with badword inside',
+      sceneId: 'scene-x',
+      permission: 'ALLOWED',
+    });
+    expect(second).toEqual({
+      decision: 'DROP',
+      rule: 'PLATFORM_DENYLIST',
+      matchedTerm: 'badword',
+    });
+  });
+
+  it('A13: text dropped by MUTED permission does not pollute the C4 duplicate history', () => {
+    const gate = createEgressGate(baseConfig());
+    const dropped = gate.attempt({
+      text: 'Hello World',
+      sceneId: 'scene-1',
+      permission: 'MUTED',
+    });
+    expect(dropped).toEqual({ decision: 'DROP', rule: 'PERMISSION' });
+
+    const allowed = gate.attempt({
+      text: 'Hello World',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(allowed).toEqual({ decision: 'ALLOW' });
+  });
+
+  it('A16: default C4 history capacity (20) and default C5 rate limit (5 per 60000ms) behave as documented', () => {
+    // C4-capacity gate: recentLinesLimit intentionally left at its default
+    // (20). rateLimit must be widened because the default 5-per-60000ms cap
+    // (under the real clock) would DROP the 6th of the 20 consecutive lines
+    // before the ring buffer ever fills — C4 capacity is the property under
+    // test here, C5 is tested separately on gate2 below.
+    const gate = createEgressGate(baseConfig({ rateLimit: { maxLines: 100, windowMs: 60000 } }));
+    for (let i = 0; i < 20; i++) {
+      const result = gate.attempt({
+        text: `line-${i}`,
+        sceneId: 'scene-1',
+        permission: 'ALLOWED',
+      });
+      expect(result).toEqual({ decision: 'ALLOW' });
+    }
+
+    const repeatWithinWindow = gate.attempt({
+      text: 'line-0',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(repeatWithinWindow).toEqual({ decision: 'DROP', rule: 'DUPLICATE' });
+
+    const evictingLine = gate.attempt({
+      text: 'line-20',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(evictingLine).toEqual({ decision: 'ALLOW' });
+
+    const repeatAfterEviction = gate.attempt({
+      text: 'line-0',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(repeatAfterEviction).toEqual({ decision: 'ALLOW' });
+
+    const clock = { current: 0, now: () => clock.current };
+    const gate2 = createEgressGate(baseConfig({ clock }));
+    for (let i = 0; i < 5; i++) {
+      clock.current = i * 100;
+      const result = gate2.attempt({
+        text: `rate-line-${i}`,
+        sceneId: 'scene-1',
+        permission: 'ALLOWED',
+      });
+      expect(result).toEqual({ decision: 'ALLOW' });
+    }
+
+    clock.current = 500;
+    const sixth = gate2.attempt({
+      text: 'rate-line-5',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(sixth).toEqual({ decision: 'DROP', rule: 'RATE_LIMIT' });
+
+    clock.current = 60500;
+    const seventh = gate2.attempt({
+      text: 'rate-line-6',
+      sceneId: 'scene-1',
+      permission: 'ALLOWED',
+    });
+    expect(seventh).toEqual({ decision: 'ALLOW' });
+  });
+
   it('C4: drops an exact repeat of a previously allowed line (normalized)', () => {
     const gate = createEgressGate(baseConfig());
     const first = gate.attempt({

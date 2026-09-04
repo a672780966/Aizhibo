@@ -17,7 +17,7 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-042 — Chat Message Adapter（`IN_PROGRESS`，消息 `0177`；M4 第三个节点）
+无（DEV-042 已 DONE，下一节点 DEV-043 尚未起草）
 
 ## Current Status
 
@@ -32,22 +32,19 @@ refresh_token→access_token 实现，凭据可选退化为 noop；审计发现 
 XState 连接生命周期机器，真实 WebSocket + Helix 订阅创建 API，首次消费
 `TwitchAuthPort`；`opencode`/`gpt-5.6-terra` AUDITOR 第一次真实审计一个
 新节点，第一轮 FAIL（5 项测试覆盖缺口）→ FIX-01 → 第二轮 `AUDIT_PASS`。
-**DEV-042（Chat Message Adapter）已下发，`IN_PROGRESS`**：新建
+**DEV-042（Chat Message Adapter）已 `DONE`（接口冻结）**：新建
 `packages/platform-core`（`NormalizedChatMessage`/`ChatHandler`，Dev Spec
 第 43 节 + DAG.md CR-017 的平台无关入站契约），`platform-twitch` 加转换
 函数把 DEV-041 的 `TwitchChatNotification` 转成它；核实
 `packages/runtime-kernel/src/ports.ts` 已冻结的 `PlatformPort`/`Vote` 是
 更下游、已解读的投票意图，与 `NormalizedChatMessage` 是不同层级——本节点
-完全不碰 `runtime-kernel`，那是 DEV-044 Interaction Aggregator 的边界。
-USER 已授权：配置完成后自动推进，除非是产品本身出问题，否则不需要逐节点
-确认；账号/密钥继续占位处理。
+完全未碰 `runtime-kernel`，首轮 `AUDIT_PASS`，0 BLOCKING。USER 已授权：
+配置完成后自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/
+密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-042.md`（新建 `platform-core` 定义
-`NormalizedChatMessage`/`ChatHandler`；`platform-twitch` 加
-`normalizeTwitchChatMessage`/`createTwitchChatOnNotification`；不碰
-runtime-kernel/去重/投票解析/发送消息）
+无（DEV-042 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -98,10 +95,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-037 — Dice Buffer Controller（DONE，`verdict_ref: "0164"`，`git_head` `39733c8c1658fadbe873d01a52ddf70b5868c273`）
 - DEV-040 — Twitch OAuth（DONE，`verdict_ref: "0168"`，`git_head` `4670bd5adf54bf9346d462caa2187c1a0357a8b9`）**——M4 第一个节点**
 - DEV-041 — EventSub Client（DONE，`verdict_ref: "0175"`，`git_head` `94c674ff50bfef32b807864141e144e6d1f66db3`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
+- DEV-042 — Chat Message Adapter（DONE，`verdict_ref: "0179"`，`git_head` `204634c909ffcaf048f9a1c7eae4134af17f5b1a`；首轮 AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-042 — Chat Message Adapter（`IN_PROGRESS`，消息 `0177`；M4 第三个节点）
+无。
 
 ## Blocked Nodes
 
@@ -110,11 +108,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-041 — EventSub Client（2026-09-04）
+DEV-042 — Chat Message Adapter（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-043 — Message Deduplication（待 DEV-042 `DONE` 后由 Claude Commander 起草）。
+DEV-043 — Message Deduplication（M4 第四个节点，待 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -351,6 +349,8 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 执行方按 `DEV-041-FIX-01` 分五个小步骤逐一补齐测试（中间态断言、watchdog 时长关联、A13 两条直接测试、非 CONNECTED 态 disconnect、getHealth 剩余五态），过程中发现并修正一处真实架构缺陷：`WELCOME` 态原为 XState `always` 同步瞬移，外部 `getState()` 永不可观察，不满足 A07"逐状态可达且断言正确"的字面要求；改为显式 `BEGIN_SUBSCRIBE` 事件驱动的真实驻留态（`DECISIONS.md` D10 记录反向验证：改回 `always` 后新测试真实失败）。最后一步跑完六条命令（含 `pnpm install`）全绿、修正 `0171` 消息与 `REPORT.md` 的两处文档错误，提交恰 1 条（`94c674f`），LEDGER/NODE_REPORT 仍留在工作区未提交。转交 `AUDITOR` 第二轮审计 |
 | 2026-09-04 | `AUDITOR` 第二轮独立审计，`AUDIT_VERDICT`（消息 `0175`）：**AUDIT_PASS**，A01–A24 全部 VERIFIED（本轮审计工具已补上 `pnpm install --frozen-lockfile`，六条命令全部独立重跑），0 Blocker/0 Major/0 Minor，Info 1（仅记录提交穿插顺序事实）。发出 `NODE_RULING: PASS`（消息 `0176`，`verdict_ref: "0175"`）：**DEV-041 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；**M4 下一个节点 DEV-042（Chat Message Adapter）具备下发条件**，继续自动推进 |
 | 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-042`（消息 `0177`，M4 第三个节点）：核对 `DAG.md` 第 339 行"保留 17 包"清单确认 `platform-core` 与 `platform-twitch` 是两个不同的包，`platform-core` 目前不存在；核对全仓库 grep `NormalizedChatMessage` 零匹配，只在 `DAG.md` 第 242 行 CR-017 裁决的产品性文字里提到字段形状（platform/viewerId/messageId/text/receivedAt），从未被真正定义成类型；核对 `packages/runtime-kernel/src/ports.ts`（DEV-009/012 冻结）发现关键架构分层：已存在 `PlatformPort.onVote(handler:(vote:Vote)=>void)` 与 `Vote{viewerId,choiceId}`——`Vote` 是已解读的投票意图，与 `NormalizedChatMessage`（原始聊天消息）是不同层级，中间还差一层聚合逻辑（`DAG.md` 第 240 行的 **DEV-044** Interaction Aggregator），本节点因此完全不碰 `runtime-kernel`/`PlatformPort`/`Vote`；设计新建 `packages/platform-core`（纯类型包，`NormalizedChatMessage`/`ChatHandler`，零依赖，不定义无消费方的 `LivePlatformAdapter`）+ `packages/platform-twitch/src/chatMessageAdapter.ts`（`normalizeTwitchChatMessage`/`createTwitchChatOnNotification`，把 DEV-041 冻结的 `TwitchChatNotification` 转换成 `NormalizedChatMessage`，`messageId` 复用 DEV-041 已保留的 EventSub envelope message_id，不重新发明）；明确排除去重/投票解析/发送消息（分属 DEV-043/044/046）；延续 DEV-041 的 Constraint 8（LEDGER/NODE_REPORT 写入不提交）；T001–T003，A01–A20；DEV-042 转 `IN_PROGRESS`。执行侧继续由 `pi` 按持久会话+小步骤方式自动调用；审计侧沿用 `opencode run --agent auditor --model openai/gpt-5.6-terra --auto` |
+| 2026-09-04 | 执行方按持久会话+小步骤方式完成 DEV-042 T001–T003（节点文档+platform-core 骨架 → platform-core 类型定义 → chatMessageAdapter.ts 实现 → 测试 → T003 全量验证+commit），过程中自行发现并修正一处构建顺序问题（根 tsconfig.json 的 references 顺序即 tsc -b 构建顺序，platform-core 必须排在依赖它的 platform-twitch 之前，diff 仍恰 1 行不影响 A15）；`git_head` `204634c`：109 files/601 tests（590→601，+11），六条命令全绿，恰 1 条提交，LEDGER/NODE_REPORT 正确留在工作区未提交。转交 `AUDITOR` 独立审计 |
+| 2026-09-04 | `AUDITOR` 独立审计，`AUDIT_VERDICT`（消息 `0179`）：**AUDIT_PASS**（首轮即通过），A01–A20 全部 VERIFIED（含独立重跑六条命令，含 `pnpm install`），0 Blocker/0 Major/0 Minor/0 Info；确认 `runtime-kernel`/`Vote`/`PlatformPort` 零 diff，`platform-core` 零依赖且未定义 `LivePlatformAdapter`。发出 `NODE_RULING: PASS`（消息 `0180`，`verdict_ref: "0179"`）：**DEV-042 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；**M4 下一个节点 DEV-043（Message Deduplication）具备下发条件**，继续自动推进 |
 
 ## Authority
 

@@ -197,7 +197,11 @@
 | 0174 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-041 | 0173 | CLOSED | DEV-041-FIX-01：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT commit hash + REPORT.md 文件计数 |
 | 0175 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-041 | 0174 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED（含 pnpm install），0 BLOCKING，Info 1 |
 | 0176 | NODE_RULING | COMMANDER | ALL | DEV-041 | 0175 | CLOSED | ruling: PASS；DEV-041 转 DONE，接口冻结 |
-| 0177 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-042 | — | ISSUED | Chat Message Adapter（M4 第三个节点；新建 platform-core 定义 NormalizedChatMessage，platform-twitch 加转换函数；不碰 runtime-kernel/Vote） |
+| 0177 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-042 | — | CLOSED | Chat Message Adapter（M4 第三个节点；新建 platform-core 定义 NormalizedChatMessage，platform-twitch 加转换函数；不碰 runtime-kernel/Vote） |
+| 0178 | NODE_REPORT | OPENCODE | AUDITOR | DEV-042 | 0177 | CLOSED | DEV-042 施工完成，READY_FOR_REVIEW（git_head=204634c；新建 platform-core 定义 NormalizedChatMessage/ChatHandler，platform-twitch chatMessageAdapter 转换+包装；新增 11 测试 590→601 零回归；六条命令全绿） |
+| 0179 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-042 | 0178 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED（首轮通过），0 BLOCKING |
+| 0180 | NODE_RULING | COMMANDER | ALL | DEV-042 | 0179 | CLOSED | ruling: PASS；DEV-042 转 DONE，接口冻结 |
+
 
 ---
 
@@ -205,6 +209,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0177 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

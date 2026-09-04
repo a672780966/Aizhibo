@@ -234,6 +234,7 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 `verdict_ref: "0179"`；首轮 `AUDIT_PASS`；新建 `platform-core` +
 `NormalizedChatMessage`/`ChatHandler`，`chatMessageAdapter.ts` 转换 +
 包装函数）。
+**DEV-043 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，消息 `0181`）。
 
 | Node | Name |
 |---|---|

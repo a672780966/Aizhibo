@@ -17,7 +17,7 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-无（DEV-042 已 DONE，下一节点 DEV-043 尚未起草）
+DEV-043 — Message Deduplication（`IN_PROGRESS`，消息 `0181`；M4 第四个节点）
 
 ## Current Status
 
@@ -35,16 +35,20 @@ XState 连接生命周期机器，真实 WebSocket + Helix 订阅创建 API，�
 **DEV-042（Chat Message Adapter）已 `DONE`（接口冻结）**：新建
 `packages/platform-core`（`NormalizedChatMessage`/`ChatHandler`，Dev Spec
 第 43 节 + DAG.md CR-017 的平台无关入站契约），`platform-twitch` 加转换
-函数把 DEV-041 的 `TwitchChatNotification` 转成它；核实
-`packages/runtime-kernel/src/ports.ts` 已冻结的 `PlatformPort`/`Vote` 是
-更下游、已解读的投票意图，与 `NormalizedChatMessage` 是不同层级——本节点
-完全未碰 `runtime-kernel`，首轮 `AUDIT_PASS`，0 BLOCKING。USER 已授权：
-配置完成后自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/
-密钥继续占位处理。
+函数把 DEV-041 的 `TwitchChatNotification` 转成它；首轮 `AUDIT_PASS`，
+0 BLOCKING。**DEV-043（Message Deduplication）已下发，`IN_PROGRESS`**：
+新增有界内存去重（`Set`+FIFO 淘汰，默认 `maxSize=1000`），包装
+`TwitchChatNotification` 层的 `onNotification` 回调——Dev Spec 第 44 节
+明确点名"必须做"（EventSub 至少一次投递）；刻意包装通用的 notification
+层而非绑死在 DEV-042 的 `ChatHandler` 层。USER 已授权：配置完成后自动
+推进，除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续占位
+处理。
 
 ## Current Task Package
 
-无（DEV-042 已 DONE，下一节点 Task Package 尚未起草）
+`specs/tasks/TASK-PACKAGE-DEV-043.md`（有界内存去重
+`createMessageDeduplicator`/`createDedupingOnNotification`；不持久化、
+不绑死在 ChatHandler 层）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -99,7 +103,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-043 — Message Deduplication（`IN_PROGRESS`，消息 `0181`；M4 第四个节点）
 
 ## Blocked Nodes
 
@@ -112,7 +116,7 @@ DEV-042 — Chat Message Adapter（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-043 — Message Deduplication（M4 第四个节点，待 Claude Commander 起草）。
+DEV-044 — Interaction Aggregator（待 DEV-043 `DONE` 后由 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -351,6 +355,7 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-042`（消息 `0177`，M4 第三个节点）：核对 `DAG.md` 第 339 行"保留 17 包"清单确认 `platform-core` 与 `platform-twitch` 是两个不同的包，`platform-core` 目前不存在；核对全仓库 grep `NormalizedChatMessage` 零匹配，只在 `DAG.md` 第 242 行 CR-017 裁决的产品性文字里提到字段形状（platform/viewerId/messageId/text/receivedAt），从未被真正定义成类型；核对 `packages/runtime-kernel/src/ports.ts`（DEV-009/012 冻结）发现关键架构分层：已存在 `PlatformPort.onVote(handler:(vote:Vote)=>void)` 与 `Vote{viewerId,choiceId}`——`Vote` 是已解读的投票意图，与 `NormalizedChatMessage`（原始聊天消息）是不同层级，中间还差一层聚合逻辑（`DAG.md` 第 240 行的 **DEV-044** Interaction Aggregator），本节点因此完全不碰 `runtime-kernel`/`PlatformPort`/`Vote`；设计新建 `packages/platform-core`（纯类型包，`NormalizedChatMessage`/`ChatHandler`，零依赖，不定义无消费方的 `LivePlatformAdapter`）+ `packages/platform-twitch/src/chatMessageAdapter.ts`（`normalizeTwitchChatMessage`/`createTwitchChatOnNotification`，把 DEV-041 冻结的 `TwitchChatNotification` 转换成 `NormalizedChatMessage`，`messageId` 复用 DEV-041 已保留的 EventSub envelope message_id，不重新发明）；明确排除去重/投票解析/发送消息（分属 DEV-043/044/046）；延续 DEV-041 的 Constraint 8（LEDGER/NODE_REPORT 写入不提交）；T001–T003，A01–A20；DEV-042 转 `IN_PROGRESS`。执行侧继续由 `pi` 按持久会话+小步骤方式自动调用；审计侧沿用 `opencode run --agent auditor --model openai/gpt-5.6-terra --auto` |
 | 2026-09-04 | 执行方按持久会话+小步骤方式完成 DEV-042 T001–T003（节点文档+platform-core 骨架 → platform-core 类型定义 → chatMessageAdapter.ts 实现 → 测试 → T003 全量验证+commit），过程中自行发现并修正一处构建顺序问题（根 tsconfig.json 的 references 顺序即 tsc -b 构建顺序，platform-core 必须排在依赖它的 platform-twitch 之前，diff 仍恰 1 行不影响 A15）；`git_head` `204634c`：109 files/601 tests（590→601，+11），六条命令全绿，恰 1 条提交，LEDGER/NODE_REPORT 正确留在工作区未提交。转交 `AUDITOR` 独立审计 |
 | 2026-09-04 | `AUDITOR` 独立审计，`AUDIT_VERDICT`（消息 `0179`）：**AUDIT_PASS**（首轮即通过），A01–A20 全部 VERIFIED（含独立重跑六条命令，含 `pnpm install`），0 Blocker/0 Major/0 Minor/0 Info；确认 `runtime-kernel`/`Vote`/`PlatformPort` 零 diff，`platform-core` 零依赖且未定义 `LivePlatformAdapter`。发出 `NODE_RULING: PASS`（消息 `0180`，`verdict_ref: "0179"`）：**DEV-042 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；**M4 下一个节点 DEV-043（Message Deduplication）具备下发条件**，继续自动推进 |
+| 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-043`（消息 `0181`，M4 第四个节点）：核对 Dev Spec 第 44 节第 1728 行原文"EventSub 是至少一次投递，相同通知可能重复，因此 Adapter 必须基于 message_id 做去重"，是 M4 唯一被产品文档直接点名"必须做"的节点；确认 DEV-041 冻结的 `TwitchChatNotification.messageId` 注释原文已写明"供 DEV-043 去重使用，本节点不去重"——字段已就位；判断去重必须包装通用的 `TwitchChatNotification`/`onNotification` 层，而不是绑死在 DEV-042 的 `ChatHandler`/`NormalizedChatMessage` 层（否则未来新增订阅类型要重做一次）；设计有界内存去重（`Set`+FIFO 淘汰数组，默认 `maxSize=1000`，重复 id 不重新插入不续命）——不引入持久化（`packages/persistence` 不是给这个瞬时网络层重复投递窗口用的）；`createDedupingOnNotification` 可与 DEV-042 的 `createTwitchChatOnNotification` 自由组合但本节点保持独立交付；T001–T002，A01–A18；DEV-043 转 `IN_PROGRESS`。执行侧继续由 `pi` 按持久会话+小步骤方式自动调用；审计侧沿用 `opencode run --agent auditor --model openai/gpt-5.6-terra --auto` |
 
 ## Authority
 

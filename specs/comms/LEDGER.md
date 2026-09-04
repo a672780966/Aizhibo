@@ -201,6 +201,7 @@
 | 0178 | NODE_REPORT | OPENCODE | AUDITOR | DEV-042 | 0177 | CLOSED | DEV-042 施工完成，READY_FOR_REVIEW（git_head=204634c；新建 platform-core 定义 NormalizedChatMessage/ChatHandler，platform-twitch chatMessageAdapter 转换+包装；新增 11 测试 590→601 零回归；六条命令全绿） |
 | 0179 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-042 | 0178 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0180 | NODE_RULING | COMMANDER | ALL | DEV-042 | 0179 | CLOSED | ruling: PASS；DEV-042 转 DONE，接口冻结 |
+| 0181 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-043 | — | ISSUED | Message Deduplication（M4 第四个节点；有界内存去重包装 TwitchChatNotification 层 onNotification，Dev Spec 明确必须做） |
 
 
 ---
@@ -209,6 +210,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0181 |
 | AUDITOR | — |
 | COMMANDER | — |

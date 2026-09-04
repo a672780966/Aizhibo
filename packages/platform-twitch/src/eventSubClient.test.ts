@@ -362,6 +362,250 @@ describe('createEventSubClient', () => {
       }),
     });
     expect(client.getState()).toBe('RECONNECTING');
+    client.disconnect();
+  });
+
+  it('uses the reconnect_url from the session_reconnect frame for the reconnect attempt (A07)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 首个退避延迟 1000ms 已登记（末尾项；前面的条目来自 connectToConnected 的 watchdog）。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(1000);
+    // 触发重连定时器 → attemptReconnect() 构造第二个 FakeWebSocket。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(2);
+    // 新 socket 使用帧内 reconnect_url，而非默认 wsUrl。
+    expect(FakeWebSocket.instances[1]?.url).toBe('wss://reconnect.example/ws');
+    client.disconnect();
+  });
+
+  it('falls back to the default wsUrl when session_reconnect omits reconnect_url (A08)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({
+      clock,
+      wsUrl: 'wss://default.example/ws',
+    });
+    // 帧内 session 对象存在但没有任何字段 → 缺 reconnect_url → 应回退默认 wsUrl。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: {} },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 触发重连定时器 → attemptReconnect() 构造第二个 FakeWebSocket。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(2);
+    // 新 socket 回退到默认 wsUrl，而非某个重连专用 URL。
+    expect(FakeWebSocket.instances[1]?.url).toBe('wss://default.example/ws');
+    client.disconnect();
+  });
+
+  it('retries with exponential backoff when a reconnect attempt fails before welcome, and completes the full reconnect to CONNECTED on the next attempt (A09/A11)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+
+    // session_reconnect → RECONNECTING，排定第一次退避尝试（1000ms 起）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 末尾条目为刚登记的 1000ms（前面的条目来自 connectToConnected 的 watchdog）。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(1000);
+
+    // 第一次尝试：触发定时器 → 构造第二个 FakeWebSocket（index 1）。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(2);
+    expect(FakeWebSocket.instances[1]?.url).toBe('wss://reconnect.example/ws');
+
+    // 该次尝试在 welcome 前失败（error 事件）→ 仍停留 RECONNECTING，不进 ERROR。
+    FakeWebSocket.instances[1]?.emit('error', new Event('error'));
+    expect(client.getState()).toBe('RECONNECTING');
+    // 失败后排定第二次尝试，退避延迟翻倍为 2000ms。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(2000);
+
+    // 第二次尝试：触发定时器 → 构造第三个 FakeWebSocket（index 2）。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(3);
+
+    // 本次尝试成功：welcome → WELCOME → SUBSCRIBING（fetch 202）→ CONNECTED。
+    FakeWebSocket.instances[2]?.emit('message', { data: welcomeFrame() });
+    await vi.waitFor(() => {
+      expect(client.getState()).toBe('CONNECTED');
+    });
+    client.disconnect();
+  });
+
+  it('caps the exponential backoff delay at 30000ms (A12)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+
+    // session_reconnect → RECONNECTING，排定第一次退避尝试（1000ms 起）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+
+    // 循环 6 次：每次触发最新定时器 → 新 socket 打开；随即 error 使该次尝试失败
+    // （仍停留 RECONNECTING），WS_ERROR → scheduleNextReconnect 排定下一次退避。
+    for (let i = 0; i < 6; i += 1) {
+      clock.runTimer(clock.timers.length - 1);
+      const latest = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+      latest?.emit('error', new Event('error'));
+    }
+    expect(client.getState()).toBe('RECONNECTING');
+
+    // 1000×2^6=64000 会超过封顶；断言最新登记的延迟已被压到 30000ms（已封顶）。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(30000);
+
+    client.disconnect();
+  });
+
+  it('disconnect() while RECONNECTING cancels the pending backoff timer and no further reconnect attempts occur (A13)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+
+    // session_reconnect → RECONNECTING，排定第一次退避尝试（定时器仅挂起，尚未触发）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 尚无重连 socket：backoff 定时器只是挂起，未到触发时刻。
+    expect(FakeWebSocket.instances).toHaveLength(1);
+
+    // disconnect()：→ DISCONNECTED，并取消挂起的退避定时器。
+    client.disconnect();
+    expect(client.getState()).toBe('DISCONNECTED');
+    expect(clock.clearTimeout).toHaveBeenCalled();
+
+    // clearTimeout 已删除该定时器槽位；对已取消槽位 runTimer 应为 no-op。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(1);
+  });
+
+  it('resets the backoff delay to 1000ms after a successful reconnect completes, for the next reconnect episode (A14)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+
+    // 第一段重连 episode：session_reconnect → RECONNECTING，排定第一次尝试（1000ms 起）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(1000);
+
+    // 失败一次：触发定时器 → 新 socket；error → 仍停留 RECONNECTING，延迟翻倍为 2000ms。
+    clock.runTimer(clock.timers.length - 1);
+    const attempt1 = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+    attempt1?.emit('error', new Event('error'));
+    expect(client.getState()).toBe('RECONNECTING');
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(2000);
+
+    // 第二次尝试成功：触发定时器 → 新 socket；welcome → WELCOME → SUBSCRIBING（fetch 202）→ CONNECTED。
+    clock.runTimer(clock.timers.length - 1);
+    const attempt2 = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+    attempt2?.emit('message', { data: welcomeFrame() });
+    await vi.waitFor(() => {
+      expect(client.getState()).toBe('CONNECTED');
+    });
+
+    // 第二段 episode 开始：CONNECTED 的 socket 上再来一次 session_reconnect。
+    const connectedSocket = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+    connectedSocket?.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect2.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // welcome 已把退避重置回基础 1000ms：新 episode 第一次尝试延迟恢复为 1000ms，
+    // 而非沿用上一 episode 末尾的 2000ms。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(1000);
+
+    client.disconnect();
+  });
+
+  it('a Helix subscribe failure after a successful reconnect still goes to ERROR without retrying (A15)', async () => {
+    // 第一次订阅（初始连接）返回 202，第二次（重连后重新订阅）返回 400：
+    // SUBSCRIBE_FAIL → 直接 ERROR，不回到 RECONNECTING 也不重试订阅本身。
+    let callCount = 0;
+    const fetchImpl = vi.fn(async () => {
+      callCount += 1;
+      return new Response(null, { status: callCount === 1 ? 202 : 400 });
+    }) as typeof fetch;
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock, fetchImpl });
+
+    // 重连 episode：session_reconnect → RECONNECTING；触发定时器打开新尝试 socket。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    clock.runTimer(clock.timers.length - 1);
+    const attemptSocket = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+
+    // 重连成功：welcome → WELCOME → SUBSCRIBING；第二次订阅返回 400 → SUBSCRIBE_FAIL。
+    attemptSocket?.emit('message', { data: welcomeFrame() });
+    await vi.waitFor(() => {
+      expect(client.getState()).toBe('ERROR');
+    });
+
+    // 订阅请求本身不重试：恰好两次（初始 + 重连后各一次）。
+    expect(fetchImpl).toHaveBeenCalledTimes(2);
+    client.disconnect();
+  });
+
+  it('does not call authPort.getAccessToken() again during a reconnect attempt (A16)', async () => {
+    // 假 authPort：初始 connect() 取一次 token；重连应复用缓存 accessToken，不再取。
+    // 用 vi.fn 包一层既有 fakeAuthPort(true)：保留 ok:true 判别联合类型，同时可计数调用。
+    const getAccessToken = vi.fn(fakeAuthPort(true).getAccessToken);
+    const authPort: TwitchAuthPort = { getAccessToken };
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock, authPort });
+    // 到目前为止仅初始 connect() 取过 token。
+    expect(getAccessToken).toHaveBeenCalledTimes(1);
+
+    // session_reconnect → RECONNECTING，排定第一次退避尝试（1000ms）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 触发重连定时器 → attemptReconnect() 打开新尝试 socket（不开新 token 获取）。
+    clock.runTimer(clock.timers.length - 1);
+    expect(FakeWebSocket.instances).toHaveLength(2);
+
+    // 重连成功：welcome → WELCOME → SUBSCRIBING（fetch 202）→ CONNECTED。
+    const attemptSocket = FakeWebSocket.instances[FakeWebSocket.instances.length - 1];
+    attemptSocket?.emit('message', { data: welcomeFrame() });
+    await vi.waitFor(() => {
+      expect(client.getState()).toBe('CONNECTED');
+    });
+    // 整个重连过程复用缓存 token：getAccessToken 仍只被调用过一次（初始 connect()）。
+    expect(getAccessToken).toHaveBeenCalledTimes(1);
+    client.disconnect();
   });
 
   it('disconnect() from CONNECTED returns to DISCONNECTED and closes the socket once', async () => {

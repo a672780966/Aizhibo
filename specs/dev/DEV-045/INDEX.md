@@ -1,6 +1,6 @@
 # DEV-045 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -48,13 +48,13 @@ packages/platform-core/**（DEV-042/044 冻结，本节点不消费）
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 eventSubClient.ts 重连实现 + 测试
-- [ ] T003 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 eventSubClient.ts 重连实现 + 测试
+- [x] T003 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T003（已完成：六条命令全绿、REPORT 回填、DECISIONS 已入库、单条 commit 已提交；LEDGER/NODE_REPORT 写入未提交）
 
 ## Exit Criteria
 

@@ -96,7 +96,8 @@ export interface EventSubClient {
  * - `NOTIFICATION`：收到 `notification` 帧（原样转发 onNotification，不做转换/去重）
  * - `KEEPALIVE`：收到 `session_keepalive` 帧（重置 watchdog）
  * - `KEEPALIVE_TIMEOUT`：watchdog 超时（clock 驱动，未收到任何消息）→ DEGRADED
- * - `RECONNECT_SIGNAL`：收到 `session_reconnect` 帧（只转 RECONNECTING，不真正重连——DEV-045）
+ * - `RECONNECT_SIGNAL`：收到 `session_reconnect` 帧 → RECONNECTING，并按指数退避
+ *   （1000ms 起，×2，封顶 30000ms）尝试重连到 reconnect_url（缺省回退 wsUrl）
  * - `WS_ERROR`：WebSocket 层 error/意外 close（非本地 disconnect() 触发）→ ERROR
  * - `DISCONNECT`：disconnect() 主动调用，任意态 → DISCONNECTED 并关闭 socket
  *
@@ -155,9 +156,14 @@ const eventSubMachine = createMachine({
         DISCONNECT: { target: 'DISCONNECTED' },
       },
     },
-    // 只转状态，不实现真正重连到 payload.session.reconnect_url（DEV-045 职责）。
+    // RECONNECTING：真实重连——WELCOME_RECEIVED 表示某次重连尝试成功回到 WELCOME；
+    // WS_ERROR（scheduleNextReconnect）表示某次尝试失败，安排下一次退避重试
+    // （实现经 createEventSubClient 内的 eventSubMachine.provide 注入，见函数体）；
+    // SUBSCRIBE_FAIL 仍在 SUBSCRIBING 内转 ERROR 不重试。
     RECONNECTING: {
       on: {
+        WELCOME_RECEIVED: { target: 'WELCOME' },
+        WS_ERROR: { actions: 'scheduleNextReconnect' },
         DISCONNECT: { target: 'DISCONNECTED' },
       },
     },
@@ -180,7 +186,15 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
   const helixBaseUrl = config.helixBaseUrl ?? 'https://api.twitch.tv';
   const WebSocketImpl = config.webSocketImpl ?? WebSocket;
   const fetchImpl = config.fetchImpl ?? fetch;
-  const actor = createActor(eventSubMachine).start();
+  // 机器在模块级定义，闭包函数（beginReconnectAttempt）不可见；用 provide 把
+  // 命名 action 按实例注入（XState v5 对模块级机器绑定实例实现的机制）。
+  const actor = createActor(
+    eventSubMachine.provide({
+      actions: {
+        scheduleNextReconnect: () => beginReconnectAttempt(),
+      },
+    }),
+  ).start();
 
   // 每个 client 实例独立的连接期状态（后续步骤接入 keepalive/notification 时继续扩展）。
   let socket: WebSocket | null = null;
@@ -195,6 +209,11 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
   // keepalive/notification → KEEPALIVE_TIMEOUT → DEGRADED。
   let keepaliveTimeoutSeconds: number | undefined;
   let watchdogId: unknown = undefined;
+  // DEV-045 重连状态：指数退避延迟（1000ms 起，×2，封顶 30000ms）、
+  // 挂起中的重连定时器、session_reconnect 帧携带的重连目标 URL（缺省回退 wsUrl）。
+  let reconnectDelayMs: number = 1000;
+  let reconnectTimerId: unknown = undefined;
+  let reconnectTargetUrl: string | undefined = undefined;
 
   function schedule(fn: () => void, timeoutMs: number): unknown {
     const clock = config.clock;
@@ -229,6 +248,24 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
       },
       keepaliveTimeoutSeconds * 1000 * 1.5,
     );
+  }
+
+  // DEV-045：排定一次重连尝试（退避延迟后执行），随后按 ×2（封顶 30000ms）推进延迟。
+  function beginReconnectAttempt(): void {
+    reconnectTimerId = schedule(() => attemptReconnect(), reconnectDelayMs);
+    reconnectDelayMs = Math.min(reconnectDelayMs * 2, 30000);
+  }
+
+  // DEV-045：执行一次重连尝试——仍处于 RECONNECTING 时关闭旧 socket（抑制 close→WS_ERROR）
+  // 并以重连目标 URL（缺省 wsUrl）打开新 socket。尚未接入 handleFrame/disconnect（下一步）。
+  function attemptReconnect(): void {
+    if (actor.getSnapshot().value !== 'RECONNECTING') return;
+    locallyClosed = true;
+    if (socket !== null) {
+      socket.close();
+      socket = null;
+    }
+    openSocket(reconnectTargetUrl);
   }
 
   // Helix 订阅创建：POST /helix/eventsub/subscriptions，202 → SUBSCRIBE_OK（→ CONNECTED），
@@ -289,7 +326,7 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
     const record = frame as {
       metadata?: { message_type?: unknown; message_id?: unknown };
       payload?: {
-        session?: { id?: unknown; keepalive_timeout_seconds?: unknown };
+        session?: { id?: unknown; keepalive_timeout_seconds?: unknown; reconnect_url?: unknown };
         subscription?: { type?: unknown };
         event?: unknown;
       };
@@ -304,6 +341,9 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
       // 只 send WELCOME_RECEIVED，停在 WELCOME（真实驻留态）；订阅创建由下一
       // 微任务发送 BEGIN_SUBSCRIBE（→ SUBSCRIBING）后紧接着发起（见机器
       // WELCOME 态注释）。
+      // 收到 welcome（新连或重连成功）→ 重置指数退避，下一 episode 从 1000ms 起。
+      reconnectDelayMs = 1000;
+      reconnectTargetUrl = undefined;
       actor.send({ type: 'WELCOME_RECEIVED' });
       queueMicrotask(() => {
         // 等待期间若已被 disconnect() 打断（状态不再是 WELCOME），不再继续。
@@ -333,20 +373,28 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
     } else if (messageType === 'session_keepalive') {
       armWatchdog();
     } else if (messageType === 'session_reconnect') {
-      // 只转 RECONNECTING 状态，不实现真正重连（DEV-045 职责）。
+      // DEV-045：记下重连目标（缺失/非字符串 → 回退默认 wsUrl），转 RECONNECTING
+      // 并排定第一次指数退避重连尝试（1000ms 起，×2，封顶 30000ms）。
+      const reconnectUrl = record.payload?.session?.reconnect_url;
+      if (typeof reconnectUrl === 'string') reconnectTargetUrl = reconnectUrl;
+      else reconnectTargetUrl = undefined;
       actor.send({ type: 'RECONNECT_SIGNAL' });
+      beginReconnectAttempt();
     }
   }
 
-  function openSocket(): void {
-    socket = new WebSocketImpl(wsUrl);
+  function openSocket(url?: string): void {
+    socket = new WebSocketImpl(url ?? wsUrl);
+    // 捕获本 socket 引用：被替换/关闭的旧 socket 的迟到 error/close 事件不得
+    // 影响新 socket（本地关闭旧连接时 locallyClosed 已被新 openSocket 重置）。
+    const thisSocket = socket;
     locallyClosed = false;
     socket.addEventListener('message', (event) => handleFrame(event.data));
     socket.addEventListener('error', () => {
-      actor.send({ type: 'WS_ERROR' });
+      if (socket === thisSocket) actor.send({ type: 'WS_ERROR' });
     });
     socket.addEventListener('close', () => {
-      if (!locallyClosed) actor.send({ type: 'WS_ERROR' });
+      if (socket === thisSocket && !locallyClosed) actor.send({ type: 'WS_ERROR' });
     });
   }
 
@@ -377,6 +425,13 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
       clearWatchdog();
       accessToken = undefined;
       sessionId = undefined;
+      // DEV-045：取消挂起的退避重连定时器并重置退避状态（下一 episode 从 1000ms 起）。
+      if (reconnectTimerId !== undefined) {
+        cancel(reconnectTimerId);
+        reconnectTimerId = undefined;
+      }
+      reconnectDelayMs = 1000;
+      reconnectTargetUrl = undefined;
       actor.send({ type: 'DISCONNECT' });
     },
     getState(): EventSubClientState {

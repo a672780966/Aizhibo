@@ -238,6 +238,10 @@
 | 0215 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0214 | CLOSED | AUDIT_FAIL：1 Blocker（C3 正则 lastIndex 副作用导致 g/y 标志正则绕过检测，真实安全缺陷）+ 2 Major（A13/A16 测试覆盖不足），全部采纳转 FIX |
 | 0216 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0215 | CLOSED | ruling: FAIL；F-01/F-02/F-03 全部转 FIX |
 | 0217 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050A | 0216 | ISSUED | DEV-050A-FIX-01：修复 C3 正则 lastIndex 无条件重置 + 补 A13 DROP 不污染历史测试 + 补 A16 默认值直接测试 |
+| 0218 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050A | 0217 | CLOSED | DEV-050A-FIX-01 完成，READY_FOR_REVIEW（git_head=31fa1a6；C3 lastIndex 重置修复 + 3 新测试，664 tests 零回归；六条命令全绿） |
+| 0219 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0218 | CLOSED | 第二轮 AUDIT_FAIL：1 Major（lastIndex 回归测试文本命中位置选取不当，撤销修复也会巧合通过，测试无效），采纳转 FIX |
+| 0220 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0219 | CLOSED | ruling: FAIL；转 FIX-02 |
+| 0221 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050A | 0220 | ISSUED | DEV-050A-FIX-02：重新构造 lastIndex 回归测试文本（第二段命中位置严格早于遗留 lastIndex），含自我验证步骤 |
 
 
 ---
@@ -246,6 +250,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0217 |
+| OPENCODE | 0221 |
 | AUDITOR | — |
 | COMMANDER | — |

@@ -213,6 +213,7 @@
 | 0190 | NODE_REPORT | OPENCODE | AUDITOR | DEV-044 | 0189 | CLOSED | DEV-044 施工完成，READY_FOR_REVIEW（git_head=af19967；interactionAggregator.ts 本地镜像 Vote，onVote 覆盖式注册 + ingest trim+大写精确匹配 A/B/C/D 合成 Vote；新增 5 测试 608→613 零回归；六条命令全绿） |
 | 0191 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-044 | 0190 | CLOSED | AUDIT_PASS：A01–A19 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0192 | NODE_RULING | COMMANDER | ALL | DEV-044 | 0191 | CLOSED | ruling: PASS；DEV-044 转 DONE，接口冻结 |
+| 0193 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-045 | — | ISSUED | Twitch Reconnect（M4 第六个节点；RECONNECTING 真实重连，指数退避 1000ms×2 封顶 30000ms，不改既有 WS_ERROR→ERROR/SUBSCRIBE_FAIL→ERROR 语义，不重取 token） |
 
 
 ---
@@ -221,6 +222,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0193 |
 | AUDITOR | — |
 | COMMANDER | — |

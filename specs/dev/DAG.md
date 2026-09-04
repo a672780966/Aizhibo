@@ -241,6 +241,9 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 **DEV-044 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0192`，
 `verdict_ref: "0191"`；首轮 `AUDIT_PASS`；A/B/C/D 投票解析，本地镜像
 `Vote`）。
+**DEV-045 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0193`；`RECONNECTING`
+真实重连，指数退避 1000ms×2 封顶 30000ms，不改既有 `WS_ERROR→ERROR`/
+`SUBSCRIBE_FAIL→ERROR` 语义）。
 
 | Node | Name |
 |---|---|

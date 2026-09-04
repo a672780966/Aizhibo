@@ -1,6 +1,6 @@
 # DEV-043 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -47,12 +47,12 @@ packages/platform-twitch/src/chatMessageAdapter.ts（DEV-042 冻结）
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 messageDedup.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 messageDedup.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+（全部完成，等待 AUDITOR 审计）
 
 ## Exit Criteria
 

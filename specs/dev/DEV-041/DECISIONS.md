@@ -144,3 +144,21 @@ action）、`NOTIFICATION`/`KEEPALIVE` 在 CONNECTED 保持状态（空 action�
 DEV-009 F-04 类"状态不可达"；同时保持当前实现诚实——真实动作（建连后的
 open 处理、notification 转发、watchdog 重置）都在 actor 外完成，机器不编造
 尚不存在的行为。action 留空是**刻意的边界声明**，不是遗漏。
+
+## D10 — FIX-01：WELCOME 改为真实驻留态（审计 A07 直接断言）
+
+**决策**（DEV-041-FIX-01 首轮审计 MAJOR F-02 的 A07 项修正）：`WELCOME` 态从
+`always: { target: 'SUBSCRIBING' }` 同步瞬移改为**显式事件驱动的真实驻留态**：
+welcome 帧处理只 `send(WELCOME_RECEIVED)` 停在 WELCOME，下一微任务
+`queueMicrotask` 发 `BEGIN_SUBSCRIBE` → SUBSCRIBING，随后同一微任务内发起
+Helix 订阅创建（`createSubscription()`）。SUBSCRIBING 在 fetch 挂起期间同样
+真实驻留可观察。
+
+**理由**：A07 原文要求"完整路径 DISCONNECTED→CONNECTING→WELCOME→SUBSCRIBING
+→CONNECTED **逐状态可达且断言正确**"。XState v5 的 `always` 转移与 send
+同步完成（一次性探针证实：订阅者只收到瞬移后一个快照），`WELCOME` 在
+`getState()` 外部永远不可观察——既有实现实际不满足 A07 的直接断言要求。
+这是 FIX_PACKAGE 允许的"新测试暴露真实 bug 时的最小实现修正"：不改架构/
+八态拓扑/转移边语义，只把 WELCOME→SUBSCRIBING 从同步 `always` 改为显式
+微任务事件，使中间态真实、可断言。反向验证：把实现改回 `always` 后新增
+测试真实失败（`Received: "SUBSCRIBING"`），修复后通过。

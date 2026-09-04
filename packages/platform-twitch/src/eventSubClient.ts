@@ -88,7 +88,10 @@ export interface EventSubClient {
  *
  * - `CONNECT`：connect() 发起（先取 access token，成功才建 WS）
  * - `WS_OPEN`：WebSocket 连接已建立（CONNECTING 内自循环占位，等 welcome 帧）
- * - `WELCOME_RECEIVED`：收到 `session_welcome` 帧，携带 `session.id`
+ * - `WELCOME_RECEIVED`：收到 `session_welcome` 帧，携带 `session.id`，
+ *   → WELCOME（真实驻留态，供测试/审计直接断言）
+ * - `BEGIN_SUBSCRIBE`：welcome 处理后的下一微任务发送，→ SUBSCRIBING；
+ *   随后同一微任务内发起 Helix 订阅创建（fetch 期间 SUBSCRIBING 真实驻留）
  * - `SUBSCRIBE_OK` / `SUBSCRIBE_FAIL`：Helix 订阅 POST 返回 202 / 非 202 或异常
  * - `NOTIFICATION`：收到 `notification` 帧（原样转发 onNotification，不做转换/去重）
  * - `KEEPALIVE`：收到 `session_keepalive` 帧（重置 watchdog）
@@ -97,7 +100,8 @@ export interface EventSubClient {
  * - `WS_ERROR`：WebSocket 层 error/意外 close（非本地 disconnect() 触发）→ ERROR
  * - `DISCONNECT`：disconnect() 主动调用，任意态 → DISCONNECTED 并关闭 socket
  *
- * 转移边严格对应 Task Package 第 2.1 节八态规则。action 全部留空占位。
+ * 转移边严格对应 Task Package 第 2.1 节八态规则。除 WELCOME→SUBSCRIBING
+ * 由 BEGIN_SUBSCRIBE 显式驱动（见 WELCOME 态注释）外，action 全部留空占位。
  */
 const eventSubMachine = createMachine({
   id: 'eventSubClient',
@@ -117,12 +121,15 @@ const eventSubMachine = createMachine({
         DISCONNECT: { target: 'DISCONNECTED' },
       },
     },
-    // 收到 session_welcome → WELCOME（记录 session.id）；随后自动（同一逻辑
-    // 步骤内）转 SUBSCRIBING：用 fetchImpl POST Helix 订阅，202 → CONNECTED，
-    // 非 202/异常 → ERROR。
+    // 收到 session_welcome → WELCOME（记录 session.id）。WELCOME 是**真实驻留态**：
+    // welcome 帧处理只 send WELCOME_RECEIVED 停在此处；下一微任务由
+    // handleFrame 发 BEGIN_SUBSCRIBE → SUBSCRIBING（显式事件驱动，不用 always，
+    // 避免 WELCOME 被 XState 在同一 send 内同步瞬移而不可观察）。
+    // 这是 A07“逐状态可达且断言正确”的直接要求：WELCOME 必须能被 getState()
+    // 观察到，测试在 fetch 返回前能同步断言到它。
     WELCOME: {
-      always: { target: 'SUBSCRIBING' },
       on: {
+        BEGIN_SUBSCRIBE: { target: 'SUBSCRIBING' },
         RECONNECT_SIGNAL: { target: 'RECONNECTING' },
         WS_ERROR: { target: 'ERROR' },
         DISCONNECT: { target: 'DISCONNECTED' },
@@ -224,9 +231,9 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
     );
   }
 
+  // Helix 订阅创建：POST /helix/eventsub/subscriptions，202 → SUBSCRIBE_OK（→ CONNECTED），
+  // 其他状态码/异常 → SUBSCRIBE_FAIL（→ ERROR）。不重试（DEV-045 职责）。
   function createSubscription(): void {
-    // Helix 订阅创建：POST /helix/eventsub/subscriptions，202 → SUBSCRIBE_OK（→ CONNECTED），
-    // 其他状态码/异常 → SUBSCRIBE_FAIL（→ ERROR）。不重试（DEV-045 职责）。
     if (accessToken === undefined || sessionId === undefined) {
       actor.send({ type: 'SUBSCRIBE_FAIL' });
       return;
@@ -294,9 +301,16 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
       if (typeof id === 'string') sessionId = id;
       const keepalive = session?.keepalive_timeout_seconds;
       if (typeof keepalive === 'number') keepaliveTimeoutSeconds = keepalive;
-      actor.send({ type: 'WELCOME_RECEIVED' }); // → WELCOME →（always）SUBSCRIBING
-      // welcome 后（同一逻辑步骤内）紧接着发起 Helix 订阅创建。
-      createSubscription();
+      // 只 send WELCOME_RECEIVED，停在 WELCOME（真实驻留态）；订阅创建由下一
+      // 微任务发送 BEGIN_SUBSCRIBE（→ SUBSCRIBING）后紧接着发起（见机器
+      // WELCOME 态注释）。
+      actor.send({ type: 'WELCOME_RECEIVED' });
+      queueMicrotask(() => {
+        // 等待期间若已被 disconnect() 打断（状态不再是 WELCOME），不再继续。
+        if (actor.getSnapshot().value !== 'WELCOME') return;
+        actor.send({ type: 'BEGIN_SUBSCRIBE' });
+        createSubscription();
+      });
     } else if (messageType === 'notification') {
       // 收到消息即算“连接活着”：notification 同样重置 watchdog。
       armWatchdog();

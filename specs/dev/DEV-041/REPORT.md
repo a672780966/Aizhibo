@@ -46,7 +46,7 @@ READY_FOR_REVIEW
 
 ## 3. Changed Files
 
-Writable Scope 内共 7 个文件：
+Writable Scope 内共 8 个文件：
 
 ```text
 packages/platform-twitch/src/eventSubClient.ts             （新增）

@@ -137,3 +137,35 @@ undefined"）的语义严格对齐、并防御未来接入方在日志中注入�
 `OPEN`/`CLOSED`（即 RESOLVED/LOCKED 等解决后相位）才过滤日志，否则取
 `[]`。与 D4 的 `currentChoices` 门控同源同风格，二者共用
 `internal.interactionPhase` 单一事实源。
+
+## D7 — FIX-01：publishedDice 测试只验证形状，从未证明 HIDDEN 记录被排除（F-01 MAJOR）
+
+**审计发现（AUDIT_VERDICT 0207，F-01 MAJOR）**：初版
+`publicState.test.ts` 里"锁定后 `publishedDice` 反映骰子结果"的测试
+只断言结果数组非空（`length > 0`）且逐项字段形状正确
+（`diceType` string/`finalValue` number/`quality` string|undefined），
+**从未证明 `HIDDEN` 的 `DICE.ROLLED` 记录被正确排除在结果之外**。这
+不是空泛的覆盖焦虑：`DICE.ROLLED` 与 `DICE.PUBLISHED` 共享**完全
+相同**的 payload 形状（`DiceRollRecordPayload`，
+`machine.ts` 第 401–405 行），仅 `type`/`visibility` 不同——若实现
+退化成"不过滤，把所有 dice 条目都塞进 `publishedDice`"，初版测试
+（非空 + 形状）**照样全部通过**，测试无法区分正确实现与错误实现。
+
+**修复（三段式断言，全部追加在既有测试尾部，零删除零改动）**：
+1. **HIDDEN 记录确实存在**：独立调用 `getEventLog(actor)` 过滤
+   `type === 'DICE.ROLLED'`，断言 `length > 0` 且每条
+   `visibility === 'HIDDEN'`——证明测试场景**真的产生了**需被排除的
+   Hidden 记录，排除行为不是"根本没有可排除的东西"的假阳性。
+2. **数量一一对应**：再过滤 `type === 'DICE.PUBLISHED'`，断言
+   `state.publishedDice!.length === rolledEntries.length ===
+   publishedEntries.length`——三数相等，证明没有多算（把 ROLLED
+   混进来）或漏算（把 PUBLISHED 丢掉）。
+3. **回归哨兵**：断言 `state.publishedDice!.length` **小于**事件日志
+   里全部 dice 相关条目（`DICE.REQUESTED`+`DICE.ROLLED`+
+   `DICE.PUBLISHED`）的总数——若未来有人误删/改坏过滤条件（回到
+   "不过滤全塞"），此断言必失败。
+
+**为何不改实现**：审计确认 `publicState.ts` 的过滤实现本身正确
+（`type === 'DICE.PUBLISHED' && visibility === 'PUBLIC'`，`DICE.ROLLED`
+为 HIDDEN 天然被排除），缺口在**测试未锁定该行为**。本轮只补测试，
+实现代码零改动。

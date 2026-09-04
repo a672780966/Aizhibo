@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import { isFactSafeToDisclose, getPublicState } from './publicState.js';
 import type { HostPublicSpec, WorldState } from '@interactive-story/chapter-schema';
-import { createRuntimeMachine, getRuntimeSnapshot } from './machine.js';
+import { createRuntimeMachine, getRuntimeSnapshot, getEventLog } from './machine.js';
 import { getStoryPhase, getInteractionPhase } from './snapshot.js';
 import { instantClock } from './virtualPorts.js';
 
@@ -258,5 +258,28 @@ describe('getPublicState', () => {
       expect(typeof entry.finalValue).toBe('number');
       expect(entry.quality === undefined || typeof entry.quality === 'string').toBe(true);
     }
+
+    // FIX-01 (F-1 MAJOR): prove publishedDice actually EXCLUDES the HIDDEN
+    // DICE.ROLLED records (same payload shape as DICE.PUBLISHED) rather than
+    // merely asserting non-empty + shape.
+    // 1. DICE.ROLLED records exist and are all HIDDEN (the scenario really
+    //    produced hidden records to exclude — no false positive).
+    const rolledEntries = getEventLog(actor).filter((e) => e.type === 'DICE.ROLLED');
+    expect(rolledEntries.length).toBeGreaterThan(0);
+    for (const entry of rolledEntries) {
+      expect(entry.visibility).toBe('HIDDEN');
+    }
+    // 2. publishedDice length equals BOTH the DICE.ROLLED count and the
+    //    DICE.PUBLISHED count — a one-to-one correspondence, nothing over- or
+    //    under-counted.
+    const publishedEntries = getEventLog(actor).filter((e) => e.type === 'DICE.PUBLISHED');
+    expect(state.publishedDice!.length).toBe(rolledEntries.length);
+    expect(state.publishedDice!.length).toBe(publishedEntries.length);
+    // 3. publishedDice count is LESS than the total of ALL dice-related log
+    //    entries (DICE.REQUESTED + DICE.ROLLED + DICE.PUBLISHED). If the
+    //    implementation regressed to "no filtering, stuff every dice entry in",
+    //    this assertion must fail (regression sentinel).
+    const allDiceEntries = getEventLog(actor).filter((e) => e.type.startsWith('DICE.'));
+    expect(state.publishedDice!.length).toBeLessThan(allDiceEntries.length);
   });
 });

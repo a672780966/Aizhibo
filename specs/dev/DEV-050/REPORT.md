@@ -121,7 +121,7 @@ disclosure 兜底 1 条（共 6 条 `getPublicState`）。既有全部包测试
 | A11 | `knownFacts` 事实未声明依赖 → 剔除（default-reject） | PASS | 测试：`undeclared-fact`（`knownFactDependencies` 无条目 → `dependencies === undefined`）→ 剔除 |
 | A12 | `isFactSafeToDisclose` 覆盖 6 种 key 格式 | PASS | 测试：`flags.*`/`chapterVariables.*`/`npc.*.present`/`alive`/`disposition`/`flags.*`/`danger.level`/`danger.tensionKey` 各一条全 true |
 | A13 | `currentChoices` 互动 OPEN 时正确返回，非互动时为 `undefined` | PASS | 测试：BOOT 后（STORY_PLAYING）`currentChoices` undefined；`STORY.DONE`+`INTERACTION.OPEN` 后 `[{id:'A'}]`（D4 修复后真实通过） |
-| A14 | `publishedDice` 正确过滤 `DICE.PUBLISHED`（不误取 `DICE.ROLLED`），无记录时为 `undefined` | PASS | 测试：LOCK 前 `undefined`；VOTE+LOCK 后非空数组，逐条 `diceType` string/`finalValue` number/`quality` string|undefined；过滤条件 `type==='DICE.PUBLISHED' && visibility==='PUBLIC'`（DICE.ROLLED 为 HIDDEN，天然排除） |
+| A14 | `publishedDice` 正确过滤 `DICE.PUBLISHED`（不误取 `DICE.ROLLED`），无记录时为 `undefined` | **FAIL → PASS（FIX-01）** | 初版：LOCK 前 `undefined`；VOTE+LOCK 后非空数组，逐条形状正确（`diceType`/`finalValue`/`quality`）——但只验证了非空+形状，**未证明 HIDDEN `DICE.ROLLED` 记录（与 `DICE.PUBLISHED` 同 payload 形状）被排除**，若实现退化成不过滤全塞仍会通过（AUDIT F-01 MAJOR）。FIX-01 追加三段式断言后 PASS：`DICE.ROLLED` 记录确实存在且全部 `visibility==='HIDDEN'`；`publishedDice` 数量 === `rolledEntries` 数量 === `publishedEntries` 数量（一一对应）；`publishedDice` 数量 < 全部 `DICE.*` 条目总数（回归哨兵）。实现代码零改动，过滤条件 `type==='DICE.PUBLISHED' && visibility==='PUBLIC'` 本身审计确认正确 |
 | A15 | `currentTension` 正确取自 `tensionLabels[world.danger.tensionKey]` | PASS | 测试：fixture 初始 `danger.tensionKey==='calm'` → `state.currentTension === '平静'` |
 | A16 | `storyPhase`/`interactionPhase` 与既有访问器输出逐字节一致 | PASS | 测试：`state.storyPhase === getStoryPhase(getRuntimeSnapshot(actor))`，interactionPhase 同 |
 | A17 | `runtime-kernel` 除 `index.ts`（仅追加两行）与新文件外零改动 | PASS | `git diff -- packages/runtime-kernel` 仅 `index.ts` +2 行；`publicState.ts(.test.ts)` 为新增 untracked（见 §6） |
@@ -186,3 +186,62 @@ NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；审核锚点与交付快照�
 重点：D4/D5 两个实测缺陷的发现与修复过程（`currentChoices` 相位
 门控 + `danger` 容器分支），以及 §6 的 `runtime-kernel` 零回归红线
 核验（`git diff` 仅 `index.ts` +2 行）。
+
+---
+
+## FIX-01 轮次（AUDIT F-01 MAJOR 修复）
+
+### 修复内容
+
+AUDIT_VERDICT（0207）判定 A14 为 F-01 MAJOR：初版 `publishedDice`
+测试只断言结果非空 + 逐项字段形状正确（`diceType`/`finalValue`/
+`quality`），**从未证明 HIDDEN 的 `DICE.ROLLED` 记录被排除**——而
+`DICE.ROLLED` 与 `DICE.PUBLISHED` 共享完全相同的 payload 形状
+（`DiceRollRecordPayload`，`machine.ts` 第 401–405 行），仅
+`type`/`visibility` 不同；若实现退化成"不过滤，把所有 dice 条目全塞
+进结果"，初版测试照样全部通过。实现代码审计确认正确，缺口在测试
+未锁定排除行为，故本轮只补测试，`publicState.ts` 零改动。
+
+`publicState.test.ts` 在目标测试尾部追加三段式断言（零删除零改动既有
+断言）：
+
+1. `getEventLog(actor)` 过滤 `type === 'DICE.ROLLED'` → `length > 0`
+   且每条 `visibility === 'HIDDEN'`（证明场景确实产生需排除的 Hidden
+   记录，非假阳性）。
+2. `state.publishedDice!.length === rolledEntries.length ===
+   publishedEntries.length`（一一对应，无多算/漏算）。
+3. `state.publishedDice!.length` < 全部 `DICE.*` 条目总数（回归哨兵，
+   防过滤条件被误删/改坏）。
+
+### FIX-01 命令与测试
+
+六条命令全部退出码 0（见 §4 表格 + 本段）：`pnpm install` 0 /
+`pnpm typecheck` 0 / `pnpm lint` 0 / `pnpm format:check` 0 /
+`pnpm build` 0 / `pnpm test` 0。测试总数 **651 不变**（无新增测试
+用例，仅既有测试内追加断言），113 files / 651 tests 全绿，既有全部
+测试零回归。
+
+### FIX-01 Acceptance Results
+
+| # | 判定 | 结果 | 依据 |
+|---|---|---|---|
+| FIX-A01 | 六条命令全部退出码 0，既有全部测试零回归 | PASS | 六命令 0；113 files / 651 tests（计数不变） |
+| FIX-A02 | 新断言证明 `DICE.ROLLED`（HIDDEN）确实存在且被排除，`publishedDice` 数量与 `DICE.PUBLISHED` 一一对应 | PASS | 三段式断言 #1（`length>0` 且全 HIDDEN）+ #2（`=== rolledEntries.length === publishedEntries.length`） |
+| FIX-A03 | 新断言证明"不等于未过滤 dice 条目总数"（回归哨兵） | PASS | 三段式断言 #3（`< allDiceEntries.length`，即 < REQUESTED+ROLLED+PUBLISHED 总数） |
+| FIX-A04 | 未修改 `publicState.ts` 实现，未修改既有测试断言 | PASS | FIX-01 交付 diff 仅 `publicState.test.ts`（追加）+ `DECISIONS.md`/`REPORT.md`/`INDEX.md` |
+| FIX-A05 | `git log` 新增恰 1 条提交，首行 `DEV-050-FIX-01: prove publishedDice excludes HIDDEN dice-rolled records` | PASS | 见 §Commit 核验 |
+
+### FIX-01 Changed Files（恰 1 条提交，仅 Writable Scope）
+
+```text
+packages/runtime-kernel/src/publicState.test.ts   （追加三段式断言，既有断言零改动）
+specs/dev/DEV-050/DECISIONS.md                    （追加 D7）
+specs/dev/DEV-050/REPORT.md                       （本 FIX-01 轮次 + A14 改 PASS）
+```
+
+### FIX-01 Commit
+
+提交信息首行：`DEV-050-FIX-01: prove publishedDice excludes HIDDEN
+dice-rolled records`。恰 1 条新提交；`git add` 逐一列名，未用
+`git add -A`。LEDGER 追加行与 NODE_REPORT 消息文件已写入工作区但
+**未提交**（Constraint 8 / A23 同款）。

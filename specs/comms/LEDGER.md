@@ -242,6 +242,9 @@
 | 0219 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0218 | CLOSED | 第二轮 AUDIT_FAIL：1 Major（lastIndex 回归测试文本命中位置选取不当，撤销修复也会巧合通过，测试无效），采纳转 FIX |
 | 0220 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0219 | CLOSED | ruling: FAIL；转 FIX-02 |
 | 0221 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050A | 0220 | ISSUED | DEV-050A-FIX-02：重新构造 lastIndex 回归测试文本（第二段命中位置严格早于遗留 lastIndex），含自我验证步骤 |
+| 0222 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050A | 0221 | CLOSED | DEV-050A-FIX-02 完成，READY_FOR_REVIEW（git_head=d42f35c；回归测试文本重构：第二段 badword 置于索引 0-6 早于遗留 lastIndex=28；自我验证：撤销修复行测试真实失败、恢复后通过；664 tests 零回归；实现代码零改动） |
+| 0223 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0222 | CLOSED | 第三轮 AUDIT_PASS：A01–A24 全部 VERIFIED（逐字符核算证实测试真正具备区分力），0 BLOCKING（Info 1，工作区换行符标记非内容差异） |
+| 0224 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0223 | CLOSED | ruling: PASS；DEV-050A 转 DONE，接口冻结 |
 
 
 ---
@@ -250,6 +253,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0221 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

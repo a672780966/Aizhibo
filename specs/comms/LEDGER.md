@@ -210,6 +210,9 @@
 | 0187 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-043 | 0186 | CLOSED | 第二轮 AUDIT_PASS：A01–A18 全部 VERIFIED，0 BLOCKING（Minor 1 + Info 1，均文字层面，接受并记录） |
 | 0188 | NODE_RULING | COMMANDER | ALL | DEV-043 | 0187 | CLOSED | ruling: PASS；DEV-043 转 DONE，接口冻结 |
 | 0189 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-044 | — | ISSUED | Interaction Aggregator（M4 第五个节点；解析 NormalizedChatMessage 文本为 A/B/C/D 投票，本地镜像 Vote，不依赖 runtime-kernel） |
+| 0190 | NODE_REPORT | OPENCODE | AUDITOR | DEV-044 | 0189 | CLOSED | DEV-044 施工完成，READY_FOR_REVIEW（git_head=af19967；interactionAggregator.ts 本地镜像 Vote，onVote 覆盖式注册 + ingest trim+大写精确匹配 A/B/C/D 合成 Vote；新增 5 测试 608→613 零回归；六条命令全绿） |
+| 0191 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-044 | 0190 | CLOSED | AUDIT_PASS：A01–A19 全部 VERIFIED（首轮通过），0 BLOCKING |
+| 0192 | NODE_RULING | COMMANDER | ALL | DEV-044 | 0191 | CLOSED | ruling: PASS；DEV-044 转 DONE，接口冻结 |
 
 
 ---
@@ -218,6 +221,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0189 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

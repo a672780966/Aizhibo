@@ -17,30 +17,23 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-044 — Interaction Aggregator（`IN_PROGRESS`，消息 `0189`；M4 第五个节点）
+无（DEV-044 已 DONE，下一节点 DEV-045 尚未起草）
 
 ## Current Status
 
 M1（15/15）、M2（9/9）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，依赖 M5
-`ai-host` 包真实存在，详见 `DAG.md` M3 章节）。M4 已开工，前四个节点均
-`DONE`（接口冻结）：DEV-040 Twitch OAuth（`platform-twitch` 包 +
-`TwitchAuthPort`）→ DEV-041 EventSub Client（八态 XState 连接机器，
-第一轮 FAIL→FIX→PASS）→ DEV-042 Chat Message Adapter（新建
-`platform-core` + `NormalizedChatMessage`，首轮 PASS）→ DEV-043
-Message Deduplication（有界内存去重，第一轮 FAIL→FIX→PASS）。
-**DEV-044（Interaction Aggregator）已下发，`IN_PROGRESS`**：解析
-`NormalizedChatMessage.text` 为 A/B/C/D 投票，本地镜像 `Vote`（不依赖
-`runtime-kernel`）。AUDITOR 自 DEV-041 起为 `opencode`/`gpt-5.6-terra`
-自定义 agent（`.opencode/agent/auditor.md`）。USER 已授权：配置完成后
-自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续
-占位处理；**USER 指示"继续推进至 M6"，标准流程（研究→Task Package→
-派工→验证→审计→裁决→收尾）逐节点持续进行，不再逐节点汇报**。
+`ai-host` 包真实存在，详见 `DAG.md` M3 章节）。M4 前五个节点均 `DONE`
+（接口冻结）：DEV-040 Twitch OAuth → DEV-041 EventSub Client（首轮
+FAIL→FIX→PASS）→ DEV-042 Chat Message Adapter（首轮 PASS）→ DEV-043
+Message Deduplication（首轮 FAIL→FIX→PASS）→ DEV-044 Interaction
+Aggregator（首轮 PASS，A/B/C/D 投票解析）。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
+不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-044.md`（`interactionAggregator.ts`：A/B/C/D
-投票解析，本地镜像 Vote，不依赖 runtime-kernel）
+无（DEV-044 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -93,10 +86,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-041 — EventSub Client（DONE，`verdict_ref: "0175"`，`git_head` `94c674ff50bfef32b807864141e144e6d1f66db3`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 - DEV-042 — Chat Message Adapter（DONE，`verdict_ref: "0179"`，`git_head` `204634c909ffcaf048f9a1c7eae4134af17f5b1a`；首轮 AUDIT_PASS）
 - DEV-043 — Message Deduplication（DONE，`verdict_ref: "0187"`，`git_head` `6b65283d1c30a31164759f626bf897069ea94a33`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
+- DEV-044 — Interaction Aggregator（DONE，`verdict_ref: "0191"`，`git_head` `af19967e3e3a0cd7e754b20aa42afa82faf1e9a4`；首轮 AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-044 — Interaction Aggregator（`IN_PROGRESS`，消息 `0189`；M4 第五个节点）
+无。
 
 ## Blocked Nodes
 
@@ -105,11 +99,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-043 — Message Deduplication（2026-09-04）
+DEV-044 — Interaction Aggregator（2026-09-05）
 
 ## Next Eligible Nodes
 
-DEV-045 — Twitch Reconnect（待 DEV-044 `DONE` 后由 Claude Commander 起草）。
+DEV-045 — Twitch Reconnect（M4 第六个节点，待 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -354,6 +348,7 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 执行方完成 `DEV-043-FIX-01`，`git_head` `6b65283`：重写 A09 测试为 `seen('msg-A')`/`seen('msg-B')`/`seen('msg-C')`（填满 maxSize=3）→ 重复 `seen('msg-A')`→`seen('msg-D')`（触发淘汰）→ 断言 `seen('msg-B')` 为 `true`（证明淘汰的是 A 不是 B）→ 断言重传 `seen('msg-A')` 为 `false`（证明 A 已被真正淘汰）；`messageDedup.ts` 实现字节级未变；修正 `REPORT.md` 文件计数；六条命令全绿 110 files/608 tests；恰 1 条新提交，LEDGER/NODE_REPORT 正确留在工作区未提交。转交 `AUDITOR` 第二轮审计 |
 | 2026-09-04 | `AUDITOR` 第二轮独立审计，`AUDIT_VERDICT`（消息 `0187`）：**AUDIT_PASS**，A01–A18 全部 VERIFIED（含独立重跑六条命令，含 `pnpm install`；独立推演确认新测试序列真能在"续命 bug"下失败），0 Blocker/0 Major，Minor 1（REPORT.md A09 证据文字与实际步骤数不完全同步）+ Info 1（NODE_REPORT 对父提交描述不够精确），均为文字层面问题，接受并记录（与 DEV-034/035/036 先例一致，不再另开 FIX）。发出 `NODE_RULING: PASS`（消息 `0188`，`verdict_ref: "0187"`）：**DEV-043 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；**M4 下一个节点 DEV-044（Interaction Aggregator）具备下发条件**，继续自动推进 |
 | 2026-09-05 | USER 指示"继续推进至 M6"：起草并发出 `TASK_PACKAGE DEV-044`（消息 `0189`，M4 第五个节点）：核对 Dev Spec 第 989 行 `Choice.id: "A"\|"B"\|"C"\|"D"` 冻结形状与第 50 行"观众 A/B/C/D"；核对 `runtime-kernel/src/ports.ts`（DEV-009/012 冻结）已有 `Vote{viewerId,choiceId}`/`PlatformPort.onVote`，但从未被真实驱动；设计 `packages/platform-core/src/interactionAggregator.ts`——`Vote` 本地镜像（不 import/依赖 `runtime-kernel`，依赖方向不能倒转），`ingest(message)` 用 trim+大写精确匹配解析 A/B/C/D，`onVote(handler)` 单一注册；不做去重（DEV-043 已完成）/频率限制/模糊匹配/接入 runtime-kernel；T001–T002，A01–A19；DEV-044 转 `IN_PROGRESS`。自本节点起决策记录条目按需精简（避免文件过度膨胀），关键裁决与偏差仍逐条记录 |
+| 2026-09-05 | 执行方按持久会话+小步骤完成 DEV-044，`git_head` `af19967`：111 files/613 tests（608→613，+5），六条命令全绿，恰 1 条提交。`AUDITOR` 首轮 `AUDIT_PASS`（消息 `0191`），A01–A19 全部 VERIFIED，0 Blocker/0 Major，Minor 1（REPORT.md 文件计数，同 DEV-042 先例接受并记录）。`NODE_RULING: PASS`（消息 `0192`）：**DEV-044 转 DONE，接口冻结**；M4 下一个节点 DEV-045（Twitch Reconnect）具备下发条件 |
 
 ## Authority
 

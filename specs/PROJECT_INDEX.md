@@ -17,8 +17,7 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-041 — EventSub Client（`IN_PROGRESS`，第一轮 `AUDIT_FAIL`；
-`DEV-041-FIX-01` 已下发，消息 `0174`；M4 第二个节点）
+无（DEV-041 已 DONE，下一节点 DEV-042 尚未起草）
 
 ## Current Status
 
@@ -29,24 +28,24 @@ Ducking）已判定 `BLOCKED`**（暂缓非施工失败，依赖 M5 `ai-host` �
 `DONE`**（接口冻结）——新建 `platform-twitch` 包，`TwitchAuthPort` 真实
 refresh_token→access_token 实现，凭据可选退化为 noop；审计发现 1 处 Major
 （执行方多提交一次），Commander 已裁决 PASS 并记录制度修复。**DEV-041
-（EventSub Client）第一轮 `AUDIT_FAIL`**：新增 Dev Spec 第 45 节八态
+（EventSub Client）已 `DONE`（接口冻结）**：新增 Dev Spec 第 45 节八态
 XState 连接生命周期机器，真实 WebSocket + Helix 订阅创建 API，首次消费
 `TwitchAuthPort`；不做 NormalizedChatMessage 转换/去重/真正重连算法/发送
 消息（分属 DEV-042/043/045/046）；`opencode`/`gpt-5.6-terra` AUDITOR 第一次
-真实审计一个新节点，发现 1 Blocker（A01 未跑，审计工具白名单疏漏，已修正）
-+ 2 Major（A07/A11/A13/A14/A15 测试覆盖不足，A13 完全零覆盖；NODE_REPORT
-正文引用了不存在的 commit hash）+ 1 Minor；已裁决 FAIL，`DEV-041-FIX-01`
-已下发补齐测试覆盖与文档错误。**AUDITOR 角色自 DEV-041 起改为 `opencode`
-CLI 自定义 agent**（`.opencode/agent/auditor.md`，模型 `openai/gpt-5.6-terra`），
-取代直接调用 Claude Code `project-auditor` subagent。USER 已授权：配置完成
-后自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续
-占位处理。
+真实审计一个新节点，第一轮发现 1 Blocker（A01 未跑，审计工具白名单疏漏，
+已修正）+ 2 Major（A07/A11/A13/A14/A15 测试覆盖不足，A13 完全零覆盖；
+NODE_REPORT 正文引用了不存在的 commit hash）+ 1 Minor，裁决 FAIL；
+`DEV-041-FIX-01` 补齐全部缺口（含发现并修正一处真实架构可观察性缺陷——
+`WELCOME` 态原为同步瞬移不可观察）后，第二轮 `AUDIT_PASS`，A01–A24 全部
+VERIFIED，0 BLOCKING。**AUDITOR 角色自 DEV-041 起改为 `opencode` CLI 自定义
+agent**（`.opencode/agent/auditor.md`，模型 `openai/gpt-5.6-terra`），取代
+直接调用 Claude Code `project-auditor` subagent。USER 已授权：配置完成后
+自动推进，除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续占位
+处理。
 
 ## Current Task Package
 
-`specs/comms/0174-COMMANDER-to-OPENCODE-FIX_PACKAGE-DEV-041.md`
-（`DEV-041-FIX-01`：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT
-commit hash 引用 + REPORT.md 文件计数文字）
+无（DEV-041 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -96,10 +95,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-036 — Audio Cache（DONE，`verdict_ref: "0160"`，`git_head` `9684275b1dfb593f81ac522097f0ba617f4c9d01`）
 - DEV-037 — Dice Buffer Controller（DONE，`verdict_ref: "0164"`，`git_head` `39733c8c1658fadbe873d01a52ddf70b5868c273`）
 - DEV-040 — Twitch OAuth（DONE，`verdict_ref: "0168"`，`git_head` `4670bd5adf54bf9346d462caa2187c1a0357a8b9`）**——M4 第一个节点**
+- DEV-041 — EventSub Client（DONE，`verdict_ref: "0175"`，`git_head` `94c674ff50bfef32b807864141e144e6d1f66db3`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-041 — EventSub Client（`IN_PROGRESS`，消息 `0170`；M4 第二个节点）
+无。
 
 ## Blocked Nodes
 
@@ -108,11 +108,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-040 — Twitch OAuth（2026-09-04）
+DEV-041 — EventSub Client（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-042 — Chat Message Adapter（待 DEV-041 `DONE` 后由 Claude Commander 起草）。
+DEV-042 — Chat Message Adapter（M4 第三个节点，待 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -346,6 +346,8 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 执行方 `pi` 完成 DEV-041 T001–T003，`git_head` `fab2d4f`：新建 `packages/platform-twitch/src/eventSubClient.ts`（八态 XState 机器 + 真实 WebSocket/Helix 调用）+ 测试，107 files/583 tests（574→583，+9），六条命令全绿；正确遵守新增 Constraint 8——LEDGER 追加行与 NODE_REPORT 消息文件（`0171`）留在工作区未提交，仅这一条实现提交。转交 `AUDITOR`（`opencode run --agent auditor --model openai/gpt-5.6-terra --auto`）独立审计 |
 | 2026-09-04 | `AUDITOR` 首次真实审计新节点，`AUDIT_VERDICT`（消息 `0172`）：**AUDIT_FAIL**，1 Blocker（A01 未跑——发现审计 agent 自己的命令白名单遗漏 `pnpm install --frozen-lockfile`，Commander 侧配置疏漏，当场修正 `.opencode/agent/auditor.md`）+2 Major（A07/A11/A13/A14/A15 五项测试覆盖不足，其中 **A13"非本地 WebSocket 关闭/错误→ERROR"完全零测试覆盖**；NODE_REPORT 消息 `0171` 正文第 27 行引用了一个用 `git show` 验证不存在的假 commit hash，与 frontmatter 矛盾）+1 Minor（REPORT.md 文件计数文字 7 vs 实际 8 个文件不自洽）；Scope/Architecture/Regression/Overengineering 四项均 PASS，独立重跑五条命令（`pnpm install` 因白名单疏漏未跑）全绿 |
 | 2026-09-04 | 发出 `NODE_RULING: FAIL`（消息 `0173`，`verdict_ref: "0172"`）：F-01（BLOCKER，A01）**接受并说明**——根因是本轮才建立的新 AUDITOR 工具本身的命令白名单不全，非 DEV-041 交付缺陷，已修正配置文件，下一轮即可验证；F-02/F-03（MAJOR，测试覆盖不足 + NODE_REPORT 错误引用）**转 FIX**；F-04（MINOR）随 FIX 一并修正。发出 `FIX_PACKAGE DEV-041-FIX-01`（消息 `0174`）：要求补齐五项测试缺口（中间态断言、watchdog 时长关联验证、A13 的 error/非本地 close 两条测试、非 CONNECTED 态 disconnect、getHealth 剩余五态）+ 修正两处文档错误，明确不得 rebase/修改既有 `fab2d4f` 提交，新提交单独追加；DEV-041 保持 `IN_PROGRESS` 状态，继续由 `pi` 按同样的持久会话+小步骤方式施工 |
+| 2026-09-04 | 执行方按 `DEV-041-FIX-01` 分五个小步骤逐一补齐测试（中间态断言、watchdog 时长关联、A13 两条直接测试、非 CONNECTED 态 disconnect、getHealth 剩余五态），过程中发现并修正一处真实架构缺陷：`WELCOME` 态原为 XState `always` 同步瞬移，外部 `getState()` 永不可观察，不满足 A07"逐状态可达且断言正确"的字面要求；改为显式 `BEGIN_SUBSCRIBE` 事件驱动的真实驻留态（`DECISIONS.md` D10 记录反向验证：改回 `always` 后新测试真实失败）。最后一步跑完六条命令（含 `pnpm install`）全绿、修正 `0171` 消息与 `REPORT.md` 的两处文档错误，提交恰 1 条（`94c674f`），LEDGER/NODE_REPORT 仍留在工作区未提交。转交 `AUDITOR` 第二轮审计 |
+| 2026-09-04 | `AUDITOR` 第二轮独立审计，`AUDIT_VERDICT`（消息 `0175`）：**AUDIT_PASS**，A01–A24 全部 VERIFIED（本轮审计工具已补上 `pnpm install --frozen-lockfile`，六条命令全部独立重跑），0 Blocker/0 Major/0 Minor，Info 1（仅记录提交穿插顺序事实）。发出 `NODE_RULING: PASS`（消息 `0176`，`verdict_ref: "0175"`）：**DEV-041 转 DONE，接口冻结**；同步更新本文件与 `DAG.md`；**M4 下一个节点 DEV-042（Chat Message Adapter）具备下发条件**，继续自动推进 |
 
 ## Authority
 

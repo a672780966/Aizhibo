@@ -191,10 +191,12 @@
 | 0168 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-040 | 0167 | CLOSED | AUDIT_FAIL：A01–A18/A20–A21 全部 PASS/VERIFIED（Major: 1，A19 实际 2 次提交而非 1 次，内容干净但偏离既有惯例；Info: 1） |
 | 0169 | NODE_RULING | COMMANDER | ALL | DEV-040 | 0168 | CLOSED | ruling: PASS（采纳选项 a，A19 按立法意图认定成立，不重写提交历史）；DEV-040 转 DONE，接口冻结；制度修复：未来 dispatch 提示词禁止执行方自行提交 LEDGER/NODE_REPORT |
 | 0170 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-041 | — | CLOSED | EventSub Client（M4 第二个节点；Dev Spec 第 45 节八态 XState 机器，真实 WebSocket+Helix 订阅，首次消费 TwitchAuthPort；不做去重/重连算法/发送消息） |
-| 0171 | NODE_REPORT | OPENCODE | AUDITOR | DEV-041 | 0170 | CLOSED | DEV-041 施工完成，READY_FOR_REVIEW（git_head=fab2d4f；八态 XState 机器 + Helix 订阅 + watchdog，注入假实现零真实网络，新增 9 测试，574→583 零回归） |
+| 0171 | NODE_REPORT | OPENCODE | AUDITOR | DEV-041 | 0170 | CLOSED | DEV-041 施工完成，READY_FOR_REVIEW（git_head=fab2d4f，FIX 后 94c674f；八态 XState 机器 + Helix 订阅 + watchdog，注入假实现零真实网络；主交付 新增 9 测试 574→583；FIX-01 补齐 A07/A11/A13/A14/A15 直接断言，新增 7 测试 583→590，零回归） |
 | 0172 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-041 | 0171 | CLOSED | AUDIT_FAIL：1 Blocker（A01 未跑，审计工具白名单疏漏）/2 Major（A07/A11/A13/A14/A15 测试覆盖不足，A13 零覆盖；NODE_REPORT 正文错误 commit hash）/1 Minor |
 | 0173 | NODE_RULING | COMMANDER | ALL | DEV-041 | 0172 | CLOSED | ruling: FAIL；F-01（BLOCKER）接受并说明+工具修复，F-02/F-03（MAJOR）转 FIX，F-04（MINOR）随 FIX 修正 |
-| 0174 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-041 | 0173 | ISSUED | DEV-041-FIX-01：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT commit hash + REPORT.md 文件计数 |
+| 0174 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-041 | 0173 | CLOSED | DEV-041-FIX-01：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT commit hash + REPORT.md 文件计数 |
+| 0175 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-041 | 0174 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED（含 pnpm install），0 BLOCKING，Info 1 |
+| 0176 | NODE_RULING | COMMANDER | ALL | DEV-041 | 0175 | CLOSED | ruling: PASS；DEV-041 转 DONE，接口冻结 |
 
 ---
 
@@ -202,6 +204,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0174 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

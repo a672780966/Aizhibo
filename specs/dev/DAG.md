@@ -234,9 +234,10 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 `verdict_ref: "0179"`；首轮 `AUDIT_PASS`；新建 `platform-core` +
 `NormalizedChatMessage`/`ChatHandler`，`chatMessageAdapter.ts` 转换 +
 包装函数）。
-**DEV-043 状态：`IN_PROGRESS`，第一轮 `AUDIT_FAIL`**（消息 `0183`，
-`ruling: FAIL`，消息 `0184`；`DEV-043-FIX-01` 已下发，消息 `0185`，
-重写 A09 测试场景）。
+**DEV-043 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0188`，
+`verdict_ref: "0187"`；第一轮 `AUDIT_FAIL` → `DEV-043-FIX-01` → 第二轮
+`AUDIT_PASS`；有界内存去重包装 `TwitchChatNotification` 层
+`onNotification`）。
 
 | Node | Name |
 |---|---|

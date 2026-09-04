@@ -241,11 +241,10 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 **DEV-044 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0192`，
 `verdict_ref: "0191"`；首轮 `AUDIT_PASS`；A/B/C/D 投票解析，本地镜像
 `Vote`）。
-**DEV-045 状态：`IN_PROGRESS`**（首轮 `AUDIT_FAIL`，消息 `0195`：F-01
-重连失败 error+close 连发重复排定退避定时器（MAJOR，采纳转 FIX）；
-`FIX_PACKAGE DEV-045-FIX-01` 消息 `0197` 已下发）。`RECONNECTING` 真实
-重连，指数退避 1000ms×2 封顶 30000ms，不改既有 `WS_ERROR→ERROR`/
-`SUBSCRIBE_FAIL→ERROR` 语义。
+**DEV-045 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0200`，
+`verdict_ref: "0199"`；首轮 `AUDIT_FAIL`→`FIX-01`→第二轮 `AUDIT_PASS`；
+`RECONNECTING` 真实重连，指数退避 1000ms×2 封顶 30000ms，不改既有
+`WS_ERROR→ERROR`/`SUBSCRIBE_FAIL→ERROR` 语义）。
 
 | Node | Name |
 |---|---|

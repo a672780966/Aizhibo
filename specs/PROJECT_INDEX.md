@@ -17,26 +17,24 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-DEV-045 — Twitch Reconnect（IN_PROGRESS，首轮 `AUDIT_FAIL`，`FIX_PACKAGE DEV-045-FIX-01` 消息 `0197` 已下发）
+无（DEV-045 已 DONE，下一节点 DEV-046 尚未起草）
 
 ## Current Status
 
 M1（15/15）、M2（9/9）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，依赖 M5
-`ai-host` 包真实存在，详见 `DAG.md` M3 章节）。M4 前五个节点均 `DONE`
+`ai-host` 包真实存在，详见 `DAG.md` M3 章节）。M4 前六个节点均 `DONE`
 （接口冻结）：DEV-040 Twitch OAuth → DEV-041 EventSub Client（首轮
 FAIL→FIX→PASS）→ DEV-042 Chat Message Adapter（首轮 PASS）→ DEV-043
 Message Deduplication（首轮 FAIL→FIX→PASS）→ DEV-044 Interaction
-Aggregator（首轮 PASS，A/B/C/D 投票解析）。DEV-045（Twitch Reconnect）
-已下发，`IN_PROGRESS`。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义
-agent。USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位
-处理。
+Aggregator（首轮 PASS，A/B/C/D 投票解析）→ DEV-045 Twitch Reconnect
+（首轮 FAIL→FIX→PASS，指数退避重连）。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
+不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/comms/0197-COMMANDER-to-OPENCODE-FIX_PACKAGE-DEV-045-FIX-01.md`——
-修复重连失败 error+close 连发重复排定退避定时器（仿 `armWatchdog` 模式），
-补 A09 断言 + 新测试，修正 REPORT.md 文件计数。
+无（DEV-045 已 DONE，下一节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -90,10 +88,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-042 — Chat Message Adapter（DONE，`verdict_ref: "0179"`，`git_head` `204634c909ffcaf048f9a1c7eae4134af17f5b1a`；首轮 AUDIT_PASS）
 - DEV-043 — Message Deduplication（DONE，`verdict_ref: "0187"`，`git_head` `6b65283d1c30a31164759f626bf897069ea94a33`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 - DEV-044 — Interaction Aggregator（DONE，`verdict_ref: "0191"`，`git_head` `af19967e3e3a0cd7e754b20aa42afa82faf1e9a4`；首轮 AUDIT_PASS）
+- DEV-045 — Twitch Reconnect（DONE，`verdict_ref: "0199"`，`git_head` `317b493c5b5ca4d5bef27e74d66a4906b79fbb27`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-045 — Twitch Reconnect（`TASK_PACKAGE` 消息 `0193`，`ISSUED`）
+无。
 
 ## Blocked Nodes
 
@@ -102,11 +101,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-044 — Interaction Aggregator（2026-09-05）
+DEV-045 — Twitch Reconnect（2026-09-05）
 
 ## Next Eligible Nodes
 
-DEV-046 — Twitch Send Chat（M4 第七个节点，待 DEV-045 DONE 后起草）。
+DEV-046 — Twitch Send Chat（M4 第七个节点，待 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -354,6 +353,7 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-05 | 执行方按持久会话+小步骤完成 DEV-044，`git_head` `af19967`：111 files/613 tests（608→613，+5），六条命令全绿，恰 1 条提交。`AUDITOR` 首轮 `AUDIT_PASS`（消息 `0191`），A01–A19 全部 VERIFIED，0 Blocker/0 Major，Minor 1（REPORT.md 文件计数，同 DEV-042 先例接受并记录）。`NODE_RULING: PASS`（消息 `0192`）：**DEV-044 转 DONE，接口冻结**；M4 下一个节点 DEV-045（Twitch Reconnect）具备下发条件 |
 | 2026-09-05 | 起草并发出 `TASK_PACKAGE DEV-045`（消息 `0193`，M4 第六个节点）：核对 `eventSubClient.ts`（DEV-041 冻结）`RECONNECTING` 状态仅有 `DISCONNECT` 一条边、`session_reconnect` 帧处理只转状态不解析 `reconnect_url`，注释明确标注"DEV-045 职责"；核对 Dev Spec 第 45 节"必须支持"五项，`Twitch requested reconnect`/`Exponential backoff` 是仅剩未实现的两项（`OAuth refresh` 由每次 `connect()` 内 `authPort.getAccessToken()` 天然覆盖，重连本身不需重取）；范围收窄为只扩展 `RECONNECTING` 自身转移表（新增 `WELCOME_RECEIVED`/`WS_ERROR` 两条边），不改动其余六态已审计通过的 `WS_ERROR→ERROR`/`SUBSCRIBE_FAIL→ERROR` 语义（零回归红线）；设计指数退避（1000ms 起，×2，封顶 30000ms，无限重试不设放弃上限，工程默认值记于 DECISIONS）；接受"先关旧连接再开新连接"简化（非 Twitch 官方双 socket 并存握手），已有 DEV-043 去重容错窗口期消息丢失风险；T001–T003，A01–A23；DEV-045 转 `IN_PROGRESS` |
 | 2026-09-05 | 执行方完成 DEV-045 主交付，`git_head` `2a11ac0`：621 tests（613→621，+8），六条命令全绿，恰 1 条提交，`DECISIONS.md` D1–D7。`AUDITOR` 首轮 `AUDIT_FAIL`（消息 `0195`）：F-01（MAJOR）真实重连尝试 socket 若依次触发 `error` 后 `close`，两次 `WS_ERROR` 都调用 `beginReconnectAttempt()`，排定两个独立退避定时器（`reconnectTimerId` 从未在定时器真正触发时清空，与既有 `armWatchdog` 模式不一致）；F-02（MAJOR）LEDGER 非追加改动。`NODE_RULING: FAIL`（消息 `0196`）：F-01 + A09 缺失断言采纳转 FIX；F-02 接受并说明不采纳——LEDGER"当前待处理"是活动状态看板而非历史行，自 DEV-000 起 44 个节点一致如此写法，从未被判定越界，本次维持先例。发出 `FIX_PACKAGE DEV-045-FIX-01`（消息 `0197`）：修复 `beginReconnectAttempt` 去重（仿 `armWatchdog` 模式，入口守卫 + 定时器触发时清空 `reconnectTimerId`）+ 补 A09 socket close 恰一次断言 + error→close 连发新测试 + 修正 REPORT.md 文件计数 |
+| 2026-09-05 | 执行方完成 `DEV-045-FIX-01`，`git_head` `317b493`：622 tests（621→622，+1 回归测试），六条命令全绿，恰 1 条提交，`DECISIONS.md` 追加 D8。`AUDITOR` 第二轮 `AUDIT_PASS`（消息 `0199`），A01–A23 全部 VERIFIED，0 Blocker/0 Major/0 Minor（Info 1：F-02 已在 FIX_PACKAGE 中接受，非新增问题）；新增回归测试独立验证了"若撤销修复则测试失败（8000 而非 4000）"，证明测试真实覆盖了 bug。`NODE_RULING: PASS`（消息 `0200`）：**DEV-045 转 DONE，接口冻结**；M4 下一个节点 DEV-046（Twitch Send Chat）具备下发条件 |
 
 ## Authority
 

@@ -10,3 +10,5 @@ export interface NormalizedChatMessage {
 }
 
 export type ChatHandler = (message: NormalizedChatMessage) => void;
+
+export * from './interactionAggregator.js';

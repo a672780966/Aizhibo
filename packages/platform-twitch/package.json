@@ -11,6 +11,9 @@
       "default": "./dist/index.js"
     }
   },
+  "dependencies": {
+    "xstate": "^5.32.5"
+  },
   "scripts": {
     "build": "tsc -b"
   }

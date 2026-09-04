@@ -29,7 +29,7 @@ READY_FOR_REVIEW
 
 ## 3. Changed Files
 
-Writable Scope 内共 5 个文件（实现提交 4 + T001 已建 REPORT 回填）：
+Writable Scope 内共 6 个文件（实现提交 6，含 INDEX.md 状态更新）：
 
 ```text
 packages/platform-twitch/src/messageDedup.ts       （新增，去重原语）
@@ -37,9 +37,10 @@ packages/platform-twitch/src/messageDedup.test.ts  （新增，7 条测试）
 packages/platform-twitch/src/index.ts              （追加 1 行导出）
 specs/dev/DEV-043/DECISIONS.md                     （新增，D1–D6）
 specs/dev/DEV-043/REPORT.md                        （本文件，T001 模板 → T002 回填）
+specs/dev/DEV-043/INDEX.md                         （T001–T002 勾选 + Status=READY_FOR_REVIEW）
 ```
 
-节点文档 `INDEX.md`/`REQUIREMENTS.md`/`ACCEPTANCE.md` 由 Commander 在
+节点文档 `REQUIREMENTS.md`/`ACCEPTANCE.md` 由 Commander 在
 `04d4234` dispatch 时预填（INDEX 初始 IN_PROGRESS/T001 待勾选；
 REQUIREMENTS/ACCEPTANCE 已是 Task Package 相应章节的整理/逐字抄录），本
 节点对其零改动；INDEX.md 已勾选 T001–T002 并更新 Status（§7 提交内

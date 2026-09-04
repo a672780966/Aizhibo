@@ -46,17 +46,24 @@ describe('createMessageDeduplicator（A07–A09）', () => {
     const deduplicator = createMessageDeduplicator({ maxSize: 3 });
     const duplicate = 'msg-A';
 
-    expect(deduplicator.seen(duplicate)).toBe(false);
-    expect(deduplicator.seen(duplicate)).toBe(true); // 重复，不应续命
-
-    // 再连续见 maxSize（3）个新 id。若 A 被续命到队尾，它将能扛过前 2 个
-    // 新 id，要到第 3 个新 id 才被淘汰；正确行为是 A 一直留在队头，第 1 个
-    // 新 id 就把它挤掉 → 4 个 id 全数返回 false。
+    // 先填满 maxSize=3：A 是队头（最旧），C 是队尾（最新）。
+    expect(deduplicator.seen('msg-A')).toBe(false);
     expect(deduplicator.seen('msg-B')).toBe(false);
     expect(deduplicator.seen('msg-C')).toBe(false);
+
+    // 此刻重复 A——A 并不在队尾。若实现错误地“续命”（把 A 重新插到
+    // 队尾），A 会逃过下一次淘汰；正确实现不应移动 A。
+    expect(deduplicator.seen(duplicate)).toBe(true);
+
+    // 插入第 4 个新 id D，触发淘汰队头最旧的。
     expect(deduplicator.seen('msg-D')).toBe(false);
 
-    // A 在这批新 id 填满之前就被淘汰 → 视为未见过。
+    // 若 A 曾被续命到队尾，D 淘汰的会是队头 B（B 应已不在窗口，seen → false）；
+    // 正确实现 D 淘汰的正是队头 A，B 仍在窗口（seen → true）。
+    expect(deduplicator.seen('msg-B')).toBe(true);
+
+    // 现在重传 A：正确实现 A 已被淘汰 → 视为未见过（seen → false），证明 A
+    // 被真正淘汰而非靠重复“续命”逃过淘汰。
     expect(deduplicator.seen(duplicate)).toBe(false);
   });
 

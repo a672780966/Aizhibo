@@ -197,6 +197,7 @@
 | 0174 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-041 | 0173 | CLOSED | DEV-041-FIX-01：补齐 A07/A11/A13/A14/A15 测试覆盖 + 修正 NODE_REPORT commit hash + REPORT.md 文件计数 |
 | 0175 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-041 | 0174 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED（含 pnpm install），0 BLOCKING，Info 1 |
 | 0176 | NODE_RULING | COMMANDER | ALL | DEV-041 | 0175 | CLOSED | ruling: PASS；DEV-041 转 DONE，接口冻结 |
+| 0177 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-042 | — | ISSUED | Chat Message Adapter（M4 第三个节点；新建 platform-core 定义 NormalizedChatMessage，platform-twitch 加转换函数；不碰 runtime-kernel/Vote） |
 
 ---
 
@@ -204,6 +205,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0177 |
 | AUDITOR | — |
 | COMMANDER | — |

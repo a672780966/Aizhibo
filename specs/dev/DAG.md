@@ -230,6 +230,7 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 `verdict_ref: "0175"`；第一轮 `AUDIT_FAIL` → `DEV-041-FIX-01` → 第二轮
 `AUDIT_PASS`；八态 XState 连接生命周期机器 + 真实 WebSocket/Helix 调用，
 首次消费 DEV-040 的 `TwitchAuthPort`）。
+**DEV-042 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，消息 `0177`）。
 
 | Node | Name |
 |---|---|

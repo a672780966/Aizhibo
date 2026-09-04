@@ -238,6 +238,7 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 `verdict_ref: "0187"`；第一轮 `AUDIT_FAIL` → `DEV-043-FIX-01` → 第二轮
 `AUDIT_PASS`；有界内存去重包装 `TwitchChatNotification` 层
 `onNotification`）。
+**DEV-044 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 已下发，消息 `0189`）。
 
 | Node | Name |
 |---|---|

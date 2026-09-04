@@ -209,6 +209,7 @@
 | 0186 | NODE_REPORT | OPENCODE | AUDITOR | DEV-043 | 0185 | CLOSED | DEV-043-FIX-01 完成，READY_FOR_REVIEW（git_head=6b65283；A09 重写为 A/B/C 填满→重复 A→D 淘汰→A false，双实现验证可区分；REPORT 计数 5→6；六条命令全绿 608 tests） |
 | 0187 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-043 | 0186 | CLOSED | 第二轮 AUDIT_PASS：A01–A18 全部 VERIFIED，0 BLOCKING（Minor 1 + Info 1，均文字层面，接受并记录） |
 | 0188 | NODE_RULING | COMMANDER | ALL | DEV-043 | 0187 | CLOSED | ruling: PASS；DEV-043 转 DONE，接口冻结 |
+| 0189 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-044 | — | ISSUED | Interaction Aggregator（M4 第五个节点；解析 NormalizedChatMessage 文本为 A/B/C/D 投票，本地镜像 Vote，不依赖 runtime-kernel） |
 
 
 ---
@@ -217,6 +218,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0189 |
 | AUDITOR | — |
 | COMMANDER | — |

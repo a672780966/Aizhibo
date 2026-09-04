@@ -1,6 +1,6 @@
 # DEV-050A INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -54,13 +54,13 @@ packages/platform-core/package.json/tsconfig.json（Read-only，新包结构参�
 
 ## Task Order
 
-- [ ] T001 新包骨架 + 节点文档
-- [ ] T002 egressGate.ts 实现 + 测试
-- [ ] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 新包骨架 + 节点文档
+- [x] T002 egressGate.ts 实现 + 测试
+- [x] T003 index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T003（完成）
 
 ## Exit Criteria
 

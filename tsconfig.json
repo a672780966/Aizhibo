@@ -11,6 +11,7 @@
     { "path": "./packages/persistence" },
     { "path": "./packages/audio-engine" },
     { "path": "./packages/platform-core" },
-    { "path": "./packages/platform-twitch" }
+    { "path": "./packages/platform-twitch" },
+    { "path": "./packages/ai-host" }
   ]
 }

@@ -40,7 +40,7 @@ READY_FOR_REVIEW
 
 ## 3. Changed Files
 
-Writable Scope 内共 6 个文件（实现提交 6，含 INDEX.md 状态更新）：
+Writable Scope 内共 5 个文件（实现提交 5，含 INDEX.md 状态更新）：
 
 ```text
 packages/platform-twitch/src/eventSubClient.ts       （修改，+64/−9，签名不变）
@@ -139,3 +139,59 @@ Commander 预填文件的处理先例一致。
 
 NODE_REPORT 发往 `AUDITOR`，抄送 `COMMANDER`；审核锚点与交付快照见
 `specs/comms/0194-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-045.md`。
+
+## 9. FIX-01 Round（DEV-045-FIX-01）
+
+AUDITOR 首轮 AUDIT_FAIL（消息 `0195`）：F-01（MAJOR，采纳）
+`beginReconnectAttempt()` 双排定；F-02（LEDGER 非追加改动）由 Commander
+接受并说明，无需修复。Commander 据此发出 FIX_PACKAGE `0197`，本节点
+按 FIX-1~FIX-4 修复并完成 FIX-T001。
+
+### 修复内容
+
+- **FIX-1（对应 F-01）**：`beginReconnectAttempt()` 入口加守卫
+  `if (reconnectTimerId !== undefined) return;`，并把
+  `reconnectTimerId = undefined` 移入定时器回调内部（触发那一刻清空）
+  ——仿照 `armWatchdog()` 既有模式。同一次失败的 error+close 连发现在
+  只排定一个重试定时器（根因与修复详见 `DECISIONS.md` D8）。
+- **FIX-2（对应 A09 缺失断言）**：A09/A11 测试在 CONNECTED 后补
+  `expect(socket.closeCalls).toBe(1);`（原 socket 恰被关闭一次）。
+- **FIX-3（新增回归测试）**：新增测试 "schedules only one retry when
+  a single failed reconnect attempt fires both error and close
+  (regression for DEV-045-FIX-01)"——修复前失败
+  （`expected 8000 to be 4000`），修复后通过。
+- **FIX-4（Minor）**：本文件第 3 节"Changed Files"文件计数文字由
+  "共 6 个"修正为与实际一致的"共 5 个"。
+
+### 验收结果（本 FIX 轮次）
+
+| # | 判定 | 结果 | 依据 |
+|---|---|---|---|
+| FIX-A01 | 六条命令全部退出码 0，既有全部测试零回归 | PASS | 见 §10 测试记录 |
+| FIX-A02 | 新增 error+close 连发只排定一次重试测试，通过 | PASS | FIX-3 回归测试；修复前 `8000`/修复后 `4000` |
+| FIX-A03 | A09/A11 测试补原 socket close 恰一次断言，通过 | PASS | FIX-2：`expect(socket.closeCalls).toBe(1)` |
+| FIX-A04 | REPORT.md 文件计数文字与实际一致 | PASS | 本文件第 3 节已改为"共 5 个" |
+| FIX-A05 | `git log` 新增恰 1 条提交，首行 `DEV-045-FIX-01: dedupe reconnect retry on error+close double-fire` | PASS | 见 §7 Commit |
+| FIX-A06 | 原 A01–A08/A10/A12–A23 无回归 | PASS | 25/25 全绿；既有 16 条 DEV-041 断言逐条保留 |
+
+### A09/A11 验收行更新
+
+A09（旧 socket close 恰一次）与 A11（指数退避）在首轮即 PASS，但审计
+指出 A09 缺 close 次数断言、A11 未覆盖 error+close 连发场景。FIX-2 在
+A09/A11 测试补上 `expect(socket.closeCalls).toBe(1)`（原始 socket 恰
+被第一次 attemptReconnect 关闭一次）；FIX-3 新增回归测试覆盖
+error→close 连发只排定一次重试（延迟 2000→4000 而非 8000）。两条
+验收现在都有直接断言支撑。
+
+## 10. Tests Executed（FIX-01 轮次）
+
+六条命令按顺序执行，全部退出码 0：
+
+| # | 命令 | 结果 |
+|---|---|---|
+| 1 | `pnpm install` | 0 |
+| 2 | `pnpm typecheck` | 0；`tsc -b` + `tsc -b --noEmit` + renderer typecheck |
+| 3 | `pnpm lint` | 0；`eslint .` |
+| 4 | `pnpm format:check` | 0；Prettier 全绿 |
+| 5 | `pnpm build` | 0；`tsc -b` |
+| 6 | `pnpm test` | 0；`eventSubClient.test.ts` 25 passed（原 24 + FIX-3 新增 1）；全仓 111 files 622 tests passed |

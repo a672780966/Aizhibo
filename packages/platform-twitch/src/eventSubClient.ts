@@ -252,7 +252,11 @@ export function createEventSubClient(config: EventSubClientConfig): EventSubClie
 
   // DEV-045：排定一次重连尝试（退避延迟后执行），随后按 ×2（封顶 30000ms）推进延迟。
   function beginReconnectAttempt(): void {
-    reconnectTimerId = schedule(() => attemptReconnect(), reconnectDelayMs);
+    if (reconnectTimerId !== undefined) return; // 已有挂起的重试，同一次失败的重复 WS_ERROR 不再排第二个
+    reconnectTimerId = schedule(() => {
+      reconnectTimerId = undefined;
+      attemptReconnect();
+    }, reconnectDelayMs);
     reconnectDelayMs = Math.min(reconnectDelayMs * 2, 30000);
   }
 

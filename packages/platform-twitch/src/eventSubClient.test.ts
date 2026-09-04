@@ -442,6 +442,7 @@ describe('createEventSubClient', () => {
     await vi.waitFor(() => {
       expect(client.getState()).toBe('CONNECTED');
     });
+    expect(socket.closeCalls).toBe(1);
     client.disconnect();
   });
 
@@ -605,6 +606,46 @@ describe('createEventSubClient', () => {
     });
     // 整个重连过程复用缓存 token：getAccessToken 仍只被调用过一次（初始 connect()）。
     expect(getAccessToken).toHaveBeenCalledTimes(1);
+    client.disconnect();
+  });
+
+  it('schedules only one retry when a single failed reconnect attempt fires both error and close (regression for DEV-045-FIX-01)', async () => {
+    const clock = new FakeClock();
+    const { client, socket } = await connectToConnected({ clock });
+
+    // session_reconnect → RECONNECTING，排定第一次退避尝试（1000ms 起）。
+    socket.emit('message', {
+      data: JSON.stringify({
+        metadata: { message_type: 'session_reconnect' },
+        payload: { session: { reconnect_url: 'wss://reconnect.example/ws' } },
+      }),
+    });
+    expect(client.getState()).toBe('RECONNECTING');
+    // 末尾条目为刚登记的 1000ms（前面的条目来自 connectToConnected 的 watchdog）。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(1000);
+
+    // 第一次尝试：触发定时器 → 打开重连 socket（index 1），单次 error 失败 → 延迟翻倍到 2000。
+    clock.runTimer(clock.timers.length - 1);
+    FakeWebSocket.instances[1]?.emit('error', new Event('error'));
+    expect(client.getState()).toBe('RECONNECTING');
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(2000);
+    // 记录当前存活（未被消费）的定时器槽位数，供第 8 步对比。
+    const timersLengthAfterFirstFailure = clock.timers.length;
+
+    // 第二次尝试：触发定时器 → 打开重连 socket（index 2）。本次模拟 error→close 连发。
+    clock.runTimer(clock.timers.length - 1);
+    FakeWebSocket.instances[2]?.emit('error', new Event('error'));
+    FakeWebSocket.instances[2]?.emit('close', new CloseEvent('close'));
+
+    // error→close 连发后仍停留 RECONNECTING（不跳 ERROR）。
+    expect(client.getState()).toBe('RECONNECTING');
+    // 延迟只翻倍一次（2000→4000）；若是 8000 说明连发被计两次（FIX-01 前的 bug）。
+    expect(clock.timeouts[clock.timeouts.length - 1]).toBe(4000);
+    // error+close 连发只注册了一个新定时器（不是两个）。
+    expect(clock.timers.length).toBe(timersLengthAfterFirstFailure + 1);
+    // 连发本身不立即打开新 socket（只有下一次定时器触发才会）。
+    expect(FakeWebSocket.instances).toHaveLength(3);
+
     client.disconnect();
   });
 

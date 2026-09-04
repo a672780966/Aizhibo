@@ -77,3 +77,44 @@ scheduleNextReconnect: () => beginReconnectAttempt() } })` 再
 每次重连 episode 独立从基础退避起算（A14：一次成功重连后，下次
 `session_reconnect` 的首次延迟重新从 1000ms 起，而非延续上一 episode
 末尾的封顶值）。
+
+## D8 — FIX-01：同一失败的 error+close 连发只排定一次重试
+
+**背景（F-01，MAJOR）**：`beginReconnectAttempt()` 只在排定新定时器时
+赋值 `reconnectTimerId`，从未在挂起定时器**真正触发时**把它清空回
+`undefined`——与 `armWatchdog()` 的既有模式不一致（`armWatchdog` 的
+回调第一行就是 `watchdogId = undefined;`）。某次重连尝试的 socket 若
+依次触发 `error`（→ `WS_ERROR` → `beginReconnectAttempt()`，此时
+`reconnectTimerId` 仍是上一轮已触发但未清空的值）再触发 `close`
+（→ 又一次 `WS_ERROR` → 又一次 `beginReconnectAttempt()`），会排定
+**两个**独立的退避定时器，下一次重连会被尝试两次，违反"每次失败
+恰好一次下一次重试"语义。
+
+**修复（FIX-1）**：仿照 `armWatchdog()` 模式，把清空动作移进定时器
+回调内部（触发那一刻 `reconnectTimerId = undefined`），并在入口加
+守卫：
+
+```typescript
+function beginReconnectAttempt(): void {
+  if (reconnectTimerId !== undefined) return; // 已有挂起的重试，同一次失败的重复 WS_ERROR 不再排第二个
+  reconnectTimerId = schedule(() => {
+    reconnectTimerId = undefined;
+    attemptReconnect();
+  }, reconnectDelayMs);
+  reconnectDelayMs = Math.min(reconnectDelayMs * 2, 30000);
+}
+```
+
+**逐条核对不引入新回归**：
+
+- 正常连续失败序列（每次失败只 emit 一个事件）：定时器触发时先清空
+  `reconnectTimerId`，再执行 `attemptReconnect()`；新尝试若再失败，
+  `beginReconnectAttempt()` 此时看到 `reconnectTimerId === undefined`
+  （已被清空），正常排定下一次——不影响既有 A11/A12/A14 已通过测试
+  的退避递增/封顶/重置行为。
+- `disconnect()` 中"取消挂起定时器"逻辑不变：`reconnectTimerId !==
+  undefined` 时 `cancel()` 并清空，与新守卫的判断条件一致，无需改动
+  `disconnect()`。
+- 验证：新增回归测试"schedules only one retry when a single failed
+  reconnect attempt fires both error and close"（FIX-3）在修复前失败
+  （`expected 8000 to be 4000`，连发被计两次翻倍两次），修复后通过。

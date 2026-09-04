@@ -226,6 +226,10 @@
 | 0203 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-046 | 0202 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0204 | NODE_RULING | COMMANDER | ALL | DEV-046 | 0203 | CLOSED | ruling: PASS；DEV-046 转 DONE，接口冻结；**M4 全部 7 个节点完成，里程碑结束** |
 | 0205 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-050 | — | ISSUED | Public State Gateway（M5 第一个节点；runtime-kernel 自 M1 起首次授权修改，新增 getPublicState() 投影函数 + PASS 6 运行时对偶断言） |
+| 0206 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050 | 0205 | CLOSED | DEV-050 施工完成，READY_FOR_REVIEW（git_head=8101edc；T002 实测修复两个真实缺陷：getCurrentChoiceIds scene-driven 泄漏 + resolveWorldStateKey 漏 danger 容器） |
+| 0207 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050 | 0206 | CLOSED | AUDIT_FAIL：1 Major（F-01 publishedDice 缺少排除 HIDDEN DICE.ROLLED 记录的直接断言，实现正确但测试未证明防回归能力），采纳转 FIX |
+| 0208 | NODE_RULING | COMMANDER | ALL | DEV-050 | 0207 | CLOSED | ruling: FAIL；F-01（MAJOR）转 FIX |
+| 0209 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-050 | 0208 | ISSUED | DEV-050-FIX-01：补 publishedDice 排除 HIDDEN DICE.ROLLED 记录的三段式断言（存在性+数量一一对应+不等于未过滤总数） |
 
 
 ---
@@ -234,6 +238,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0205 |
+| OPENCODE | 0209 |
 | AUDITOR | — |
 | COMMANDER | — |

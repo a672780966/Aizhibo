@@ -225,6 +225,7 @@
 | 0202 | NODE_REPORT | OPENCODE | AUDITOR | DEV-046 | 0201 | CLOSED | DEV-046 施工完成，READY_FOR_REVIEW（git_head=4b63a3d；sendChat.ts 发送原语 + 注入测试 8 条，630 tests 零回归；六条命令全绿） |
 | 0203 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-046 | 0202 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0204 | NODE_RULING | COMMANDER | ALL | DEV-046 | 0203 | CLOSED | ruling: PASS；DEV-046 转 DONE，接口冻结；**M4 全部 7 个节点完成，里程碑结束** |
+| 0205 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-050 | — | ISSUED | Public State Gateway（M5 第一个节点；runtime-kernel 自 M1 起首次授权修改，新增 getPublicState() 投影函数 + PASS 6 运行时对偶断言） |
 
 
 ---
@@ -233,6 +234,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0205 |
 | AUDITOR | — |
 | COMMANDER | — |

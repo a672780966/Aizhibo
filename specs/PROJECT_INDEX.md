@@ -13,31 +13,33 @@
 
 ## Current Milestone
 
-M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实可施工范围已于 2026-09-04 完成，DEV-038 推迟至 M5，见下）
+M4 — Twitch Complete 已于 2026-09-05 全部 7 个节点完成（M1 — Story
+Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation
+Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实可
+施工范围已于 2026-09-04 完成，DEV-038 推迟至 M5，见下）。下一里程碑
+M5 — AI Host Complete（10 节点，`DEV-050` 起）待起草第一个节点。
 
 ## Current Node
 
-DEV-046 — Twitch Send Chat（IN_PROGRESS，`TASK_PACKAGE` 消息 `0201`）
+无（M4 已全部完成，M5 第一个节点 DEV-050 尚未起草）
 
 ## Current Status
 
-M1（15/15）、M2（9/9）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
-`DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，依赖 M5
-`ai-host` 包真实存在，详见 `DAG.md` M3 章节）。M4 前六个节点均 `DONE`
-（接口冻结）：DEV-040 Twitch OAuth → DEV-041 EventSub Client（首轮
-FAIL→FIX→PASS）→ DEV-042 Chat Message Adapter（首轮 PASS）→ DEV-043
-Message Deduplication（首轮 FAIL→FIX→PASS）→ DEV-044 Interaction
-Aggregator（首轮 PASS，A/B/C/D 投票解析）→ DEV-045 Twitch Reconnect
-（首轮 FAIL→FIX→PASS，指数退避重连）。DEV-046（Twitch Send Chat，M4
-最后一个节点）已下发，`IN_PROGRESS`。AUDITOR 为
-`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
-不再逐节点确认；账号/密钥继续占位处理。
+M1（15/15）、M2（9/9）、**M4（7/7，Twitch Complete）**均 `DONE`。M3：
+DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
+`BLOCKED`**（暂缓非施工失败，依赖 M5 `ai-host` 包真实存在，详见
+`DAG.md` M3 章节）。M4 全部 7 个节点（接口冻结）：DEV-040 Twitch OAuth
+→ DEV-041 EventSub Client（首轮 FAIL→FIX→PASS）→ DEV-042 Chat Message
+Adapter（首轮 PASS）→ DEV-043 Message Deduplication（首轮
+FAIL→FIX→PASS）→ DEV-044 Interaction Aggregator（首轮 PASS，A/B/C/D
+投票解析）→ DEV-045 Twitch Reconnect（首轮 FAIL→FIX→PASS，指数退避
+重连）→ DEV-046 Twitch Send Chat（首轮 PASS，CR-010 出站边界）。
+AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续
+推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-046.md`（消息 `0201`，`ISSUED`）——调用
-真实 Twitch Send Chat Message API，复用 `TwitchAuthPort`，不接入
-`runtime-kernel`/`PlatformPort`（CR-010）。
+无（M4 已全部完成，M5 第一个节点 Task Package 尚未起草）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -92,10 +94,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-043 — Message Deduplication（DONE，`verdict_ref: "0187"`，`git_head` `6b65283d1c30a31164759f626bf897069ea94a33`；第一轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
 - DEV-044 — Interaction Aggregator（DONE，`verdict_ref: "0191"`，`git_head` `af19967e3e3a0cd7e754b20aa42afa82faf1e9a4`；首轮 AUDIT_PASS）
 - DEV-045 — Twitch Reconnect（DONE，`verdict_ref: "0199"`，`git_head` `317b493c5b5ca4d5bef27e74d66a4906b79fbb27`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）
+- DEV-046 — Twitch Send Chat（DONE，`verdict_ref: "0203"`，`git_head` `4b63a3d9ea05f4f5a5fd8ae565509bb276352e5e`；首轮 AUDIT_PASS）**——M4 里程碑最后一个节点**
 
 ## In Progress Nodes
 
-- DEV-046 — Twitch Send Chat（`TASK_PACKAGE` 消息 `0201`，`ISSUED`）
+无。
 
 ## Blocked Nodes
 
@@ -104,12 +107,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-045 — Twitch Reconnect（2026-09-05）
+DEV-046 — Twitch Send Chat（2026-09-05）**——M4 里程碑全部 7 个节点完成**
 
 ## Next Eligible Nodes
 
-M4 将在 DEV-046 DONE 后全部完成（7/7）。M5（AI Host，10 节点，
-DEV-050 起）待 DEV-046 DONE 后起草第一个节点。
+M5（AI Host Complete，10 节点，`DEV-050` 起）第一个节点待起草。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -359,6 +361,7 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-05 | 执行方完成 DEV-045 主交付，`git_head` `2a11ac0`：621 tests（613→621，+8），六条命令全绿，恰 1 条提交，`DECISIONS.md` D1–D7。`AUDITOR` 首轮 `AUDIT_FAIL`（消息 `0195`）：F-01（MAJOR）真实重连尝试 socket 若依次触发 `error` 后 `close`，两次 `WS_ERROR` 都调用 `beginReconnectAttempt()`，排定两个独立退避定时器（`reconnectTimerId` 从未在定时器真正触发时清空，与既有 `armWatchdog` 模式不一致）；F-02（MAJOR）LEDGER 非追加改动。`NODE_RULING: FAIL`（消息 `0196`）：F-01 + A09 缺失断言采纳转 FIX；F-02 接受并说明不采纳——LEDGER"当前待处理"是活动状态看板而非历史行，自 DEV-000 起 44 个节点一致如此写法，从未被判定越界，本次维持先例。发出 `FIX_PACKAGE DEV-045-FIX-01`（消息 `0197`）：修复 `beginReconnectAttempt` 去重（仿 `armWatchdog` 模式，入口守卫 + 定时器触发时清空 `reconnectTimerId`）+ 补 A09 socket close 恰一次断言 + error→close 连发新测试 + 修正 REPORT.md 文件计数 |
 | 2026-09-05 | 执行方完成 `DEV-045-FIX-01`，`git_head` `317b493`：622 tests（621→622，+1 回归测试），六条命令全绿，恰 1 条提交，`DECISIONS.md` 追加 D8。`AUDITOR` 第二轮 `AUDIT_PASS`（消息 `0199`），A01–A23 全部 VERIFIED，0 Blocker/0 Major/0 Minor（Info 1：F-02 已在 FIX_PACKAGE 中接受，非新增问题）；新增回归测试独立验证了"若撤销修复则测试失败（8000 而非 4000）"，证明测试真实覆盖了 bug。`NODE_RULING: PASS`（消息 `0200`）：**DEV-045 转 DONE，接口冻结**；M4 下一个节点 DEV-046（Twitch Send Chat）具备下发条件 |
 | 2026-09-05 | 起草并发出 `TASK_PACKAGE DEV-046`（消息 `0201`，M4 第七个/最后一个节点）：核对 `runtime-kernel/src/ports.ts`（DEV-009/012 冻结）`PlatformPort.sendChat(msg): Promise<void>` 从未被真实实现驱动；核对 `DAG.md` 第 264 行 CR-010 附加约束——本节点不得暴露 Host 可直接调用的出站接口，Host 发言需经尚未创建的 M5 `DEV-050A Egress Gate`；设计 `sendChat.ts` 复用 DEV-040 `twitchAuth.ts` 的诚实结果类型模式，调用真实 `POST /helix/chat/messages`；关键设计决策：不提供 `getXxxHealth()` 主动探测函数（与 `twitchAuth.ts` 不同——发聊天消息有真实公开副作用，用它做健康检查等同于向观众刷屏，不可接受）；不做本地消息校验/截断/重试；T001–T002，A01–A22；DEV-046 转 `IN_PROGRESS` |
+| 2026-09-05 | 执行方完成 DEV-046，`git_head` `4b63a3d`：112 files/630 tests（622→630，+8），六条命令全绿，恰 1 条提交。`AUDITOR` 首轮 `AUDIT_PASS`（消息 `0203`），A01–A22 全部 VERIFIED，0 Blocker/0 Major/0 Minor/0 Info，特别核验 CR-010 合规（`TwitchSendChat` 未 import/实现 `PlatformPort`，无任何 Host/runtime-kernel 可达接线）。`NODE_RULING: PASS`（消息 `0204`）：**DEV-046 转 DONE，接口冻结**。**M4（Twitch Complete）里程碑全部 7 个节点（DEV-040~046）完成**；下一里程碑 M5（AI Host Complete，10 节点）具备起草条件 |
 
 ## Authority
 

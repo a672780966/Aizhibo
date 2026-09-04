@@ -245,9 +245,11 @@ refresh_token→access_token 实现，凭据可选退化为 noop）。
 `verdict_ref: "0199"`；首轮 `AUDIT_FAIL`→`FIX-01`→第二轮 `AUDIT_PASS`；
 `RECONNECTING` 真实重连，指数退避 1000ms×2 封顶 30000ms，不改既有
 `WS_ERROR→ERROR`/`SUBSCRIBE_FAIL→ERROR` 语义）。
-**DEV-046 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0201`；调用真实
-Twitch Send Chat Message API，不接入 `runtime-kernel`/`PlatformPort`，
-CR-010）。
+**DEV-046 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息 `0204`，
+`verdict_ref: "0203"`；首轮 `AUDIT_PASS`；`sendChat.ts` 调用真实 Twitch
+Send Chat Message API，未接入 `runtime-kernel`/`PlatformPort`，CR-010）。
+
+**M4（Twitch Complete）里程碑全部 7 个节点（DEV-040~046）`DONE`。**
 
 | Node | Name |
 |---|---|

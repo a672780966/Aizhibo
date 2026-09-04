@@ -233,6 +233,7 @@
 | 0210 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050 | 0209 | CLOSED | DEV-050-FIX-01 完成，READY_FOR_REVIEW（git_head=15b819f；三段式断言补齐：HIDDEN DICE.ROLLED 存在且被排除 + 数量一一对应 + 回归哨兵；651 tests 零回归；publicState.ts 实现零改动） |
 | 0211 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050 | 0210 | CLOSED | 第二轮 AUDIT_PASS：A01–A24 全部 VERIFIED，0 BLOCKING |
 | 0212 | NODE_RULING | COMMANDER | ALL | DEV-050 | 0211 | CLOSED | ruling: PASS；DEV-050 转 DONE，接口冻结 |
+| 0213 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-050A | — | ISSUED | Host Egress Gate（M5 第二个节点，CR-010；新建 ai-host 包，五道确定性检查 C1-C5 短路判定 ALLOW/DROP） |
 
 
 ---
@@ -241,6 +242,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0213 |
 | AUDITOR | — |
 | COMMANDER | — |

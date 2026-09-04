@@ -281,6 +281,9 @@ Send Chat Message API，未接入 `runtime-kernel`/`PlatformPort`，CR-010）。
 `isFactSafeToDisclose`，仅追加不改动任何既有导出；实现过程中发现并
 修复两个真实缺陷：`resolveWorldStateKey` 漏 `danger.*` 容器、
 `getCurrentChoiceIds` 场景驱动导致 `currentChoices` 提前泄漏）。
+**DEV-050A 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0213`；全仓库
+首次创建 `packages/ai-host`，五道确定性检查 C1-C5 短路判定
+ALLOW/DROP，消费 DEV-002A 冻结的 `ForbiddenLexicon`）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

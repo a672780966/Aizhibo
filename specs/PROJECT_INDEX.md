@@ -17,29 +17,32 @@ M4 — Twitch Complete（M1 — Story Machine Complete 已于 2026-08-21 全部 
 
 ## Current Node
 
-无（DEV-040 已 DONE，下一节点 DEV-041 尚未起草）
+DEV-041 — EventSub Client（`IN_PROGRESS`，消息 `0170`；M4 第二个节点）
 
 ## Current Status
 
 M1 全部 15 个节点、M2 全部 9 个节点、M3 前七个节点
-DEV-030/031/032/034/035/036/037 均 `DONE`（接口冻结）。DEV-037 交付
-`LOCKING` 首次真实延迟（`TARGET_DICE_MS=6000`），Simulator/Replay/既有
-测试均已验证零性能回归；`AUDIO_READY` 安全阀分支仍待未来节点。**DEV-038
-（Audio Ducking）已判定 `BLOCKED`（暂缓，非施工失败）**：其真实触发信号
-（Host 音频是否在播）依赖 `ai-host` 包，该包尚未创建（M5 未开工），
-`audioRegion.ts` 的 `PLAYING_HOST` 状态自 DEV-009 起从未被任何真实代码路径
-进入过；在 Host 真实存在前实现这条触发逻辑等同于给结构上不可达的状态编写
-监听器，与本项目"不写投机性代码"的一贯纪律冲突，详见 `DAG.md` M3 章节的
-裁定说明。M4 已开工，**DEV-040（Twitch OAuth）已 `DONE`（接口冻结）**：
-新建 `platform-twitch` 包，`TwitchAuthPort` 真实 refresh_token→access_token
-实现，凭据可选退化为 noop；审计发现 1 处 Major（执行方多提交一次把
-LEDGER/NODE_REPORT 也提交了，内容干净但偏离既有惯例），Commander 已裁决
-PASS 并记录制度修复（今后 dispatch 提示词禁止执行方自行提交
-LEDGER/NODE_REPORT）。
+DEV-030/031/032/034/035/036/037 均 `DONE`（接口冻结）；**DEV-038（Audio
+Ducking）已判定 `BLOCKED`**（暂缓非施工失败，依赖 M5 `ai-host` 包真实存在，
+详见 `DAG.md` M3 章节裁定说明）。M4 已开工：**DEV-040（Twitch OAuth）已
+`DONE`**（接口冻结）——新建 `platform-twitch` 包，`TwitchAuthPort` 真实
+refresh_token→access_token 实现，凭据可选退化为 noop；审计发现 1 处 Major
+（执行方多提交一次），Commander 已裁决 PASS 并记录制度修复。**DEV-041
+（EventSub Client）已下发，`IN_PROGRESS`**：新增 Dev Spec 第 45 节八态
+XState 连接生命周期机器，真实 WebSocket + Helix 订阅创建 API，首次消费
+`TwitchAuthPort`；不做 NormalizedChatMessage 转换/去重/真正重连算法/发送
+消息（分属 DEV-042/043/045/046）。**AUDITOR 角色自本节点起改为 `opencode`
+CLI 自定义 agent（`.opencode/agent/auditor.md`，模型 `openai/gpt-5.6-terra`），
+取代直接调用 Claude Code `project-auditor` subagent**——已用 DEV-040 做过
+一次独立复审验证可用（真实跑通五条命令，独立发现一处 DEV-040 Task Package
+未声明 `pnpm-lock.yaml` 的 Scope 疏漏）。USER 已授权：配置完成后自动推进，
+除非是产品本身出问题，否则不需要逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-无（DEV-040 已 DONE，下一节点 Task Package 尚未起草）
+`specs/tasks/TASK-PACKAGE-DEV-041.md`（新增 `createEventSubClient`——Dev
+Spec 第 45 节八态 XState 机器，真实 WebSocket/Helix 调用，零新增第三方依赖；
+不实现 NormalizedChatMessage/去重/真正重连/发送消息）
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -92,7 +95,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-无。
+- DEV-041 — EventSub Client（`IN_PROGRESS`，消息 `0170`；M4 第二个节点）
 
 ## Blocked Nodes
 
@@ -105,7 +108,7 @@ DEV-040 — Twitch OAuth（2026-09-04）
 
 ## Next Eligible Nodes
 
-DEV-041 — EventSub Client（M4 第二个节点，待 Claude Commander 起草）。
+DEV-042 — Chat Message Adapter（待 DEV-041 `DONE` 后由 Claude Commander 起草）。
 DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下发条件。
 
 ## Project-level Blockers
@@ -333,6 +336,8 @@ DEV-038 — Audio Ducking 需等 M5 `ai-host` 包真实存在才重新具备下�
 | 2026-09-04 | 首次 `pi -p --no-session` 调用因 `commandcode` provider 侧会话投递基础设施故障（"no session-stable thenable send"）静默退出，exit code 0 但零实际改动（无提交、无文件、工作区干净）；核实无残留后用同一份指令原样重试，第二次调用成功，完整完成 T001–T003；执行方发出 `NODE_REPORT`（消息 `0167`）：562→574 测试（新增 12，零回归），六条命令全部退出码 0；转交 `AUDITOR` 独立审计 |
 | 2026-09-04 | `AUDITOR`（直调 `project-auditor` subagent）`AUDIT_VERDICT`（消息 `0168`）：**AUDIT_FAIL**，唯一原因是 A19（"恰 1 条提交"）——实际执行方多做了一次提交（`11d4cb1` 实现主体 + `4670bd5` 仅 LEDGER 追加与执行方自己的 NODE_REPORT 消息，零代码/零依赖/零 Forbidden Scope），偏离 DEV-037 建立的"LEDGER/NODE_REPORT 留待 Commander 收尾一并提交"惯例；其余 A01–A18/A20–A21 全部独立 VERIFIED（含独立重跑五条命令、逐行核对身份等价/请求构造/错误处理/健康探测），Architecture/Regression/Overengineering 三项均 PASS，Major 1/Info 1 |
 | 2026-09-04 | 发出 `NODE_RULING: PASS`（消息 `0169`，`verdict_ref: "0168"`，采纳 Auditor 提出的选项 (a)）：**DEV-040 转 DONE，接口冻结**——A19 按其防越界的立法意图认定成立（第二次提交内容 100% 限定在 Writable Scope 授权文件内，不存在 A19 意在防范的风险），不选择重写已落地的本地提交历史；**制度修复**：记录进 Commander 操作记忆，今后每次 `pi` dispatch 提示词必须显式禁止执行方自行提交 LEDGER.md/NODE_REPORT 消息文件，留给 Commander 收尾统一提交；同步更新本文件与 `DAG.md`；**M4 首个节点完成，USER"再做 5 轮"指示（DEV-035/036/037 + DEV-038 现实核对与推迟 + DEV-040）已达成**，向 USER 汇报本轮结果小结后再决定是否继续 |
+| 2026-09-04 | USER 指示"审核交给 opencode 使用 gpt 5.6 terra"：AUDITOR 角色改为直接调用 `opencode` CLI 自定义 agent（`c:\Users\admin\Music\Aizhibo\.opencode\agent\auditor.md`，与 `.claude/` 同样加入 `.gitignore`，模型固定 `openai/gpt-5.6-terra`），取代直接调用 Claude Code `project-auditor` subagent；agent 系统提示词是 `project-auditor.md` 完整审计守则的原样迁移。配置过程中发现关键限制：给自定义 `mode: primary` agent 的 frontmatter 显式写 `tools:`/`permission:` 会导致 Bash 工具完全不可用（连 `git status` 都执行不了），最终去掉这两个字段、只保留 `description`/`mode`/`model`，代价是 Scope/危险命令约束从"引擎强制"降级为"纪律层面自我约束"（与执行方 `pi` 处于同一信任模型）；用 DEV-040（已 DONE）做了一次独立复审验证：真实跑通 `pnpm typecheck/lint/test/build/format:check` 五条命令（106 files/574 tests 全绿），独立发现 DEV-040 Task Package 遗漏把 `pnpm-lock.yaml` 列入 Writable Scope 的疏漏（本次 DEV-041 Task Package 已据此修正，显式声明该文件）；随后 USER 指示"配置结束以后自动推进 只要不是产品本身出问题就可以推进，key 这些都可以先占位"，据此不再逐节点确认，继续下发 DEV-041 |
+| 2026-09-04 | 起草并发出 `TASK_PACKAGE DEV-041`（消息 `0170`，M4 第二个节点）：核对 `packages/platform-twitch/`（DEV-040 建立）现状确认只有 `TwitchAuthPort` 四个符号，无任何 WebSocket/HTTP 客户端代码；核对全仓库 grep `NormalizedChatMessage` 零匹配，确认这个类型从未被定义过，只在 `DAG.md` 第 242 行 CR-017 裁决的产品性文字里提到字段形状，属于 DEV-042（Chat Message Adapter）的产出，不是本节点的；核对 `DAG.md` 把 `DEV-043`（去重，"必须做"）与 `DEV-045`（Reconnect）列为独立后续节点，本节点因此只需让状态机可达 `RECONNECTING`/`DEGRADED`（可达性，参照 DEV-009 VERDICT F-04 的教训），不需要实现真正的指数退避重试或去重存储；核对全仓库无 `ws`/`websocket` 第三方依赖，根 `package.json` 要求 Node ≥22（原生 `WebSocket`/`fetch` 已够用），`runtime-kernel` 已依赖 `xstate@^5.32.5`（本节点复用同版本建模连接生命周期，不算新引入未审查依赖）；设计 `createEventSubClient`——Dev Spec 第 45 节八态 XState 机器，真实 WebSocket 连接 + Helix `channel.chat.message` 订阅创建 API 调用，首次真实消费 DEV-040 的 `TwitchAuthPort`（凭据不可用时诚实转 `ERROR`，不构造连接）；notification 帧原样转发不做字段转换/去重；明确排除 `NormalizedChatMessage`/去重/真正重连算法/发送消息/`LivePlatformAdapter` 组装（分属 DEV-042/043/045/046）；新增 Constraint 8（T003 提交后不要再单独提交 LEDGER/NODE_REPORT，弥补 DEV-040 的教训）与显式声明 `pnpm-lock.yaml` 入 Writable Scope（弥补 DEV-040 的疏漏）；T001–T003，A01–A24；DEV-041 转 `IN_PROGRESS`。执行侧继续由 `pi --provider commandcode --model deepseek/deepseek-v4-flash` 自动调用；审计侧改为 `opencode run --agent auditor --model openai/gpt-5.6-terra --auto` |
 
 ## Authority
 

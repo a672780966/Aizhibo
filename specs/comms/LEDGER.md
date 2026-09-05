@@ -245,6 +245,7 @@
 | 0222 | NODE_REPORT | OPENCODE | AUDITOR | DEV-050A | 0221 | CLOSED | DEV-050A-FIX-02 完成，READY_FOR_REVIEW（git_head=d42f35c；回归测试文本重构：第二段 badword 置于索引 0-6 早于遗留 lastIndex=28；自我验证：撤销修复行测试真实失败、恢复后通过；664 tests 零回归；实现代码零改动） |
 | 0223 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0222 | CLOSED | 第三轮 AUDIT_PASS：A01–A24 全部 VERIFIED（逐字符核算证实测试真正具备区分力），0 BLOCKING（Info 1，工作区换行符标记非内容差异） |
 | 0224 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0223 | CLOSED | ruling: PASS；DEV-050A 转 DONE，接口冻结 |
+| 0225 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-051 | — | ISSUED | Comment Pipeline（M5 第三个节点；Safety+Priority+Topic Cluster+Select Candidate 四步，Dedup/Normalize 已在 M4 完成，零 LLM 零第三方依赖） |
 
 
 ---
@@ -253,6 +254,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0225 |
 | AUDITOR | — |
 | COMMANDER | — |

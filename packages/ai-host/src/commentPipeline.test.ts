@@ -82,15 +82,12 @@ describe('createCommentPipeline', () => {
     expect(pipeline.selectCandidate()?.message.text).toBe('alpha');
   });
 
-  it('A11: count-equal clusters tie-break by latest receivedAt (true tie, regression for DEV-051-FIX-01)', () => {
+  it('A11: count-equal clusters tie-break by latest receivedAt, not insertion order (regression for DEV-051-FIX-02)', () => {
     const pipeline = createCommentPipeline();
-    // 两条不同文本各自 ingest 两次：count 均为 2（真正并列），但 alpha 的
-    // 最后一条 receivedAt 比 beta 的最后一条晚 100。若并列分支未生效（例如
-    // 误按 count 之外的其他字段或保持插入序），返回的就不是 alpha。
-    pipeline.ingest(msg('alpha', { receivedAt: 100 }));
-    pipeline.ingest(msg('alpha', { receivedAt: 500 }));
+    pipeline.ingest(msg('beta', { receivedAt: 100 }));
     pipeline.ingest(msg('beta', { receivedAt: 200 }));
-    pipeline.ingest(msg('beta', { receivedAt: 400 }));
+    pipeline.ingest(msg('alpha', { receivedAt: 300 }));
+    pipeline.ingest(msg('alpha', { receivedAt: 400 }));
     const candidate = pipeline.selectCandidate();
     expect(candidate?.message.text).toBe('alpha');
     expect(candidate?.clusterSize).toBe(2);

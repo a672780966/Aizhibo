@@ -66,6 +66,9 @@ importers:
       '@interactive-story/chapter-compiler':
         specifier: workspace:*
         version: link:../chapter-compiler
+      '@interactive-story/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
 
   packages/audio-engine: {}
 

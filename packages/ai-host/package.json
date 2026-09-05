@@ -15,6 +15,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@interactive-story/chapter-compiler": "workspace:*"
+    "@interactive-story/chapter-compiler": "workspace:*",
+    "@interactive-story/platform-core": "workspace:*"
   }
 }

@@ -1,6 +1,6 @@
 # DEV-051 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -46,12 +46,12 @@ packages/ai-host/src/egressGate.ts（Read-only，不 import）
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 commentPipeline.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 commentPipeline.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T001、T002 已全部完成
 
 ## Exit Criteria
 

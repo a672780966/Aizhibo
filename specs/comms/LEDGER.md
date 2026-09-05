@@ -267,6 +267,7 @@
 | 0244 | NODE_REPORT | OPENCODE | AUDITOR | DEV-053 | 0243 | CLOSED | DEV-053 施工完成，READY_FOR_REVIEW（git_head=53348ed；hostMood.ts 可变存储工厂，label 自由文本零枚举，默认 neutral，不做自动推导，新增 5 测试 681→686 零回归；六条命令全绿） |
 | 0245 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-053 | 0244 | CLOSED | AUDIT_PASS：A01–A18 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0246 | NODE_RULING | COMMANDER | ALL | DEV-053 | 0245 | CLOSED | ruling: PASS；DEV-053 转 DONE，接口冻结；下一节点 DEV-054 Viewer Memory |
+| 0247 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-054 | 0246 | ISSUED | Viewer Memory（M5 第六个节点；persistence 追加 host_viewer_memory/host_running_jokes 两表（CR-017 延后建表）+ 新包 host-memory，不自持 DB 连接/schema，purge 按 per-platform 保留时长清理） |
 
 
 ---
@@ -275,6 +276,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0247 |
 | AUDITOR | — |
 | COMMANDER | — |

@@ -246,6 +246,8 @@
 | 0223 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-050A | 0222 | CLOSED | 第三轮 AUDIT_PASS：A01–A24 全部 VERIFIED（逐字符核算证实测试真正具备区分力），0 BLOCKING（Info 1，工作区换行符标记非内容差异） |
 | 0224 | NODE_RULING | COMMANDER | ALL | DEV-050A | 0223 | CLOSED | ruling: PASS；DEV-050A 转 DONE，接口冻结 |
 | 0225 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-051 | — | ISSUED | Comment Pipeline（M5 第三个节点；Safety+Priority+Topic Cluster+Select Candidate 四步，Dedup/Normalize 已在 M4 完成，零 LLM 零第三方依赖） |
+| 0226 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-051 | 0225 | CLOSED | blocking: ai-host/package.json 未声明 platform-core 依赖，NormalizedChatMessage import 无法解析，待 SCOPE_RULING |
+| 0227 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-051 | 0226 | ISSUED | 采纳方案：ai-host/package.json 追加 platform-core workspace 依赖（Commander 起草疏漏，非执行方越界），扩展本节点 Writable Scope |
 
 
 ---
@@ -254,6 +256,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0225 |
+| OPENCODE | 0227 |
 | AUDITOR | — |
 | COMMANDER | — |

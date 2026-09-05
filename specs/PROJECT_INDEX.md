@@ -21,26 +21,29 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-051 — Comment Pipeline（IN_PROGRESS，`TASK_PACKAGE` 消息 `0225`）
+DEV-051 — Comment Pipeline（DONE，`verdict_ref: "0237"`）。下一节点
+DEV-052 — Host Persona 待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
 DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
-`DAG.md` M3 章节）。M5（AI Host，10 节点）前两个节点均 `DONE`：
-DEV-050 Public State Gateway → DEV-050A Host Egress Gate。第三个
-节点 DEV-051（Comment Pipeline）已下发，`IN_PROGRESS`——Dev Spec 第
-40 节流水线的 Safety→Priority→Topic Cluster→Select Candidate 四步
-（Dedup/Normalize 已在 M4 完成），零 LLM、零第三方依赖。AUDITOR 为
-`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
-不再逐节点确认；账号/密钥继续占位处理。
+`DAG.md` M3 章节）。M5（AI Host，10 节点）前三个节点均 `DONE`：
+DEV-050 Public State Gateway → DEV-050A Host Egress Gate → DEV-051
+Comment Pipeline（Safety→Priority→Topic Cluster→Select Candidate
+四步，归一化文本精确匹配聚类，零 LLM、零第三方依赖；三轮审计：
+首轮 FAIL（A22 缺失，Commander 收尾遗漏）→FIX-01（补测试覆盖）→
+第二轮 FAIL（A11 测试插入顺序与 receivedAt 混淆）→FIX-02→第三轮
+PASS）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。USER 已
+授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-051.md`（消息 `0225`，`ISSUED`）——
+DEV-052（Host Persona）待起草。DEV-051 历史：
+`specs/tasks/TASK-PACKAGE-DEV-051.md`（消息 `0225`）——
 `createCommentPipeline`：Safety 黑名单/长度检查 + 归一化聚类 +
-只读候选选择。
+只读候选选择，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -98,10 +101,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-046 — Twitch Send Chat（DONE，`verdict_ref: "0203"`，`git_head` `4b63a3d9ea05f4f5a5fd8ae565509bb276352e5e`；首轮 AUDIT_PASS）**——M4 里程碑最后一个节点**
 - DEV-050 — Public State Gateway（DONE，`verdict_ref: "0211"`，`git_head` `15b819fb14b8a7b3217606accb1ecfefa937a824`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_PASS）**——M5 第一个节点**
 - DEV-050A — Host Egress Gate（DONE，`verdict_ref: "0223"`，`git_head` `d42f35c05873053f54d828b20e7f8398ad099675`；首轮 AUDIT_FAIL→FIX-01→第二轮 AUDIT_FAIL（FIX 测试无效）→FIX-02→第三轮 AUDIT_PASS）
+- DEV-051 — Comment Pipeline（DONE，`verdict_ref: "0237"`，`git_head` `c24c81ad3e743db2b133e190cef68bd085b6efd6`；首轮 AUDIT_FAIL（A22 缺失，Commander 收尾遗漏）→FIX-01→第二轮 AUDIT_FAIL（A11 测试插入顺序与 receivedAt 混淆）→FIX-02→第三轮 AUDIT_PASS）**——M5 第三个节点**
 
 ## In Progress Nodes
 
-- DEV-051 — Comment Pipeline（`TASK_PACKAGE` 消息 `0225`，`ISSUED`）
+（无）
 
 ## Blocked Nodes
 
@@ -110,11 +114,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-050A — Host Egress Gate（2026-09-05）
+DEV-051 — Comment Pipeline（2026-09-05）
 
 ## Next Eligible Nodes
 
-DEV-052 — Host Persona（M5 第四个节点，待 DEV-051 DONE 后起草）。
+DEV-052 — Host Persona（M5 第四个节点，待起草）。
 DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在）。
 
 ## Project-level Blockers

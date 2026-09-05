@@ -287,9 +287,12 @@ Send Chat Message API，未接入 `runtime-kernel`/`PlatformPort`，CR-010）。
 `AUDIT_PASS`；全仓库首次创建 `packages/ai-host`，五道确定性检查
 C1-C5 短路判定 ALLOW/DROP，消费 DEV-002A 冻结的 `ForbiddenLexicon`；
 修复了 C3 正则 `lastIndex` 副作用导致的检测绕过真实缺陷）。
-**DEV-051 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0225`；
-Comment Pipeline 的 Safety→Priority→Topic Cluster→Select Candidate
-四步，归一化文本精确匹配聚类，零 LLM）。
+**DEV-051 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0238`，`verdict_ref: "0237"`；首轮 `AUDIT_FAIL`（A22 缺失，
+Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
+`AUDIT_FAIL`（A11 测试插入顺序与 receivedAt 混淆）→`FIX-02`→第三轮
+`AUDIT_PASS`；`commentPipeline.ts` 归一化文本精确匹配聚类 + 容量
+淘汰 + 只读 Priority 选择，零 LLM、零第三方依赖）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

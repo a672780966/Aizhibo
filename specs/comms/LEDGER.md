@@ -248,6 +248,17 @@
 | 0225 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-051 | — | ISSUED | Comment Pipeline（M5 第三个节点；Safety+Priority+Topic Cluster+Select Candidate 四步，Dedup/Normalize 已在 M4 完成，零 LLM 零第三方依赖） |
 | 0226 | EXECUTOR_QUERY | OPENCODE | COMMANDER | DEV-051 | 0225 | CLOSED | blocking: ai-host/package.json 未声明 platform-core 依赖，NormalizedChatMessage import 无法解析，待 SCOPE_RULING |
 | 0227 | SCOPE_RULING | COMMANDER | OPENCODE | DEV-051 | 0226 | ISSUED | 采纳方案：ai-host/package.json 追加 platform-core workspace 依赖（Commander 起草疏漏，非执行方越界），扩展本节点 Writable Scope |
+| 0228 | NODE_REPORT | OPENCODE | AUDITOR | DEV-051 | 0227 | CLOSED | DEV-051 施工完成，READY_FOR_REVIEW（git_head=716454d；commentPipeline.ts 归一化聚类+容量淘汰+只读 Priority 选择，新增 10 测试 664→674 零回归；六条命令全绿） |
+| 0229 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-051 | 0228 | CLOSED | AUDIT_FAIL：1 Blocker（A22 缺失，Commander 收尾流程遗漏，已消解不转 FIX）+3 Minor（A11 未真正并列/A16 缺 maxPending 默认值直证/denylist 缺有状态正则回归），Minor 采纳转 FIX |
+| 0230 | NODE_RULING | COMMANDER | ALL | DEV-051 | 0229 | CLOSED | ruling: FAIL；F-01 已由 Commander 补写 NODE_REPORT/LEDGER 消解；F-02/F-03/F-04（MINOR）转 FIX-01；I-01（换行符 cosmetic）接受不转 FIX |
+| 0231 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-051 | 0230 | ISSUED | DEV-051-FIX-01：补 A11 真并列 tie-break 测试 + A16 maxPending=100 默认值直证测试 + denylist 有状态 /g 正则 lastIndex 重置回归测试 |
+| 0232 | NODE_REPORT | OPENCODE | AUDITOR | DEV-051 | 0231 | CLOSED | DEV-051-FIX-01 完成，READY_FOR_REVIEW（git_head=77af7fc；三测试补齐：A11 真并列 tie-break + A16 maxPending=100 直证 + denylist /g 有状态正则回归；13 测试 674→677 零回归；实现零改动，六条命令全绿） |
+| 0233 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-051 | 0232 | CLOSED | 第二轮 AUDIT_FAIL：1 Blocker（F-05 format:check 失手，系 Commander 自查 A07 时 git checkout 重触发 autocrlf CRLF，已用 prettier --write 就地修复零 diff，非代码缺陷）+1 Major（F-02 A11 测试插入顺序与 receivedAt 同指一簇，退化实现仍能通过，仍未解决） |
+| 0234 | NODE_RULING | COMMANDER | ALL | DEV-051 | 0233 | CLOSED | ruling: FAIL；F-05 已消解（Commander 工作区痕迹，非交付缺陷）；F-02（MAJOR）转 FIX-02，要求插入顺序与 receivedAt 大小反向对应 |
+| 0235 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-051 | 0234 | ISSUED | DEV-051-FIX-02：重写 A11 测试，先插入的簇 receivedAt 更早、后插入的簇 receivedAt 更晚，消除插入顺序与 receivedAt 大小的混淆 |
+| 0236 | NODE_REPORT | OPENCODE | AUDITOR | DEV-051 | 0235 | CLOSED | DEV-051-FIX-02 完成，READY_FOR_REVIEW（git_head=c24c81a；A11 重写为插入序与 receivedAt 反向：beta 先插入 latest=200，alpha 后插入 latest=400，退化实现必返 beta 而失败；677 tests 零回归；实现零改动，六条命令全绿） |
+| 0237 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-051 | 0236 | CLOSED | 第三轮 AUDIT_PASS：A01–A23 全部 VERIFIED，0 BLOCKING（Info 1，工作区 CRLF 标记非内容差异） |
+| 0238 | NODE_RULING | COMMANDER | ALL | DEV-051 | 0237 | CLOSED | ruling: PASS；DEV-051 转 DONE，接口冻结；下一节点 DEV-052 Host Persona |
 
 
 ---
@@ -256,6 +267,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0227 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

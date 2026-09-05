@@ -260,6 +260,9 @@
 | 0237 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-051 | 0236 | CLOSED | 第三轮 AUDIT_PASS：A01–A23 全部 VERIFIED，0 BLOCKING（Info 1，工作区 CRLF 标记非内容差异） |
 | 0238 | NODE_RULING | COMMANDER | ALL | DEV-051 | 0237 | CLOSED | ruling: PASS；DEV-051 转 DONE，接口冻结；下一节点 DEV-052 Host Persona |
 | 0239 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-052 | 0238 | ISSUED | Host Persona（M5 第四个节点；HostPersona 静态数据结构 + getHostPersona() 唯一默认值，Dev Spec 未定义人设文案，voiceDescription 直接复述第 36 节职责列表，不发明性格形容词） |
+| 0240 | NODE_REPORT | OPENCODE | AUDITOR | DEV-052 | 0239 | CLOSED | DEV-052 施工完成，READY_FOR_REVIEW（git_head=12ac807；hostPersona.ts 静态常量 + getHostPersona()，name="Host"，voiceDescription 复述第 36 节八项职责，新增 4 测试 677→681 零回归；六条命令全绿） |
+| 0241 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-052 | 0240 | CLOSED | AUDIT_PASS：A01–A17 全部 VERIFIED（首轮通过），0 BLOCKING |
+| 0242 | NODE_RULING | COMMANDER | ALL | DEV-052 | 0241 | CLOSED | ruling: PASS；DEV-052 转 DONE，接口冻结；下一节点 DEV-053 Host Mood |
 
 
 ---
@@ -268,6 +271,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0239 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

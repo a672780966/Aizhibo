@@ -293,6 +293,9 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `AUDIT_FAIL`（A11 测试插入顺序与 receivedAt 混淆）→`FIX-02`→第三轮
 `AUDIT_PASS`；`commentPipeline.ts` 归一化文本精确匹配聚类 + 容量
 淘汰 + 只读 Priority 选择，零 LLM、零第三方依赖）。
+**DEV-052 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0239`；
+`HostPersona` 静态数据结构 + `getHostPersona()` 唯一默认值，Dev
+Spec 未定义人设文案，不发明性格形容词）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

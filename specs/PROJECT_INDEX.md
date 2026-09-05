@@ -21,8 +21,7 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-051 — Comment Pipeline（DONE，`verdict_ref: "0237"`）。下一节点
-DEV-052 — Host Persona 待起草。
+DEV-052 — Host Persona（IN_PROGRESS，`TASK_PACKAGE` 消息 `0239`）
 
 ## Current Status
 
@@ -31,19 +30,18 @@ DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
 `DAG.md` M3 章节）。M5（AI Host，10 节点）前三个节点均 `DONE`：
 DEV-050 Public State Gateway → DEV-050A Host Egress Gate → DEV-051
-Comment Pipeline（Safety→Priority→Topic Cluster→Select Candidate
-四步，归一化文本精确匹配聚类，零 LLM、零第三方依赖；三轮审计：
-首轮 FAIL（A22 缺失，Commander 收尾遗漏）→FIX-01（补测试覆盖）→
-第二轮 FAIL（A11 测试插入顺序与 receivedAt 混淆）→FIX-02→第三轮
-PASS）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。USER 已
-授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
+Comment Pipeline。第四个节点 DEV-052（Host Persona）已下发，
+`IN_PROGRESS`——`HostPersona` 静态数据结构 + `getHostPersona()`
+唯一默认值，Dev Spec 第 37 节未定义具体人设文案，`voiceDescription`
+直接复述第 36 节职责列表，不发明性格形容词，不接入 Host
+Scheduler/LLM Provider。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义
+agent。USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续
+占位处理。
 
 ## Current Task Package
 
-DEV-052（Host Persona）待起草。DEV-051 历史：
-`specs/tasks/TASK-PACKAGE-DEV-051.md`（消息 `0225`）——
-`createCommentPipeline`：Safety 黑名单/长度检查 + 归一化聚类 +
-只读候选选择，`DONE`。
+`specs/tasks/TASK-PACKAGE-DEV-052.md`（消息 `0239`，`ISSUED`）——
+`getHostPersona()`：静态 `HostPersona` 数据 + 访问器。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -105,7 +103,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-（无）
+- DEV-052 — Host Persona（`TASK_PACKAGE` 消息 `0239`，`ISSUED`）
 
 ## Blocked Nodes
 
@@ -118,7 +116,7 @@ DEV-051 — Comment Pipeline（2026-09-05）
 
 ## Next Eligible Nodes
 
-DEV-052 — Host Persona（M5 第四个节点，待起草）。
+DEV-052 已下发（`IN_PROGRESS`）。DEV-053 — Host Mood（M5 第五个节点，待 DEV-052 DONE 后起草）。
 DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在）。
 
 ## Project-level Blockers

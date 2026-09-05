@@ -259,6 +259,7 @@
 | 0236 | NODE_REPORT | OPENCODE | AUDITOR | DEV-051 | 0235 | CLOSED | DEV-051-FIX-02 完成，READY_FOR_REVIEW（git_head=c24c81a；A11 重写为插入序与 receivedAt 反向：beta 先插入 latest=200，alpha 后插入 latest=400，退化实现必返 beta 而失败；677 tests 零回归；实现零改动，六条命令全绿） |
 | 0237 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-051 | 0236 | CLOSED | 第三轮 AUDIT_PASS：A01–A23 全部 VERIFIED，0 BLOCKING（Info 1，工作区 CRLF 标记非内容差异） |
 | 0238 | NODE_RULING | COMMANDER | ALL | DEV-051 | 0237 | CLOSED | ruling: PASS；DEV-051 转 DONE，接口冻结；下一节点 DEV-052 Host Persona |
+| 0239 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-052 | 0238 | ISSUED | Host Persona（M5 第四个节点；HostPersona 静态数据结构 + getHostPersona() 唯一默认值，Dev Spec 未定义人设文案，voiceDescription 直接复述第 36 节职责列表，不发明性格形容词） |
 
 
 ---
@@ -267,6 +268,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0239 |
 | AUDITOR | — |
 | COMMANDER | — |

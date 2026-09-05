@@ -82,6 +82,47 @@ describe('createCommentPipeline', () => {
     expect(pipeline.selectCandidate()?.message.text).toBe('alpha');
   });
 
+  it('A11: count-equal clusters tie-break by latest receivedAt (true tie, regression for DEV-051-FIX-01)', () => {
+    const pipeline = createCommentPipeline();
+    // 两条不同文本各自 ingest 两次：count 均为 2（真正并列），但 alpha 的
+    // 最后一条 receivedAt 比 beta 的最后一条晚 100。若并列分支未生效（例如
+    // 误按 count 之外的其他字段或保持插入序），返回的就不是 alpha。
+    pipeline.ingest(msg('alpha', { receivedAt: 100 }));
+    pipeline.ingest(msg('alpha', { receivedAt: 500 }));
+    pipeline.ingest(msg('beta', { receivedAt: 200 }));
+    pipeline.ingest(msg('beta', { receivedAt: 400 }));
+    const candidate = pipeline.selectCandidate();
+    expect(candidate?.message.text).toBe('alpha');
+    expect(candidate?.clusterSize).toBe(2);
+  });
+
+  it('A16: default maxPending is 100 — the 101st distinct text evicts the first-ingested cluster (regression for DEV-051-FIX-01)', () => {
+    const pipeline = createCommentPipeline();
+    // 不传 maxPending：101 条互不相同的文本，各成 count=1 独立簇。
+    // 第 1 条 ingest 的文本必须已被淘汰（证明默认容量恰为 100，而非更大）。
+    const first = msg('text-0');
+    pipeline.ingest(first);
+    for (let i = 1; i < 101; i += 1) {
+      pipeline.ingest(msg(`text-${i}`));
+    }
+    expect(pipeline.selectCandidate()?.message.text).toBe('text-1');
+    // 重新 ingest 第 1 条文本 → 生成全新 count=1 簇；若旧簇仍在则 count 会变 2。
+    pipeline.ingest(msg('text-0'));
+    expect(pipeline.selectCandidate()?.clusterSize).toBe(1);
+  });
+
+  it('A07: a stateful global regex drops both texts on consecutive ingests (lastIndex reset regression for DEV-051-FIX-01)', () => {
+    const pipeline = createCommentPipeline({ denylist: [/badword/g] });
+    // 第一段：'badword' 出现在索引 21-27（同 DEV-050A-FIX-02 构造），
+    // 匹配后 lastIndex 变为 28。
+    pipeline.ingest(msg('aaaaaaaaaaaaaaaaaaaa badword'));
+    // 第二段：'badword' 在索引 0-6，早于遗留 lastIndex=28，末尾 z 填充保证
+    // 从 28 往后搜索绝无命中。若 ingest() 忘记在每次 test() 前重置
+    // pattern.lastIndex，第二段会被错误放行；重置则两条都被丢弃。
+    pipeline.ingest(msg('badword zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz'));
+    expect(pipeline.selectCandidate()).toBeUndefined();
+  });
+
   it('clear() empties all pending clusters, allowing fresh clustering afterward', () => {
     const pipeline = createCommentPipeline();
     pipeline.ingest(msg('hello'));
@@ -91,9 +132,7 @@ describe('createCommentPipeline', () => {
     expect(pipeline.selectCandidate()?.clusterSize).toBe(1);
   });
 
-  // default maxPending (100) is not tested exhaustively here; it is covered structurally by the
-  // maxPending: 2 eviction test above, which exercises the same eviction code path.
-  it('default maxLength (500) and maxPending (100) match documented behavior', () => {
+  it('default maxLength (500) matches documented behavior', () => {
     const accept = createCommentPipeline();
     accept.ingest(msg('a'.repeat(500)));
     expect(accept.selectCandidate()?.clusterSize).toBe(1);

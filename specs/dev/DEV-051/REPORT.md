@@ -47,8 +47,8 @@ specs/dev/DEV-051/INDEX.md                    （T001–T002 勾选 + Status=REA
 
 | 项 | 结果 |
 |---|---|
-| `pnpm test`（commentPipeline.test.ts） | 10 个测试全部通过 |
-| `pnpm test`（全量 workspace） | 零回归：115 个测试文件，674 个测试全部通过 |
+| `pnpm test`（commentPipeline.test.ts） | 13 个测试全部通过（原 10 + FIX-01 新增 3） |
+| `pnpm test`（全量 workspace） | 零回归：115 个测试文件，677 个测试全部通过 |
 
 ## 5. Acceptance Results
 
@@ -60,16 +60,16 @@ specs/dev/DEV-051/INDEX.md                    （T001–T002 勾选 + Status=REA
 | A04 | `pnpm format:check` 退出码 0 | PASS | format 检查通过 |
 | A05 | `pnpm build` 退出码 0 | PASS | build 通过 |
 | A06 | `pnpm test` 退出码 0；既有全部测试零回归 | PASS | 全量 115 文件 / 674 测试全绿（见 §4） |
-| A07 | 命中黑名单的评论被丢弃，不产生簇 | PASS | 测试：含黑名单词的评论 ingest 后候选为该安全评论 |
+| A07 | 命中黑名单的评论被丢弃，不产生簇 | PASS | 测试：含黑名单词的评论 ingest 后候选为该安全评论；FIX-01 补测：带 `/g` 标志的有状态正则连续两次 ingest 均被丢弃（lastIndex 重置回归，见 FIX 轮次） |
 | A08 | 超过 `maxLength` 的评论被丢弃 | PASS | 测试：超长评论 ingest 后 `selectCandidate()` 返回 `undefined` |
 | A09 | 归一化后相同文本聚为同一簇，`count` 正确累加，`latest` 正确更新 | PASS | 测试：`Hello There` 与 `  hello there  ` 同簇，count=2 且 latest 为后收到的一条 |
 | A10 | 不同文本各自独立成簇 | PASS | 测试：不同文本各自 count=1 |
-| A11 | `selectCandidate()` 按簇大小降序、并列按最近时间降序选出候选 | PASS | 测试：count 大的簇胜出；并列时 receivedAt 更新的簇胜出 |
+| A11 | `selectCandidate()` 按簇大小降序、并列按最近时间降序选出候选 | PASS | 测试：count 大的簇胜出；并列时 receivedAt 更新的簇胜出；FIX-01 补测：真并列（两簇 count 均=2）+ receivedAt 晚 100 的 alpha 胜出，直证并列分支（见 FIX 轮次） |
 | A12 | 无任何簇时 `selectCandidate()` 返回 `undefined` | PASS | 测试：空流水线返回 `undefined` |
 | A13 | `selectCandidate()` 连续调用（不 ingest/clear）结果一致，验证只读不清空 | PASS | 测试：连续 select 结果一致（D5） |
 | A14 | 簇数超过 `maxPending` 时正确淘汰优先级最低的簇 | PASS | 测试：容量超限淘汰 count 最小/最旧的簇（D4） |
 | A15 | `clear()` 清空全部簇，之后可重新正常 `ingest` | PASS | 测试：clear 后 select 为 undefined，再 ingest 恢复正常（D5） |
-| A16 | 缺省 `maxLength`（500）/`maxPending`（100）符合文档 | PASS | 缺省 500/100，可经 config 覆盖（D4） |
+| A16 | 缺省 `maxLength`（500）/`maxPending`（100）符合文档 | PASS | 缺省 500/100，可经 config 覆盖（D4）；FIX-01 补测：不传 maxPending ingest 101 条不同文本，簇数封顶 100——首条被淘汰，重入首条 count=1 新簇（见 FIX 轮次） |
 | A17 | 未新增第三方 npm 依赖 | PASS | 仅追加 workspace 内 `@interactive-story/platform-core`（SCOPE_RULING 0227），零第三方（D1） |
 | A18 | `platform-core/**`、`platform-twitch/**`、`runtime-kernel/**`、`egressGate.ts` 均未被修改 | PASS | 见 §6 Scope Check 空 diff 佐证 |
 | A19 | `DECISIONS.md` 存在，覆盖第 6 节列出的全部要点 | PASS | D1–D5 覆盖五要点（见 DECISIONS.md） |

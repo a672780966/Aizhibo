@@ -268,6 +268,8 @@
 | 0245 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-053 | 0244 | CLOSED | AUDIT_PASS：A01–A18 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0246 | NODE_RULING | COMMANDER | ALL | DEV-053 | 0245 | CLOSED | ruling: PASS；DEV-053 转 DONE，接口冻结；下一节点 DEV-054 Viewer Memory |
 | 0247 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-054 | 0246 | ISSUED | Viewer Memory（M5 第六个节点；persistence 追加 host_viewer_memory/host_running_jokes 两表（CR-017 延后建表）+ 新包 host-memory，不自持 DB 连接/schema，purge 按 per-platform 保留时长清理） |
+| 0248 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-054 | 0247 | CLOSED | 起草疏漏：db.test.ts 表数量断言（四→六）随两张新表必然过时，追加进 Writable Scope，Commander 已直接修正并验证 19 测试通过 |
+| 0249 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-054 | 0248 | CLOSED | 澄清：Forbidden Scope"禁止 import node:sqlite"字面过严，纯类型 import type DatabaseSync 允许，真正禁止的是运行时调用；已核实 hostMemory.ts 符合约束真实意图 |
 
 
 ---

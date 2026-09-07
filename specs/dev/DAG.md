@@ -314,10 +314,10 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 不足）→`FIX-01`→第二轮 `AUDIT_PASS`；`decideHostScheduling` 只
 实现第 41 节唯一明确的"Story Audio > Host Audio"规则，其余五个
 调度因子只保留类型签名，不发明组合逻辑）。
-**DEV-056 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0273`；
-`HostLLMProvider` 可替换接口 + `noopHostLLMProvider` 诚实占位，
-Dev Spec 只有一句"只需一个可替换 Provider API"，未指定厂商/
-协议，不实现任何真实网络调用，USER 2026-09-07 已就此裁决）。
+**DEV-056 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0276`，`verdict_ref: "0275"`；首轮 `AUDIT_PASS`；`HostLLMProvider`
+可替换接口 + `noopHostLLMProvider` 诚实占位，Dev Spec 只有一句
+"只需一个可替换 Provider API"，不实现任何真实网络调用）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

@@ -293,6 +293,7 @@
 | 0270 | NODE_REPORT | OPENCODE | AUDITOR | DEV-055 | 0269 | CLOSED | DEV-055-FIX-01 完成，READY_FOR_REVIEW（git_head=5502157；测试补 selectedCommentImportance:0，711 tests 零回归；六条命令全绿） |
 | 0271 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-055 | 0270 | CLOSED | 第二轮 AUDIT_PASS：A01–A16 全部 VERIFIED，0 BLOCKING |
 | 0272 | NODE_RULING | COMMANDER | ALL | DEV-055 | 0271 | CLOSED | ruling: PASS；DEV-055 转 DONE，接口冻结；下一节点 DEV-056 Host LLM Provider |
+| 0273 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-056 | 0272 | ISSUED | Host LLM Provider（M5 第八个节点；HostLLMProvider 可替换接口 + noopHostLLMProvider 诚实占位，Dev Spec 未指定厂商/协议，USER 裁决不实现真实网络调用） |
 
 
 ---
@@ -301,6 +302,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0273 |
 | AUDITOR | — |
 | COMMANDER | — |

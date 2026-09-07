@@ -96,6 +96,12 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/health-registry:
+    dependencies:
+      '@interactive-story/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/host-memory:
     dependencies:
       '@interactive-story/persistence':

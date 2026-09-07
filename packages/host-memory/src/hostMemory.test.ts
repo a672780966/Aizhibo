@@ -40,6 +40,32 @@ describe('createHostMemory', () => {
     expect(memory.recallViewer('youtube', 'viewer-1')?.note).toBe('youtube note');
   });
 
+  it("purge honors each listed platform's own retention, even for an equally old record", () => {
+    const db = openDatabase(':memory:');
+    const memory = createHostMemory(db);
+    memory.rememberViewer('twitch', 'viewer-1', 'twitch note');
+    memory.rememberViewer('youtube', 'viewer-1', 'youtube note');
+    db.prepare(
+      `UPDATE host_viewer_memory SET last_seen_at = '2000-01-01T00:00:00.000Z'
+       WHERE platform IN ('twitch', 'youtube')`,
+    ).run();
+    memory.purge({ twitch: 1000, youtube: 999999999999 });
+    expect(memory.recallViewer('twitch', 'viewer-1')).toBeUndefined();
+    expect(memory.recallViewer('youtube', 'viewer-1')?.note).toBe('youtube note');
+  });
+
+  it('purge also removes expired running jokes for the listed platforms', () => {
+    const db = openDatabase(':memory:');
+    const memory = createHostMemory(db);
+    memory.addRunningJoke('twitch', 'joke-1', 'stale joke');
+    db.prepare(
+      `UPDATE host_running_jokes SET created_at = '2000-01-01T00:00:00.000Z'
+       WHERE platform = 'twitch'`,
+    ).run();
+    memory.purge({ twitch: 1000 });
+    expect(memory.listRunningJokes('twitch')).toEqual([]);
+  });
+
   it('reports OK from getHealth on a healthy database', () => {
     const memory = createHostMemory(openDatabase(':memory:'));
     expect(memory.getHealth().status).toBe('OK');

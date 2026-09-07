@@ -19,7 +19,7 @@ describe('hostRunningJokes', () => {
     ]);
   });
 
-  it('lists jokes for a platform in creation order', () => {
+  it('lists jokes for a platform ordered by created_at, not insertion order', () => {
     const db = openDatabase(':memory:');
     addHostRunningJoke(db, {
       id: 'joke-1',
@@ -36,8 +36,10 @@ describe('hostRunningJokes', () => {
       platform: 'twitch',
       text: 'third joke',
     });
+    // Reverse created_at relative to insertion order: joke-1 was inserted first
+    // but is made the newest, joke-3 was inserted last but is made the oldest.
     db.prepare(
-      `UPDATE host_running_jokes SET created_at = '2000-01-01T00:00:00.000Z'
+      `UPDATE host_running_jokes SET created_at = '2000-01-03T00:00:00.000Z'
        WHERE id = 'joke-1'`,
     ).run();
     db.prepare(
@@ -45,13 +47,13 @@ describe('hostRunningJokes', () => {
        WHERE id = 'joke-2'`,
     ).run();
     db.prepare(
-      `UPDATE host_running_jokes SET created_at = '2000-01-03T00:00:00.000Z'
+      `UPDATE host_running_jokes SET created_at = '2000-01-01T00:00:00.000Z'
        WHERE id = 'joke-3'`,
     ).run();
     expect(listHostRunningJokes(db, 'twitch').map((entry) => entry.text)).toEqual([
-      'first joke',
-      'second joke',
       'third joke',
+      'second joke',
+      'first joke',
     ]);
   });
 

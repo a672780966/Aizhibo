@@ -2,7 +2,7 @@
 
 ## 1. Status
 
-READY_FOR_REVIEW
+FIX_REQUIRED（DEV-054-FIX-01 施工中，见 §9）
 
 ## 2. Implemented
 
@@ -77,6 +77,18 @@ specs/dev/DEV-054/INDEX.md                          （T001–T002 勾选 + Stat
 六条命令（`pnpm install`/`pnpm typecheck`/`pnpm lint`/
 `pnpm format:check`/`pnpm build`/`pnpm test`）全部退出码 0，零回归。
 
+### DEV-054-FIX-01 加强后
+
+| 项 | 结果 |
+|---|---|
+| `pnpm test`（hostViewerMemory.test.ts） | 5 个测试全部通过；A08 二次 upsert 测试加强：首/次两次原生 SQL 直接读取原始列，断言 `created_at` 完全相等（未被覆盖）且二次写入后 `last_seen_at` 为非空字符串（有值） |
+| `pnpm test`（hostRunningJokes.test.ts） | 5 个测试全部通过；A09 顺序测试加强：插入顺序 joke-1→joke-2→joke-3 与人工 `created_at` 反向（joke-1 最晚 2000-01-03 / joke-3 最早 2000-01-01），断言返回 `third/second/first`，退化实现（按插入顺序返回）必失败 |
+| `pnpm test`（hostMemory.test.ts） | 7 个测试全部通过；A12 加强 + 新增 2 条：双 platform 同改 `2000-01-01` 后 `purge({ twitch: 1000, youtube: 999999999999 })`，twitch 记录被清、youtube 因长保留期保留；running jokes 覆盖：过期梗随 purge 一并清理（listRunningJokes 不含该梗） |
+| `pnpm test`（全量 workspace） | FIX-01 后零回归：120 个测试文件，703 个测试全部通过（原 701 + 新增 2 测试） |
+
+FIX-01 六条命令（`pnpm install`/`pnpm typecheck`/`pnpm lint`/
+`pnpm format:check`/`pnpm build`/`pnpm test`）全部退出码 0。实现代码零改动，仅三个测试文件加强（0251 审计 F-01/F-02/F-03）。
+
 ## 5. Acceptance Results
 
 | # | 判定 | 结果 | 说明 |
@@ -88,11 +100,11 @@ specs/dev/DEV-054/INDEX.md                          （T001–T002 勾选 + Stat
 | A05 | `pnpm build` 退出码 0 | PASS | `tsc -b` 通过 |
 | A06 | `pnpm test` 退出码 0；既有全部测试零回归 | PASS | 全量 120 文件 / 701 测试全绿（见 §4），零回归 |
 | A07 | 两张表存在且列约束符合第 2.1 节 | PASS | `db.test.ts` 断言六张授权表齐全；列：`platform`+`created_at`/`last_seen_at` 均 `NOT NULL`，PK 含 `platform` |
-| A08 | `upsertHostViewerMemory` 二次写入更新 `note`/`last_seen_at`，`created_at` 不变 | PASS | 测试：同 `(platform, viewer_id)` 二次 upsert 后 `note` 为新值、`last_seen_at` 更新、`created_at` 保持首次值 |
-| A09 | `listHostRunningJokes` 按 `created_at` 升序返回同 platform 全部记录 | PASS | 测试：同 platform 乱序插入三条，列表按 `created_at` 升序返回；其他 platform 记录不混入（platform 隔离测试佐证） |
+| A08 | `upsertHostViewerMemory` 二次写入更新 `note`/`last_seen_at`，`created_at` 不变 | PASS | FIX-01 加强（0251 F-01）：同 `(platform, viewer_id)` 二次 upsert 后 `note` 为新值；首/次两次原生 SQL 直接读原始列——`created_at` 完全相等（未被覆盖）、`last_seen_at` 为非空字符串（确实更新） |
+| A09 | `listHostRunningJokes` 按 `created_at` 升序返回同 platform 全部记录 | PASS | FIX-01 加强（0251 F-03）：插入顺序与 `created_at` 反向（joke-1 最早插入但 `created_at` 最晚 2000-01-03，joke-3 最晚插入但 `created_at` 最早 2000-01-01），断言按 `created_at` 升序返回 joke-3/joke-2/joke-1——退化实现（按写入顺序）必失败 |
 | A10 | 删除函数只删过期且同 platform 的行，其余不受影响 | PASS | 两文件各 2 条测试：`created_at` 早于 cutoff 且同 platform 的删除、晚于 cutoff 的保留、其他 platform 的保留 |
 | A11 | host-memory 四个转发方法端到端正确 | PASS | 测试：`rememberViewer`→`recallViewer` 读回 note；`addRunningJoke`→`listRunningJokes` 读回 joke；未记观众 `undefined` |
-| A12 | `purge` 按 per-platform 保留时长差异化清理，未列出的 platform 不受影响 | PASS | 测试：两 platform 不同保留时长，仅短的过期；未列入的 platform 数据不受影响 |
+| A12 | `purge` 按 per-platform 保留时长差异化清理，未列出的 platform 不受影响 | PASS | FIX-01 加强（0251 F-02）：新增双 platform 同改 `2000-01-01T00:00:00.000Z` 后 `purge({ twitch: 1000, youtube: 999999999999 })`——twitch 记录被清、youtube 因长保留期仍保留；新增 running jokes 覆盖测试：过期梗随 purge 一并清理（listRunningJokes 不含该梗） |
 | A13 | `getHealth()` 正常路径返回 `status: 'OK'` | PASS | 测试：健康 db 上 `getHealth()` 返回 `status: 'OK'`（转发 persistence） |
 | A14 | host-memory 源码不 import `node:sqlite`（运行时）、不调用 `openDatabase`/`initSchema` | PASS | 仅 `import type { DatabaseSync }` 类型引用（0249 澄清：纯类型 import 允许，禁止的是运行时调用）；无 `openDatabase`/`initSchema`/CREATE TABLE |
 | A15 | 未新增第三方 npm 依赖 | PASS | host-memory 依赖仅 workspace 内部 `@interactive-story/persistence`/`shared`；`pnpm install` 无外部新增 |
@@ -143,7 +155,38 @@ CRLF 行尾标记为 pre-existing 非内容差异（同 DEV-052/053 审计 Info
 `REPORT.md`/`INDEX.md` 节点文档。LEDGER 追加行与 NODE_REPORT 消息
 文件已写入工作区但**未提交**（A19/A20）。
 
-## 8. Handoff
+## 8. Handoff（原 §8 内容保留至本节尾部）
+
+## 9. DEV-054-FIX-01（0253）
+
+FIX-01 仅加强三个测试文件，实现代码零改动（`db.ts`/
+`hostViewerMemory.ts`/`hostRunningJokes.ts`/`hostMemory.ts` 全部不动，
+对应 0251 审计 F-01/F-02/F-03）：
+
+- `packages/persistence/src/hostViewerMemory.test.ts`（A08）：二次
+  upsert 测试在首次写入后/二次写入后各执行一次原生 SQL 直接读取
+  原始列，断言 `created_at` 完全相等（未被覆盖）、二次写入后
+  `last_seen_at` 为非空字符串（确实更新）。
+- `packages/host-memory/src/hostMemory.test.ts`（A12）：新增 2 条
+  独立测试——①双 platform（twitch/youtube）同改
+  `2000-01-01T00:00:00.000Z` 后 `purge({ twitch: 1000, youtube:
+  999999999999 })`，twitch 记录被清、youtube 因长保留期保留；
+  ②running jokes 覆盖：过期梗随 purge 一并清理（listRunningJokes
+  不含该梗）。
+- `packages/persistence/src/hostRunningJokes.test.ts`（A09）：顺序
+  测试插入顺序与人工 `created_at` 反向（joke-1 最早插入但
+  `created_at` 最晚，joke-3 最晚插入但 `created_at` 最早），断言按
+  `created_at` 升序返回 joke-3/joke-2/joke-1——退化实现（按写入顺序
+  返回）必失败。
+
+FIX-01 六条命令（`pnpm install`/`pnpm typecheck`/`pnpm lint`/
+`pnpm format:check`/`pnpm build`/`pnpm test`）全部退出码 0；全量 120
+文件 / 703 测试（701 + 新增 2）零回归。FIX-01 提交恰 1 条（首行
+`DEV-054-FIX-01: strengthen timestamp-preservation, per-platform
+purge, and ordering test coverage`）；NODE_REPORT 消息文件
+（0254）与 LEDGER 追加行写入工作区但未提交，留 Commander 收尾。
+
+## 8. Handoff（FIX-01）
 
 LEDGER 追加行与 NODE_REPORT 消息文件（`specs/comms/`）留给 Commander
 收尾统一提交，不在本次提交范围内（A20，Constraint 6）。NODE_REPORT

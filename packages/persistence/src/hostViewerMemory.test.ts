@@ -28,12 +28,26 @@ describe('hostViewerMemory', () => {
       viewerId: 'viewer-1',
       note: 'first note',
     });
+    const firstWrite = db
+      .prepare(
+        `SELECT created_at, last_seen_at FROM host_viewer_memory
+         WHERE platform = ? AND viewer_id = ?`,
+      )
+      .get('twitch', 'viewer-1') as { created_at: string; last_seen_at: string };
     upsertHostViewerMemory(db, {
       platform: 'twitch',
       viewerId: 'viewer-1',
       note: 'updated note',
     });
+    const secondWrite = db
+      .prepare(
+        `SELECT created_at, last_seen_at FROM host_viewer_memory
+         WHERE platform = ? AND viewer_id = ?`,
+      )
+      .get('twitch', 'viewer-1') as { created_at: string; last_seen_at: string };
     expect(getHostViewerMemory(db, 'twitch', 'viewer-1')?.note).toBe('updated note');
+    expect(secondWrite.created_at).toBe(firstWrite.created_at);
+    expect(secondWrite.last_seen_at.length).toBeGreaterThan(0);
   });
 
   it('returns undefined for an unknown platform and viewer id', () => {

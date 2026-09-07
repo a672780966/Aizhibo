@@ -12,6 +12,7 @@
     { "path": "./packages/audio-engine" },
     { "path": "./packages/platform-core" },
     { "path": "./packages/platform-twitch" },
-    { "path": "./packages/ai-host" }
+    { "path": "./packages/ai-host" },
+    { "path": "./packages/host-memory" }
   ]
 }

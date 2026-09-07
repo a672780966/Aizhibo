@@ -11,3 +11,15 @@ export { saveSnapshot, loadLatestSnapshot, type RuntimeSnapshotRecord } from './
 export { restoreSession } from './recovery.js';
 export { getViewerState, upsertViewerState, type ViewerState } from './viewerState.js';
 export { getHealth } from './health.js';
+export {
+  getHostViewerMemory,
+  upsertHostViewerMemory,
+  deleteExpiredHostViewerMemory,
+  type HostViewerMemoryEntry,
+} from './hostViewerMemory.js';
+export {
+  addHostRunningJoke,
+  listHostRunningJokes,
+  deleteExpiredHostRunningJokes,
+  type HostRunningJokeEntry,
+} from './hostRunningJokes.js';

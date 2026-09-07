@@ -96,6 +96,15 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/host-memory:
+    dependencies:
+      '@interactive-story/persistence':
+        specifier: workspace:*
+        version: link:../persistence
+      '@interactive-story/shared':
+        specifier: workspace:*
+        version: link:../shared
+
   packages/narrative-composer:
     dependencies:
       '@interactive-story/chapter-schema':

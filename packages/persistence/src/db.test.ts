@@ -5,7 +5,7 @@ import { describe, expect, it } from 'vitest';
 import { initSchema, openDatabase } from './db.js';
 
 describe('database schema', () => {
-  it('creates exactly the four authorized tables and is idempotent', () => {
+  it('creates exactly the six authorized tables and is idempotent', () => {
     const db = openDatabase(':memory:');
     initSchema(db);
     const names = (
@@ -16,6 +16,8 @@ describe('database schema', () => {
         .all() as Array<{ name: string }>
     ).map((row) => row.name);
     expect(names).toEqual([
+      'host_running_jokes',
+      'host_viewer_memory',
       'runtime_events',
       'runtime_sessions',
       'runtime_snapshots',

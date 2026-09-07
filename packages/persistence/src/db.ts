@@ -50,5 +50,23 @@ export function initSchema(db: DatabaseSync): void {
       last_seen_at TEXT NOT NULL,
       PRIMARY KEY (platform, viewer_id)
     );
+
+    CREATE TABLE IF NOT EXISTS host_viewer_memory (
+      platform TEXT NOT NULL,
+      viewer_id TEXT NOT NULL,
+      note TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      last_seen_at TEXT NOT NULL,
+      PRIMARY KEY (platform, viewer_id)
+    );
+
+    CREATE TABLE IF NOT EXISTS host_running_jokes (
+      id TEXT NOT NULL,
+      platform TEXT NOT NULL,
+      text TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      last_seen_at TEXT NOT NULL,
+      PRIMARY KEY (platform, id)
+    );
   `);
 }

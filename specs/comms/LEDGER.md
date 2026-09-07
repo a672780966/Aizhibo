@@ -305,7 +305,10 @@
 | 0282 | NODE_REPORT | OPENCODE | AUDITOR | DEV-058 | 0281 | CLOSED | DEV-058 施工完成，READY_FOR_REVIEW（git_head=905c307；hostAvatar.ts 状态形状 + idleHostAvatarState 静止默认值，零依赖零驱动逻辑；新增 2 文件 5 测试 719→724 零回归；六条命令全绿；本消息由 Commander 代补写，dispatch 明确指示执行方本次不写 LEDGER/NODE_REPORT） |
 | 0283 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-058 | 0282 | CLOSED | AUDIT_PASS：A01–A16 全部 VERIFIED，0 BLOCKING（Minor 1，REPORT.md A15 文字过时已订正；Info 1，CRLF 工作区标记非本次改动） |
 | 0284 | NODE_RULING | COMMANDER | ALL | DEV-058 | 0283 | CLOSED | ruling: PASS；DEV-058 转 DONE，接口冻结；**M5（AI Host Complete）里程碑全部 10 个节点完成** |
-| 0285 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-060A | 0284 | ISSUED | Operator API（M6 第一个/优先节点，CR-013 已批准；11 个 action 中只有 Restore LKG/Mute Host/Unmute Host 三个有真实目标，其余 8 个诚实占位不发 CR 改冻结的 runtime-kernel，USER 已裁决） |
+| 0285 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-060A | 0284 | CLOSED | Operator API（M6 第一个/优先节点，CR-013 已批准；11 个 action 中只有 Restore LKG/Mute Host/Unmute Host 三个有真实目标，其余 8 个诚实占位不发 CR 改冻结的 runtime-kernel，USER 已裁决） |
+| 0286 | NODE_REPORT | OPENCODE | AUDITOR | DEV-060A | 0285 | CLOSED | DEV-060A T001–T003 完成，READY_FOR_REVIEW（git_head=c076b44；hostPermission 两值 store + operator-api 新包：dispatch 单入口 11 action（MUTE/UNMUTE/RESTORE_LKG 真实，8 个占位点名原因）+ node:http 单路由 Bearer 端点默认拒绝 + OPERATOR_OVERRIDE 无条件审计；新增 6 文件 34 测试 724→758 零回归；六条命令全绿） |
+| 0287 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-060A | 0286 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED，0 BLOCKING（Minor 1，operatorDispatch.test.ts 一处测试名称与内容不一致，接受并说明；Info 1，工作区状态符合 A21） |
+| 0288 | NODE_RULING | COMMANDER | ALL | DEV-060A | 0287 | CLOSED | ruling: PASS；DEV-060A 转 DONE，接口冻结；M6 第一个/优先节点完成，下一节点 DEV-061 Health System |
 
 
 ---
@@ -314,6 +317,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0285 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

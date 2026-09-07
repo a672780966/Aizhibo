@@ -21,33 +21,32 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-060A — Operator API（IN_PROGRESS，`TASK_PACKAGE` 消息 `0285`；
-M6 第一个/优先节点，CR-013 已批准，DEV-060B Console UI 后置）
+DEV-060A — Operator API（DONE，`verdict_ref: "0287"`）。M6 第一个/
+优先节点完成。下一节点 DEV-061（Health System）待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、M5（AI Host
 Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
-依赖真实 Host 音频信号，M5 全部为接口/占位实现，条件仍未满足）。
-M6（Operations）已下发第一个节点 DEV-060A（Operator API），
-`IN_PROGRESS`——新建 `packages/operator-api` 包实现 Dev Spec 第
-53-54 节 11 个 Operator Action 的 HTTP 端点 + Bearer token 鉴权
-占位 + 无条件 `OPERATOR_OVERRIDE` 事件审计落库；`packages/ai-host`
-追加 `hostPermission.ts`（Mute/Unmute Host 用）。Commander 起草前
-独立核查：11 个 action 中只有 Restore LKG/Mute Host/Unmute Host
-三个有真实目标，其余 8 个因 `runtime-kernel`（冻结）无对应
-`RootEvent`，或 `SAFETY`/OBS 子系统不存在（占位/未建成），不发 CR
-改冻结接口、诚实占位返回 `ok:false`——USER 2026-09-07 已裁决。
-AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
-裁决以文本返回，Commander 代为落盘消息文件）。USER 已授权持续
-推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
+依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）第一个
+节点 DEV-060A（Operator API）`DONE`——新建 `packages/operator-api`
+包实现 Dev Spec 第 53-54 节 11 个 Operator Action 的 HTTP 端点 +
+Bearer token 鉴权占位（未配置默认拒绝）+ 无条件 `OPERATOR_OVERRIDE`
+事件审计落库；`packages/ai-host` 追加 `hostPermission.ts`。11 个
+action 中只有 Restore LKG/Mute Host/Unmute Host 三个真实生效，其余
+8 个因 `runtime-kernel`（冻结）无对应 `RootEvent`，或 `SAFETY`/OBS
+子系统不存在，诚实占位返回 `ok:false`，未发 CR——USER 2026-09-07
+已裁决，首轮 `AUDIT_PASS`。AUDITOR 为 `opencode`/`gpt-5.6-terra`
+自定义 agent（工具集只读，裁决以文本返回，Commander 代为落盘消息
+文件）。USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续
+占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-060A.md`（消息 `0285`，`ISSUED`）——
-`hostPermission.ts` + `operator-api` 包（actions/auth/override
-log/dispatch/http server），T001–T003 三个 Task。
+M6 下一节点 DEV-061（Health System）Task Package 待 Commander
+起草。DEV-060A 历史：`specs/tasks/TASK-PACKAGE-DEV-060A.md`
+（消息 `0285`）——11-action Operator API，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

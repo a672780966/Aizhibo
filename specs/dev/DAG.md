@@ -405,14 +405,15 @@ C2 解决了 Gateway 单独解决不了的问题：Gateway 保证 Host **读不�
 | DEV-067 | Emergency Stop | |
 | DEV-060B | Console UI | **后置**（CR-013）— 排在本组末尾或 M8 |
 
-**DEV-060A 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0285`；
-M6 第一个/优先节点；新建 `packages/operator-api` 包，实现第 53-54
-节 11 个 Operator Action 的 HTTP 端点 + Bearer token 鉴权占位 +
-无条件 `OPERATOR_OVERRIDE` 事件审计落库；`ai-host` 追加
+**DEV-060A 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0288`，`verdict_ref: "0287"`；首轮 `AUDIT_PASS`；M6 第一个/优先
+节点；新建 `packages/operator-api` 包，实现第 53-54 节 11 个
+Operator Action 的 HTTP 端点 + Bearer token 鉴权占位（未配置默认
+拒绝）+ 无条件 `OPERATOR_OVERRIDE` 事件审计落库；`ai-host` 追加
 `hostPermission.ts`；11 个 action 中只有 `Restore
-LKG`/`Mute Host`/`Unmute Host` 三个有真实目标，其余 8 个因
+LKG`/`Mute Host`/`Unmute Host` 三个真实生效，其余 8 个因
 `runtime-kernel`（M1 起冻结）无对应 `RootEvent`，或 `SAFETY`/OBS
-子系统不存在，不发 CR、诚实占位返回 `ok:false`，USER 2026-09-07
+子系统不存在，诚实占位返回 `ok:false`，未发 CR，USER 2026-09-07
 已裁决）。
 
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。

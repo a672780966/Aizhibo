@@ -1,0 +1,21 @@
+{
+  "name": "@interactive-story/platform-obs",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "devDependencies": {
+    "ws": "^8.21.3",
+    "@types/ws": "^8.18.1"
+  }
+}

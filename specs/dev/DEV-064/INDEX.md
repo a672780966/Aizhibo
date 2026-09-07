@@ -1,6 +1,6 @@
 # DEV-064 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -57,13 +57,13 @@ import 或依赖 packages/error-registry、packages/health-registry、packages/w
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 obsControlPort.ts（类型+noop）+ 包骨架
-- [ ] T003 obsWebSocketClient.ts（真实客户端）+ 假 OBS server 测试 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 obsControlPort.ts（类型+noop）+ 包骨架
+- [x] T003 obsWebSocketClient.ts（真实客户端）+ 假 OBS server 测试 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T003（已完成；待 AUDITOR 验收）
 
 ## Exit Criteria
 

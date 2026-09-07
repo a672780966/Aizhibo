@@ -1,6 +1,6 @@
 # DEV-054 INDEX
 
-Status: READY_FOR_REVIEW
+Status: IN_PROGRESS（CHANGE_REQUEST 0261 重开）
 
 ## Current Node
 
@@ -54,10 +54,11 @@ packages/ai-host/**（Read-only，不 import）
 
 - [x] T001 节点文档
 - [x] T002 两张表 + CRUD + host-memory 新包 + 测试 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [ ] T003（CHANGE_REQUEST 0261）：`host_viewer_memory` schema 按 Dev Spec 第 42 节修正为 nickname/interactionCount/knownRunningJokes/hostAffinity/notableEvents 结构化字段，替换原自由文本 `note` 字段
 
 ## Current Task
 
-已全部完成（T001–T002）。
+T003
 
 ## Exit Criteria
 

@@ -281,6 +281,7 @@
 | 0258 | NODE_REPORT | OPENCODE | AUDITOR | DEV-054 | 0257 | CLOSED | DEV-054-FIX-02 完成，READY_FOR_REVIEW（git_head=a90e23d；哨兵值 1999-01-01 + not.toBe 不等断言消除恒真非空断言，退化实现必失败；703 tests 零回归；六条命令全绿） |
 | 0259 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0258 | CLOSED | 第三轮 AUDIT_PASS：A01–A21 全部 VERIFIED，0 BLOCKING（Info 1，工作区治理通信文件/CRLF 标记非本次代码变更） |
 | 0260 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0259 | CLOSED | ruling: PASS；DEV-054 转 DONE，接口冻结；下一节点 DEV-055 Host Scheduler |
+| 0261 | CHANGE_REQUEST | COMMANDER | USER | DEV-054 | 0260 | CLOSED | 重开 DONE 节点：Dev Spec 第42节"Host Memory"定义的结构化字段（nickname/interactionCount/knownRunningJokes/hostAffinity/notableEvents）起草时检索遗漏，note 自由文本需替换为该 schema；USER 已批准，零下游影响 |
 
 
 ---

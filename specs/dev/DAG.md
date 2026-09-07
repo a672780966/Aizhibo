@@ -301,14 +301,12 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `0246`，`verdict_ref: "0245"`；首轮 `AUDIT_PASS`；`hostMood.ts`
 可变存储 `createHostMoodStore()`，`label` 自由文本，不发明情绪
 枚举，不做自动推导）。
-**DEV-054 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
-`0260`，`verdict_ref: "0259"`；首轮 `AUDIT_FAIL`（A08/A12 测试
-覆盖不足）→`FIX-01`→第二轮 `AUDIT_FAIL`（A08 断言仍恒真）→
-`FIX-02`→第三轮 `AUDIT_PASS`；`persistence` 追加
-`host_viewer_memory`/`host_running_jokes` 两表（CR-017 延后建表
-落地）+ 新包 `host-memory` 转发外壳，不自持 DB 连接/schema，
-`purge` 按 per-platform 保留时长清理，无隐式默认、无后台定时
-任务）。
+**DEV-054 状态：重新 `IN_PROGRESS`**（原 `NODE_RULING: PASS` 消息
+`0260` 已因 `CHANGE_REQUEST` 消息 `0261` 重开，USER 已批准；起草
+时检索遗漏 Dev Spec 第 42 节"Host Memory"定义的结构化字段
+`nickname`/`interactionCount`/`knownRunningJokes`/`hostAffinity`/
+`notableEvents`，原 `note` 自由文本字段需替换为该 schema；
+`host_running_jokes` 表与 `purge`/`getHealth` 不受影响）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

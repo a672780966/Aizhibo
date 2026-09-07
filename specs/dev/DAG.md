@@ -309,10 +309,11 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `nickname`/`interactionCount`/`knownRunningJokes`/`hostAffinity`/
 `notableEvents`，`host_running_jokes` 表与 `purge`/`getHealth`
 不受影响，首轮 `AUDIT_PASS` 重新转 `DONE`）。
-**DEV-055 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0265`；
-`decideHostScheduling` 只实现第 41 节唯一明确的"Story Audio >
-Host Audio"规则，其余五个调度因子只保留类型签名，不发明组合
-逻辑，USER 2026-09-07 已就此裁决）。
+**DEV-055 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0272`，`verdict_ref: "0271"`；首轮 `AUDIT_FAIL`（A08 测试覆盖
+不足）→`FIX-01`→第二轮 `AUDIT_PASS`；`decideHostScheduling` 只
+实现第 41 节唯一明确的"Story Audio > Host Audio"规则，其余五个
+调度因子只保留类型签名，不发明组合逻辑）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

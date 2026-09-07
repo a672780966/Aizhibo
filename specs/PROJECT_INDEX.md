@@ -21,28 +21,27 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-055 — Host Scheduler（IN_PROGRESS，`TASK_PACKAGE` 消息 `0265`）
+DEV-055 — Host Scheduler（DONE，`verdict_ref: "0271"`）。下一节点
+DEV-056 — Host LLM Provider 待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
 DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
-`DAG.md` M3 章节）。M5（AI Host，10 节点）前六个节点均 `DONE`：
-DEV-050/050A/051/052/053/054（DEV-054 经 CR 0261 修正后重新
-`DONE`）。第七个节点 DEV-055（Host Scheduler）已下发，
-`IN_PROGRESS`——`decideHostScheduling` 只实现 Dev Spec 第 41 节
-唯一明确的调度规则"Story Audio > Host Audio"，其余五个调度因子
-（Chat Velocity/Last Host Speech Time/Selected Comment
-Importance/Conversation Continuity/Current Story Phase）Dev Spec
-未定义组合公式，只保留类型签名不实现逻辑（USER 2026-09-07 已
-就此裁决）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。
-USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
+`DAG.md` M3 章节）。M5（AI Host，10 节点）前七个节点均 `DONE`：
+DEV-050/050A/051/052/053/054/055（`decideHostScheduling` 只实现
+Dev Spec 第 41 节唯一明确的"Story Audio > Host Audio"规则，其余
+五个调度因子只保留类型签名不发明组合逻辑；首轮 FAIL（A08 测试
+覆盖不足）→FIX-01→第二轮 PASS）。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
+不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-055.md`（消息 `0265`，`ISSUED`）——
-`decideHostScheduling(factors)`：Audio Channel 抢占规则。
+DEV-056（Host LLM Provider）待起草。DEV-055 历史：
+`specs/tasks/TASK-PACKAGE-DEV-055.md`（消息 `0265`）——
+`decideHostScheduling`：Audio Channel 抢占规则，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -104,10 +103,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-052 — Host Persona（DONE，`verdict_ref: "0241"`，`git_head` `12ac807023d487ee7dd4840ab9ae26445fa0b207`；首轮 AUDIT_PASS）
 - DEV-053 — Host Mood（DONE，`verdict_ref: "0245"`，`git_head` `53348ed15afc58058e0c859d05c02bc271f06b7c`；首轮 AUDIT_PASS）
 - DEV-054 — Viewer Memory（DONE，`verdict_ref: "0263"`，`git_head` `bf8b1f8ceab98ea34af6d2c6459595545b1e8df7`；首轮 AUDIT_FAIL（A08/A12 测试覆盖不足）→FIX-01→第二轮 AUDIT_FAIL（A08 断言仍恒真）→FIX-02→第三轮 AUDIT_PASS→事后 CHANGE_REQUEST 0261 重开（Dev Spec 第42节 Host Memory schema 检索遗漏）→T003 修正→AUDIT_PASS）
+- DEV-055 — Host Scheduler（DONE，`verdict_ref: "0271"`，`git_head` `5502157aec2d4e5a9ffcc6eda374ef1419592e1b`；首轮 AUDIT_FAIL（A08 测试覆盖不足）→FIX-01→第二轮 AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-055 — Host Scheduler（`TASK_PACKAGE` 消息 `0265`，`ISSUED`）
+（无）
 
 ## Blocked Nodes
 
@@ -116,11 +116,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-054 — Viewer Memory（2026-09-07，T003 修正后重新 DONE）
+DEV-055 — Host Scheduler（2026-09-07）
 
 ## Next Eligible Nodes
 
-DEV-055 已下发（`IN_PROGRESS`）。DEV-056 — Host LLM Provider（M5 第八个节点，待 DEV-055 DONE 后起草）。
+DEV-056 — Host LLM Provider（M5 第八个节点，待起草）。
 DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在）。
 
 ## Project-level Blockers

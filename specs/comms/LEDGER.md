@@ -286,6 +286,13 @@
 | 0263 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0262 | CLOSED | AUDIT_PASS：A01–A28 全部 VERIFIED，0 BLOCKING（Minor 1，REPORT.md 状态文字过时，已订正） |
 | 0264 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0263 | CLOSED | ruling: PASS；DEV-054 T003 通过，重新转 DONE，接口再次冻结；下一节点 DEV-055 Host Scheduler |
 | 0265 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-055 | 0264 | ISSUED | Host Scheduler（M5 第七个节点；decideHostScheduling 只实现 Story Audio > Host Audio 一条明确规则，其余五个因子只保留类型签名不发明组合逻辑，USER 已裁决） |
+| 0266 | NODE_REPORT | OPENCODE | AUDITOR | DEV-055 | 0265 | CLOSED | DEV-055 施工完成，READY_FOR_REVIEW（git_head=ed067fe；decideHostScheduling 只实现 Story Audio > Host Audio：audioChannelBusy=true→canSpeak:false，否则→canSpeak:true，其余五因子只保留类型签名不发明逻辑，零依赖不读 runtime-kernel 状态；新增 2 文件 6 测试 705→711 零回归；六条命令全绿） |
+| 0267 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-055 | 0266 | CLOSED | AUDIT_FAIL：1 Major（A08 clear 通道反直觉测试漏了 selectedCommentImportance 非默认取值，未证明该字段不参与判定），采纳转 FIX |
+| 0268 | NODE_RULING | COMMANDER | ALL | DEV-055 | 0267 | CLOSED | ruling: FAIL；F-01（MAJOR）转 FIX-01 |
+| 0269 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-055 | 0268 | ISSUED | DEV-055-FIX-01：clear 通道反直觉测试补 selectedCommentImportance 非默认取值 |
+| 0270 | NODE_REPORT | OPENCODE | AUDITOR | DEV-055 | 0269 | CLOSED | DEV-055-FIX-01 完成，READY_FOR_REVIEW（git_head=5502157；测试补 selectedCommentImportance:0，711 tests 零回归；六条命令全绿） |
+| 0271 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-055 | 0270 | CLOSED | 第二轮 AUDIT_PASS：A01–A16 全部 VERIFIED，0 BLOCKING |
+| 0272 | NODE_RULING | COMMANDER | ALL | DEV-055 | 0271 | CLOSED | ruling: PASS；DEV-055 转 DONE，接口冻结；下一节点 DEV-056 Host LLM Provider |
 
 
 ---
@@ -294,6 +301,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0265 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

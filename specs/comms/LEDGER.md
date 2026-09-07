@@ -285,6 +285,7 @@
 | 0262 | NODE_REPORT | OPENCODE | AUDITOR | DEV-054 | 0261 | CLOSED | DEV-054-T003 完成：host_viewer_memory schema 按 Dev Spec 第42节结构化字段修正（CR 0261），705 tests 零回归（703 + 2），git_head=bf8b1f8，READY_FOR_REVIEW |
 | 0263 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0262 | CLOSED | AUDIT_PASS：A01–A28 全部 VERIFIED，0 BLOCKING（Minor 1，REPORT.md 状态文字过时，已订正） |
 | 0264 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0263 | CLOSED | ruling: PASS；DEV-054 T003 通过，重新转 DONE，接口再次冻结；下一节点 DEV-055 Host Scheduler |
+| 0265 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-055 | 0264 | ISSUED | Host Scheduler（M5 第七个节点；decideHostScheduling 只实现 Story Audio > Host Audio 一条明确规则，其余五个因子只保留类型签名不发明组合逻辑，USER 已裁决） |
 
 
 ---
@@ -293,6 +294,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0265 |
 | AUDITOR | — |
 | COMMANDER | — |

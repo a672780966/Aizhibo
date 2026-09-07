@@ -1,6 +1,6 @@
 # DEV-058 INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -47,12 +47,12 @@ packages/ai-host/src/egressGate.ts、commentPipeline.ts、hostPersona.ts、hostM
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 hostAvatar.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 hostAvatar.ts + 测试 + index.ts 导出 + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T002 — 已完成（T001–T002 全部完成，等待 Commander 验收）
 
 ## Exit Criteria
 

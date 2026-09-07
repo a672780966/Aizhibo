@@ -5,3 +5,4 @@ export * from './hostMood.js';
 export * from './hostScheduler.js';
 export * from './hostLLMProvider.js';
 export * from './hostTtsProvider.js';
+export * from './hostAvatar.js';

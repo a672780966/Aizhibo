@@ -438,6 +438,16 @@ LKG`/`Mute Host`/`Unmute Host` 三个真实生效，其余 8 个因
 DEV-045 自动重连处理返回 `ALREADY_HANDLED`，另两个诚实返回
 `NOT_YET_WIRED`；零依赖）。
 
+**DEV-064 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0303`；
+M6 第五个节点；新建 `packages/platform-obs`：真实 OBS WebSocket
+v5 客户端（Hello/Identify/Identified 握手 + 可选 SHA256 双重哈希
+鉴权 + Request/RequestResponse 切场景请求），支持第 49 节六个
+封闭场景（`BOOT`/`LIVE`/`RECONNECTING`/`MAINTENANCE`/`ERROR`/
+`ENDING`）；USER 已裁决建真实客户端而非接口+noop（同 DEV-040/041
+先例），不实现任何重连逻辑，也不实现任何"何时该切场景"的判断
+（决策权留给未来 DEV-065 SAFETY region，CR-020）；生产代码零
+依赖）。
+
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 
 ---

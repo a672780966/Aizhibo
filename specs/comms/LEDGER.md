@@ -323,6 +323,7 @@
 | 0300 | NODE_REPORT | OPENCODE | AUDITOR | DEV-063 | 0299 | CLOSED | DEV-063 T001–T002 完成，READY_FOR_REVIEW（git_head=6db2e29；watchdog 新包：L3 封闭三值 WatchdogTrigger + decideWatchdogAction 三路 switch，TWITCH_DISCONNECT→ALREADY_HANDLED（DEV-045 自动重连），RENDERER_CRASH/RUNTIME_PROCESS_RESTART 诚实 NOT_YET_WIRED 各自点名；新增 5 测试 771→776 零回归；六条命令全绿） |
 | 0301 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-063 | 0300 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED，0 BLOCKING，0 发现（首轮零发现） |
 | 0302 | NODE_RULING | COMMANDER | ALL | DEV-063 | 0301 | CLOSED | ruling: PASS；DEV-063 转 DONE，接口冻结；M6 第四个节点完成，下一节点 DEV-064 OBS Control |
+| 0303 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-064 | 0302 | ISSUED | OBS Control（M6 第五个节点；platform-obs 真实 OBS WebSocket v5 客户端，握手+可选鉴权+切场景，不实现重连/决策逻辑，USER 已裁决建真实客户端而非接口+noop） |
 
 
 ---
@@ -331,6 +332,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0303 |
 | AUDITOR | — |
 | COMMANDER | — |

@@ -47,6 +47,7 @@ describe('decideHostScheduling — audioChannelBusy=false 放行规则', () => {
         audioChannelBusy: false,
         currentStoryPhase: 'silence',
         chatVelocity: 0,
+        selectedCommentImportance: 0,
         lastHostSpeechTimeMs: 1,
         conversationContinuity: false,
       }),

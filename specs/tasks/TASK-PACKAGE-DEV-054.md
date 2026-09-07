@@ -478,3 +478,87 @@ commit 代码+节点文档（一条提交）→ 写入但不提交 LEDGER/NODE_R
 ## REPORT.md 模板
 
 沿用既有八节模板，Acceptance Results 覆盖 A01–A21。
+
+---
+
+## 附录：T003（CHANGE_REQUEST 0261 修正）
+
+### 背景
+
+`CHANGE_REQUEST` 消息 `0261`（USER 已批准）：DEV-054 起草时检索
+"Viewer Memory"关键词，未搜到 Dev Spec 独立的**第 42 节"Host
+Memory"**，该节明确定义结构化字段：`viewerId`/`nickname`/
+`interactionCount`/`lastSeen`/`knownRunningJokes`/`hostAffinity`/
+`notableEvents`，且强调"长期只保存：明确结构化事实"。原实现用
+单一自由文本 `note` 字段代替，不符合该节的规范性字段列表（无
+"例如"字样，视为权威 schema）。
+
+### 变更范围
+
+只改 `host_viewer_memory` 表 schema + `HostViewerMemoryEntry` 类型 +
+其 CRUD 函数 + `host-memory` 的 `rememberViewer`/`recallViewer`
+方法签名。`host_running_jokes` 表、`hostRunningJokes.ts`、
+`purge`、`getHealth` **不受影响**，维持原样不动。
+
+### 新 Schema
+
+```sql
+-- host_viewer_memory 表定义改为：
+CREATE TABLE IF NOT EXISTS host_viewer_memory (
+  platform TEXT NOT NULL,
+  viewer_id TEXT NOT NULL,
+  nickname TEXT,
+  interaction_count INTEGER NOT NULL,
+  known_running_jokes TEXT NOT NULL,
+  host_affinity REAL NOT NULL,
+  notable_events TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  last_seen_at TEXT NOT NULL,
+  PRIMARY KEY (platform, viewer_id)
+);
+```
+
+`known_running_jokes`/`notable_events` 两列存 JSON 字符串（数组），
+沿用 `eventStore.ts`/`snapshotStore.ts` 已有的 `JSON.stringify`/
+`JSON.parse` 存储范式，不引入新依赖。`nickname` 允许为 `NULL`
+（不是每次互动都能拿到昵称）。
+
+```typescript
+// HostViewerMemoryEntry 改为：
+export interface HostViewerMemoryEntry {
+  platform: string;
+  viewerId: string;
+  nickname?: string;
+  interactionCount: number;
+  knownRunningJokes: string[];
+  hostAffinity: number;
+  notableEvents: string[];
+}
+```
+
+`upsertHostViewerMemory(db, entry)`：整行覆盖式写入/插入（不是
+合并式的自动递增/追加——`interactionCount`/`hostAffinity`/
+`knownRunningJokes`/`notableEvents` 具体怎么变化是未来 Host
+Scheduler/LLM Provider 的业务逻辑，Dev Spec 未定义任何具体算法，
+本层不发明，调用方自己读出旧值、算好新值、整体传入覆盖写入）。
+`created_at` 冲突时不覆盖（同原逻辑不变），`last_seen_at`
+每次写入都更新为当前时间。`getHostViewerMemory` 读出整行并把
+两个 JSON 列 parse 回数组。`deleteExpiredHostViewerMemory` 逻辑
+不变（仍按 `last_seen_at` 删除，不涉及新增列）。
+
+`host-memory` 的 `rememberViewer`/`recallViewer` 方法签名同步
+改为接收/返回完整的 `HostViewerMemoryEntry`（去掉原来只接受
+`note: string` 的简化签名）。
+
+### T003 Acceptance
+
+| # | 判定 |
+|---|---|
+| A22 | `host_viewer_memory` 表列为 `platform`/`viewer_id`/`nickname`/`interaction_count`/`known_running_jokes`/`host_affinity`/`notable_events`/`created_at`/`last_seen_at`，`host_running_jokes` 表零改动 |
+| A23 | `upsertHostViewerMemory` 覆盖式写入全部字段，二次写入 `created_at` 不变、`last_seen_at` 更新（沿用原 A08 同类验证手法） |
+| A24 | `getHostViewerMemory` 正确 parse `knownRunningJokes`/`notableEvents` 两个 JSON 数组列，写入时是什么内容读出来就是什么内容 |
+| A25 | `nickname` 未提供时可为 `undefined`/`null`，不报错 |
+| A26 | `host-memory` 的 `rememberViewer`/`recallViewer` 端到端转发完整新 schema |
+| A27 | `deleteExpiredHostViewerMemory`/`purge`（per-platform 差异化保留）在新 schema 下行为不变，既有测试逻辑零回归 |
+| A28 | `host_running_jokes`/`hostRunningJokes.ts`/`db.test.ts` 表数量断言均未被修改 |
+

@@ -21,8 +21,7 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-056 — Host LLM Provider（DONE，`verdict_ref: "0275"`）。下一
-节点 DEV-057 — Host TTS 待起草。
+DEV-057 — Host TTS（IN_PROGRESS，`TASK_PACKAGE` 消息 `0277`）
 
 ## Current Status
 
@@ -30,17 +29,19 @@ M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
 DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
 `DAG.md` M3 章节）。M5（AI Host，10 节点）前八个节点均 `DONE`：
-DEV-050/050A/051/052/053/054/055/056（`HostLLMProvider` 可替换
-接口 + `noopHostLLMProvider` 诚实占位，Dev Spec 只有一句"只需一个
-可替换 Provider API"，不实现任何真实网络调用；首轮 AUDIT_PASS）。
-AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权
-持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
+DEV-050/050A/051/052/053/054/055/056。第九个节点 DEV-057（Host
+TTS）已下发，`IN_PROGRESS`——`HostTtsProvider` 流式合成接口
+（`AsyncIterable<Uint8Array>` 音频块，Dev Spec 第 30 节"LLM
+Streaming → WebSocket TTS"要求）+ `noopHostTtsProvider` 诚实
+占位，不复用 DEV-034 冻结的文件返回式 `TtsProviderPort`，不实现
+任何真实网络调用，不重新打开 DEV-038。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
+不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-DEV-057（Host TTS）待起草。DEV-056 历史：
-`specs/tasks/TASK-PACKAGE-DEV-056.md`（消息 `0273`）——
-`HostLLMProvider` 接口 + `noopHostLLMProvider` 占位实现，`DONE`。
+`specs/tasks/TASK-PACKAGE-DEV-057.md`（消息 `0277`，`ISSUED`）——
+`HostTtsProvider` 流式接口 + `noopHostTtsProvider` 占位实现。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -107,7 +108,7 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## In Progress Nodes
 
-（无）
+- DEV-057 — Host TTS（`TASK_PACKAGE` 消息 `0277`，`ISSUED`）
 
 ## Blocked Nodes
 
@@ -120,8 +121,8 @@ DEV-056 — Host LLM Provider（2026-09-07）
 
 ## Next Eligible Nodes
 
-DEV-057 — Host TTS（M5 第九个节点，待起草）。
-DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在）。
+DEV-057 已下发（`IN_PROGRESS`）。DEV-058 — Host Avatar（M5 第十个/最后一个节点，待 DEV-057 DONE 后起草）。
+DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在；DEV-057 只交付流式接口 + noop 占位，不接入 runtime-kernel，尚不满足重开条件）。
 
 ## Project-level Blockers
 

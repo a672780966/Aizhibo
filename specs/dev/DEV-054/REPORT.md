@@ -2,7 +2,7 @@
 
 ## 1. Status
 
-FIX_REQUIRED（DEV-054-FIX-01 施工中，见 §9）
+FIX_REQUIRED（DEV-054-FIX-01 施工中，见 §9）——**已过时**：FIX-01/FIX-02 均已通过审计，T003（CR 0261 schema 修正）也已完成，最终状态为 `READY_FOR_REVIEW`（见 INDEX.md）。
 
 ## 2. Implemented
 

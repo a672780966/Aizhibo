@@ -21,30 +21,34 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-054 — Viewer Memory（重新 `IN_PROGRESS`，`CHANGE_REQUEST` 消息
-`0261`，USER 已批准重开）。下一节点 DEV-055 — Host Scheduler 待
-DEV-054 T003 完成后起草。
+DEV-054 — Viewer Memory（重新 `DONE`，`verdict_ref: "0263"`；T003
+修正 CR 0261）。下一节点 DEV-055 — Host Scheduler 待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
 DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
 `BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
-`DAG.md` M3 章节）。M5（AI Host，10 节点）：DEV-050/050A/051/052/053
-均 `DONE`。DEV-054（Viewer Memory）原已 `DONE`，但 Commander 事后
-发现起草时检索遗漏 Dev Spec 第 42 节"Host Memory"（章节标题与
-节点名不同字），该节明确定义了比原实现（自由文本 `note`）更具体
-的结构化字段（`nickname`/`interactionCount`/`knownRunningJokes`/
-`hostAffinity`/`notableEvents`）。已发 `CHANGE_REQUEST`（消息
-`0261`）并经 USER 批准重开，正在按第 42 节修正 schema（T003），
-零下游影响（尚无节点消费该接口）。AUDITOR 为
+`DAG.md` M3 章节）。M5（AI Host，10 节点）前六个节点均 `DONE`：
+DEV-050 Public State Gateway → DEV-050A Host Egress Gate → DEV-051
+Comment Pipeline → DEV-052 Host Persona → DEV-053 Host Mood →
+DEV-054 Viewer Memory（`persistence` 追加 `host_viewer_memory`/
+`host_running_jokes` 两表 + 新包 `host-memory`；三轮 FAIL/FIX 后
+首次转 `DONE`，事后经 `CHANGE_REQUEST`（消息 `0261`，USER 已批准）
+重开：起草时检索遗漏 Dev Spec 第 42 节"Host Memory"定义的结构化
+字段，T003 把 `host_viewer_memory` 从自由文本 `note` 修正为
+`nickname`/`interactionCount`/`knownRunningJokes`/`hostAffinity`/
+`notableEvents`，首轮 `AUDIT_PASS` 重新转 `DONE`）。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent。USER 已授权持续推进至 M6，
 不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-DEV-054 T003（CR 修正，追加于原 `specs/tasks/TASK-PACKAGE-DEV-054.md`
-消息 `0247` 之后）。DEV-055（Host Scheduler）待 T003 完成后起草。
+DEV-055（Host Scheduler）待起草。DEV-054 历史：
+`specs/tasks/TASK-PACKAGE-DEV-054.md`（消息 `0247`，+
+`ACCEPTANCE_AMENDMENT` 0248/0249，+ 附录 T003 消息 `0261`）——
+`persistence` 两表 + CRUD + `host-memory` 包（Dev Spec 第 42 节
+结构化 schema），`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 
@@ -105,10 +109,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 - DEV-051 — Comment Pipeline（DONE，`verdict_ref: "0237"`，`git_head` `c24c81ad3e743db2b133e190cef68bd085b6efd6`；首轮 AUDIT_FAIL（A22 缺失，Commander 收尾遗漏）→FIX-01→第二轮 AUDIT_FAIL（A11 测试插入顺序与 receivedAt 混淆）→FIX-02→第三轮 AUDIT_PASS）**——M5 第三个节点**
 - DEV-052 — Host Persona（DONE，`verdict_ref: "0241"`，`git_head` `12ac807023d487ee7dd4840ab9ae26445fa0b207`；首轮 AUDIT_PASS）
 - DEV-053 — Host Mood（DONE，`verdict_ref: "0245"`，`git_head` `53348ed15afc58058e0c859d05c02bc271f06b7c`；首轮 AUDIT_PASS）
+- DEV-054 — Viewer Memory（DONE，`verdict_ref: "0263"`，`git_head` `bf8b1f8ceab98ea34af6d2c6459595545b1e8df7`；首轮 AUDIT_FAIL（A08/A12 测试覆盖不足）→FIX-01→第二轮 AUDIT_FAIL（A08 断言仍恒真）→FIX-02→第三轮 AUDIT_PASS→事后 CHANGE_REQUEST 0261 重开（Dev Spec 第42节 Host Memory schema 检索遗漏）→T003 修正→AUDIT_PASS）
 
 ## In Progress Nodes
 
-- DEV-054 — Viewer Memory（重新 `IN_PROGRESS`，`CHANGE_REQUEST` 消息 `0261`，T003 schema 修正中）
+（无）
 
 ## Blocked Nodes
 
@@ -117,11 +122,11 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 ## Last Accepted Node
 
-DEV-053 — Host Mood（2026-09-05）（DEV-054 因 CR 重开，暂不计入 Last Accepted）
+DEV-054 — Viewer Memory（2026-09-07，T003 修正后重新 DONE）
 
 ## Next Eligible Nodes
 
-DEV-055 — Host Scheduler（M5 第七个节点，待 DEV-054 T003 完成后起草）。
+DEV-055 — Host Scheduler（M5 第七个节点，待起草）。
 DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在）。
 
 ## Project-level Blockers

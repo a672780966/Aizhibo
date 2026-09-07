@@ -301,12 +301,14 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `0246`，`verdict_ref: "0245"`；首轮 `AUDIT_PASS`；`hostMood.ts`
 可变存储 `createHostMoodStore()`，`label` 自由文本，不发明情绪
 枚举，不做自动推导）。
-**DEV-054 状态：重新 `IN_PROGRESS`**（原 `NODE_RULING: PASS` 消息
-`0260` 已因 `CHANGE_REQUEST` 消息 `0261` 重开，USER 已批准；起草
-时检索遗漏 Dev Spec 第 42 节"Host Memory"定义的结构化字段
+**DEV-054 状态：`DONE`，接口再次冻结**（`NODE_RULING: PASS`，消息
+`0264`，`verdict_ref: "0263"`；原三轮 FAIL/FIX 后于 `a90e23d`
+首次转 `DONE`；事后 `CHANGE_REQUEST`（消息 `0261`，USER 已批准）
+重开——起草时检索遗漏 Dev Spec 第 42 节"Host Memory"定义的结构化
+字段；T003 把 `host_viewer_memory` 从自由文本 `note` 修正为
 `nickname`/`interactionCount`/`knownRunningJokes`/`hostAffinity`/
-`notableEvents`，原 `note` 自由文本字段需替换为该 schema；
-`host_running_jokes` 表与 `purge`/`getHealth` 不受影响）。
+`notableEvents`，`host_running_jokes` 表与 `purge`/`getHealth`
+不受影响，首轮 `AUDIT_PASS` 重新转 `DONE`）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

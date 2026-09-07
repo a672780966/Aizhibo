@@ -96,6 +96,8 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/error-registry: {}
+
   packages/health-registry:
     dependencies:
       '@interactive-story/shared':

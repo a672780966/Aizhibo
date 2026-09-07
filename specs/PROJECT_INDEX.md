@@ -21,31 +21,29 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-062 — Error Registry（IN_PROGRESS，`TASK_PACKAGE` 消息 `0295`；
-M6 第三个节点）
+DEV-062 — Error Registry（DONE，`verdict_ref: "0297"`）。M6 第三个
+节点完成（3/9）。下一节点 DEV-063（Watchdog）待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、M5（AI Host
 Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
-依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）前两个
-节点均 `DONE`：DEV-060A（Operator API）、DEV-061（Health System）。
-第三个节点 DEV-062（Error Registry）已下发，`IN_PROGRESS`——新建
-`packages/error-registry`：`ErrorLevel`（第 56 节"故障等级"封闭
-四值 `L1`–`L4`）+ `record`/`list` 记录原语；只记录不处理（四级
-各自的处理方针留给既有 DEV-023 与未来 DEV-063/065/066/067）；
-`category` 自由文本不做自动推断；纯内存零依赖，不接入
-`persistence`/HTTP。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义
+依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）前三个
+节点均 `DONE`：DEV-060A（Operator API）、DEV-061（Health System）、
+DEV-062（Error Registry，新建 `packages/error-registry`：
+`ErrorLevel` 第 56 节封闭四值 `L1`–`L4` + `record`/`list` 原语，
+只记录不处理，`category` 自由文本，纯内存零依赖，首轮
+`AUDIT_PASS` 零发现）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义
 agent（工具集只读，裁决以文本返回，Commander 代为落盘消息
 文件）。USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续
 占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-062.md`（消息 `0295`，`ISSUED`）——
-`error-registry` 包（`ErrorRegistry`/`createErrorRegistry`），
-T001–T002 两个 Task。
+M6 下一节点 DEV-063（Watchdog）Task Package 待 Commander 起草。
+DEV-062 历史：`specs/tasks/TASK-PACKAGE-DEV-062.md`（消息
+`0295`）——error-registry 记录原语，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

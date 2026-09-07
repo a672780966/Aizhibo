@@ -319,6 +319,7 @@
 | 0296 | NODE_REPORT | OPENCODE | AUDITOR | DEV-062 | 0295 | CLOSED | DEV-062 T001–T002 完成，READY_FOR_REVIEW（git_head=808e913；error-registry 新包：L1-L4 封闭四值 + record/list 副本原语，category 自由文本零推断零处理逻辑，零依赖；新增 6 测试 765→771 零回归；六条命令全绿） |
 | 0297 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-062 | 0296 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED，0 BLOCKING，0 发现（首轮零发现） |
 | 0298 | NODE_RULING | COMMANDER | ALL | DEV-062 | 0297 | CLOSED | ruling: PASS；DEV-062 转 DONE，接口冻结；M6 第三个节点完成，下一节点 DEV-063 Watchdog |
+| 0299 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-063 | 0298 | ISSUED | Watchdog（M6 第四个节点；watchdog 封闭三值 WatchdogTrigger，TWITCH_DISCONNECT 已由 DEV-045 处理返回 ALREADY_HANDLED，另两个诚实 NOT_YET_WIRED，USER 已裁决封闭集合+真实分支） |
 
 
 ---
@@ -327,6 +328,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0299 |
 | AUDITOR | — |
 | COMMANDER | — |

@@ -424,6 +424,14 @@ LKG`/`Mute Host`/`Unmute Host` 三个真实生效，其余 8 个因
 `Health`（第 57 节，DEV-000 冻结）；不硬编码接入仓库里已有 6 个
 真实 `getHealth` 来源，不新建 HTTP 端点）。
 
+**DEV-062 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0295`；
+M6 第三个节点；新建 `packages/error-registry`：`ErrorLevel`（第
+56 节"故障等级"封闭四值 `L1`–`L4`）+ `record`/`list` 记录原语；
+第 62 节本身零正文，`DAG.md` 备注为空，唯一权威范围来自第 56
+节；只记录不处理（四级各自的处理方针留给既有 DEV-023 与未来
+DEV-063/065/066/067）；`category` 自由文本不做自动推断；纯内存
+零依赖，不接入 `persistence`/HTTP）。
+
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 
 ---

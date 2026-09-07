@@ -315,6 +315,7 @@
 | 0292 | NODE_RULING | COMMANDER | ALL | DEV-061 | 0291 | CLOSED | ruling: FAIL；MAJOR-01 接受并说明 + Commander 直接自行订正（删除残留文件，不转 FIX_PACKAGE），节点转 FIX_REQUIRED，重新提交第二轮审计 |
 | 0293 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-061 | 0292 | CLOSED | 第二轮 AUDIT_PASS：A01–A20 全部 VERIFIED，0 BLOCKING（Info 1，NODE_REPORT 时间戳观察，不影响结论）；MAJOR-01 已确认解决 |
 | 0294 | NODE_RULING | COMMANDER | ALL | DEV-061 | 0293 | CLOSED | ruling: PASS；DEV-061 转 DONE，接口冻结；M6 第二个节点完成，下一节点 DEV-062 Error Registry |
+| 0295 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-062 | 0294 | ISSUED | Error Registry（M6 第三个节点；error-registry 只记录不处理，L1-L4 封闭四值类型，category 自由文本不做自动推断，零依赖不接入 persistence/HTTP） |
 
 
 ---
@@ -323,6 +324,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0295 |
 | AUDITOR | — |
 | COMMANDER | — |

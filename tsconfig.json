@@ -16,6 +16,7 @@
     { "path": "./packages/host-memory" },
     { "path": "./packages/operator-api" },
     { "path": "./packages/health-registry" },
-    { "path": "./packages/error-registry" }
+    { "path": "./packages/error-registry" },
+    { "path": "./packages/watchdog" }
   ]
 }

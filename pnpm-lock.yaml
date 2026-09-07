@@ -186,6 +186,8 @@ importers:
 
   packages/shared: {}
 
+  packages/watchdog: {}
+
 packages:
 
   '@eslint-community/eslint-utils@4.10.1':

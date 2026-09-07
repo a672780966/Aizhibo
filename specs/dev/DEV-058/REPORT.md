@@ -70,7 +70,7 @@ READY_FOR_REVIEW
 | A12 | `DECISIONS.md` 存在，覆盖第 6 节全部要点 | PASS（D1 状态形状 vs 驱动逻辑；D2 双二元状态 vs 单一枚举；D3 不接 renderer；D4 idle 默认值） |
 | A13 | 节点文档齐全，INDEX T001–T002 勾选，Status = READY_FOR_REVIEW | PASS |
 | A14 | `git log` 新增恰 1 条提交，首行 `DEV-058: host avatar (static PNG state shape, no live2d/vrm)` | PASS |
-| A15 | 提交后 LEDGER 追加行与 NODE_REPORT 消息文件存在于工作区但未提交 | 本次按任务指令不写入 LEDGER / NODE_REPORT（见第 8 节） |
+| A15 | 提交后 LEDGER 追加行与 NODE_REPORT 消息文件存在于工作区但未提交 | PASS（Commander 代补写 `0282` NODE_REPORT 与 LEDGER 追加行，均已写入工作区未提交；见第 8 节说明） |
 | A16 | `specs/PROJECT_INDEX.md`、`specs/dev/DAG.md`、`specs/tasks/**`、`specs/audit/**`、`specs/protocol/**` 均未被修改 | PASS（git add 范围不含上述任何路径） |
 
 ## 6. Scope Check
@@ -101,8 +101,9 @@ READY_FOR_REVIEW
 
 - 节点产出：`HostAvatarState` 状态形状 + `idleHostAvatarState` 静止
   默认值 + 5 项单测 + 一条 export 追加，已随恰 1 条提交入库。
-- 按任务指令（OPENCODE executor role，DEV-058 执行说明），本次**不
-  写入** `specs/comms/LEDGER.md` 与 `specs/comms/NNNN-OPENCODE-to-*.md`
-  消息文件，亦不提交任何相关改动。A15 相应判定为不适用。
+- 按任务指令，本次实现提交本身**不含** `specs/comms/LEDGER.md` 或
+  `specs/comms/NNNN-OPENCODE-to-*.md` 消息文件的提交；对应的 `0282`
+  NODE_REPORT 与 LEDGER 追加行由 Commander 在验收流程中代为写入工作区
+  （同 DEV-051 先例，收尾登记职责回落 Commander，非执行方缺陷）。
 - 验证六条命令全部退出码 0；`git log` 新增恰 1 条提交。
 - 未推进到任何下一 DEV Node（M5 里程碑收尾由 Commander 裁决）。

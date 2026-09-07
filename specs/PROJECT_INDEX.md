@@ -21,28 +21,31 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-058 — Host Avatar（IN_PROGRESS，`TASK_PACKAGE` 消息 `0281`；
-M5 最后一个节点）
+DEV-058 — Host Avatar（DONE，`verdict_ref: "0283"`）。**M5（AI Host
+Complete）里程碑全部 10 个节点完成。** 下一节点 DEV-060A（Operator
+API，M6 首个/优先节点，CR-013 已批准）待起草。
 
 ## Current Status
 
-M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）均 `DONE`。M3：
-DEV-030/031/032/034/035/036/037 `DONE`；**DEV-038（Audio Ducking）
-`BLOCKED`**（暂缓非施工失败，依赖 M5 有真实 Host 音频信号，详见
-`DAG.md` M3 章节）。M5（AI Host，10 节点）前九个节点均 `DONE`：
-DEV-050/050A/051/052/053/054/055/056/057。第十个/最后一个节点
-DEV-058（Host Avatar）已下发，`IN_PROGRESS`——`HostAvatarState`
-口型（`mouth`）+ 呼吸（`breathing`）两个独立二元状态 +
-`idleHostAvatarState` 静止默认值，CR-014 已把范围砍定为"静态 PNG
-+ 口型/呼吸微动，无 Live2D/VRM"，不实现任何带具体时间参数的驱动
-逻辑，不接入 renderer/Presentation 层。本节点 PASS 后 M5 全部 10
-个节点完成。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent。
+M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、**M5（AI Host
+Complete，10/10）**均 `DONE`。M3：DEV-030/031/032/034/035/036/037
+`DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
+依赖 M5 有真实 Host 音频信号，M5 全部节点均为接口/占位实现，条件
+仍未满足，详见 `DAG.md` M3 章节）。M5 十个节点：
+DEV-050/050A/051/052/053/054/055/056/057/058 均 `DONE`
+（DEV-058：`HostAvatarState` 口型+呼吸两个独立二元状态 +
+`idleHostAvatarState` 静止默认值，CR-014 砍掉 Live2D/VRM，不实现
+带时间参数的驱动逻辑，不接入 renderer/Presentation 层，首轮
+`AUDIT_PASS`）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent
+（工具集只读，裁决以文本返回，Commander 代为落盘消息文件）。
 USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-058.md`（消息 `0281`，`ISSUED`）——
-`HostAvatarState` 状态形状 + `idleHostAvatarState` 默认值。
+M6（Operations）首个节点 DEV-060A（Operator API）Task Package 待
+Commander 起草。M5 历史：`specs/tasks/TASK-PACKAGE-DEV-058.md`
+（消息 `0281`）——`HostAvatarState` 状态形状 + `idleHostAvatarState`
+默认值，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

@@ -302,6 +302,9 @@
 | 0279 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-057 | 0278 | CLOSED | AUDIT_PASS：A01–A17 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0280 | NODE_RULING | COMMANDER | ALL | DEV-057 | 0279 | CLOSED | ruling: PASS；DEV-057 转 DONE，接口冻结；下一节点 DEV-058 Host Avatar |
 | 0281 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-058 | 0280 | ISSUED | Host Avatar（M5 第十个/最后一个节点；HostAvatarState 口型+呼吸两个独立二元状态 + idleHostAvatarState 静止默认值，CR-014 砍掉 Live2D/VRM，不实现带时间参数的驱动逻辑，USER 已裁决） |
+| 0282 | NODE_REPORT | OPENCODE | AUDITOR | DEV-058 | 0281 | CLOSED | DEV-058 施工完成，READY_FOR_REVIEW（git_head=905c307；hostAvatar.ts 状态形状 + idleHostAvatarState 静止默认值，零依赖零驱动逻辑；新增 2 文件 5 测试 719→724 零回归；六条命令全绿；本消息由 Commander 代补写，dispatch 明确指示执行方本次不写 LEDGER/NODE_REPORT） |
+| 0283 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-058 | 0282 | CLOSED | AUDIT_PASS：A01–A16 全部 VERIFIED，0 BLOCKING（Minor 1，REPORT.md A15 文字过时已订正；Info 1，CRLF 工作区标记非本次改动） |
+| 0284 | NODE_RULING | COMMANDER | ALL | DEV-058 | 0283 | CLOSED | ruling: PASS；DEV-058 转 DONE，接口冻结；**M5（AI Host Complete）里程碑全部 10 个节点完成** |
 
 
 ---
@@ -310,6 +313,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0281 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

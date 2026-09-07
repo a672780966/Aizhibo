@@ -270,7 +270,7 @@ Send Chat Message API，未接入 `runtime-kernel`/`PlatformPort`，CR-010）。
 
 ---
 
-## 第五施工组：AI Host（M5 — AI Host Complete）
+## 第五施工组：AI Host（M5 — AI Host Complete）**已全部完成（2026-09-07）**
 
 前置：DEV-046
 
@@ -325,13 +325,18 @@ Streaming → WebSocket TTS"要求）+ `noopHostTtsProvider` 诚实占位，
 不复用/修改 DEV-034 冻结的文件返回式 `TtsProviderPort`，不实现
 任何真实网络调用，不重新打开 DEV-038）。
 
-**DEV-058 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0281`；
-M5 最后一个节点；`HostAvatarState` 口型 `mouth: 'open'|'closed'` +
-呼吸 `breathing: 'inhale'|'exhale'` 两个独立二元状态 +
+**DEV-058 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0284`，`verdict_ref: "0283"`；首轮 `AUDIT_PASS`；M5 最后一个节点；
+`HostAvatarState` 口型 `mouth: 'open'|'closed'` + 呼吸
+`breathing: 'inhale'|'exhale'` 两个独立二元状态 +
 `idleHostAvatarState` 静止默认值；CR-014 已把范围砍定为"静态 PNG
 + 口型/呼吸微动，无 Live2D/VRM"；Dev Spec/CR-014 均未定义任何具体
 时间参数，USER 已裁决只定义状态形状，不实现驱动逻辑，不接入
 renderer/Presentation 层；不重新打开 DEV-038）。
+
+**M5（AI Host Complete）里程碑全部 10 个节点完成**：DEV-050、
+DEV-050A、DEV-051、DEV-052、DEV-053、DEV-054、DEV-055、DEV-056、
+DEV-057、DEV-058 均 `DONE`。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

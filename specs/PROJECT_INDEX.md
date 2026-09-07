@@ -21,33 +21,33 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-064 — OBS Control（IN_PROGRESS，`TASK_PACKAGE` 消息 `0303`；
-M6 第五个节点）
+DEV-064 — OBS Control（DONE，`verdict_ref: "0305"`）。M6 第五个
+节点完成（5/9）。下一节点 DEV-065（OBS Failover）待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、M5（AI Host
 Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
-依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）前四个
+依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）前五个
 节点均 `DONE`：DEV-060A（Operator API）、DEV-061（Health
-System）、DEV-062（Error Registry）、DEV-063（Watchdog）。第五个
-节点 DEV-064（OBS Control）已下发，`IN_PROGRESS`——新建
-`packages/platform-obs`：真实 OBS WebSocket v5 客户端（Hello/
-Identify/Identified 握手 + 可选 SHA256 双重哈希鉴权 + 切场景
-请求），支持第 49 节六个封闭场景。USER 已裁决建真实客户端（同
-DEV-040/041 先例），不实现任何重连逻辑，也不实现任何"何时该切
-场景"的判断（决策权留给未来 DEV-065 SAFETY region，CR-020）。
-生产代码零依赖，`ws`/`@types/ws` 只作测试依赖。AUDITOR 为
+System）、DEV-062（Error Registry）、DEV-063（Watchdog）、
+DEV-064（OBS Control，新建 `packages/platform-obs`：真实 OBS
+WebSocket v5 客户端，Hello/Identify/Identified 握手 + 官方双重
+SHA256 鉴权 + 切场景请求，支持第 49 节六个封闭场景，零重连零
+决策，生产代码零依赖；第一轮 `AUDIT_FAIL`——审计员认定 LEDGER
+"当前待处理"表格原地更新超出协议仅追加范围，Commander 复核协议
+原文后判定该表格是现状索引非历史行日志，接受观察但不采纳阻塞
+结论，与此前 M6 节点一致，判 PASS）。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
 返回，Commander 代为落盘消息文件）。USER 已授权持续推进至 M6，
 不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-064.md`（消息 `0303`，`ISSUED`）——
-`platform-obs` 包（`ObsControlPort`/`createObsControlProvider`/
-真实 WebSocket v5 客户端），T001–T003 三个 Task。
+M6 下一节点 DEV-065（OBS Failover）Task Package 待 Commander
+起草。DEV-064 历史：`specs/tasks/TASK-PACKAGE-DEV-064.md`（消息
+`0303`）——platform-obs 真实客户端，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

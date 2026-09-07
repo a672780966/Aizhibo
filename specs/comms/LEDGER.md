@@ -323,7 +323,10 @@
 | 0300 | NODE_REPORT | OPENCODE | AUDITOR | DEV-063 | 0299 | CLOSED | DEV-063 T001–T002 完成，READY_FOR_REVIEW（git_head=6db2e29；watchdog 新包：L3 封闭三值 WatchdogTrigger + decideWatchdogAction 三路 switch，TWITCH_DISCONNECT→ALREADY_HANDLED（DEV-045 自动重连），RENDERER_CRASH/RUNTIME_PROCESS_RESTART 诚实 NOT_YET_WIRED 各自点名；新增 5 测试 771→776 零回归；六条命令全绿） |
 | 0301 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-063 | 0300 | CLOSED | AUDIT_PASS：A01–A20 全部 VERIFIED，0 BLOCKING，0 发现（首轮零发现） |
 | 0302 | NODE_RULING | COMMANDER | ALL | DEV-063 | 0301 | CLOSED | ruling: PASS；DEV-063 转 DONE，接口冻结；M6 第四个节点完成，下一节点 DEV-064 OBS Control |
-| 0303 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-064 | 0302 | ISSUED | OBS Control（M6 第五个节点；platform-obs 真实 OBS WebSocket v5 客户端，握手+可选鉴权+切场景，不实现重连/决策逻辑，USER 已裁决建真实客户端而非接口+noop） |
+| 0303 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-064 | 0302 | CLOSED | OBS Control（M6 第五个节点；platform-obs 真实 OBS WebSocket v5 客户端，握手+可选鉴权+切场景，不实现重连/决策逻辑，USER 已裁决建真实客户端而非接口+noop） |
+| 0304 | NODE_REPORT | OPENCODE | AUDITOR | DEV-064 | 0303 | CLOSED | DEV-064 T001–T003 完成，READY_FOR_REVIEW（git_head=2886049a；platform-obs 真实 OBS WebSocket v5 客户端：Hello/Identify/Identified 握手+官方双重 SHA256 鉴权（node:crypto 零依赖）+ op6/op7 requestId 关联切场景，双超时全路径不悬挂，需鉴权未配密码不发任何 Identify；noop 单例 toBe 引用返回；新增 2 文件 12 测试 776→788 零回归；六条命令全绿） |
+| 0305 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-064 | 0304 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01：LEDGER"当前待处理"表格原地改动，判定超出 §2.3 仅追加范围） |
+| 0306 | NODE_RULING | COMMANDER | ALL | DEV-064 | 0305 | CLOSED | ruling: PASS；MAJOR-01 接受观察但不采纳阻塞结论（该表格非 §2.3 保护的历史行日志，属现状索引，此前 M6 全部节点同法维护无异议）；DEV-064 转 DONE，接口冻结；M6 第五个节点完成，下一节点 DEV-065 OBS Failover |
 
 
 ---
@@ -332,6 +335,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0303 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

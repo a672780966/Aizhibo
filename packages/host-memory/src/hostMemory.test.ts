@@ -3,14 +3,19 @@ import { openDatabase } from '@interactive-story/persistence';
 import { createHostMemory } from './hostMemory.js';
 
 describe('createHostMemory', () => {
-  it('recalls a viewer note after remembering it', () => {
+  it('recalls a full viewer entry after remembering it', () => {
     const memory = createHostMemory(openDatabase(':memory:'));
-    memory.rememberViewer('twitch', 'viewer-1', 'first note');
-    expect(memory.recallViewer('twitch', 'viewer-1')).toEqual({
+    const entry = {
       platform: 'twitch',
       viewerId: 'viewer-1',
-      note: 'first note',
-    });
+      nickname: 'viewer one',
+      interactionCount: 1,
+      knownRunningJokes: ['hello world'],
+      hostAffinity: 5,
+      notableEvents: ['said hi'],
+    };
+    memory.rememberViewer(entry);
+    expect(memory.recallViewer('twitch', 'viewer-1')).toEqual(entry);
   });
 
   it('returns undefined for a viewer that was never remembered', () => {
@@ -29,29 +34,77 @@ describe('createHostMemory', () => {
   it('purge deletes expired records only for listed platforms', () => {
     const db = openDatabase(':memory:');
     const memory = createHostMemory(db);
-    memory.rememberViewer('twitch', 'viewer-1', 'twitch note');
-    memory.rememberViewer('youtube', 'viewer-1', 'youtube note');
+    memory.rememberViewer({
+      platform: 'twitch',
+      viewerId: 'viewer-1',
+      nickname: 'twitch viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
+    memory.rememberViewer({
+      platform: 'youtube',
+      viewerId: 'viewer-1',
+      nickname: 'youtube viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
     db.prepare(
       `UPDATE host_viewer_memory SET last_seen_at = '2000-01-01T00:00:00.000Z'
        WHERE platform IN ('twitch', 'youtube')`,
     ).run();
     memory.purge({ twitch: 1000 });
     expect(memory.recallViewer('twitch', 'viewer-1')).toBeUndefined();
-    expect(memory.recallViewer('youtube', 'viewer-1')?.note).toBe('youtube note');
+    expect(memory.recallViewer('youtube', 'viewer-1')).toEqual({
+      platform: 'youtube',
+      viewerId: 'viewer-1',
+      nickname: 'youtube viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
   });
 
   it("purge honors each listed platform's own retention, even for an equally old record", () => {
     const db = openDatabase(':memory:');
     const memory = createHostMemory(db);
-    memory.rememberViewer('twitch', 'viewer-1', 'twitch note');
-    memory.rememberViewer('youtube', 'viewer-1', 'youtube note');
+    memory.rememberViewer({
+      platform: 'twitch',
+      viewerId: 'viewer-1',
+      nickname: 'twitch viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
+    memory.rememberViewer({
+      platform: 'youtube',
+      viewerId: 'viewer-1',
+      nickname: 'youtube viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
     db.prepare(
       `UPDATE host_viewer_memory SET last_seen_at = '2000-01-01T00:00:00.000Z'
        WHERE platform IN ('twitch', 'youtube')`,
     ).run();
     memory.purge({ twitch: 1000, youtube: 999999999999 });
     expect(memory.recallViewer('twitch', 'viewer-1')).toBeUndefined();
-    expect(memory.recallViewer('youtube', 'viewer-1')?.note).toBe('youtube note');
+    expect(memory.recallViewer('youtube', 'viewer-1')).toEqual({
+      platform: 'youtube',
+      viewerId: 'viewer-1',
+      nickname: 'youtube viewer',
+      interactionCount: 1,
+      knownRunningJokes: [],
+      hostAffinity: 5,
+      notableEvents: [],
+    });
   });
 
   it('purge also removes expired running jokes for the listed platforms', () => {

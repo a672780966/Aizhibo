@@ -192,3 +192,91 @@ LEDGER 追加行与 NODE_REPORT 消息文件（`specs/comms/`）留给 Commander
 收尾统一提交，不在本次提交范围内（A20，Constraint 6）。NODE_REPORT
 发往 `AUDITOR`，抄送 `COMMANDER`；审核锚点与交付快照见
 `specs/comms/0250-OPENCODE-to-AUDITOR-NODE_REPORT-DEV-054.md`。
+
+## 10. DEV-054-T003（CHANGE_REQUEST 0261 修正）
+
+T003 按 CR 0261（USER 已批准）修正 `host_viewer_memory` 表 schema，
+使其符合 Dev Spec 第 42 节"Host Memory"定义的结构化字段（起草时
+按"Viewer Memory"关键词检索，未搜到该独立章节标题——详见
+DECISIONS.md D6）。`host_running_jokes` 表、`hostRunningJokes.ts`、
+`purge`、`getHealth` 及相应代码/测试**完全未改动**。
+
+**`packages/persistence`**：
+
+- `db.ts`：`host_viewer_memory` 表 schema 从 `platform`/`viewer_id`/
+  `note`/`created_at`/`last_seen_at` 改为 `platform`/`viewer_id`/
+  `nickname`/`interaction_count`/`known_running_jokes`/
+  `host_affinity`/`notable_events`/`created_at`/`last_seen_at`（按
+  Dev Spec 第 42 节结构化字段修正，CR 0261）；`known_running_jokes`/
+  `notable_events` 两列存 JSON 字符串（数组），沿用
+  `eventStore.ts`/`snapshotStore.ts` 既有 `JSON.stringify`/
+  `JSON.parse` 存储范式，零新依赖；`nickname` 允许 `NULL`；
+  `host_running_jokes` 表零改动（A28）。
+- `hostViewerMemory.ts`：`HostViewerMemoryEntry` 类型从 `note: string`
+  改为 `nickname?`/`interactionCount`/`knownRunningJokes`/
+  `hostAffinity`/`notableEvents`；`upsertHostViewerMemory(db, entry)`
+  保持整行覆盖式写入的机械语义（不发明自动递增/追加的业务逻辑，
+  D6），`created_at` 冲突时不覆盖、`last_seen_at` 每次写入刷新（同
+  原逻辑）；`getHostViewerMemory` 读出整行并把两个 JSON 列 parse
+  回数组；`deleteExpiredHostViewerMemory` 逻辑不变（仍按
+  `last_seen_at` 删除）。
+- `hostViewerMemory.test.ts`：相应重写——upsert 新写读回完整 entry
+  （含数组往返）、二次 upsert 覆盖全部字段且 `created_at` 不变/
+  `last_seen_at` 更新、`nickname` 省略时保持 `undefined`、未知
+  viewer 返回 `undefined`、按 cutoff 删过期、同 platform 限定删除，
+  共 7 条测试（原 5 + 新增 2）。
+
+**`packages/host-memory`**：
+
+- `hostMemory.ts`：`rememberViewer` 方法签名从三个独立参数
+  `(platform, viewerId, note)` 改为接收完整 entry 对象
+  `rememberViewer(entry: HostViewerMemoryEntry)`，逐条转发
+  persistence 的 upsert；`recallViewer` 同步返回完整
+  `HostViewerMemoryEntry`；`addRunningJoke`/`listRunningJokes`/
+  `purge`/`getHealth` 零改动。
+- `hostMemory.test.ts`：相应重写——remember→recall 端到端读回完整
+  entry（含数组往返）、per-platform purge 差异化清理与 running
+  jokes 覆盖沿用既有断言，共 7 条测试。
+
+### T003 Tests Executed
+
+| 项 | 结果 |
+|---|---|
+| `pnpm test`（hostViewerMemory.test.ts） | 7 条全部通过（完整 entry 往返 / 全字段覆盖式二次 upsert 且 created_at 不变、last_seen_at 更新 / nickname 省略 undefined / 未知 viewer undefined / 按 cutoff 删过期 / 同 platform 限定删除） |
+| `pnpm test`（hostMemory.test.ts） | 7 条全部通过（完整 entry 端到端转发往返 / 未记 viewer undefined / purge per-platform 差异化 + running jokes 覆盖） |
+| `pnpm test`（全量 workspace） | 零回归：120 个测试文件，**705 个测试**全部通过（T002-FIX-02 基线 703 + 新增 2，净 +2） |
+
+T003 六条命令（`pnpm install`/`pnpm typecheck`/`pnpm lint`/
+`pnpm format:check`/`pnpm build`/`pnpm test`）全部退出码 0。
+`host_running_jokes` 表、`hostRunningJokes.ts`、`db.test.ts` 表数量
+断言、`purge`/`getHealth` 均未被修改（A28），既有测试零回归。
+
+### T003 Acceptance（A22–A28）
+
+A22–A28 全部 PASS：新 schema 九列齐全（A22）；覆盖式写入全部字段，
+二次写入 `created_at` 不变、`last_seen_at` 更新（A23）；两个 JSON
+数组列写入读回内容一致（A24）；`nickname` 省略时 `undefined`/`NULL`
+不报错（A25）；host-memory 端到端转发完整新 schema（A26）；
+`deleteExpiredHostViewerMemory`/`purge` 在新 schema 下行为不变、既有
+测试零回归（A27）；`host_running_jokes`/`hostRunningJokes.ts`/
+`db.test.ts` 表数量断言均未被修改（A28）。
+
+### T003 Changed Files
+
+```text
+packages/persistence/src/db.ts                    （修改，host_viewer_memory 表 schema 换列）
+packages/persistence/src/hostViewerMemory.ts      （修改，Entry 类型 + upsert/get 换结构化字段）
+packages/persistence/src/hostViewerMemory.test.ts （重写，5 → 7 条）
+packages/host-memory/src/hostMemory.ts            （修改，rememberViewer 签名收 entry 对象）
+packages/host-memory/src/hostMemory.test.ts       （重写，完整 entry 端到端）
+specs/dev/DEV-054/DECISIONS.md                    （追加 D6）
+specs/dev/DEV-054/REPORT.md                       （本文件，追加 §10）
+specs/dev/DEV-054/INDEX.md                        （T003 勾选 + Status=READY_FOR_REVIEW）
+```
+
+### T003 Commit
+
+恰 1 条提交（首行 `DEV-054-T003: correct host_viewer_memory schema
+ to Dev Spec section 42 structured fields (CR 0261)`）。LEDGER 追加
+行与 NODE_REPORT 消息文件（`specs/comms/0262-*.md`）写入工作区但
+**未提交**，留 Commander 收尾。

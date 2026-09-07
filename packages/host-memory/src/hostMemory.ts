@@ -13,7 +13,7 @@ import {
 } from '@interactive-story/persistence';
 
 export interface HostMemory {
-  rememberViewer(platform: string, viewerId: string, note: string): void;
+  rememberViewer(entry: HostViewerMemoryEntry): void;
   recallViewer(platform: string, viewerId: string): HostViewerMemoryEntry | undefined;
   addRunningJoke(platform: string, id: string, text: string): void;
   listRunningJokes(platform: string): HostRunningJokeEntry[];
@@ -23,8 +23,8 @@ export interface HostMemory {
 
 export function createHostMemory(db: DatabaseSync): HostMemory {
   return {
-    rememberViewer(platform, viewerId, note) {
-      upsertHostViewerMemory(db, { platform, viewerId, note });
+    rememberViewer(entry) {
+      upsertHostViewerMemory(db, entry);
     },
     recallViewer(platform, viewerId) {
       return getHostViewerMemory(db, platform, viewerId);

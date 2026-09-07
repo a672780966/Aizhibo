@@ -67,3 +67,42 @@ Host 消费语义的转发外壳，数据库实例由外部调用方在 Runtime 
 被禁止）。本节点只负责把清理这个动作本身实现正确——给定保留时长，
 同步删除过期数据——不负责决定什么时候触发它。何时调用、多久调用一
 次由 M6 的调度层（未来的调用方）决定，本节点不越界替它做调度决策。
+
+## D6 — T003 修正：为什么把 host_viewer_memory 的自由文本 note 字段替换成 Dev Spec 第 42 节定义的结构化字段
+
+**决策**：`host_viewer_memory.note` 自由文本字段替换为 Dev Spec
+第 42 节"Host Memory"定义的结构化字段——`viewerId`/`nickname`/
+`interactionCount`/`lastSeen`/`knownRunningJokes`/`hostAffinity`/
+`notableEvents`（`lastSeen` 对应既有 `last_seen_at` 列）——落为
+`nickname`/`interaction_count`/`known_running_jokes`/`host_affinity`/
+`notable_events` 等列（CR 0261，USER 已批准）。
+
+**理由**：Dev Spec 第 42 节"Host Memory"用```text 代码块明确定义
+了 viewerId/nickname/interactionCount/lastSeen/knownRunningJokes/
+hostAffinity/notableEvents 这套结构化字段，并强调"长期只保存：
+明确结构化事实"。这是一段没有"例如"字样的规范性
+字段列表（对比 DEV_SPEC 中其他带有"例如："字样的示意性段落），
+应视为权威 schema。原实现用单一自由文本
+note 字段代替，是起草时检索遗漏——当时按"Viewer Memory"关键词检索，
+没有搜到 Dev Spec 独立的**第 42 节"Host Memory"**章节标题（CR 0261
+背景，TASK-PACKAGE 附录）。本决策收回 D3 中"note 自由文本"的
+取舍：D3 的不发明原则仍然成立，但前提是 Dev Spec 确实没有定义
+结构化模型；第 42 节的存在使该前提不成立，故按权威 schema 修正，
+而不是继续自行定义或保留自由文本。
+
+**不发明业务逻辑**：`upsertHostViewerMemory` 保持整行覆盖式写入
+的机械语义不变（INSERT ... ON CONFLICT DO UPDATE SET 全部字段），
+不发明自动递增/追加的业务逻辑——`interactionCount`/`hostAffinity`/
+`knownRunningJokes`/`notableEvents` 具体怎么更新是未来 Host
+Scheduler/LLM Provider 的业务逻辑，Dev Spec 未定义任何具体算法，
+本层不发明；调用方自己读出旧值、算好新值、整体传入覆盖写入。
+`created_at` 冲突时不覆盖、`last_seen_at` 每次写入刷新，同原逻辑。
+
+**JSON 存储范式**：`known_running_jokes`/`notable_events` 两个数组
+字段用 JSON 字符串存储，沿用项目里 `eventStore.ts`/
+`snapshotStore.ts` 已有的 `JSON.stringify`/`JSON.parse` 范式，不引入
+新依赖。`nickname` 允许为 NULL（不是每次互动都能拿到昵称）。
+
+**影响面**：`host_running_jokes` 表和 `purge`/`getHealth` 完全不受
+影响，维持原样不动。
+

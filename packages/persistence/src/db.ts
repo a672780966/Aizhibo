@@ -54,7 +54,11 @@ export function initSchema(db: DatabaseSync): void {
     CREATE TABLE IF NOT EXISTS host_viewer_memory (
       platform TEXT NOT NULL,
       viewer_id TEXT NOT NULL,
-      note TEXT NOT NULL,
+      nickname TEXT,
+      interaction_count INTEGER NOT NULL,
+      known_running_jokes TEXT NOT NULL,
+      host_affinity REAL NOT NULL,
+      notable_events TEXT NOT NULL,
       created_at TEXT NOT NULL,
       last_seen_at TEXT NOT NULL,
       PRIMARY KEY (platform, viewer_id)

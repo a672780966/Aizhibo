@@ -34,6 +34,9 @@ describe('hostViewerMemory', () => {
          WHERE platform = ? AND viewer_id = ?`,
       )
       .get('twitch', 'viewer-1') as { created_at: string; last_seen_at: string };
+    db.prepare(
+      `UPDATE host_viewer_memory SET last_seen_at = '1999-01-01T00:00:00.000Z' WHERE platform = ? AND viewer_id = ?`,
+    ).run('twitch', 'viewer-1');
     upsertHostViewerMemory(db, {
       platform: 'twitch',
       viewerId: 'viewer-1',
@@ -47,7 +50,7 @@ describe('hostViewerMemory', () => {
       .get('twitch', 'viewer-1') as { created_at: string; last_seen_at: string };
     expect(getHostViewerMemory(db, 'twitch', 'viewer-1')?.note).toBe('updated note');
     expect(secondWrite.created_at).toBe(firstWrite.created_at);
-    expect(secondWrite.last_seen_at.length).toBeGreaterThan(0);
+    expect(secondWrite.last_seen_at).not.toBe('1999-01-01T00:00:00.000Z');
   });
 
   it('returns undefined for an unknown platform and viewer id', () => {

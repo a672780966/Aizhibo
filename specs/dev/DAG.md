@@ -430,14 +430,13 @@ LKG`/`Mute Host`/`Unmute Host` 三个真实生效，其余 8 个因
 `L1`–`L4`）+ `record`/`list` 记录原语；只记录不处理，`category`
 自由文本不做自动推断，纯内存零依赖）。
 
-**DEV-063 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0299`；
-M6 第四个节点；新建 `packages/watchdog`：`WatchdogTrigger`（第 56
-节 L3"Runtime 可恢复"封闭三值 `RENDERER_CRASH`/
-`TWITCH_DISCONNECT`/`RUNTIME_PROCESS_RESTART`）+
-`decideWatchdogAction` 判断函数；`TWITCH_DISCONNECT` 已由 DEV-045
-自动重连处理返回 `ALREADY_HANDLED`，另两个诚实返回
-`NOT_YET_WIRED`；USER 已裁决 L3 三值当作封闭集合写真实分支，区别
-于 DEV-062 `category` 的开放文本；零依赖）。
+**DEV-063 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0302`，`verdict_ref: "0301"`；首轮 `AUDIT_PASS`，0 发现；新建
+`packages/watchdog`：第 56 节 L3 封闭三值 `WatchdogTrigger`（
+`RENDERER_CRASH`/`TWITCH_DISCONNECT`/`RUNTIME_PROCESS_RESTART`）+
+`decideWatchdogAction` 三分支纯函数；`TWITCH_DISCONNECT` 已由
+DEV-045 自动重连处理返回 `ALREADY_HANDLED`，另两个诚实返回
+`NOT_YET_WIRED`；零依赖）。
 
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 

@@ -318,11 +318,12 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `0276`，`verdict_ref: "0275"`；首轮 `AUDIT_PASS`；`HostLLMProvider`
 可替换接口 + `noopHostLLMProvider` 诚实占位，Dev Spec 只有一句
 "只需一个可替换 Provider API"，不实现任何真实网络调用）。
-**DEV-057 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0277`；
-`HostTtsProvider` 流式合成接口（`AsyncIterable<Uint8Array>` 音频
-块，第 30 节"LLM Streaming → WebSocket TTS"要求）+
-`noopHostTtsProvider` 诚实占位，不复用 DEV-034 冻结的文件返回式
-`TtsProviderPort`，不实现任何真实网络调用，不重新打开 DEV-038）。
+**DEV-057 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0280`，`verdict_ref: "0279"`；首轮 `AUDIT_PASS`；`HostTtsProvider`
+流式合成接口（`AsyncIterable<Uint8Array>` 音频块，第 30 节"LLM
+Streaming → WebSocket TTS"要求）+ `noopHostTtsProvider` 诚实占位，
+不复用/修改 DEV-034 冻结的文件返回式 `TtsProviderPort`，不实现
+任何真实网络调用，不重新打开 DEV-038）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

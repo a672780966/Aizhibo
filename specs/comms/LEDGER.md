@@ -298,6 +298,9 @@
 | 0275 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-056 | 0274 | CLOSED | AUDIT_PASS：A01–A16 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0276 | NODE_RULING | COMMANDER | ALL | DEV-056 | 0275 | CLOSED | ruling: PASS；DEV-056 转 DONE，接口冻结；下一节点 DEV-057 Host TTS |
 | 0277 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-057 | 0276 | ISSUED | Host TTS（M5 第九个节点；HostTtsProvider 流式接口（AsyncIterable 音频块，第30节要求）+ noopHostTtsProvider 诚实占位，不复用 DEV-034 TtsProviderPort，不实现真实网络调用，不重开 DEV-038） |
+| 0278 | NODE_REPORT | OPENCODE | AUDITOR | DEV-057 | 0277 | CLOSED | DEV-057 施工完成，READY_FOR_REVIEW（git_head=a99d137；HostTtsProvider 流式接口（AsyncIterable 音频块）+ noopHostTtsProvider 诚实占位，不复用 DEV-034 TtsProviderPort，源码零 import 零网络调用；新增 2 文件 4 测试 715→719 零回归；六条命令全绿） |
+| 0279 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-057 | 0278 | CLOSED | AUDIT_PASS：A01–A17 全部 VERIFIED（首轮通过），0 BLOCKING |
+| 0280 | NODE_RULING | COMMANDER | ALL | DEV-057 | 0279 | CLOSED | ruling: PASS；DEV-057 转 DONE，接口冻结；下一节点 DEV-058 Host Avatar |
 
 
 ---
@@ -306,6 +309,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0277 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

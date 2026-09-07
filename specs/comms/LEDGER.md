@@ -270,6 +270,17 @@
 | 0247 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-054 | 0246 | ISSUED | Viewer Memory（M5 第六个节点；persistence 追加 host_viewer_memory/host_running_jokes 两表（CR-017 延后建表）+ 新包 host-memory，不自持 DB 连接/schema，purge 按 per-platform 保留时长清理） |
 | 0248 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-054 | 0247 | CLOSED | 起草疏漏：db.test.ts 表数量断言（四→六）随两张新表必然过时，追加进 Writable Scope，Commander 已直接修正并验证 19 测试通过 |
 | 0249 | ACCEPTANCE_AMENDMENT | COMMANDER | OPENCODE | DEV-054 | 0248 | CLOSED | 澄清：Forbidden Scope"禁止 import node:sqlite"字面过严，纯类型 import type DatabaseSync 允许，真正禁止的是运行时调用；已核实 hostMemory.ts 符合约束真实意图 |
+| 0250 | NODE_REPORT | OPENCODE | AUDITOR | DEV-054 | 0249 | CLOSED | DEV-054 施工完成，READY_FOR_REVIEW（git_head=81ad46e；persistence 追加 host_viewer_memory/host_running_jokes 两表（CR-017 延后建表落地）+ 新包 host-memory 转发外壳（不自持 DB 连接/schema，仅类型引用），purge 按 per-platform 保留时长无隐式默认、无后台定时任务；新增 3 文件 15 测试 686→701 零回归；六条命令全绿） |
+| 0251 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0250 | CLOSED | AUDIT_FAIL：2 Major（A08 二次 upsert 的 created_at 不变/last_seen_at 更新未被测试覆盖；A12 purge 未测试双平台差异化保留 + 未覆盖 host_running_jokes）+1 Minor（A09 插入顺序恰好与时间戳顺序一致，测试无区分力），全部采纳转 FIX |
+| 0252 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0251 | CLOSED | ruling: FAIL；F-01/F-02（MAJOR）+F-03（MINOR）全部转 FIX-01 |
+| 0253 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-054 | 0252 | ISSUED | DEV-054-FIX-01：补 A08 二次 upsert 原始列时间戳断言 + A12 双平台差异化保留与 running jokes 覆盖 + A09 插入顺序反转 |
+| 0254 | NODE_REPORT | OPENCODE | AUDITOR | DEV-054 | 0253 | CLOSED | DEV-054-FIX-01 完成，READY_FOR_REVIEW（git_head=0728aa6；实现零改动仅三个测试文件加强：A08 原生 SQL 直证 created_at 不变/last_seen_at 有值 + A12 双平台差异化保留与 running jokes 覆盖 + A09 插入顺序与时间戳反向；703 tests 零回归；六条命令全绿） |
+| 0255 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0254 | CLOSED | 第二轮 AUDIT_FAIL：1 Major（A08 last_seen_at 仅断言非空，从首次插入起恒真，测不出 conflict 分支忘记更新的退化），A09/A12 确认已修复 |
+| 0256 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0255 | CLOSED | ruling: FAIL；A08 last_seen_at 断言转 FIX-02（哨兵值+不等断言） |
+| 0257 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-054 | 0256 | ISSUED | DEV-054-FIX-02：A08 last_seen_at 断言改用哨兵值+不等断言，消除从首次插入起恒真的非空断言 |
+| 0258 | NODE_REPORT | OPENCODE | AUDITOR | DEV-054 | 0257 | CLOSED | DEV-054-FIX-02 完成，READY_FOR_REVIEW（git_head=a90e23d；哨兵值 1999-01-01 + not.toBe 不等断言消除恒真非空断言，退化实现必失败；703 tests 零回归；六条命令全绿） |
+| 0259 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-054 | 0258 | CLOSED | 第三轮 AUDIT_PASS：A01–A21 全部 VERIFIED，0 BLOCKING（Info 1，工作区治理通信文件/CRLF 标记非本次代码变更） |
+| 0260 | NODE_RULING | COMMANDER | ALL | DEV-054 | 0259 | CLOSED | ruling: PASS；DEV-054 转 DONE，接口冻结；下一节点 DEV-055 Host Scheduler |
 
 
 ---
@@ -278,6 +289,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0247 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

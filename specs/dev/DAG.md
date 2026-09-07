@@ -301,10 +301,14 @@ Commander 收尾流程遗漏，非执行方缺陷）→`FIX-01`→第二轮
 `0246`，`verdict_ref: "0245"`；首轮 `AUDIT_PASS`；`hostMood.ts`
 可变存储 `createHostMoodStore()`，`label` 自由文本，不发明情绪
 枚举，不做自动推导）。
-**DEV-054 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0247`；
-`persistence` 追加 `host_viewer_memory`/`host_running_jokes` 两表
-（CR-017 延后建表）+ 新包 `host-memory`，不自持 DB 连接/schema，
-`purge` 按 per-platform 保留时长清理）。
+**DEV-054 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0260`，`verdict_ref: "0259"`；首轮 `AUDIT_FAIL`（A08/A12 测试
+覆盖不足）→`FIX-01`→第二轮 `AUDIT_FAIL`（A08 断言仍恒真）→
+`FIX-02`→第三轮 `AUDIT_PASS`；`persistence` 追加
+`host_viewer_memory`/`host_running_jokes` 两表（CR-017 延后建表
+落地）+ 新包 `host-memory` 转发外壳，不自持 DB 连接/schema，
+`purge` 按 per-platform 保留时长清理，无隐式默认、无后台定时
+任务）。
 
 | Exec | Node | Name | 备注 |
 |---|---|---|---|

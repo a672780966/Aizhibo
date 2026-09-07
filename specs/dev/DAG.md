@@ -325,6 +325,14 @@ Streaming → WebSocket TTS"要求）+ `noopHostTtsProvider` 诚实占位，
 不复用/修改 DEV-034 冻结的文件返回式 `TtsProviderPort`，不实现
 任何真实网络调用，不重新打开 DEV-038）。
 
+**DEV-058 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0281`；
+M5 最后一个节点；`HostAvatarState` 口型 `mouth: 'open'|'closed'` +
+呼吸 `breathing: 'inhale'|'exhale'` 两个独立二元状态 +
+`idleHostAvatarState` 静止默认值；CR-014 已把范围砍定为"静态 PNG
++ 口型/呼吸微动，无 Live2D/VRM"；Dev Spec/CR-014 均未定义任何具体
+时间参数，USER 已裁决只定义状态形状，不实现驱动逻辑，不接入
+renderer/Presentation 层；不重新打开 DEV-038）。
+
 | Exec | Node | Name | 备注 |
 |---|---|---|---|
 | 1 | DEV-050 | Public State Gateway | **读向边界**。退化为投影函数（CR-008） |

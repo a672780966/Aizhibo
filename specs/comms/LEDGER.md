@@ -301,6 +301,7 @@
 | 0278 | NODE_REPORT | OPENCODE | AUDITOR | DEV-057 | 0277 | CLOSED | DEV-057 施工完成，READY_FOR_REVIEW（git_head=a99d137；HostTtsProvider 流式接口（AsyncIterable 音频块）+ noopHostTtsProvider 诚实占位，不复用 DEV-034 TtsProviderPort，源码零 import 零网络调用；新增 2 文件 4 测试 715→719 零回归；六条命令全绿） |
 | 0279 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-057 | 0278 | CLOSED | AUDIT_PASS：A01–A17 全部 VERIFIED（首轮通过），0 BLOCKING |
 | 0280 | NODE_RULING | COMMANDER | ALL | DEV-057 | 0279 | CLOSED | ruling: PASS；DEV-057 转 DONE，接口冻结；下一节点 DEV-058 Host Avatar |
+| 0281 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-058 | 0280 | ISSUED | Host Avatar（M5 第十个/最后一个节点；HostAvatarState 口型+呼吸两个独立二元状态 + idleHostAvatarState 静止默认值，CR-014 砍掉 Live2D/VRM，不实现带时间参数的驱动逻辑，USER 已裁决） |
 
 
 ---
@@ -309,6 +310,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0281 |
 | AUDITOR | — |
 | COMMANDER | — |

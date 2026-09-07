@@ -21,31 +21,29 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-061 — Health System（IN_PROGRESS，`TASK_PACKAGE` 消息 `0289`；
-M6 第二个节点）
+DEV-061 — Health System（DONE，`verdict_ref: "0293"`）。M6 第二个
+节点完成。下一节点 DEV-062（Error Registry）待起草。
 
 ## Current Status
 
 M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、M5（AI Host
 Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
-依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）第一个
-节点 DEV-060A（Operator API）`DONE`。第二个节点 DEV-061（Health
-System）已下发，`IN_PROGRESS`——新建 `packages/health-registry`
-通用聚合原语，`getAggregateHealth()` 用"最差状态优先"规则聚合
-`Health`（第 57 节，DEV-000 冻结）；Dev Spec 第 61 节本身零正文，
-唯一权威范围来自 DAG.md"采集聚合"四字；不硬编码接入仓库里已有
-6 个真实 `getHealth` 来源（无真实生产入口进程可供装配，同
-DEV-060A 现实约束），不新建 HTTP 端点。AUDITOR 为
-`opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
-返回，Commander 代为落盘消息文件）。USER 已授权持续推进至 M6，
-不再逐节点确认；账号/密钥继续占位处理。
+依赖真实 Host 音频信号，条件仍未满足）。M6（Operations）前两个
+节点均 `DONE`：DEV-060A（Operator API）、DEV-061（Health System，
+新建 `packages/health-registry` 通用聚合原语，"最差状态优先"规则，
+不硬编码接入真实来源，不建 HTTP 端点；第一轮 `AUDIT_FAIL` 因
+Commander 自己残留的临时 dispatch 文件，自行订正后第二轮
+`AUDIT_PASS`）。AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent
+（工具集只读，裁决以文本返回，Commander 代为落盘消息文件）。
+USER 已授权持续推进至 M6，不再逐节点确认；账号/密钥继续占位
+处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-061.md`（消息 `0289`，`ISSUED`）——
-`health-registry` 包（`HealthSource`/`HealthRegistry`/
-`createHealthRegistry`），T001–T002 两个 Task。
+M6 下一节点 DEV-062（Error Registry）Task Package 待 Commander
+起草。DEV-061 历史：`specs/tasks/TASK-PACKAGE-DEV-061.md`
+（消息 `0289`）——health-registry 聚合原语，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

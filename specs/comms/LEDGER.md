@@ -309,7 +309,12 @@
 | 0286 | NODE_REPORT | OPENCODE | AUDITOR | DEV-060A | 0285 | CLOSED | DEV-060A T001–T003 完成，READY_FOR_REVIEW（git_head=c076b44；hostPermission 两值 store + operator-api 新包：dispatch 单入口 11 action（MUTE/UNMUTE/RESTORE_LKG 真实，8 个占位点名原因）+ node:http 单路由 Bearer 端点默认拒绝 + OPERATOR_OVERRIDE 无条件审计；新增 6 文件 34 测试 724→758 零回归；六条命令全绿） |
 | 0287 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-060A | 0286 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED，0 BLOCKING（Minor 1，operatorDispatch.test.ts 一处测试名称与内容不一致，接受并说明；Info 1，工作区状态符合 A21） |
 | 0288 | NODE_RULING | COMMANDER | ALL | DEV-060A | 0287 | CLOSED | ruling: PASS；DEV-060A 转 DONE，接口冻结；M6 第一个/优先节点完成，下一节点 DEV-061 Health System |
-| 0289 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-061 | 0288 | ISSUED | Health System（M6 第二个节点；health-registry 通用聚合原语，最差状态优先规则，不硬编码接入 6 个真实来源，不新建 HTTP 端点） |
+| 0289 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-061 | 0288 | CLOSED | Health System（M6 第二个节点；health-registry 通用聚合原语，最差状态优先规则，不硬编码接入 6 个真实来源，不新建 HTTP 端点） |
+| 0290 | NODE_REPORT | OPENCODE | AUDITOR | DEV-061 | 0289 | CLOSED | DEV-061 T001–T002 完成，READY_FOR_REVIEW（git_head=509a077；health-registry 新包：通用 HealthSource/HealthRegistry 聚合原语，最差状态优先，同名覆盖式 register，同步/异步 getHealth 混用，空 registry 默认 OK；新增 5 文件 7 测试 758→765 零回归；六条命令全绿） |
+| 0291 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-061 | 0290 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01 工作区残留未授权临时文件 .tmp_dev061_prompt.txt，Commander 自己的 dispatch 产物非执行方缺陷）/1 Info（NODE_REPORT 时间戳与提交日期不一致，观察项） |
+| 0292 | NODE_RULING | COMMANDER | ALL | DEV-061 | 0291 | CLOSED | ruling: FAIL；MAJOR-01 接受并说明 + Commander 直接自行订正（删除残留文件，不转 FIX_PACKAGE），节点转 FIX_REQUIRED，重新提交第二轮审计 |
+| 0293 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-061 | 0292 | CLOSED | 第二轮 AUDIT_PASS：A01–A20 全部 VERIFIED，0 BLOCKING（Info 1，NODE_REPORT 时间戳观察，不影响结论）；MAJOR-01 已确认解决 |
+| 0294 | NODE_RULING | COMMANDER | ALL | DEV-061 | 0293 | CLOSED | ruling: PASS；DEV-061 转 DONE，接口冻结；M6 第二个节点完成，下一节点 DEV-062 Error Registry |
 
 
 ---
@@ -318,6 +323,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0289 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

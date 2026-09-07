@@ -416,13 +416,13 @@ LKG`/`Mute Host`/`Unmute Host` 三个真实生效，其余 8 个因
 子系统不存在，诚实占位返回 `ok:false`，未发 CR，USER 2026-09-07
 已裁决）。
 
-**DEV-061 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0289`；
-M6 第二个节点；新建 `packages/health-registry` 通用聚合原语，
-`getAggregateHealth()` 用"最差状态优先"规则聚合 `Health`（第 57
-节，DEV-000 冻结）；第 61 节本身零正文，唯一权威范围来自本表
-"采集聚合"四字；不硬编码接入仓库里已有 6 个真实 `getHealth` 来源
-（无真实生产入口进程可供装配，同 DEV-060A 现实约束），不新建
-HTTP 端点）。
+**DEV-061 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
+`0294`，`verdict_ref: "0293"`；第一轮 `AUDIT_FAIL`（MAJOR-01 工作区
+残留 Commander 自己的临时 dispatch 文件，非实现缺陷，直接自行
+订正）→第二轮 `AUDIT_PASS`；新建 `packages/health-registry` 通用
+聚合原语，`getAggregateHealth()` 用"最差状态优先"规则聚合
+`Health`（第 57 节，DEV-000 冻结）；不硬编码接入仓库里已有 6 个
+真实 `getHealth` 来源，不新建 HTTP 端点）。
 
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 

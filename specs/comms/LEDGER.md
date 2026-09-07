@@ -309,6 +309,7 @@
 | 0286 | NODE_REPORT | OPENCODE | AUDITOR | DEV-060A | 0285 | CLOSED | DEV-060A T001–T003 完成，READY_FOR_REVIEW（git_head=c076b44；hostPermission 两值 store + operator-api 新包：dispatch 单入口 11 action（MUTE/UNMUTE/RESTORE_LKG 真实，8 个占位点名原因）+ node:http 单路由 Bearer 端点默认拒绝 + OPERATOR_OVERRIDE 无条件审计；新增 6 文件 34 测试 724→758 零回归；六条命令全绿） |
 | 0287 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-060A | 0286 | CLOSED | AUDIT_PASS：A01–A22 全部 VERIFIED，0 BLOCKING（Minor 1，operatorDispatch.test.ts 一处测试名称与内容不一致，接受并说明；Info 1，工作区状态符合 A21） |
 | 0288 | NODE_RULING | COMMANDER | ALL | DEV-060A | 0287 | CLOSED | ruling: PASS；DEV-060A 转 DONE，接口冻结；M6 第一个/优先节点完成，下一节点 DEV-061 Health System |
+| 0289 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-061 | 0288 | ISSUED | Health System（M6 第二个节点；health-registry 通用聚合原语，最差状态优先规则，不硬编码接入 6 个真实来源，不新建 HTTP 端点） |
 
 
 ---
@@ -317,6 +318,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0289 |
 | AUDITOR | — |
 | COMMANDER | — |

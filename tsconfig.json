@@ -13,6 +13,7 @@
     { "path": "./packages/platform-core" },
     { "path": "./packages/platform-twitch" },
     { "path": "./packages/ai-host" },
-    { "path": "./packages/host-memory" }
+    { "path": "./packages/host-memory" },
+    { "path": "./packages/operator-api" }
   ]
 }

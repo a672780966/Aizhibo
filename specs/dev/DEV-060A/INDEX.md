@@ -1,6 +1,6 @@
 # DEV-060A INDEX
 
-Status: IN_PROGRESS
+Status: READY_FOR_REVIEW
 
 ## Current Node
 
@@ -63,13 +63,13 @@ packages/persistence/**、packages/runtime-kernel/**（Read-only，只按既有�
 
 ## Task Order
 
-- [ ] T001 节点文档
-- [ ] T002 hostPermission.ts + operator-api 包骨架（actions/auth/override log）
-- [ ] T003 operatorDispatch.ts + operatorHttpServer.ts + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
+- [x] T001 节点文档
+- [x] T002 hostPermission.ts + operator-api 包骨架（actions/auth/override log）
+- [x] T003 operatorDispatch.ts + operatorHttpServer.ts + 全量验证 + REPORT + commit + NODE_REPORT（不单独提交 LEDGER/NODE_REPORT）
 
 ## Current Task
 
-T001
+T003（已完成，READY_FOR_REVIEW）
 
 ## Exit Criteria
 

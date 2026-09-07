@@ -114,6 +114,15 @@ importers:
         specifier: workspace:*
         version: link:../rule-engine
 
+  packages/operator-api:
+    dependencies:
+      '@interactive-story/persistence':
+        specifier: workspace:*
+        version: link:../persistence
+      '@interactive-story/runtime-kernel':
+        specifier: workspace:*
+        version: link:../runtime-kernel
+
   packages/persistence:
     dependencies:
       '@interactive-story/runtime-kernel':

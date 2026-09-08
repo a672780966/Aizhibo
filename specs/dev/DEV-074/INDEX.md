@@ -1,6 +1,6 @@
 # DEV-074 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -79,7 +79,7 @@ import 或依赖除 @interactive-story/chapter-compiler、
 
 ## Current Task
 
-无（节点已交 AUDITOR/COMMANDER 验收）
+无（节点已 DONE，审计 AUDIT_PASS，0 BLOCKER/MAJOR，NODE_RULING PASS）
 
 ## Exit Criteria
 
@@ -90,6 +90,6 @@ import 或依赖除 @interactive-story/chapter-compiler、
 
 ## Next Node
 
-由 Commander 裁定（当前为 DEV-074 收尾验收）。
+DEV-075 Chapter Packager（由 Claude Commander 裁定后已进入下一节点）。
 
 OpenCode 禁止自行推进下一 DEV Node。

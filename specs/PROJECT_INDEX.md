@@ -21,10 +21,10 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-074 — Audio Production Queue（IN_PROGRESS，
-`TASK_PACKAGE` 消息 `0323`；M7 第五个节点）。与 DEV-071/072
-不同：具体协议已存在且已冻结（既有 DEV-034/035 `audio-engine` 的
-`TtsProviderPort`/`createElevenLabsTtsProvider`），不建接口+noop。
+DEV-075 — Chapter Packager（TODO，M7 第六个节点；含 PASS 7 资产
+文件存在性校验 CR-006，覆盖「每个可达 NarrativeBlock 有音频文件」
+CR-018）。DEV-074（Audio Production Queue）已 `DONE`
+（`verdict_ref: "0325"`，`NODE_RULING` 消息 `0326`）。
 
 ## Current Status
 
@@ -48,23 +48,25 @@ Dev Spec 给出的五类资产需求（插画/表情/序列帧/BGM/声音），�
 到 `chapter-schema` 真实字段。不做可达性过滤、不做"已生产/未生产"
 比对——Dev Spec 均未提及，不发明。审计 `AUDIT_PASS`，0
 BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0321"`）。**DEV-074
-（Audio Production Queue）已下发，`IN_PROGRESS`**——新建
+（Audio Production Queue）`DONE`**——新建
 `packages/audio-production-queue`：真实复用既有 DEV-034/035
 `audio-engine` 的 `TtsProviderPort`/`createElevenLabsTtsProvider`
 （协议已存在已冻结，不建接口+noop），按 CR-018 职责遍历 Chapter
 Pack 全部 `NarrativeBlock` 批量调用 TTS。不做可达性过滤、
 `voiceId`/`voiceSettings` 由调用方传入不发明、不声称 CR-018 §4.6
 拼接听感原型人工验收已完成（`DEV-030/DECISIONS.md` D3 已如实记录
-未完成）。AUDITOR 为
+未完成）。审计 `AUDIT_PASS`，0 BLOCKER/MAJOR，1 MINOR（文档计数
+已修正）、1 INFO（`verdict_ref: "0325"`）。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
 返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-074.md`（消息 `0323`，`ISSUED`）——
-`audio-production-queue` 包（`extractNarrativeBlocks` +
-`runAudioProductionQueue` + `generateAudioProductionQueue`），
-T001–T002 两个 Task。DEV-073 历史：
+无 ISSUED 中的 Task Package——DEV-075（Chapter Packager）尚在研究/
+起草阶段。DEV-074 历史：
+`specs/tasks/TASK-PACKAGE-DEV-074.md`（消息 `0323`）——
+audio-production-queue 真实复用既有 TtsProviderPort 批量合成，`DONE`。
+DEV-073 历史：
 `specs/tasks/TASK-PACKAGE-DEV-073.md`（消息 `0319`）——
 asset-requirement-generator 五类资产需求提取，`DONE`。
 `specs/tasks/TASK-PACKAGE-DEV-072.md`（消息 `0315`）——

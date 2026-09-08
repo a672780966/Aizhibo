@@ -2,9 +2,10 @@
 
 ## 1. Status
 
-READY_FOR_REVIEW — DEV-074（Audio Production Queue，M7 第五个节点）
-T001–T002 施工完成，六条验证命令全部退出码 0，恰 1 条提交，已交
-AUDITOR/COMMANDER 验收。
+DONE — DEV-074（Audio Production Queue，M7 第五个节点）T001–T002 施工
+完成，六条验证命令全部退出码 0，恰 1 条提交，AUDITOR 审计 AUDIT_PASS
+（0 BLOCKER/MAJOR，1 MINOR 文档计数已修正，1 INFO，verdict_ref:
+"0325"），Commander NODE_RULING: PASS（消息 0326）。
 
 ## 2. Implemented
 
@@ -50,7 +51,7 @@ AUDITOR/COMMANDER 验收。
 
 ## 3. Changed Files
 
-提交内共 17 个文件：
+提交内共 16 个文件：
 
 - `packages/audio-production-queue/package.json`（新增：name
   `@interactive-story/audio-production-queue`，结构对齐

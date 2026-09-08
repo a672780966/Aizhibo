@@ -527,17 +527,25 @@ LEDGER 消息记录（同 DEV-038/065 先例）。
 
 **CR-018 无排序问题**：M3（音频）在 M7（内容工厂）之前，因此 M3 ~ M6 期间只有 `RUNTIME_TTS` 路径 —— 这正是 DEV-035 的用途。M7 之后它退居兜底。前提是 DEV-030 就把解析链定义好，DEV-035 从一开始按兜底形态建造。
 
-**DEV-070 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0307`，
-2026-09-08 下发）——M7 第一个节点，也是本项目第一个交付物类型
-与 M1–M6 全部节点不同的节点：产出物是 prompt 文本（指导 AI 模型
-按 `chapter-schema` 逐模块写作 Chapter 内容），不是确定性类型/
-决策代码，因此无法用类型检查判定"正确性"；测试改为机械关键字
+**DEV-070 状态：`DONE`**（`verdict_ref: "0309"`，
+`ruling_ref: "0310"`，2026-09-08）——M7 第一个节点，也是本项目第一个
+交付物类型与 M1–M6 全部节点不同的节点：产出物是 prompt 文本（指导
+AI 模型按 `chapter-schema` 逐模块写作 Chapter 内容），不是确定性
+类型/决策代码，因此无法用类型检查判定"正确性"；测试改为机械关键字
 覆盖检查（Stage 标题、模块关键字、Quality 取值、slot 取值），
-verbatim 一致性由 Commander 人工核对。prompt 正文已由 Commander
-逐一核对 `chapter-schema` 全部 19 个组件的真实字段撰写，执行方
-须逐字照抄，不得改写、不得省略字段（USER 已裁决要求完整、
-逐模块覆盖）。不真实调用任何 AI/LLM API（留给 DEV-071），不实现
-Compiler/AI Repair Loop 逻辑（既有 DEV-002/未来 DEV-072 职责）。
+verbatim 一致性由 Commander 人工核对（脚本逐字节比对 12170 字符
+一致）。prompt 正文已由 Commander 逐一核对 `chapter-schema` 全部 19
+个组件的真实字段撰写，执行方逐字照抄，不改写、不省略字段（USER
+已裁决要求完整、逐模块覆盖）。不真实调用任何 AI/LLM API（留给
+DEV-071），不实现 Compiler/AI Repair Loop 逻辑（既有 DEV-002/未来
+DEV-072 职责）。审计提出 1 MAJOR（`pnpm-lock.yaml` 未列入 Writable
+Scope 却被修改），Commander 裁定 PASS 且不采纳阻塞结论——同一模式
+已连续出现于 DEV-060A/061/062/063/064 五个节点均未被判定违规，且
+该改动是新增包被授权后 pnpm 工具链的强制副作用（`--frozen-lockfile`
+本身要求 lockfile 与新 package.json 同步），"整改移除"在技术上
+不可行；Commander 已承诺从 DEV-071 起在新增包类节点的 Task Package
+Writable Scope 中显式列出 `pnpm-lock.yaml`，消除该歧义。M7 下一
+节点：DEV-071（AI Chapter Generator）。
 
 ---
 

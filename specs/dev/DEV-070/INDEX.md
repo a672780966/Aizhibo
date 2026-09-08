@@ -1,6 +1,6 @@
 # DEV-070 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -56,7 +56,7 @@ import 或依赖 packages/chapter-schema 或任何其他既有包
 
 ## Current Task
 
-T002（已完成，待 AUDITOR 验收）
+无（DONE，`verdict_ref: "0309"`，`ruling_ref: "0310"`）
 
 ## Exit Criteria
 

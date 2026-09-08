@@ -2,8 +2,12 @@
 
 ## 1. Status
 
-READY_FOR_REVIEW — DEV-070（Chapter Authoring Schema Prompt，M7 第一个
+DONE — DEV-070（Chapter Authoring Schema Prompt，M7 第一个
 节点）T001–T002 施工完成，六条验证命令全部退出码 0，恰 1 条提交。
+审计（msg 0309）提出 1 MAJOR（pnpm-lock.yaml 未列入 Writable
+Scope），Commander 裁定 PASS（msg 0310）——同一模式已连续出现于
+DEV-060A/061/062/063/064 五个节点且均未被判定违规，且该改动是新增
+包被授权后 pnpm 工具链的强制副作用，技术上无法"整改移除"。
 
 ## 2. Implemented
 

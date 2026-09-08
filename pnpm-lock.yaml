@@ -72,6 +72,8 @@ importers:
 
   packages/audio-engine: {}
 
+  packages/chapter-authoring-prompts: {}
+
   packages/chapter-compiler:
     dependencies:
       '@interactive-story/chapter-schema':

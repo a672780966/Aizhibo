@@ -18,6 +18,7 @@
     { "path": "./packages/health-registry" },
     { "path": "./packages/error-registry" },
     { "path": "./packages/watchdog" },
-    { "path": "./packages/platform-obs" }
+    { "path": "./packages/platform-obs" },
+    { "path": "./packages/chapter-authoring-prompts" }
   ]
 }

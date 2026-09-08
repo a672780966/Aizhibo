@@ -547,8 +547,8 @@ Scope 却被修改），Commander 裁定 PASS 且不采纳阻塞结论——同�
 Writable Scope 中显式列出 `pnpm-lock.yaml`，消除该歧义。M7 下一
 节点：DEV-071（AI Chapter Generator）。
 
-**DEV-071 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0311`，
-2026-09-08 下发）——M7 第二个节点。Dev Spec 对 DEV-071 只给出标题
+**DEV-071 状态：`DONE`**（`verdict_ref: "0313"`，`ruling_ref: "0314"`，
+2026-09-08）——M7 第二个节点。Dev Spec 对 DEV-071 只给出标题
 「AI Chapter Generator」，未给出任何具体外部 LLM 网络协议/鉴权
 方式（GPT-5.6 Sol / Fable 5 仅是模型名，没有可查证协议文档），
 与 DEV-040/041（Twitch，有真实协议）/DEV-064（OBS WebSocket v5，
@@ -561,7 +561,9 @@ M6/M7，面对同样"要调用强 LLM 但无协议文档"的处境）只建接�
 ——把 DEV-070 冻结的 `CHAPTER_AUTHORING_SCHEMA_PROMPT` 与调用方
 brief 拼接成完整请求文本，唯一 workspace 依赖为
 `chapter-authoring-prompts`。不真实调用任何网络 API，不实现 Schema
-Normalizer/Compiler/AI Repair Loop 逻辑。
+Normalizer/Compiler/AI Repair Loop 逻辑。审计首轮 `AUDIT_PASS`，
+0 BLOCKER/MAJOR/MINOR。M7 下一节点：DEV-072（AI Compiler Repair
+Loop）。
 
 ---
 

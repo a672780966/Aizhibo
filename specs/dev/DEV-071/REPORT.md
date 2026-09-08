@@ -2,10 +2,10 @@
 
 ## 1. Status
 
-READY_FOR_REVIEW — DEV-071（AI Chapter Generator，M7 第二个节点）
-T001–T002 施工完成，六条验证命令全部退出码 0，恰 1 条提交。节点文档
-四件套 + DECISIONS.md 齐全（INDEX.md T001–T002 勾选，Status →
-READY_FOR_REVIEW）。
+DONE — DEV-071（AI Chapter Generator，M7 第二个节点）T001–T002
+施工完成，六条验证命令全部退出码 0，恰 1 条提交。审计首轮
+`AUDIT_PASS`（msg 0313，0 BLOCKER/MAJOR/MINOR，1 INFO），Commander
+裁定 PASS（msg 0314），DEV-071 转 `DONE`。
 
 ## 2. Implemented
 

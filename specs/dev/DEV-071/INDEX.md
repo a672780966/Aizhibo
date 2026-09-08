@@ -1,6 +1,6 @@
 # DEV-071 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -62,7 +62,7 @@ import 或依赖除 @interactive-story/chapter-authoring-prompts 外的任何其
 
 ## Current Task
 
-T002（已完成，待 AUDITOR 验收）
+无（DONE，`verdict_ref: "0313"`，`ruling_ref: "0314"`）
 
 ## Exit Criteria
 

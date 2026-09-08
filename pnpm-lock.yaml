@@ -82,6 +82,15 @@ importers:
         specifier: workspace:*
         version: link:../platform-core
 
+  packages/asset-requirement-generator:
+    dependencies:
+      '@interactive-story/chapter-compiler':
+        specifier: workspace:*
+        version: link:../chapter-compiler
+      '@interactive-story/chapter-schema':
+        specifier: workspace:*
+        version: link:../chapter-schema
+
   packages/audio-engine: {}
 
   packages/chapter-authoring-prompts: {}

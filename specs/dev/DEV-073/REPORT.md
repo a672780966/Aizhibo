@@ -2,9 +2,10 @@
 
 ## 1. Status
 
-READY_FOR_REVIEW — DEV-073（Asset Requirement Generator，M7 第四个
-节点）T001–T002 施工完成，六条验证命令全部退出码 0，恰 1 条提交，
-等待 AUDITOR 审计 + Commander 裁决。
+DONE — DEV-073（Asset Requirement Generator，M7 第四个节点）T001–
+T002 施工完成，六条验证命令全部退出码 0，恰 1 条提交，AUDITOR
+审计 `AUDIT_PASS`（0 BLOCKER/MAJOR/MINOR/INFO，`verdict_ref: "0321"`），
+Commander `NODE_RULING: PASS`（消息 `0322`）。
 
 ## 2. Implemented
 

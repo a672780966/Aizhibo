@@ -584,13 +584,14 @@ AI Repair 协议，不建真实客户端）、`buildRepairRequest` 真实转述
 首轮 `AUDIT_PASS`，0 BLOCKER/MAJOR/MINOR/INFO。M7 下一节点：
 DEV-073（Asset Requirement Generator）。
 
-**DEV-073 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0319`，
-2026-09-08 下发）——M7 第四个节点，与 DEV-070/071/072 不同：不涉及
-任何 AI/LLM 调用，是纯确定性数据提取任务。Dev Spec 给出明确的
-产品需求（第 2785-2796 行）：从 Chapter 自动导出五类资产需求
-（插画/表情/序列帧/BGM/声音）。真实调用既有 DEV-002 Compiler 的
-`loadChapterPack`/`runSchemaValidation`，遍历已校验内容按字段
-映射到五个类别（`VisualLayer.assetId`→插画，
+**DEV-073 状态：`DONE`**（`TASK_PACKAGE` 消息 `0319`，2026-09-08
+下发；`AUDIT_PASS` 消息 `0321`，0 BLOCKER/MAJOR/MINOR/INFO；
+`NODE_RULING: PASS` 消息 `0322`）——M7 第四个节点，与 DEV-070/071/072
+不同：不涉及任何 AI/LLM 调用，是纯确定性数据提取任务。Dev Spec
+给出明确的产品需求（第 2785-2796 行）：从 Chapter 自动导出五类
+资产需求（插画/表情/序列帧/BGM/声音）。真实调用既有 DEV-002
+Compiler 的 `loadChapterPack`/`runSchemaValidation`，遍历已校验
+内容按字段映射到五个类别（`VisualLayer.assetId`→插画，
 `CharacterAsset.expressions` 的值→表情，
 `CharacterAsset.microAnimations`→序列帧，
 `AudioAsset.kind==='BGM'`→BGM，其余 kind→声音）。不做可达性

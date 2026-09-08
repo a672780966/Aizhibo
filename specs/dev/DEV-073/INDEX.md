@@ -1,6 +1,6 @@
 # DEV-073 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -61,7 +61,7 @@ import 或依赖除 @interactive-story/chapter-compiler、
 
 ## Current Task
 
-T002（完成）
+无（节点已 DONE，审计 AUDIT_PASS，0 发现，NODE_RULING PASS）
 
 ## Exit Criteria
 
@@ -72,6 +72,6 @@ NODE_REPORT 消息文件已写入工作区但**未提交**；工作区不得残�
 
 ## Next Node
 
-由 Claude Commander 在当前节点验收 PASS 后决定。
+DEV-074 Audio Production Queue（由 Claude Commander 裁定后已进入下一节点）。
 
 OpenCode 禁止自行推进下一 DEV Node。

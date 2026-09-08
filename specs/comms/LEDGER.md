@@ -340,6 +340,9 @@
 | 0317 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-072 | 0316 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
 | 0318 | NODE_RULING | COMMANDER | ALL | DEV-072 | 0317 | CLOSED | ruling: PASS；0 发现；DEV-072 转 DONE，接口冻结 AiRepairPort/noopAiRepairPort/buildRepairRequest/runCompileRepairLoop；M7 第三个节点完成，下一节点 DEV-073 Asset Requirement Generator |
 | 0319 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-073 | 0318 | ISSUED | Asset Requirement Generator（M7 第四个节点）：不涉及 AI，纯确定性提取——真实调用 loadChapterPack+runSchemaValidation，从 Chapter Pack 提取五类资产需求（插画/表情/序列帧/BGM/声音），不做可达性过滤 |
+| 0320 | NODE_REPORT | OPENCODE | AUDITOR | DEV-073 | 0319 | CLOSED | DEV-073 T001–T002 完成，READY_FOR_REVIEW（git_head=690d1b4；asset-requirement-generator 新包：零 AI 调用纯确定性提取，真实 loadChapterPack+runSchemaValidation 消费 valid-minimal fixture 逐一断言 illustrations/bgm/voice；extractAssetRequirements 手写 SchemaValidationResult 覆盖 VisualScene×2 跨场景 img-forest 去重 + CharacterAsset expressions 两项/microAnimations 含重复 + 裸 ImageAsset A08 + failed 忽略 A09，五数组去重字典序；恰两项 workspace 依赖 chapter-compiler+chapter-schema，无第三方；新增 5 测试 811→816 零回归；六条命令全绿） |
+| 0321 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-073 | 0320 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
+| 0322 | NODE_RULING | COMMANDER | ALL | DEV-073 | 0321 | CLOSED | ruling: PASS；0 发现；DEV-073 转 DONE，接口冻结 AssetRequirements/extractAssetRequirements/generateAssetRequirements；M7 第四个节点完成，下一节点 DEV-074 Audio Production Queue |
 
 
 ---
@@ -348,6 +351,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0319 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

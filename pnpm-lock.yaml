@@ -61,6 +61,12 @@ importers:
         specifier: ^8.2.2
         version: 8.2.2(@types/node@24.13.3)
 
+  packages/ai-chapter-generator:
+    dependencies:
+      '@interactive-story/chapter-authoring-prompts':
+        specifier: workspace:*
+        version: link:../chapter-authoring-prompts
+
   packages/ai-host:
     dependencies:
       '@interactive-story/chapter-compiler':

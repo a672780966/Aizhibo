@@ -347,6 +347,7 @@
 | 0324 | NODE_REPORT | OPENCODE | AUDITOR | DEV-074 | 0323 | CLOSED | DEV-074 T001–T002 完成，READY_FOR_REVIEW（git_head=e65282f；audio-production-queue 新包：真实复用既有 DEV-034/035 audio-engine 的 TtsProviderPort/noopTtsProviderPort（协议已存在已冻结，不建接口+noop，同 DEV-072 复用 compile() 先例）；extractNarrativeBlocks 从真实 narrative 混合联合类型筛出 NarrativeBlock（跳过 ResultNarrative 索引记录、忽略 failed 不抛错、按 id 字典序），runAudioProductionQueue 对每块 Promise.all 调用 synthesize（voiceId/voiceSettings 由调用方 VoiceConfig 传入，包内不推导/不硬编码；结果原样保留 ok/file 或 ok:false/reason 并附 blockId/slot；不重试；不写回 Chapter Pack/不新建 AudioAsset 清单），generateAudioProductionQueue 串联真实 loadChapterPack+runSchemaValidation 消费 valid-minimal fixture 端到端断言每块 {ok:false,'no TTS provider configured'}（零网络）；不做可达性过滤（CR-018 原文全部非全部可达）、不声称 CR-018 §4.6 拼接听感原型人工验收已完成；恰两项 workspace 依赖 chapter-compiler+audio-engine，无第三方；新增 8 测试 816→824 零回归；六条命令全绿） |
 | 0325 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-074 | 0324 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR，1 MINOR（REPORT.md 文件计数误写 17，实为 16，已由 Commander 修正），1 INFO（CR-018 §4.6 拼接听感人工验收仍待执行，非本节点缺陷） |
 | 0326 | NODE_RULING | COMMANDER | ALL | DEV-074 | 0325 | CLOSED | ruling: PASS；MINOR 已修正非阻塞，INFO 如实保留；DEV-074 转 DONE，接口冻结 extractNarrativeBlocks/runAudioProductionQueue/generateAudioProductionQueue；M7 第五个节点完成，下一节点 DEV-075 Chapter Packager |
+| 0327 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-075 | 0326 | ISSUED | Chapter Packager（M7 第六个节点）：PASS 7 资产文件存在性校验（CR-006）+ Path A（互动链 SceneNode/BossPhase.interactionId→choices[].ruleId→ActionDefinition.resultSetId→ResultDictionary.entries，含 mapsTo 一跳同字典复用 pass2ActionChain.ts 语义→ResultNarrative 五档 block 字段）与 Path B（BossPhase.narrationBlockIds?/EndingNode.narrationBlockIds 直连字段）双路径计算可达 NarrativeBlock id（CR-018 §4.4 对本节点原文用"可达"，与 DEV-073/074 不同真实要求过滤）+ 音频覆盖检查（调用方传入 NarrativeBlockAudioResult[]，不扫描磁盘/不发明绑定格式）；entryNodeId 经既有 runPass3 内部真实读取 manifest.passed.entryNodeId，不做调用方参数；恰两项 workspace 依赖 chapter-compiler+audio-production-queue |
 
 
 ---
@@ -355,6 +356,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0327 |
 | AUDITOR | — |
 | COMMANDER | — |

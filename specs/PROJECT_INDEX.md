@@ -21,10 +21,10 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-075 — Chapter Packager（TODO，M7 第六个节点；含 PASS 7 资产
-文件存在性校验 CR-006，覆盖「每个可达 NarrativeBlock 有音频文件」
-CR-018）。DEV-074（Audio Production Queue）已 `DONE`
-（`verdict_ref: "0325"`，`NODE_RULING` 消息 `0326`）。
+DEV-075 — Chapter Packager（`ISSUED`，消息 `0327`，M7 第六个节点；
+含 PASS 7 资产文件存在性校验 CR-006，覆盖「每个可达 NarrativeBlock
+有音频文件」CR-018 §4.4）。DEV-074（Audio Production Queue）已
+`DONE`（`verdict_ref: "0325"`，`NODE_RULING` 消息 `0326`）。
 
 ## Current Status
 
@@ -56,14 +56,19 @@ Pack 全部 `NarrativeBlock` 批量调用 TTS。不做可达性过滤、
 `voiceId`/`voiceSettings` 由调用方传入不发明、不声称 CR-018 §4.6
 拼接听感原型人工验收已完成（`DEV-030/DECISIONS.md` D3 已如实记录
 未完成）。审计 `AUDIT_PASS`，0 BLOCKER/MAJOR，1 MINOR（文档计数
-已修正）、1 INFO（`verdict_ref: "0325"`）。AUDITOR 为
+已修正）、1 INFO（`verdict_ref: "0325"`）。**DEV-075（Chapter
+Packager）已 `ISSUED`**（消息 `0327`）——CR-006 PASS 7 资产文件
+存在性校验 + CR-018 §4.4 可达 NarrativeBlock 音频覆盖（本节点原文
+用"可达"，与 DEV-073/074 不同真实要求过滤）；恰两项 workspace
+依赖 `chapter-compiler`+`audio-production-queue`。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
 返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-无 ISSUED 中的 Task Package——DEV-075（Chapter Packager）尚在研究/
-起草阶段。DEV-074 历史：
+`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息 `0327`）——Chapter
+Packager：PASS 7 资产文件存在性 + Path A/B 可达 NarrativeBlock 计算 +
+调用方传入音频覆盖检查，`ISSUED`。DEV-074 历史：
 `specs/tasks/TASK-PACKAGE-DEV-074.md`（消息 `0323`）——
 audio-production-queue 真实复用既有 TtsProviderPort 批量合成，`DONE`。
 DEV-073 历史：

@@ -401,8 +401,8 @@ C2 解决了 Gateway 单独解决不了的问题：Gateway 保证 Host **读不�
 | DEV-063 | Watchdog | |
 | DEV-064 | OBS Control | |
 | DEV-065 | OBS Failover | **`BLOCKED`（暂缓）**，等待 SAFETY region 真实存在，见下方裁定说明。Failover **决策权只在 SAFETY region**，OBS 与 PRESENTATION 均为执行端（CR-020） |
-| DEV-066 | Crash Recovery | |
-| DEV-067 | Emergency Stop | |
+| DEV-066 | Crash Recovery | **`BLOCKED`（暂缓）**，等待真实生产入口进程存在，见下方裁定说明 |
+| DEV-067 | Emergency Stop | **`BLOCKED`（暂缓）**，等待 SAFETY region 真实存在，见下方裁定说明 |
 | DEV-060B | Console UI | **后置**（CR-013）— 排在本组末尾或 M8 |
 
 **DEV-060A 状态：`DONE`，接口冻结**（`NODE_RULING: PASS`，消息
@@ -470,6 +470,43 @@ DEV-066/067 施工时一并建立）之后再排期，不在本轮下发**。USE
 2026-09-08 已就此裁决：标为 BLOCKED，不发明新逻辑。本节点未发
 `TASK_PACKAGE`，无 LEDGER 消息记录（同 DEV-038 先例，纯 Commander
 现实核对裁决，不进入执行/审计流程）。
+
+**DEV-066 状态：`BLOCKED`（暂缓，非施工失败）**——2026-09-08
+Commander 现实核对（USER 已指示逐个核对 066/067，不直接推定）：
+`G09`/`G10`（第 69 节最终上线 Gate）要求"Runtime Crash 可以恢复"
+"Renderer Crash 可以恢复"，但实际的"从持久化恢复"这一机制早已
+真实存在——`persistence`（DEV-010）的 `loadLatestSnapshot`/
+`restoreSession`，以及 DEV-060A Operator API 的 `RESTORE_LKG`
+action，已经把"给定一个 sessionId，从最新快照重建 `RuntimeActor`
+并报告成功/失败"这条能力完整建好并测试过。DEV-066"Crash
+Recovery"真正缺的不是恢复逻辑，而是**触发恢复的宿主本身**——
+仓库里没有任何长期运行的生产入口进程（同 DEV-060A/061/064 反复
+确认的现实约束），也就没有"进程崩溃后自动重启并调用恢复逻辑"这
+件事可以真实发生的地方；`decideWatchdogAction('RUNTIME_PROCESS_
+RESTART')`（DEV-063）已经诚实说明"no production process exists
+yet that could be restarted"。在这样的宿主之前实现任何"自动崩溃
+恢复"编排，等同于给一个不存在的进程写生命周期钩子。**裁定：
+DEV-066 转 `BLOCKED`（暂缓，非施工失败），推迟到真实生产入口
+进程存在之后再排期**。本节点未发 `TASK_PACKAGE`，无 LEDGER
+消息记录（同 DEV-038/065 先例）。
+
+**DEV-067 状态：`BLOCKED`（暂缓，非施工失败）**——2026-09-08
+Commander 现实核对：`Emergency Stop` 同时是（a）第 53 节 11 个
+Operator Action 之一——已在 DEV-060A 里诚实标为 `NOT_YET_WIRED`
+（"SAFETY region not yet built beyond placeholder"），（b）第 55
+节 SAFETY region 五态之一（`EMERGENCY_STOP`），该状态机自
+DEV-009 起仍是单态占位，无任何真实迁移路径可以进入这个状态。
+即便退一步只做"给定已经触发的 Emergency Stop，应该执行哪些具体
+动作"这一层（不涉及"什么时候该触发"的决策），也需要组合调用
+已经真实存在但彼此独立、从未被任何节点接线在一起的执行原语
+（`operator-api` 的 `MUTE_HOST`、`platform-obs` 的
+`switchScene`、`platform-twitch` 的 `EventSubClient.disconnect()`
+等）——这类跨包编排目前没有任何真实调用方触发，提前把它们接起来
+属于"没有真实生产入口进程可供装配"这同一类现实约束，也会破坏
+本轮 M6 每个节点刻意保持的零/最小跨包耦合纪律。**裁定：DEV-067
+转 `BLOCKED`（暂缓，非施工失败），推迟到 SAFETY region 真实存在
+且有真实调用方之后再排期**。本节点未发 `TASK_PACKAGE`，无
+LEDGER 消息记录（同 DEV-038/065 先例）。
 
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 

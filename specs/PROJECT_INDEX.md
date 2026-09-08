@@ -13,19 +13,23 @@
 
 ## Current Milestone
 
-M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete 已于
-2026-09-05 全部 7 个节点完成（M1 — Story Machine Complete 已于
-2026-08-21 全部 15 节点完成；M2 — Presentation Complete 已于
-2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实可施工范围已于
-2026-09-04 完成，DEV-038 推迟至 M5，见下）。
+M8 — Platform Expansion（第八施工组，2026-09-08 由 USER 裁定正式
+排期，前置 M7；首节点 DEV-080 待下发）。M7 — Content Factory
+Complete 已于 2026-09-08 全部 6 个节点完成。M5 — AI Host Complete、
+M4 — Twitch Complete 已于 2026-09-05 全部 7 个节点完成（M1 — Story
+Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation
+Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实
+可施工范围已于 2026-09-04 完成，DEV-038 推迟见下）。
 
 ## Current Node
 
 **M7（Content Factory Complete）全部 6 个节点（DEV-070~075）已
 `DONE`**。DEV-075（Chapter Packager）为 M7 最后一个节点，已 `DONE`
-（`verdict_ref: "0329"`，`NODE_RULING` 消息 `0330`）。下一施工组
-「第八施工组：平台扩展（POST-M8）」超出本轮 USER 授权范围，
-Commander 暂停等待 USER 裁定。
+（`verdict_ref: "0329"`，`NODE_RULING` 消息 `0330`）。**USER 裁定
+（2026-09-08）**：先正式定义/排期 M8 里程碑再开始施工——M8
+（Platform Expansion，即原「第八施工组：平台扩展」DEV-080~083）
+已正式排期，前置 M7，详见 `specs/dev/DAG.md`。下一节点：DEV-080
+（YouTube Adapter），Task Package 待起草下发。
 
 ## Current Status
 
@@ -73,7 +77,8 @@ AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
 
 ## Current Task Package
 
-无 ISSUED 中的 Task Package——M7 全部完成，下一施工组待 USER 裁定。
+无 ISSUED 中的 Task Package——M7 全部完成，M8 已正式排期，DEV-080
+（YouTube Adapter）Task Package 待起草下发。
 DEV-075 历史：`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息
 `0327`）——chapter-packager PASS 7 文件存在性 + Path A/B 可达
 NarrativeBlock 计算 + 调用方传入音频覆盖检查，`DONE`。DEV-074

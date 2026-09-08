@@ -639,21 +639,30 @@ workspace 依赖：`chapter-compiler`、`audio-production-queue`。
 `checkNarrativeBlockAudioCoverage`/`generateChapterPackagerReport`。
 
 **M7（Content Factory Complete，第七施工组）全部 6 个节点
-（DEV-070~075）完成**。下一施工组「第八施工组：平台扩展
-（POST-M8）」（第 640 行）超出本轮 USER 授权范围（USER 此前授权
-"至 M6，不再逐节点确认"，后延伸至 M7；未覆盖 M7 之后），Commander
-暂停，等待 USER 就是否开始该组或如何定义/排期 M8 里程碑作出裁定。
+（DEV-070~075）完成**。
+
+**USER 裁定（2026-09-08）**：先正式定义/排期 M8 里程碑，再开始施工
+（选项 2，见 `specs/comms` 对应会话）。**M8（Platform Expansion，
+第八施工组）自本次裁定起正式排期，前置：M7**。范围与节点编号不变
+（原「第八施工组：平台扩展」DEV-080~083，见下表），仅补齐里程碑
+命名与前置关系，不改变既有节点定义。M8 下一节点：DEV-080
+（YouTube Adapter）。
 
 ---
 
-## 第八施工组：平台扩展（POST-M8）
+## 第八施工组：平台扩展（M8 — Platform Expansion）
 
-| Node | Name |
-|---|---|
-| DEV-080 | YouTube Adapter |
-| DEV-081 | Bilibili Adapter |
-| DEV-082 | Interaction Gateway |
-| DEV-083 | Twitch Extension |
+前置：M7
+
+| Node | Name | 备注 |
+|---|---|---|
+| DEV-080 | YouTube Adapter | Dev Spec 第 46 节：YouTube Live Streaming API 提供 `liveChatMessages.streamList`（server-streaming 低延迟推送），可用 `nextPageToken` 断线续传，无需自行高频轮询。CR-017：`LivePlatformAdapter` v1 由 Twitch 单实现推导、未经第二实现验证，本节点为首个异构平台落地，属计划性接口修订（预期事件非设计失败），改动应限制在 `platform-*` 包内 |
+| DEV-081 | Bilibili Adapter | Dev Spec 第 47 节：Bilibili 开放平台提供开播能力与直播间消息长连能力，具体协议实现放在 Twitch 主链稳定之后（已满足）；数据存储策略须单独经过平台合规检查，不得照搬 Twitch Viewer Memory（CR-017 第 234 行） |
+| DEV-082 | Interaction Gateway | Dev Spec 仅给出标题（第 2818-2819 行），无正文——同 DEV-072/DEV-075 先例，具体范围于该节点 Task Package 起草时基于既有真实接口（`platform-core`/`interaction-engine` 等）确定，不预先发明 |
+| DEV-083 | Twitch Extension | Dev Spec 仅给出标题（第 2821-2822 行），无正文——同上，起草时确定，不预先发明 |
+
+**包创建纪律沿用第 669 行既有约束**：`platform-youtube`/`platform-bilibili`
+分别在 DEV-080/DEV-081 前不创建；禁止提前建空包。
 
 ---
 

@@ -565,6 +565,23 @@ Normalizer/Compiler/AI Repair Loop 逻辑。审计首轮 `AUDIT_PASS`，
 0 BLOCKER/MAJOR/MINOR。M7 下一节点：DEV-072（AI Compiler Repair
 Loop）。
 
+**DEV-072 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0315`，
+2026-09-08 下发）——M7 第三个节点。Dev Spec 只给出标题「AI Compiler
+Repair Loop」和一张 ASCII 流程图（Compile→Errors→AI Repair→
+Compile）；第 25-26 节把 Schema Normalizer 放在 AI Draft 和
+Compiler 之间，但 Dev Spec 没有为 Schema Normalizer 分配任何 DEV
+节点编号——没有节点负责把 AI 草稿文本转成 Compiler 能加载的
+Chapter Pack 文件目录，也没有节点/真实生产入口进程负责把修复后的
+草稿写回磁盘。这与 DEV-065/066/067 的"无真实生产入口进程"是同一类
+现实约束，但本节点仍有大量真实可施工内容，不裁定 `BLOCKED`：真实
+调用既有 DEV-002 `compile()`（已冻结）、`AiRepairPort` 接口 +
+`noopAiRepairPort` 诚实占位（同 DEV-071 处境，Dev Spec 未给出具体
+AI Repair 协议，不建真实客户端）、`buildRepairRequest` 真实转述
+`CompileResult` 问题列表、`runCompileRepairLoop` 诚实三态闭集决策
+（`PASSED`/`REPAIR_UNAVAILABLE`/`REPAIR_NOT_APPLIED`，只跑一次不
+重试）。不实现 Schema Normalizer、不把修复草稿写回磁盘、不做重试
+循环——均因 Dev Spec 未分配节点编号/未定义具体规则，不发明。
+
 ---
 
 ## 第八施工组：平台扩展（POST-M8）

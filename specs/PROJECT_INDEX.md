@@ -21,9 +21,9 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-071 — AI Chapter Generator（`DONE`，`verdict_ref: "0313"`，
-`ruling_ref: "0314"`；M7 第二个节点）。下一节点 DEV-072（AI
-Compiler Repair Loop）。
+DEV-072 — AI Compiler Repair Loop（IN_PROGRESS，`TASK_PACKAGE`
+消息 `0315`；M7 第三个节点）。DEV-071（AI Chapter Generator，
+`DONE`）已冻结接口。
 
 ## Current Status
 
@@ -34,38 +34,32 @@ Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 可施工范围已完成**：DEV-060A/061/062/063/064 均 `DONE`；
 DEV-065/066/067 均 `BLOCKED`（暂缓非施工失败，详见 `DAG.md`）；
 DEV-060B 按 CR-013 后置。**M7（Content Factory Complete）**：
-DEV-070（Chapter Authoring Schema Prompt）`DONE`——新建
-`packages/chapter-authoring-prompts`：导出
-`CHAPTER_AUTHORING_SCHEMA_PROMPT` 字符串常量，一段指导 AI 模型
-（GPT-5.6 Sol / Fable 5）按 `chapter-schema`（DEV-001 冻结）逐
-模块写作 Chapter 内容的十一阶段 prompt，Commander 逐一核对全部
-19 个组件字段撰写、执行方逐字照抄（脚本逐字节比对 12170 字符
-一致）。审计提出 1 MAJOR（`pnpm-lock.yaml` 未列入 Writable
-Scope），Commander 裁定 PASS 且不采纳阻塞结论——同一模式已连续
-出现于 DEV-060A/061/062/063/064 五个节点均未被判定违规，且该
-改动是新增包被授权后 pnpm 工具链的强制副作用，"整改移除"在
-技术上会导致 `--frozen-lockfile`（A01）本身失败。**DEV-071（AI
-Chapter Generator）`DONE`**——新建
-`packages/ai-chapter-generator`：`AiChapterGeneratorPort` 接口 +
-`noopAiChapterGeneratorPort` 诚实占位（Dev Spec 未给出任何具体
-LLM 网络协议，同既有先例 `packages/ai-host/src/hostLLMProvider.ts`
-——面对同样处境时只建接口+占位，不建真实客户端），真实确定性
-交付是 `buildChapterAuthoringRequest(brief)` 纯函数（拼接
-DEV-070 prompt 与 brief），唯一依赖 `chapter-authoring-prompts`。
-不真实调用任何网络 API，不实现 Schema Normalizer/Compiler/AI
-Repair Loop 逻辑。审计首轮 `AUDIT_PASS`，0 BLOCKER/MAJOR/MINOR。
-AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
-裁决以文本返回，Commander 代为落盘消息文件）。账号/密钥继续占位
-处理。
+DEV-070（Chapter Authoring Schema Prompt）`DONE`、DEV-071（AI
+Chapter Generator）`DONE`——分别产出 `chapter-authoring-prompts`
+（`CHAPTER_AUTHORING_SCHEMA_PROMPT` 十一阶段 prompt）与
+`ai-chapter-generator`（`AiChapterGeneratorPort` 接口 + noop +
+`buildChapterAuthoringRequest`）；均因 Dev Spec 未给出具体 AI
+网络协议而只建接口/占位（同既有先例
+`packages/ai-host/src/hostLLMProvider.ts`），不建真实 LLM 网络
+客户端。**DEV-072（AI Compiler Repair Loop）已下发，
+`IN_PROGRESS`**——新建 `packages/ai-compiler-repair-loop`：真实
+调用既有 DEV-002 Compiler（`compile()`，已冻结），`AiRepairPort`
+接口 + `noopAiRepairPort` 诚实占位（同 DEV-071 处境），
+`buildRepairRequest` 转述 `CompileResult` 问题列表，
+`runCompileRepairLoop` 三态闭集决策
+（`PASSED`/`REPAIR_UNAVAILABLE`/`REPAIR_NOT_APPLIED`）。Dev Spec
+未给 Schema Normalizer 分配任何 DEV 节点编号，本节点不发明其
+实现，也不把修复草稿写回磁盘、不做重试循环。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
+返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-无（DEV-071 `DONE`）。下一节点 DEV-072（AI Compiler Repair Loop）
-将起草新的 Task Package。DEV-071 历史：
-`specs/tasks/TASK-PACKAGE-DEV-071.md`（消息 `0311`）——
-ai-chapter-generator 接口+占位+请求拼接，`DONE`。DEV-070 历史：
-`specs/tasks/TASK-PACKAGE-DEV-070.md`（消息 `0307`）——
-chapter-authoring-prompts 十一阶段 prompt 字符串常量，`DONE`。
+`specs/tasks/TASK-PACKAGE-DEV-072.md`（消息 `0315`，`ISSUED`）——
+`ai-compiler-repair-loop` 包（`AiRepairPort` + noop +
+`buildRepairRequest` + `runCompileRepairLoop`），T001–T002 两个
+Task。DEV-071 历史：`specs/tasks/TASK-PACKAGE-DEV-071.md`（消息
+`0311`）——ai-chapter-generator 接口+占位+请求拼接，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

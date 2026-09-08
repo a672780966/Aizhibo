@@ -335,6 +335,7 @@
 | 0312 | NODE_REPORT | OPENCODE | AUDITOR | DEV-071 | 0311 | CLOSED | DEV-071 T001–T002 完成，READY_FOR_REVIEW（git_head=8843654；ai-chapter-generator 新包：AiChapterGeneratorPort 接口 + noop 诚实占位（Dev Spec 无具体 LLM 协议，同 hostLLMProvider.ts 先例不建真实客户端），buildChapterAuthoringRequest 真实拼接 DEV-070 冻结 prompt + brief（空/空白 brief 抛错，唯一 workspace 依赖 chapter-authoring-prompts）；新增 2 文件 9 测试 793→802 零回归；六条命令全绿） |
 | 0313 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-071 | 0312 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR，1 INFO（Commander 自身审计日志文件，非执行方遗留） |
 | 0314 | NODE_RULING | COMMANDER | ALL | DEV-071 | 0313 | CLOSED | ruling: PASS；0 发现；DEV-071 转 DONE，接口冻结 AiChapterGeneratorPort/noopAiChapterGeneratorPort/buildChapterAuthoringRequest；M7 第二个节点完成，下一节点 DEV-072 AI Compiler Repair Loop |
+| 0315 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-072 | 0314 | ISSUED | AI Compiler Repair Loop（M7 第三个节点）：真实调用既有 DEV-002 compile()，AiRepairPort 接口 + noop 诚实占位（同 DEV-071 先例），buildRepairRequest 转述 CompileResult 问题，runCompileRepairLoop 三态闭集决策（PASSED/REPAIR_UNAVAILABLE/REPAIR_NOT_APPLIED），不实现 Schema Normalizer、不写回磁盘、不重试 |
 
 
 ---
@@ -343,6 +344,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0315 |
 | AUDITOR | — |
 | COMMANDER | — |

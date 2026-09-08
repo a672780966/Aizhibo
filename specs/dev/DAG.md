@@ -598,6 +598,21 @@ Compiler 的 `loadChapterPack`/`runSchemaValidation`，遍历已校验
 （reachability）过滤、不做"已生产/未生产"比对——Dev Spec 均未提及，
 不发明。
 
+**DEV-074 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0323`，
+2026-09-08 下发）——M7 第五个节点，与 DEV-071/072 不同：具体协议
+已存在且已冻结（DEV-034/035 `audio-engine` 的 `TtsProviderPort`/
+`createElevenLabsTtsProvider`），不建接口+noop，真实复用既有 Port
+（同 DEV-072 复用既有 `compile()` 的先例）。职责由 CR-018
+（`specs/audit/CR-RESOLUTIONS-001.md` §4）明确定义：遍历 Chapter
+Pack 全部 `NarrativeBlock`，批量生成 `PREGENERATED` 音频。三条
+不发明边界：不做可达性过滤（CR-018 原文"全部"而非"全部可达"，且
+现有 DEV-003 只在 SCENE/BOSS/ENDING 图层算可达性，无既有链路拼出
+"可达 NarrativeBlock"）；`voiceId`/`voiceSettings` 由调用方参数
+传入，包内不推导（`NarrativeBlockSchema` 无配音归属字段）；不
+声称 CR-018 §4.6 拼接听感原型的人工试听验收已完成——该验收
+`DEV-030/DECISIONS.md` D3 已如实记录为未完成，至今无后续节点
+执行，仍待人工执行。
+
 ---
 
 ## 第八施工组：平台扩展（POST-M8）

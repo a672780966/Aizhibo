@@ -343,6 +343,7 @@
 | 0320 | NODE_REPORT | OPENCODE | AUDITOR | DEV-073 | 0319 | CLOSED | DEV-073 T001–T002 完成，READY_FOR_REVIEW（git_head=690d1b4；asset-requirement-generator 新包：零 AI 调用纯确定性提取，真实 loadChapterPack+runSchemaValidation 消费 valid-minimal fixture 逐一断言 illustrations/bgm/voice；extractAssetRequirements 手写 SchemaValidationResult 覆盖 VisualScene×2 跨场景 img-forest 去重 + CharacterAsset expressions 两项/microAnimations 含重复 + 裸 ImageAsset A08 + failed 忽略 A09，五数组去重字典序；恰两项 workspace 依赖 chapter-compiler+chapter-schema，无第三方；新增 5 测试 811→816 零回归；六条命令全绿） |
 | 0321 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-073 | 0320 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
 | 0322 | NODE_RULING | COMMANDER | ALL | DEV-073 | 0321 | CLOSED | ruling: PASS；0 发现；DEV-073 转 DONE，接口冻结 AssetRequirements/extractAssetRequirements/generateAssetRequirements；M7 第四个节点完成，下一节点 DEV-074 Audio Production Queue |
+| 0323 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-074 | 0322 | ISSUED | Audio Production Queue（M7 第五个节点）：与 DEV-071/072 不同，真实复用既有 DEV-034/035 audio-engine 的 TtsProviderPort/createElevenLabsTtsProvider（协议已存在已冻结，不建接口+noop）；extractNarrativeBlocks 从 narrative 混合联合类型筛出 NarrativeBlock，runAudioProductionQueue 逐块调用 synthesize（voiceId/voiceSettings 调用方传入不发明），generateAudioProductionQueue 串联真实 loadChapterPack+runSchemaValidation；不做可达性过滤、不声称 CR-018 拼接听感原型人工验收已完成、不写回 Chapter Pack 清单 |
 
 
 ---
@@ -351,6 +352,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0323 |
 | AUDITOR | — |
 | COMMANDER | — |

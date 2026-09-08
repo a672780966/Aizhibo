@@ -1,6 +1,6 @@
 # DEV-075 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -102,4 +102,6 @@ quality 匹配语义的任何其他算法
 
 ## Next Node
 
-由 Claude Commander 裁定。OpenCode 禁止自行推进下一 DEV Node。
+M7（Content Factory Complete，第七施工组，DEV-070~075 共 6 节点）
+全部完成。下一施工组「第八施工组：平台扩展（POST-M8）」由 Claude
+Commander 与 USER 确认后再排期。OpenCode 禁止自行推进下一 DEV Node。

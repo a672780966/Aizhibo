@@ -614,26 +614,35 @@ Pack 全部 `NarrativeBlock`，批量生成 `PREGENERATED` 音频。三条
 执行，仍待人工执行。接口冻结：`extractNarrativeBlocks`/
 `runAudioProductionQueue`/`generateAudioProductionQueue`。
 
-**DEV-075 状态：`ISSUED`**（消息 `0327`）——M7 第六个节点，Chapter
-Packager。职责由 CR-006（本文件第 88 行，PASS 7 资产文件存在性
-校验改归本节点）与 CR-018 §4.4（`specs/audit/CR-RESOLUTIONS-001.md`
-第 313-319 行，对本节点原文用"可达"而非"全部"）共同定义。三个
-交付物：①资产文件存在性校验（`ImageAsset`/`AudioAsset` 带 `file`
-字段的两个变体，rootDir-relative 路径解析，仓库内无 spec 明文
-约定，采用与 `loader.ts` 一致的既有先例作为假设）；②可达
-`NarrativeBlock` id 计算——不同于 DEV-073/074（CR-018 原文对它们
-用"全部"，均裁定不做可达性过滤），本节点 CR-018 原文明确要求"可达"，
-需要走通两条独立路径：Path A（经 `SceneNode`/`BossPhase.interactionId`
-→互动→`ActionDefinition`→`ResultDictionary`，`mapsTo` 一跳同字典
-复用既有 `pass2ActionChain.ts` 语义→`ResultNarrative` 五档 block
-字段）与 Path B（`BossPhase.narrationBlockIds?`/
-`EndingNode.narrationBlockIds` 直连字段，绕过互动链）；③音频覆盖
-检查——`AudioAssetSchema`/`NarrativeBlockSchema` 均无绑定字段
-（同 `DEV-074/DECISIONS.md` D4 已如实记录），故接受调用方传入的
-`NarrativeBlockAudioResult[]` 为唯一输入，不扫描磁盘/不发明格式。
-`entryNodeId` 经既有 `runPass3`（`chapter-compiler` barrel 导出）
-内部真实读取 `ChapterManifestSchema.entryNodeId`，不做调用方参数。
-恰两项 workspace 依赖：`chapter-compiler`、`audio-production-queue`。
+**DEV-075 状态：`DONE`**（`AUDIT_PASS` 消息 `0329`，`NODE_RULING: PASS`
+消息 `0330`）——M7 第六个节点，Chapter Packager。职责由 CR-006
+（本文件第 88 行，PASS 7 资产文件存在性校验改归本节点）与 CR-018
+§4.4（`specs/audit/CR-RESOLUTIONS-001.md` 第 313-319 行，对本节点
+原文用"可达"而非"全部"）共同定义。三个交付物：①资产文件存在性
+校验（`ImageAsset`/`AudioAsset` 带 `file` 字段的两个变体，
+rootDir-relative 路径解析，仓库内无 spec 明文约定，采用与
+`loader.ts` 一致的既有先例作为假设）；②可达 `NarrativeBlock` id
+计算——不同于 DEV-073/074（CR-018 原文对它们用"全部"，均裁定不做
+可达性过滤），本节点 CR-018 原文明确要求"可达"，走通两条独立路径：
+Path A（经 `SceneNode`/`BossPhase.interactionId`→互动→
+`ActionDefinition`→`ResultDictionary`，`mapsTo` 一跳同字典复用既有
+`pass2ActionChain.ts` 语义→`ResultNarrative` 五档 block 字段）与
+Path B（`BossPhase.narrationBlockIds?`/`EndingNode.narrationBlockIds`
+直连字段，绕过互动链）；③音频覆盖检查——`AudioAssetSchema`/
+`NarrativeBlockSchema` 均无绑定字段（同 `DEV-074/DECISIONS.md` D4
+已如实记录），接受调用方传入的 `NarrativeBlockAudioResult[]` 为
+唯一输入，不扫描磁盘/不发明格式。`entryNodeId` 经既有 `runPass3`
+（`chapter-compiler` barrel 导出）内部真实读取
+`ChapterManifestSchema.entryNodeId`，不做调用方参数。恰两项
+workspace 依赖：`chapter-compiler`、`audio-production-queue`。
+接口冻结：`checkAssetFileExistence`/`computeReachableNarrativeBlockIds`/
+`checkNarrativeBlockAudioCoverage`/`generateChapterPackagerReport`。
+
+**M7（Content Factory Complete，第七施工组）全部 6 个节点
+（DEV-070~075）完成**。下一施工组「第八施工组：平台扩展
+（POST-M8）」（第 640 行）超出本轮 USER 授权范围（USER 此前授权
+"至 M6，不再逐节点确认"，后延伸至 M7；未覆盖 M7 之后），Commander
+暂停，等待 USER 就是否开始该组或如何定义/排期 M8 里程碑作出裁定。
 
 ---
 

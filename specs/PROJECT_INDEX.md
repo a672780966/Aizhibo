@@ -21,10 +21,11 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-075 — Chapter Packager（`ISSUED`，消息 `0327`，M7 第六个节点；
-含 PASS 7 资产文件存在性校验 CR-006，覆盖「每个可达 NarrativeBlock
-有音频文件」CR-018 §4.4）。DEV-074（Audio Production Queue）已
-`DONE`（`verdict_ref: "0325"`，`NODE_RULING` 消息 `0326`）。
+**M7（Content Factory Complete）全部 6 个节点（DEV-070~075）已
+`DONE`**。DEV-075（Chapter Packager）为 M7 最后一个节点，已 `DONE`
+（`verdict_ref: "0329"`，`NODE_RULING` 消息 `0330`）。下一施工组
+「第八施工组：平台扩展（POST-M8）」超出本轮 USER 授权范围，
+Commander 暂停等待 USER 裁定。
 
 ## Current Status
 
@@ -57,18 +58,26 @@ Pack 全部 `NarrativeBlock` 批量调用 TTS。不做可达性过滤、
 拼接听感原型人工验收已完成（`DEV-030/DECISIONS.md` D3 已如实记录
 未完成）。审计 `AUDIT_PASS`，0 BLOCKER/MAJOR，1 MINOR（文档计数
 已修正）、1 INFO（`verdict_ref: "0325"`）。**DEV-075（Chapter
-Packager）已 `ISSUED`**（消息 `0327`）——CR-006 PASS 7 资产文件
-存在性校验 + CR-018 §4.4 可达 NarrativeBlock 音频覆盖（本节点原文
-用"可达"，与 DEV-073/074 不同真实要求过滤）；恰两项 workspace
-依赖 `chapter-compiler`+`audio-production-queue`。AUDITOR 为
-`opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
-返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
+Packager）`DONE`**——新建 `packages/chapter-packager`：CR-006
+PASS 7 资产文件存在性校验 + CR-018 §4.4 可达 NarrativeBlock 音频
+覆盖（本节点原文用"可达"，与 DEV-073/074 不同真实要求过滤，
+Path A 互动链 + Path B 直连字段双路径）；`entryNodeId` 经既有
+`runPass3` 内部真实读取，非调用方参数；音频覆盖检查以调用方传入
+数组为唯一输入，零磁盘扫描/发明格式；恰两项 workspace 依赖
+`chapter-compiler`+`audio-production-queue`。审计 `AUDIT_PASS`，
+0 BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0329"`）。**M7
+（Content Factory Complete）全部 6 个节点（DEV-070~075）完成**。
+AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
+裁决以文本返回，Commander 代为落盘消息文件）。账号/密钥继续占位
+处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息 `0327`）——Chapter
-Packager：PASS 7 资产文件存在性 + Path A/B 可达 NarrativeBlock 计算 +
-调用方传入音频覆盖检查，`ISSUED`。DEV-074 历史：
+无 ISSUED 中的 Task Package——M7 全部完成，下一施工组待 USER 裁定。
+DEV-075 历史：`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息
+`0327`）——chapter-packager PASS 7 文件存在性 + Path A/B 可达
+NarrativeBlock 计算 + 调用方传入音频覆盖检查，`DONE`。DEV-074
+历史：
 `specs/tasks/TASK-PACKAGE-DEV-074.md`（消息 `0323`）——
 audio-production-queue 真实复用既有 TtsProviderPort 批量合成，`DONE`。
 DEV-073 历史：

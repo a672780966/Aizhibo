@@ -348,6 +348,9 @@
 | 0325 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-074 | 0324 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR，1 MINOR（REPORT.md 文件计数误写 17，实为 16，已由 Commander 修正），1 INFO（CR-018 §4.6 拼接听感人工验收仍待执行，非本节点缺陷） |
 | 0326 | NODE_RULING | COMMANDER | ALL | DEV-074 | 0325 | CLOSED | ruling: PASS；MINOR 已修正非阻塞，INFO 如实保留；DEV-074 转 DONE，接口冻结 extractNarrativeBlocks/runAudioProductionQueue/generateAudioProductionQueue；M7 第五个节点完成，下一节点 DEV-075 Chapter Packager |
 | 0327 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-075 | 0326 | ISSUED | Chapter Packager（M7 第六个节点）：PASS 7 资产文件存在性校验（CR-006）+ Path A（互动链 SceneNode/BossPhase.interactionId→choices[].ruleId→ActionDefinition.resultSetId→ResultDictionary.entries，含 mapsTo 一跳同字典复用 pass2ActionChain.ts 语义→ResultNarrative 五档 block 字段）与 Path B（BossPhase.narrationBlockIds?/EndingNode.narrationBlockIds 直连字段）双路径计算可达 NarrativeBlock id（CR-018 §4.4 对本节点原文用"可达"，与 DEV-073/074 不同真实要求过滤）+ 音频覆盖检查（调用方传入 NarrativeBlockAudioResult[]，不扫描磁盘/不发明绑定格式）；entryNodeId 经既有 runPass3 内部真实读取 manifest.passed.entryNodeId，不做调用方参数；恰两项 workspace 依赖 chapter-compiler+audio-production-queue |
+| 0328 | NODE_REPORT | OPENCODE | AUDITOR | DEV-075 | 0327 | CLOSED | DEV-075 T001–T002 完成，READY_FOR_REVIEW（git_head=6327e64；chapter-packager 新包：PASS 7 资产文件存在性检查（checkAssetFileExistence，‘file’ in value 窄化只挑 ImageAsset/PREPRODUCED|PREGENERATED，resolve(rootDir,file) 唯一解析约定录为假设）+ Path A/B 双路径可达 NarrativeBlock 计算（computeReachableNarrativeBlockIds，只对 reachability.reachable 内节点收集；Path A 互动链到 ResultNarrative 五档字段，mapsTo 一跳同字典复用 pass2ActionChain.ts 语义；Path B 直联 BossPhase/EndingNode narrationBlockIds）+ 音频覆盖检查（checkNarrativeBlockAudioCoverage，调用方传入 NarrativeBlockAudioResult[] 唯一输入，无 fs/扫描/发明绑定格式）+ 薄封装 generateChapterPackagerReport 真实 loadChapterPack+runSchemaValidation+runPass3；entryNodeId 非调用方参数；无任何写盘/无 Bundle/manifest 产出；恰两项 workspace 依赖 chapter-compiler+audio-production-queue，无第三方；新增 12 测试 824→836 零回归；六条命令全绿） |
+| 0329 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-075 | 0328 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
+| 0330 | NODE_RULING | COMMANDER | ALL | DEV-075 | 0329 | CLOSED | ruling: PASS；0 发现（Commander 顺手修正 REPORT.md 文件计数 17→18，非阻塞）；DEV-075 转 DONE，接口冻结 checkAssetFileExistence/computeReachableNarrativeBlockIds/checkNarrativeBlockAudioCoverage/generateChapterPackagerReport；M7 第六个节点完成，**M7（Content Factory Complete）全部 6 节点完成**；下一施工组「第八施工组：平台扩展（POST-M8）」超出本轮 USER 授权范围，Commander 暂停等待 USER 裁定 |
 
 
 ---
@@ -356,6 +359,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0327 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

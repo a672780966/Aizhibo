@@ -3,8 +3,10 @@
 ## 1. Status
 
 DONE — DEV-075（Chapter Packager，M7 第六个节点）T001–T002 施工完成，
-六条验证命令全部退出码 0，恰 1 条提交，LEDGER 追加行与 NODE_REPORT
-消息文件已写入工作区未提交，等待 AUDITOR 审计。
+六条验证命令全部退出码 0，恰 1 条提交，AUDITOR 审计 `AUDIT_PASS`
+（0 BLOCKER/MAJOR/MINOR/INFO，verdict_ref: "0329"），Commander
+NODE_RULING: PASS（消息 0330）。M7 里程碑（第七施工组：内容生产
+工具，DEV-070~075 共 6 节点）全部完成。
 
 ## 2. Implemented
 
@@ -59,7 +61,7 @@ DONE — DEV-075（Chapter Packager，M7 第六个节点）T001–T002 施工完
 
 ## 3. Changed Files
 
-提交内共 17 个文件：
+提交内共 18 个文件：
 
 - `packages/chapter-packager/package.json`（新增：name
   `@interactive-story/chapter-packager`；`dependencies` 恰两项

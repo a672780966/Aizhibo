@@ -331,6 +331,7 @@
 | 0308 | NODE_REPORT | OPENCODE | AUDITOR | DEV-070 | 0307 | CLOSED | DEV-070 T001–T002 完成，READY_FOR_REVIEW（git_head=ef7718f；chapter-authoring-prompts 新包：零依赖导出 CHAPTER_AUTHORING_SCHEMA_PROMPT 十一阶段 prompt 字符串常量，脚本从 Task Package 第 2.1 节机械抽取、回读反转义逐字节比对 12170 字符一致；新增 5 测试 788→793 零回归；六条命令全绿） |
 | 0309 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-070 | 0308 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01：pnpm-lock.yaml 未列入 Writable Scope 却被修改） |
 | 0310 | NODE_RULING | COMMANDER | ALL | DEV-070 | 0309 | CLOSED | ruling: PASS；MAJOR-01 接受观察但不采纳阻塞结论（同一模式已连续出现于 DEV-060A/061/062/063/064 五个节点，均未被判定违规；lockfile 该条目是新增包被授权后 pnpm 工具链的强制副作用，"移除"会导致 A01 --frozen-lockfile 本身失败，技术上不可行）；DEV-070 转 DONE，接口冻结 CHAPTER_AUTHORING_SCHEMA_PROMPT；M7 第一个节点完成，下一节点 DEV-071 AI Chapter Generator |
+| 0311 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-071 | 0310 | ISSUED | AI Chapter Generator（M7 第二个节点）：AiChapterGeneratorPort 接口 + noop 诚实占位（Dev Spec 无具体 LLM 协议，同 hostLLMProvider.ts 先例不建真实客户端），buildChapterAuthoringRequest 真实拼接 DEV-070 prompt + brief，唯一依赖 chapter-authoring-prompts |
 
 
 ---
@@ -339,6 +340,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0311 |
 | AUDITOR | — |
 | COMMANDER | — |

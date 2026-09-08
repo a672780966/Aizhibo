@@ -327,6 +327,7 @@
 | 0304 | NODE_REPORT | OPENCODE | AUDITOR | DEV-064 | 0303 | CLOSED | DEV-064 T001–T003 完成，READY_FOR_REVIEW（git_head=2886049a；platform-obs 真实 OBS WebSocket v5 客户端：Hello/Identify/Identified 握手+官方双重 SHA256 鉴权（node:crypto 零依赖）+ op6/op7 requestId 关联切场景，双超时全路径不悬挂，需鉴权未配密码不发任何 Identify；noop 单例 toBe 引用返回；新增 2 文件 12 测试 776→788 零回归；六条命令全绿） |
 | 0305 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-064 | 0304 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01：LEDGER"当前待处理"表格原地改动，判定超出 §2.3 仅追加范围） |
 | 0306 | NODE_RULING | COMMANDER | ALL | DEV-064 | 0305 | CLOSED | ruling: PASS；MAJOR-01 接受观察但不采纳阻塞结论（该表格非 §2.3 保护的历史行日志，属现状索引，此前 M6 全部节点同法维护无异议）；DEV-064 转 DONE，接口冻结；M6 第五个节点完成，下一节点 DEV-065 OBS Failover |
+| 0307 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-070 | 0306 | ISSUED | Chapter Authoring Schema Prompt（M7 第一个节点；DEV-065/066/067 均裁定 BLOCKED、M6 真实可施工范围已完成后转入 M7；chapter-authoring-prompts 导出十一阶段 prompt 字符串常量，逐字段覆盖 chapter-schema 全部 19 组件，零依赖不真实调用 AI，USER 已裁决完整逐模块覆盖） |
 
 
 ---
@@ -335,6 +336,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0307 |
 | AUDITOR | — |
 | COMMANDER | — |

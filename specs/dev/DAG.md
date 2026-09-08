@@ -527,6 +527,18 @@ LEDGER 消息记录（同 DEV-038/065 先例）。
 
 **CR-018 无排序问题**：M3（音频）在 M7（内容工厂）之前，因此 M3 ~ M6 期间只有 `RUNTIME_TTS` 路径 —— 这正是 DEV-035 的用途。M7 之后它退居兜底。前提是 DEV-030 就把解析链定义好，DEV-035 从一开始按兜底形态建造。
 
+**DEV-070 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0307`，
+2026-09-08 下发）——M7 第一个节点，也是本项目第一个交付物类型
+与 M1–M6 全部节点不同的节点：产出物是 prompt 文本（指导 AI 模型
+按 `chapter-schema` 逐模块写作 Chapter 内容），不是确定性类型/
+决策代码，因此无法用类型检查判定"正确性"；测试改为机械关键字
+覆盖检查（Stage 标题、模块关键字、Quality 取值、slot 取值），
+verbatim 一致性由 Commander 人工核对。prompt 正文已由 Commander
+逐一核对 `chapter-schema` 全部 19 个组件的真实字段撰写，执行方
+须逐字照抄，不得改写、不得省略字段（USER 已裁决要求完整、
+逐模块覆盖）。不真实调用任何 AI/LLM API（留给 DEV-071），不实现
+Compiler/AI Repair Loop 逻辑（既有 DEV-002/未来 DEV-072 职责）。
+
 ---
 
 ## 第八施工组：平台扩展（POST-M8）

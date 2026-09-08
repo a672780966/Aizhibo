@@ -21,13 +21,10 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-064 — OBS Control（DONE，`verdict_ref: "0305"`）是 M6 最后一个
-真实可施工节点。DEV-065/066/067 均已逐一核对现实可施工性并裁定
-`BLOCKED`（暂缓，非施工失败）；DEV-060B（Console UI）本身按
-CR-013 后置。**M6（Operations）在现有规范下的真实可施工范围已
-完成（5/9 `DONE`，3 `BLOCKED`，1 CR 后置），同 M3 当年 DEV-038
-单独 `BLOCKED` 后判定完成的先例。** 下一步转向 M7（Content
-Factory Complete）。
+DEV-070 — Chapter Authoring Schema Prompt（IN_PROGRESS，
+`TASK_PACKAGE` 消息 `0307`；M7 第一个节点）。M6（Operations）在
+现有规范下的真实可施工范围已完成（5/9 `DONE`，3 `BLOCKED`，1
+CR 后置），转入 M7（Content Factory Complete）。
 
 ## Current Status
 
@@ -35,28 +32,26 @@ M1（15/15）、M2（9/9）、M4（7/7，Twitch Complete）、M5（AI Host
 Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 `DONE`；**DEV-038（Audio Ducking）`BLOCKED`**（暂缓非施工失败，
 依赖真实 Host 音频信号，条件仍未满足）。**M6（Operations）真实
-可施工范围已完成**：DEV-060A（Operator API）、DEV-061（Health
-System）、DEV-062（Error Registry）、DEV-063（Watchdog）、
-DEV-064（OBS Control）均 `DONE`；DEV-065（OBS Failover）
-`BLOCKED`（CR-020 把 Failover 决策权划给仍是占位状态的 SAFETY
-region，Dev Spec 未给出具体迁移规则）；DEV-066（Crash Recovery）
-`BLOCKED`（恢复逻辑本身已存在于 persistence/DEV-060A
-`RESTORE_LKG`，真正缺的是可供崩溃/重启的真实生产入口进程）；
-DEV-067（Emergency Stop）`BLOCKED`（同 DEV-065 的 SAFETY region
-现实约束，且组合已有执行原语跨包编排缺乏真实调用方）；DEV-060B
-（Console UI）按 CR-013 后置，排在本组末尾或 M8。三个 `BLOCKED`
-节点均未发 `TASK_PACKAGE`，无 LEDGER 消息记录（同 DEV-038 先例，
-纯 Commander 现实核对裁决）。AUDITOR 为 `opencode`/`gpt-5.6-terra`
-自定义 agent（工具集只读，裁决以文本返回，Commander 代为落盘
-消息文件）。USER 已授权持续推进（"继续推进至 M6"标准授权），
-现 M6 已完成，转向 M7 前先向 USER 汇报小结；账号/密钥继续占位
-处理。
+可施工范围已完成**：DEV-060A/061/062/063/064 均 `DONE`；
+DEV-065/066/067 均 `BLOCKED`（暂缓非施工失败，详见 `DAG.md`）；
+DEV-060B 按 CR-013 后置。**M7（Content Factory Complete）第一个
+节点 DEV-070（Chapter Authoring Schema Prompt）已下发，
+`IN_PROGRESS`**——新建 `packages/chapter-authoring-prompts`：导出
+`CHAPTER_AUTHORING_SCHEMA_PROMPT` 字符串常量，一段指导 AI 模型
+（GPT-5.6 Sol / Fable 5）按 `chapter-schema`（DEV-001 冻结）逐
+模块写作 Chapter 内容的十一阶段 prompt。本节点交付物类型与
+M1–M6 全部节点不同（prompt 文本，非确定性类型/决策代码），
+Commander 已逐一核对 `chapter-schema` 全部 19 个组件字段撰写
+prompt 正文，执行方逐字照抄；测试只做机械关键字覆盖检查。零
+依赖，不真实调用任何 AI API（DEV-071 职责）。AUDITOR 为
+`opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
+返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-无（M6 真实可施工范围已完成，DEV-065/066/067 均 `BLOCKED`，
-DEV-060B 按 CR-013 后置）。下一节点将从 M7（Content Factory
-Complete）起草，待 USER 确认是否继续。DEV-064 历史：
+`specs/tasks/TASK-PACKAGE-DEV-070.md`（消息 `0307`，`ISSUED`）——
+`chapter-authoring-prompts` 包（`CHAPTER_AUTHORING_SCHEMA_PROMPT`），
+T001–T002 两个 Task。DEV-064 历史：
 `specs/tasks/TASK-PACKAGE-DEV-064.md`（消息 `0303`）——
 platform-obs 真实客户端，`DONE`。
 

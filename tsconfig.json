@@ -20,6 +20,7 @@
     { "path": "./packages/watchdog" },
     { "path": "./packages/platform-obs" },
     { "path": "./packages/chapter-authoring-prompts" },
-    { "path": "./packages/ai-chapter-generator" }
+    { "path": "./packages/ai-chapter-generator" },
+    { "path": "./packages/ai-compiler-repair-loop" }
   ]
 }

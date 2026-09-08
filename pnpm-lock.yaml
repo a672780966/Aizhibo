@@ -67,6 +67,12 @@ importers:
         specifier: workspace:*
         version: link:../chapter-authoring-prompts
 
+  packages/ai-compiler-repair-loop:
+    dependencies:
+      '@interactive-story/chapter-compiler':
+        specifier: workspace:*
+        version: link:../chapter-compiler
+
   packages/ai-host:
     dependencies:
       '@interactive-story/chapter-compiler':

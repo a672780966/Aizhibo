@@ -400,7 +400,7 @@ C2 解决了 Gateway 单独解决不了的问题：Gateway 保证 Host **读不�
 | DEV-062 | Error Registry | |
 | DEV-063 | Watchdog | |
 | DEV-064 | OBS Control | |
-| DEV-065 | OBS Failover | Failover **决策权只在 SAFETY region**，OBS 与 PRESENTATION 均为执行端（CR-020） |
+| DEV-065 | OBS Failover | **`BLOCKED`（暂缓）**，等待 SAFETY region 真实存在，见下方裁定说明。Failover **决策权只在 SAFETY region**，OBS 与 PRESENTATION 均为执行端（CR-020） |
 | DEV-066 | Crash Recovery | |
 | DEV-067 | Emergency Stop | |
 | DEV-060B | Console UI | **后置**（CR-013）— 排在本组末尾或 M8 |
@@ -448,6 +448,28 @@ v5 客户端（Hello/Identify/Identified 握手 + 官方双重 SHA256 鉴权
 + Request/RequestResponse 切场景），支持第 49 节六个封闭场景；
 不实现任何重连逻辑，也不实现任何"何时该切场景"的判断（决策权
 留给未来 DEV-065 SAFETY region，CR-020）；生产代码零依赖）。
+
+**DEV-065 状态：`BLOCKED`（暂缓，非施工失败）**——2026-09-08
+Commander 现实核对：CR-020 把 Failover 的**决策权**明确划给
+SAFETY region，OBS/PRESENTATION 均只是执行端；DEV-064 已经把
+"执行"这一半（真实 OBS WebSocket v5 客户端 `switchScene`）建好。
+但 SAFETY region 本身自 DEV-009（M1）起一直是
+`packages/runtime-kernel/src/placeholderRegions.ts` 里的
+`idlePlaceholder('SAFETY')`（单一 `IDLE` 占位态），第 55 节定义的
+`HEALTHY/DEGRADED/RECOVERING/FAILOVER/EMERGENCY_STOP` 五态状态图
+零代码对应；Dev Spec 全文也没有给出任何具体的状态迁移规则（例如
+"连续几次 L3 故障才从 HEALTHY 进入 FAILOVER"）。M6 的 DAG 里没有
+单独列一个"SAFETY Region"节点，这个真实状态机实现工作隐含分散在
+DEV-065/066/067 之中，但目前没有一个已获批的规则来源可以抄录——
+现在实现等同于给一个结构上仍不可达的状态发明迁移条件，与本项目
+"不写投机性/不可达代码"的一贯纪律冲突，也是 DEV-060A 起就反复
+确认、刻意搁置的同一类现实约束（"没有真实生产入口进程/决策方可
+供装配"）。**裁定：DEV-065 转 `BLOCKED`（暂缓，非施工失败），
+推迟到 SAFETY region 真实状态机存在（未来某个尚未编号的节点，或
+DEV-066/067 施工时一并建立）之后再排期，不在本轮下发**。USER
+2026-09-08 已就此裁决：标为 BLOCKED，不发明新逻辑。本节点未发
+`TASK_PACKAGE`，无 LEDGER 消息记录（同 DEV-038 先例，纯 Commander
+现实核对裁决，不进入执行/审计流程）。
 
 **CR-015 已批准**：第 60 节 11 项产品指标全部从 Event Log 离线派生，**不建实时指标系统**。第 59 节工程指标保留实时采集（服务于 DEV-063 Watchdog）。因此本组不新增指标节点。
 

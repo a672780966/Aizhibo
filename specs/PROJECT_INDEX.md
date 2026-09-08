@@ -22,7 +22,9 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 ## Current Node
 
 DEV-064 — OBS Control（DONE，`verdict_ref: "0305"`）。M6 第五个
-节点完成（5/9）。下一节点 DEV-065（OBS Failover）待起草。
+节点完成（5/9）；DEV-065（OBS Failover）已裁定 `BLOCKED`（暂缓，
+非施工失败），见下。下一步待 USER 决定：是否对 DEV-066/067 也先
+做同等现实核对，或直接判定 M6"真实可施工范围"已完成、转向 M7。
 
 ## Current Status
 
@@ -38,16 +40,26 @@ SHA256 鉴权 + 切场景请求，支持第 49 节六个封闭场景，零重连
 决策，生产代码零依赖；第一轮 `AUDIT_FAIL`——审计员认定 LEDGER
 "当前待处理"表格原地更新超出协议仅追加范围，Commander 复核协议
 原文后判定该表格是现状索引非历史行日志，接受观察但不采纳阻塞
-结论，与此前 M6 节点一致，判 PASS）。AUDITOR 为
+结论，与此前 M6 节点一致，判 PASS）。**DEV-065（OBS Failover）
+`BLOCKED`**（暂缓非施工失败——CR-020 把 Failover 决策权划给
+SAFETY region，但 SAFETY region 自 DEV-009 起仍是
+`placeholderRegions.ts` 里的单态占位，Dev Spec 未给出任何具体
+迁移规则，M6 的 DAG 也没有单独编号的"SAFETY Region"节点；USER
+2026-09-08 已裁决标为 BLOCKED，不发明新逻辑，未发 TASK_PACKAGE，
+同 DEV-038 先例不进入执行/审计流程）。DEV-066（Crash Recovery）/
+DEV-067（Emergency Stop）可能面临同一现实约束（均与 SAFETY
+region 状态迁移相关），尚未逐一核对确认。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
 返回，Commander 代为落盘消息文件）。USER 已授权持续推进至 M6，
 不再逐节点确认；账号/密钥继续占位处理。
 
 ## Current Task Package
 
-M6 下一节点 DEV-065（OBS Failover）Task Package 待 Commander
-起草。DEV-064 历史：`specs/tasks/TASK-PACKAGE-DEV-064.md`（消息
-`0303`）——platform-obs 真实客户端，`DONE`。
+无（DEV-065 已裁定 `BLOCKED`，未起草 Task Package）。待 USER
+决定下一步：核对 DEV-066/067 是否同样 `BLOCKED`，或直接判定 M6
+真实可施工范围已完成、转向 M7。DEV-064 历史：
+`specs/tasks/TASK-PACKAGE-DEV-064.md`（消息 `0303`）——
+platform-obs 真实客户端，`DONE`。
 
 DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033/DEV-009/DEV-007/DEV-010/DEV-011/DEV-012/DEV-020/DEV-021/DEV-022/DEV-023/DEV-024/DEV-025/DEV-026/DEV-027/DEV-028/DEV-030 历史记录：`specs/tasks/TASK-PACKAGE-DEV-000.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-001.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-008.md`、`specs/tasks/TASK-PACKAGE-DEV-002.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-003.md`（+ ACCEPTANCE_AMENDMENT 0036 + SCOPE_RULING 0038）、`specs/tasks/TASK-PACKAGE-DEV-002A.md`（+ SCOPE_RULING 0044）、`specs/tasks/TASK-PACKAGE-DEV-004.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-005.md`、`specs/tasks/TASK-PACKAGE-DEV-006.md`（+ SCOPE_RULING 0062）、`specs/tasks/TASK-PACKAGE-DEV-033.md`、`specs/tasks/TASK-PACKAGE-DEV-009.md`（+ FIX-01 + FIX-02）、`specs/tasks/TASK-PACKAGE-DEV-007.md`、`specs/tasks/TASK-PACKAGE-DEV-010.md`、`specs/tasks/TASK-PACKAGE-DEV-011.md`、`specs/tasks/TASK-PACKAGE-DEV-012.md`、`specs/tasks/TASK-PACKAGE-DEV-020.md`、`specs/tasks/TASK-PACKAGE-DEV-021.md`、`specs/tasks/TASK-PACKAGE-DEV-022.md`、`specs/tasks/TASK-PACKAGE-DEV-023.md`、`specs/tasks/TASK-PACKAGE-DEV-024.md`、`specs/tasks/TASK-PACKAGE-DEV-025.md`（+ FIX-01）、`specs/tasks/TASK-PACKAGE-DEV-026.md`、`specs/tasks/TASK-PACKAGE-DEV-027.md`、`specs/tasks/TASK-PACKAGE-DEV-028.md`、`specs/comms/0138-COMMANDER-to-OPENCODE-TASK_PACKAGE-DEV-030.md`
 

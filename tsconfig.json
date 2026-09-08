@@ -22,6 +22,7 @@
     { "path": "./packages/chapter-authoring-prompts" },
     { "path": "./packages/ai-chapter-generator" },
     { "path": "./packages/ai-compiler-repair-loop" },
-    { "path": "./packages/asset-requirement-generator" }
+    { "path": "./packages/asset-requirement-generator" },
+    { "path": "./packages/audio-production-queue" }
   ]
 }

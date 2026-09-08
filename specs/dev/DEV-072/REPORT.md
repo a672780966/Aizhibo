@@ -3,8 +3,9 @@
 ## 1. Status
 
 DONE — DEV-072（AI Compiler Repair Loop，M7 第三个节点）T001–T002
-施工完成，六条验证命令全部退出码 0，恰 1 条提交，`Status:
-READY_FOR_REVIEW`。交付给 AUDITOR/COMMANDER 验收。
+施工完成，六条验证命令全部退出码 0，恰 1 条提交。审计首轮
+`AUDIT_PASS`（msg 0317，0 BLOCKER/MAJOR/MINOR/INFO），Commander
+裁定 PASS（msg 0318），DEV-072 转 `DONE`。
 
 ## 2. Implemented
 

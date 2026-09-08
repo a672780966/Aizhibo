@@ -565,8 +565,8 @@ Normalizer/Compiler/AI Repair Loop 逻辑。审计首轮 `AUDIT_PASS`，
 0 BLOCKER/MAJOR/MINOR。M7 下一节点：DEV-072（AI Compiler Repair
 Loop）。
 
-**DEV-072 状态：`IN_PROGRESS`**（`TASK_PACKAGE` 消息 `0315`，
-2026-09-08 下发）——M7 第三个节点。Dev Spec 只给出标题「AI Compiler
+**DEV-072 状态：`DONE`**（`verdict_ref: "0317"`，`ruling_ref: "0318"`，
+2026-09-08）——M7 第三个节点。Dev Spec 只给出标题「AI Compiler
 Repair Loop」和一张 ASCII 流程图（Compile→Errors→AI Repair→
 Compile）；第 25-26 节把 Schema Normalizer 放在 AI Draft 和
 Compiler 之间，但 Dev Spec 没有为 Schema Normalizer 分配任何 DEV
@@ -580,7 +580,9 @@ AI Repair 协议，不建真实客户端）、`buildRepairRequest` 真实转述
 `CompileResult` 问题列表、`runCompileRepairLoop` 诚实三态闭集决策
 （`PASSED`/`REPAIR_UNAVAILABLE`/`REPAIR_NOT_APPLIED`，只跑一次不
 重试）。不实现 Schema Normalizer、不把修复草稿写回磁盘、不做重试
-循环——均因 Dev Spec 未分配节点编号/未定义具体规则，不发明。
+循环——均因 Dev Spec 未分配节点编号/未定义具体规则，不发明。审计
+首轮 `AUDIT_PASS`，0 BLOCKER/MAJOR/MINOR/INFO。M7 下一节点：
+DEV-073（Asset Requirement Generator）。
 
 ---
 

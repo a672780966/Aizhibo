@@ -1,6 +1,6 @@
 # DEV-072 INDEX
 
-Status: READY_FOR_REVIEW
+Status: DONE
 
 ## Current Node
 
@@ -65,7 +65,7 @@ import 或依赖除 @interactive-story/chapter-compiler 外的任何其他既有
 
 ## Current Task
 
-T002（已完成，待 AUDITOR 验收）
+无（DONE，`verdict_ref: "0317"`，`ruling_ref: "0318"`）
 
 ## Exit Criteria
 

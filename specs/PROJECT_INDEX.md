@@ -21,9 +21,9 @@ M5 — AI Host Complete（第一个节点已下发）。M4 — Twitch Complete �
 
 ## Current Node
 
-DEV-072 — AI Compiler Repair Loop（`DONE`，`verdict_ref: "0317"`，
-`ruling_ref: "0318"`；M7 第三个节点）。下一节点 DEV-073（Asset
-Requirement Generator）。
+DEV-073 — Asset Requirement Generator（IN_PROGRESS，
+`TASK_PACKAGE` 消息 `0319`；M7 第四个节点）。与 DEV-070/071/072
+不同：不涉及任何 AI/LLM 调用，是纯确定性数据提取任务。
 
 ## Current Status
 
@@ -34,26 +34,27 @@ Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 可施工范围已完成**：DEV-060A/061/062/063/064 均 `DONE`；
 DEV-065/066/067 均 `BLOCKED`（暂缓非施工失败，详见 `DAG.md`）；
 DEV-060B 按 CR-013 后置。**M7（Content Factory Complete）**：
-DEV-070（Chapter Authoring Schema Prompt）`DONE`、DEV-071（AI
-Chapter Generator）`DONE`、DEV-072（AI Compiler Repair Loop）
-`DONE`——依次产出 `chapter-authoring-prompts`
-（`CHAPTER_AUTHORING_SCHEMA_PROMPT` 十一阶段 prompt）、
-`ai-chapter-generator`（`AiChapterGeneratorPort` 接口 + noop +
-`buildChapterAuthoringRequest`）、`ai-compiler-repair-loop`（真实
-调用既有 DEV-002 `compile()`，`AiRepairPort` 接口 + noop，
-`buildRepairRequest`，`runCompileRepairLoop` 三态闭集决策
-`PASSED`/`REPAIR_UNAVAILABLE`/`REPAIR_NOT_APPLIED`）；三者均因
-Dev Spec 未给出具体 AI 网络协议而只建接口/占位（同既有先例
-`packages/ai-host/src/hostLLMProvider.ts`），不建真实 LLM 网络
-客户端；DEV-072 额外未实现 Schema Normalizer（Dev Spec 未分配
-DEV 节点编号）、不把修复草稿写回磁盘、不做重试循环。AUDITOR 为
+DEV-070/071/072 均 `DONE`——依次产出 `chapter-authoring-prompts`、
+`ai-chapter-generator`、`ai-compiler-repair-loop`（三者均因 Dev
+Spec 未给出具体 AI 网络协议而只建接口/占位，同既有先例
+`packages/ai-host/src/hostLLMProvider.ts`，不建真实 LLM 网络
+客户端；DEV-072 真实集成既有 DEV-002 `compile()`）。**DEV-073
+（Asset Requirement Generator）已下发，`IN_PROGRESS`**——新建
+`packages/asset-requirement-generator`：不涉及任何 AI/LLM 调用，
+真实调用既有 DEV-002 Compiler 的
+`loadChapterPack`/`runSchemaValidation`，从 Chapter Pack 提取
+Dev Spec 给出的五类资产需求（插画/表情/序列帧/BGM/声音），映射
+到 `chapter-schema` 真实字段。不做可达性过滤、不做"已生产/未生产"
+比对——Dev Spec 均未提及，不发明。AUDITOR 为
 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，裁决以文本
 返回，Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-无（DEV-072 `DONE`）。下一节点 DEV-073（Asset Requirement
-Generator）将起草新的 Task Package。DEV-072 历史：
+`specs/tasks/TASK-PACKAGE-DEV-073.md`（消息 `0319`，`ISSUED`）——
+`asset-requirement-generator` 包（`AssetRequirements` +
+`extractAssetRequirements` + `generateAssetRequirements`），
+T001–T002 两个 Task。DEV-072 历史：
 `specs/tasks/TASK-PACKAGE-DEV-072.md`（消息 `0315`）——
 ai-compiler-repair-loop 真实 Compiler 集成+三态决策，`DONE`。
 

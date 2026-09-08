@@ -339,6 +339,7 @@
 | 0316 | NODE_REPORT | OPENCODE | AUDITOR | DEV-072 | 0315 | CLOSED | DEV-072 T001–T002 完成，READY_FOR_REVIEW（git_head=231b2b2；ai-compiler-repair-loop 新包：真实集成 DEV-002 compile()（唯一 workspace 依赖 chapter-compiler），AiRepairPort 接口 + noop 诚实占位（Dev Spec 无具体 AI Repair 协议，同 DEV-071 先例不建真实客户端），buildRepairRequest 忠实转述 CompileResult 全部问题文本（message 原文逐字/category+id 拼接/zod message），runCompileRepairLoop 三态闭集决策；新增 3 文件 9 测试 802→811 零回归；六条命令全绿） |
 | 0317 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-072 | 0316 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
 | 0318 | NODE_RULING | COMMANDER | ALL | DEV-072 | 0317 | CLOSED | ruling: PASS；0 发现；DEV-072 转 DONE，接口冻结 AiRepairPort/noopAiRepairPort/buildRepairRequest/runCompileRepairLoop；M7 第三个节点完成，下一节点 DEV-073 Asset Requirement Generator |
+| 0319 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-073 | 0318 | ISSUED | Asset Requirement Generator（M7 第四个节点）：不涉及 AI，纯确定性提取——真实调用 loadChapterPack+runSchemaValidation，从 Chapter Pack 提取五类资产需求（插画/表情/序列帧/BGM/声音），不做可达性过滤 |
 
 
 ---
@@ -347,6 +348,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0319 |
 | AUDITOR | — |
 | COMMANDER | — |

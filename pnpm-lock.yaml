@@ -113,6 +113,15 @@ importers:
         specifier: ^4.4.3
         version: 4.4.3
 
+  packages/chapter-packager:
+    dependencies:
+      '@interactive-story/audio-production-queue':
+        specifier: workspace:*
+        version: link:../audio-production-queue
+      '@interactive-story/chapter-compiler':
+        specifier: workspace:*
+        version: link:../chapter-compiler
+
   packages/chapter-schema:
     dependencies:
       zod:

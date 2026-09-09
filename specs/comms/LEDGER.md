@@ -352,6 +352,10 @@
 | 0329 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-075 | 0328 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
 | 0330 | NODE_RULING | COMMANDER | ALL | DEV-075 | 0329 | CLOSED | ruling: PASS；0 发现（Commander 顺手修正 REPORT.md 文件计数 17→18，非阻塞）；DEV-075 转 DONE，接口冻结 checkAssetFileExistence/computeReachableNarrativeBlockIds/checkNarrativeBlockAudioCoverage/generateChapterPackagerReport；M7 第六个节点完成，**M7（Content Factory Complete）全部 6 节点完成**；下一施工组「第八施工组：平台扩展（POST-M8）」超出本轮 USER 授权范围，Commander 暂停等待 USER 裁定 |
 | 0331 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-080 | 0330 | ISSUED | YouTube Adapter（USER 裁定正式排期 M8，M8 第一个节点）：新建 platform-youtube，四模块结构对齐 platform-twitch 先例并按机制差异调整——youtubeAuth.ts（OAuth2 refresh_token grant 手写 fetch，createOptionalYoutubeAuthProvider(env) 按 YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN 缺失降级 noop，USER 已裁决不让真实数据阻塞完成）、liveChatPoller.ts（长轮询替代 Twitch WebSocket 八态机，Dev Spec 第 46 节无对应状态拓扑不发明，只用 STOPPED/POLLING/ERROR，nextPageToken+pollingIntervalMillis 续传，失败不自动重试）、chatMessageAdapter.ts（normalizeYoutubeChatMessage 用真实 snippet.publishedAt 服务端时间而非本地时钟，区别于 Twitch 无此字段的处置）、sendChat.ts（结果类型对齐 TwitchSendChatResult 先例）；不建 messageDedup（nextPageToken 游标已防重复投递）；不组装 LivePlatformAdapter（DEV-042 D2 YAGNI 裁定延续，该类型代码从未落地，CR-017"计划性修订"对象是 Dev Spec 第 43 节文字描述非任何既有代码接口）；零第三方 SDK 延续 platform-twitch/audio-engine 先例 |
+| 0332 | NODE_REPORT | OPENCODE | AUDITOR | DEV-080 | 0331 | CLOSED | DEV-080 T001–T002 完成，READY_FOR_REVIEW（git_head=d3c9653；platform-youtube 新包：youtubeAuth.ts 手写 fetch refresh_token grant 零 SDK（成功映射 accessToken/expiresInSeconds，守卫只校验 access_token/expires_in，无 scope 响应测试覆盖；createOptionalYoutubeAuthProvider(env) 按 YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN 任一缺失降级 noopYoutubeAuthPort 恒 {ok:false} 零网络）+ liveChatPoller.ts 长轮询三态 STOPPED/POLLING/ERROR（不照搬 eventSubClient WebSocket 八态机，Dev Spec 第 46 节无对应列表；token 失败直接 ERROR 零 HTTP；首请求无 pageToken，nextPageToken+pollingIntervalMillis 排定续传用注入 FakeClock 断言；只处理 textMessageEvent 其余静默跳过；失败/非 2xx 不自动重试；nextPageToken 缺失回 STOPPED 真实 API 聊天结束行为）+ chatMessageAdapter.ts（normalizeYoutubeChatMessage 用真实 snippet.publishedAt 服务端时间作 receivedAt 区别于 Twitch 本地时钟处置，Date.parse NaN 返 undefined）+ sendChat.ts（POST /liveChat/messages?part=snippet 结果类型 {ok:true;messageId}|{ok:false;reason} 对齐 TwitchSendChatResult）；不建 messageDedup（nextPageToken 游标已防重复投递）；不组装 LivePlatformAdapter（DEV-042 D2 YAGNI 裁定延续）；恰一项 workspace 依赖 platform-core 零第三方 SDK；新增 30 测试 836→866 零回归；六条命令全绿） |
+| 0333 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-080 | 0332 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01：`liveChatPoller.ts` `pollOnce` 中 `onMessage` 投递循环之后、排定下一次轮询定时器之前未重新检查 state/generation，回调内同步 disconnect() 之后仍会照常排定新定时器，违反 A14 语义），0 BLOCKER/MINOR，2 INFO（0332 LEDGER 行位置正确；六条命令全绿但未覆盖此竞态） |
+| 0334 | NODE_RULING | COMMANDER | ALL | DEV-080 | 0333 | CLOSED | ruling: FAIL；MAJOR-01 独立复核确认属实，判定 FIX（非 DEV-061/064/070 式接受观察——此为真实代码正确性缺口非 Scope 解释分歧）；架构审计（无 LivePlatformAdapter/messageDedup/第三方 SDK，generation 守卫与 nextPageToken 缺失→STOPPED 均合法）予以采纳；节点转 FIX_REQUIRED |
+| 0335 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-080 | 0334 | ISSUED | DEV-080-FIX-01：不重开 A01–A13/A15–A21；仅新增 FIX-T01——在 pollOnce 的 onMessage 投递循环之后、nextPageToken 排定/STOPPED 转换之前插入 `state==='POLLING' && generation===gen` 守卫（与函数内其余两处同风格）；新增回归测试断言 onMessage 内同步 disconnect() 后最终 STOPPED、无新定时器、无新请求；必须重跑六条命令 |
 
 
 ---
@@ -360,6 +364,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0331 |
+| OPENCODE | 0335 |
 | AUDITOR | — |
 | COMMANDER | — |

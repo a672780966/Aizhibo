@@ -154,6 +154,21 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/interaction-engine:
+    dependencies:
+      '@interactive-story/platform-bilibili':
+        specifier: workspace:*
+        version: link:../platform-bilibili
+      '@interactive-story/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
+      '@interactive-story/platform-twitch':
+        specifier: workspace:*
+        version: link:../platform-twitch
+      '@interactive-story/platform-youtube':
+        specifier: workspace:*
+        version: link:../platform-youtube
+
   packages/narrative-composer:
     dependencies:
       '@interactive-story/chapter-schema':

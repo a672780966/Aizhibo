@@ -1,0 +1,23 @@
+{
+  "name": "@interactive-story/interaction-engine",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b"
+  },
+  "dependencies": {
+    "@interactive-story/platform-bilibili": "workspace:*",
+    "@interactive-story/platform-core": "workspace:*",
+    "@interactive-story/platform-twitch": "workspace:*",
+    "@interactive-story/platform-youtube": "workspace:*"
+  }
+}

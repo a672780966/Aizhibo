@@ -26,6 +26,7 @@
     { "path": "./packages/audio-production-queue" },
     { "path": "./packages/chapter-packager" },
     { "path": "./packages/platform-youtube" },
-    { "path": "./packages/platform-bilibili" }
+    { "path": "./packages/platform-bilibili" },
+    { "path": "./packages/interaction-engine" }
   ]
 }

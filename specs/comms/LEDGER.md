@@ -359,6 +359,7 @@
 | 0336 | NODE_REPORT | OPENCODE | AUDITOR | DEV-080 | 0335 | CLOSED | DEV-080-FIX-01 完成，第二轮 READY_FOR_REVIEW（git_head=3e70b31；FIX-T01：pollOnce 的 onMessage 投递循环之后、nextPageToken 排定/STOPPED 转换之前补 `state==='POLLING' && generation===gen` 守卫，与函数内其余两处同风格，回调内同步 disconnect()/重新 connect() 打断后直接返回——不排定定时器、不改写 state；不改变 onMessage 同步逐条调用方式、不引入任何重连/退避/重试逻辑；新增回归测试断言 onMessage 内同步 disconnect() 后 getState()==='STOPPED' 且 health DOWN(state: STOPPED)、FakeClock timers/timeouts 均 0 未排定新定时器、fetchImpl 恰 1 次无后续请求；既有 A14 测试零改动通过；新增 1 测试 866→867 零回归；六条命令全绿） |
 | 0337 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-080 | 0336 | CLOSED | 第二轮 AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO；独立重跑提交差异比对与全部六条验证命令（867/867），MAJOR-01 确认已真实修复 |
 | 0338 | NODE_RULING | COMMANDER | ALL | DEV-080 | 0337 | CLOSED | ruling: PASS；0 发现；DEV-080 转 DONE，接口冻结 createLiveChatPoller/LiveChatPollerState/YoutubeChatMessage/createOptionalYoutubeAuthProvider/normalizeYoutubeChatMessage/createYoutubeChatOnMessage/sendYoutubeChat/noopYoutubeSendChat；M8 第一个节点完成，下一节点 DEV-081 Bilibili Adapter |
+| 0339 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-081 | 0338 | ISSUED | Bilibili Adapter（M8 第二个节点）：新建 platform-bilibili，四模块结构对齐 platform-twitch/platform-youtube 先例并按 Bilibili 开放平台真实机制调整——bilibiliAuth.ts（/v2/app/start+heartbeat+end 场次生命周期 + HMAC-SHA256 签名 fetch，createOptionalBilibiliAuthProvider(env) 按 APP_ID/ACCESS_KEY_ID/ACCESS_KEY_SECRET/ANCHOR_CODE 缺失降级 noop，USER 已裁决不让真实数据阻塞完成）、liveConnectClient.ts（WebSocket 长连，不照搬 eventSubClient 八态机——真实协议两条独立心跳 20s HTTP+30s WS op=2，16 字节包头编解码独立测试，不做 failover/自动重试/Brotli）、chatMessageAdapter.ts（normalizeBilibiliChatMessage 用真实 timestamp 服务端时间对齐 YouTube 处置非 Twitch 本地时钟）、sendChat.ts（诚实能力缺口——官方开放平台协议层面无发送弹幕接口，只导出恒失败常量 unsupportedBilibiliSendChat 无 config 化工厂，区别于 Twitch/YouTube 的"有接口缺凭据"式 noop）；直接读源码确认 host-memory（DEV-054）purge/recallViewer 等已是 platform:string 通用参数，Adapter 边界不含持久化，Dev Spec 第 47 节合规检查要求对本节点不构成新增义务；恰一项 workspace 依赖 platform-core，零第三方 SDK（HMAC 用内置 node:crypto） |
 
 
 ---
@@ -367,6 +368,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0339 |
 | AUDITOR | — |
 | COMMANDER | — |

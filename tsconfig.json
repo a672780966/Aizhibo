@@ -25,6 +25,7 @@
     { "path": "./packages/asset-requirement-generator" },
     { "path": "./packages/audio-production-queue" },
     { "path": "./packages/chapter-packager" },
-    { "path": "./packages/platform-youtube" }
+    { "path": "./packages/platform-youtube" },
+    { "path": "./packages/platform-bilibili" }
   ]
 }

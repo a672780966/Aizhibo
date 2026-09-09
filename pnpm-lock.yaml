@@ -181,6 +181,12 @@ importers:
         specifier: workspace:*
         version: link:../shared
 
+  packages/platform-bilibili:
+    dependencies:
+      '@interactive-story/platform-core':
+        specifier: workspace:*
+        version: link:../platform-core
+
   packages/platform-core: {}
 
   packages/platform-obs:

@@ -51,11 +51,16 @@ DEV-081 实现/EXECUTOR 缺陷），`verdict_ref: "0341"`；Commander
 「第八施工组：平台扩展」DEV-080~083）已正式排期，前置 M7，详见
 `specs/dev/DAG.md`。**USER 后续裁定（2026-09-08）**：先推完 M8，
 再整理发布前缺口清单，再逐项填补；并明确要求不让缺乏真实凭据/
-账号阻碍 M8 完成（noop 降级先例延续）。下一节点：**DEV-082
-（Interaction Gateway）**，Dev Spec 仅标题级提及，具体范围需在
-起草 Task Package 时基于当前真实既有接口核定；Commander 将按
-既定自主权限继续起草并下发 Task Package，无需逐节点向 USER
-确认。
+账号阻碍 M8 完成（noop 降级先例延续）。**M8 第三个节点
+DEV-082（Interaction Gateway）Task Package 已 `ISSUED`**（消息
+`0343`，`in_reply_to: "0342"`）：新建 `packages/interaction-engine`
+（`specs/dev/DAG.md:676` 冻结 17 包列表预留、此前从未创建的包名）
+——`chatFanIn.ts` 恰一个共享 `InteractionAggregator` 实例汇入三
+平台聊天消息，`chatFanOut.ts` 结构类型统一并发广播三平台
+`sendChat`；不适配 `runtime-kernel` 的 `PlatformPort`、不组装
+`LivePlatformAdapter`、不做连接生命周期编排。下一节点：**DEV-083
+（Twitch Extension）**，Dev Spec 仅标题级提及，具体范围待 DEV-082
+完成后再起草。
 
 ## Current Status
 
@@ -98,13 +103,20 @@ AUTHENTICATING|CONNECTED|ERROR` 双独立心跳 20s HTTP+30s WS；
 裁决 `ruling: PASS`，不判定 FIX；自我纠正后续节点（DEV-082 起）
 恢复既定"裁决后统一提交"模式。AUDITOR 为 `opencode` 自定义/回退
 agent（工具集只读，裁决以文本返回，Commander 代为落盘消息文件）。
-账号/密钥继续占位处理。
+账号/密钥继续占位处理。**DEV-082（Interaction Gateway）已
+`ISSUED`**：Task Package 下发新建 `packages/interaction-engine`
+（DAG.md 冻结包名首次投入使用），OpenCode 尚未回复 NODE_REPORT。
 
 ## Current Task Package
 
-`DEV-081` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。下一节点
-`DEV-082`（Interaction Gateway）Task Package 待 Commander 起草
-下发。DEV-081 历史：`specs/tasks/TASK-PACKAGE-DEV-081.md`（消息
+`DEV-082`（Interaction Gateway）已 `ISSUED`（消息 `0343`，
+`specs/tasks/TASK-PACKAGE-DEV-082.md`）：新建
+`packages/interaction-engine`——`chatFanIn.ts`（恰一个共享
+`InteractionAggregator` 汇入三平台聊天消息）+ `chatFanOut.ts`
+（结构类型统一并发广播三平台 `sendChat`）；恰四项 workspace
+依赖 `platform-core`/`platform-twitch`/`platform-youtube`/
+`platform-bilibili`，零第三方依赖。DEV-081 历史：
+`specs/tasks/TASK-PACKAGE-DEV-081.md`（消息
 `0339`）——Bilibili Adapter，`DONE`（审计 `AUDIT_FAIL`→Commander
 裁决 `PASS`，无 FIX_PACKAGE）。DEV-080 历史：
 `specs/tasks/TASK-PACKAGE-DEV-080.md`（消息

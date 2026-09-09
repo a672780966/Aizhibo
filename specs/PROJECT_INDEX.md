@@ -14,7 +14,11 @@
 ## Current Milestone
 
 M8 — Platform Expansion（第八施工组，2026-09-08 由 USER 裁定正式
-排期，前置 M7；首节点 DEV-080 待下发）。M7 — Content Factory
+排期，前置 M7）**真实可施工范围已完成**：DEV-080/081/082 均
+`DONE`，DEV-083（Twitch Extension）经 2026-09-09 Commander 现实核对
+后 USER 裁定 `BLOCKED`（暂缓非施工失败，见 `DAG.md` M8 章节裁定
+说明；Dev Spec 无正文、无候选真实接口、无预留空包名可循，起草 Task
+Package 等同预先发明）。M7 — Content Factory
 Complete 已于 2026-09-08 全部 6 个节点完成。M5 — AI Host Complete、
 M4 — Twitch Complete 已于 2026-09-05 全部 7 个节点完成（M1 — Story
 Machine Complete 已于 2026-08-21 全部 15 节点完成；M2 — Presentation
@@ -59,11 +63,19 @@ BLOCKER/MAJOR，1 MINOR（REPORT.md 行尾多余空格，Commander 已修正）�
 `createMultiPlatformSendChat`/`MultiPlatformSendChat`/
 `MultiPlatformSendChatConfig`/`MultiPlatformSendChatResult`/
 `PlatformSendChat`（`packages/interaction-engine`——DAG.md 冻结
-17 包列表预留、此前从未创建的包名首次投入使用）。下一节点：
-**DEV-083（Twitch Extension）**，Dev Spec 仅标题级提及，具体范围
-需在起草 Task Package 时基于当前真实既有接口核定；Commander 将按
-既定自主权限继续起草并下发 Task Package，无需逐节点向 USER
-确认。
+17 包列表预留、此前从未创建的包名首次投入使用）。**DEV-083
+（Twitch Extension）经 2026-09-09 Commander 现实核对裁定
+`BLOCKED`**（暂缓，非施工失败）：与 DEV-082 不同，DAG.md 第 662
+行未点名任何候选真实接口，17 包冻结列表无为其预留的空包名，
+`platform-twitch`（DEV-040~046）已完整实现 Dev Spec 第 44/45 节
+全部要求且无遗留接口，Dev Spec 全文搜索 "Extension"／"Prediction"／
+"Poll"／"Channel Point" 等 Twitch 官方 Extensions 平台相关文本
+仅得标题字符串本身——在此情况下起草 Task Package 等同预先发明，
+违反既定"不预先发明"纪律；USER 已裁定暂缓跳过，**M8（Platform
+Expansion）真实可施工范围视为完成**（同 M3 当年 DEV-038 单独
+`BLOCKED` 后判定完成的先例）。本节点未发 `TASK_PACKAGE`，无 LEDGER
+消息记录。下一步：按既定顺序（先推完 M8 → 整理发布前缺口清单 →
+逐项填补）进入发布前缺口整理阶段。
 
 ## Current Status
 
@@ -117,13 +129,18 @@ agent（工具集只读，裁决以文本返回，Commander 代为落盘消息�
 `LivePlatformAdapter`、不做连接生命周期编排；恰四项 workspace
 依赖 `platform-core`/`platform-twitch`/`platform-youtube`/
 `platform-bilibili`，零第三方依赖。审计 `AUDIT_PASS`：0
-BLOCKER/MAJOR，1 MINOR（`verdict_ref: "0345"`）。
+BLOCKER/MAJOR，1 MINOR（`verdict_ref: "0345"`）。**DEV-083（Twitch
+Extension）`BLOCKED`**（暂缓非施工失败，2026-09-09 Commander 现实
+核对+USER 裁定，见 `DAG.md` M8 章节；无候选真实接口/预留空包名/
+Dev Spec 正文可循，见 `Current Node` 详述）。**M8 真实可施工范围
+完成，3/4 `DONE`、1 `BLOCKED`。**
 
 ## Current Task Package
 
-`DEV-082` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。下一节点
-`DEV-083`（Twitch Extension）Task Package 待 Commander 起草
-下发。DEV-082 历史：`specs/tasks/TASK-PACKAGE-DEV-082.md`（消息
+`DEV-082` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。`DEV-083`
+（Twitch Extension）经现实核对无真实依据可循，已裁定 `BLOCKED`，
+不起草 Task Package（详见 `Blocked Nodes`）。M8 真实可施工范围
+完成，下一步进入发布前缺口整理阶段。DEV-082 历史：`specs/tasks/TASK-PACKAGE-DEV-082.md`（消息
 `0343`）——Interaction Gateway，`DONE`（审计 `AUDIT_PASS`，1 MINOR
 Commander 已修正，无 FIX_PACKAGE）。DEV-081 历史：
 `specs/tasks/TASK-PACKAGE-DEV-081.md`（消息
@@ -215,6 +232,18 @@ DEV-000/DEV-001/DEV-008/DEV-002/DEV-003/DEV-002A/DEV-004/DEV-005/DEV-006/DEV-033
 
 - DEV-038 — Audio Ducking（`BLOCKED`，暂缓非施工失败；依赖 M5 `ai-host` 包
   真实存在，见 `DAG.md` M3 章节裁定说明；不计入本轮 5 轮自动化）
+- DEV-065 — OBS Failover（`BLOCKED`，暂缓非施工失败；SAFETY 区仍为占位，
+  无裁决权可施工，见 `DAG.md` M6 章节裁定说明）
+- DEV-066 / DEV-067（`BLOCKED`，暂缓非施工失败；个别复核后裁定，见
+  `DAG.md` M6 章节裁定说明）
+- DEV-083 — Twitch Extension（`BLOCKED`，暂缓非施工失败；2026-09-09
+  Commander 现实核对：Dev Spec 仅标题无正文，DAG.md 未点名任何候选
+  真实接口，17 包冻结列表无为其预留的空包名，`platform-twitch`
+  已完整实现 Dev Spec 第 44/45 节全部要求且无遗留接口，Dev Spec 全文
+  搜索 Twitch 官方 Extensions 平台相关词汇仅得标题字符串本身——在此
+  情况下起草 Task Package 等同预先发明；USER 已裁定暂缓跳过，见
+  `DAG.md` M8 章节裁定说明；推迟到 USER 明确定义真实范围或 Dev Spec
+  补齐正文后再排期）
 
 ## Last Accepted Node
 
@@ -224,6 +253,7 @@ DEV-057 — Host TTS（2026-09-07）
 
 DEV-058 — Host Avatar（M5 第十个/最后一个节点，待起草）。
 DEV-038 — Audio Ducking 需等 M5 有真实 Host 音频信号才重新具备下发条件（`ai-host` 包已随 DEV-050A 真实存在；DEV-057 只交付流式接口 + noop 占位，尚不满足重开条件）。
+DEV-083 — Twitch Extension 需等 USER 明确定义真实范围或 Dev Spec 补齐正文后才重新具备下发条件。**M8（Platform Expansion）真实可施工范围已完成（3/4 DONE，1 BLOCKED），无下一节点待下发。** 按 USER 既定顺序（先推完 M8 → 整理发布前缺口清单 → 逐项填补），下一步是发布前缺口整理，非新 DEV 节点。
 
 ## Project-level Blockers
 

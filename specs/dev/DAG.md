@@ -659,10 +659,35 @@ workspace 依赖：`chapter-compiler`、`audio-production-queue`。
 | DEV-080 | YouTube Adapter | Dev Spec 第 46 节：YouTube Live Streaming API 提供 `liveChatMessages.streamList`（server-streaming 低延迟推送），可用 `nextPageToken` 断线续传，无需自行高频轮询。CR-017：`LivePlatformAdapter` v1 由 Twitch 单实现推导、未经第二实现验证，本节点为首个异构平台落地，属计划性接口修订（预期事件非设计失败），改动应限制在 `platform-*` 包内 |
 | DEV-081 | Bilibili Adapter | Dev Spec 第 47 节：Bilibili 开放平台提供开播能力与直播间消息长连能力，具体协议实现放在 Twitch 主链稳定之后（已满足）；数据存储策略须单独经过平台合规检查，不得照搬 Twitch Viewer Memory（CR-017 第 234 行） |
 | DEV-082 | Interaction Gateway | Dev Spec 仅给出标题（第 2818-2819 行），无正文——同 DEV-072/DEV-075 先例，具体范围于该节点 Task Package 起草时基于既有真实接口（`platform-core`/`interaction-engine` 等）确定，不预先发明 |
-| DEV-083 | Twitch Extension | Dev Spec 仅给出标题（第 2821-2822 行），无正文——同上，起草时确定，不预先发明 |
+| DEV-083 | Twitch Extension | Dev Spec 仅给出标题（第 2821-2822 行），无正文——**`BLOCKED`（暂缓，非施工失败），见下方裁定说明** |
 
 **包创建纪律沿用第 669 行既有约束**：`platform-youtube`/`platform-bilibili`
 分别在 DEV-080/DEV-081 前不创建；禁止提前建空包。
+
+**DEV-083 状态：`BLOCKED`（暂缓，非施工失败）**——2026-09-09 Commander
+现实核对：与 DEV-082（起草时找到具体真实接口依据
+`platform-core`/`interaction-engine`）不同，DEV-083 无任何等价依据可循——
+`platform-twitch`（DEV-040/041/042/043/045/046）Dev Spec 第 44/45 节要求
+的全部能力已完整实现且已冻结，包内无遗留/半成品接口；DAG.md 本节
+（第 662 行）对 DEV-083 未点名任何候选真实接口（与 DEV-082 对照，第
+661 行明确点名，第 662 行仅"同上，起草时确定"，无具体指向）；17 包冻结
+列表（第 676 行）无任何为它预留而尚未创建的空包名（与 DEV-082 的
+`interaction-engine` 对照）；全文搜索 Dev Spec 未见 "Extension"／
+"Prediction"／"Poll"／"Channel Point"／"Clip"／"Raid"／"Bits" 等 Twitch
+官方 Extensions 平台（EBS/Configuration Service/PubSub/Extension JWT，
+与聊天/EventSub 是完全不同的 API 面）相关文本，仅标题字符串本身；
+DEV-040~046、DEV-080~082 任何节点文档均未留下指向 DEV-083 的"未来节点"
+交叉引用。**在既有真实接口/代码事实中找不到任何依据的情况下起草 Task
+Package 等同预先发明，违反本文件反复强调的"不预先发明"纪律**——USER
+已就此裁定：暂缓，跳过 DEV-083，M8 真实可施工范围视为完成。**裁定：
+DEV-083 转 `BLOCKED`（暂缓，非施工失败），推迟到 USER 明确定义
+"Twitch Extension" 真实范围（例如 Twitch 官方 Extensions 平台的具体
+落地需求）或 Dev Spec 补齐正文后再排期**。本节点未发 `TASK_PACKAGE`，
+无 LEDGER 消息记录（同 DEV-038/065/066/067 先例）。
+
+**M8（Platform Expansion）真实可施工范围已完成**：DEV-080/081/082 均
+`DONE`；DEV-083 `BLOCKED`（同 M3 当年 DEV-038 单独 `BLOCKED` 后判定
+完成的先例）。
 
 ---
 

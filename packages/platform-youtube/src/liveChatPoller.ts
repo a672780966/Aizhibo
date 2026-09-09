@@ -182,6 +182,9 @@ export function createLiveChatPoller(config: LiveChatPollerConfig): LiveChatPoll
       const message = toYoutubeChatMessage(item);
       if (message !== undefined) config.onMessage?.(message);
     }
+    // onMessage 回调可能同步调用 disconnect()/重新 connect()（重入）：投递完当前批次后、
+    // 排定下一次定时器前重新校验，否则回调内断开仍会照常排定新定时器（MAJOR-01）。
+    if (state !== 'POLLING' || generation !== gen) return;
 
     // 用响应携带的 nextPageToken 与 pollingIntervalMillis 排定下一次带
     // pageToken 的请求（长轮询续传，无需自建高频轮询）。

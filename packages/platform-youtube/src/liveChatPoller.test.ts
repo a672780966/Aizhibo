@@ -294,6 +294,42 @@ describe('createLiveChatPoller', () => {
     client.disconnect();
   });
 
+  it('a disconnect() called synchronously from inside onMessage still ends in STOPPED with no next timer and no follow-up request (FIX-T01)', async () => {
+    // onMessage 需引用 poller 自身（构造期尚未赋值），用 holder 对象承接。
+    const holder: { client?: ReturnType<typeof createLiveChatPoller> } = {};
+    const clock = new FakeClock();
+    const fetchImpl = vi.fn(async () =>
+      pollResponse({
+        items: [textItem('m1', 'hello')],
+        nextPageToken: 'TOKEN-1',
+        pollingIntervalMillis: 2500,
+      }),
+    );
+    // onMessage 在处理有效消息时同步调用 disconnect()（回调重入）。
+    const onMessage = vi.fn(() => {
+      holder.client!.disconnect();
+    });
+    holder.client = createWith({
+      authPort: fakeAuthPort(true),
+      clock,
+      fetchImpl,
+      onMessage,
+    });
+
+    holder.client.connect();
+    await vi.waitFor(() => {
+      expect(onMessage).toHaveBeenCalledTimes(1);
+    });
+    // 回调内 disconnect() 已生效：回到 STOPPED。
+    expect(holder.client!.getState()).toBe('STOPPED');
+    expect(holder.client!.getHealth()).toEqual({ status: 'DOWN', error: 'state: STOPPED' });
+    // 本次 pollOnce 排定定时器之前返回：未排定任何下一次轮询定时器。
+    expect(clock.timers.length).toBe(0);
+    expect(clock.timeouts.length).toBe(0);
+    // 也未因此发起新的 HTTP 请求。
+    expect(fetchImpl).toHaveBeenCalledTimes(1);
+  });
+
   it('a stale poll response from a disconnected episode never drives the new episode', async () => {
     let resolvePoll!: (r: Response) => void;
     const gate = new Promise<Response>((r) => (resolvePoll = r));

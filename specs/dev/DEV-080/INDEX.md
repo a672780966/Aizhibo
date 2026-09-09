@@ -99,6 +99,11 @@ YAGNI，本节点不重开该裁定）
 - [x] T002 四个源文件 + 四个测试文件 + 包骨架 + 根 `tsconfig.json` 引用 +
   全量验证（六条命令）+ `REPORT.md`/`DECISIONS.md` 填写 + commit +
   写入（不提交）LEDGER 追加行与 NODE_REPORT 消息文件
+- [x] FIX-T01 pollOnce 回调重入后的状态/代数重新校验（MAJOR-01 修复：`onMessage`
+  投递循环之后、`nextPageToken` 排定/STOPPED 转换之前补 `state === 'POLLING' &&
+  generation === gen` 守卫，与函数内其余两处同风格；新增回归测试断言回调内同步
+  `disconnect()` 后最终 STOPPED、未排定新定时器、未发起新 HTTP 请求；既有 A14
+  测试零改动通过；六条命令全部退出码 0）
 
 ## Exit Criteria
 

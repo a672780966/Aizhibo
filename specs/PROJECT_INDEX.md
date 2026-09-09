@@ -28,8 +28,12 @@ Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实
 （`verdict_ref: "0329"`，`NODE_RULING` 消息 `0330`）。**USER 裁定
 （2026-09-08）**：先正式定义/排期 M8 里程碑再开始施工——M8
 （Platform Expansion，即原「第八施工组：平台扩展」DEV-080~083）
-已正式排期，前置 M7，详见 `specs/dev/DAG.md`。下一节点：DEV-080
-（YouTube Adapter），Task Package 待起草下发。
+已正式排期，前置 M7，详见 `specs/dev/DAG.md`。**USER 后续裁定
+（2026-09-08）**：先推完 M8，再整理发布前缺口清单，再逐项填补；
+并明确要求不让缺乏真实凭据/账号阻碍 M8 完成（noop 降级先例延续）。
+DEV-080（YouTube Adapter，M8 第一个节点）Task Package 已下发
+（`specs/tasks/TASK-PACKAGE-DEV-080.md`，消息 `0331`），OpenCode
+执行中。
 
 ## Current Status
 
@@ -77,8 +81,18 @@ AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
 
 ## Current Task Package
 
-无 ISSUED 中的 Task Package——M7 全部完成，M8 已正式排期，DEV-080
-（YouTube Adapter）Task Package 待起草下发。
+`specs/tasks/TASK-PACKAGE-DEV-080.md`（消息 `0331`，`ISSUED`）——
+YouTube Adapter，M8 第一个节点。新建 `platform-youtube`：四模块
+结构对齐既有 `platform-twitch` 先例并按机制差异调整
+（`youtubeAuth.ts` OAuth2 refresh_token grant + `createOptional
+YoutubeAuthProvider(env)` noop 降级；`liveChatPoller.ts` 长轮询
+`STOPPED|POLLING|ERROR` 三态，不搬 Twitch WebSocket 八态机；
+`chatMessageAdapter.ts` 用真实 `snippet.publishedAt` 服务端时间；
+`sendChat.ts` 结果类型对齐 `TwitchSendChatResult`）；不建
+`messageDedup`（`nextPageToken` 游标已防重复投递）；不组装
+`LivePlatformAdapter`（该类型代码从未落地，`DEV-042/DECISIONS.md`
+D2 YAGNI 裁定延续，CR-017"计划性修订"对象是 Dev Spec 第 43 节
+文字描述非任何既有代码接口）；零第三方 SDK。
 DEV-075 历史：`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息
 `0327`）——chapter-packager PASS 7 文件存在性 + Path A/B 可达
 NarrativeBlock 计算 + 调用方传入音频覆盖检查，`DONE`。DEV-074

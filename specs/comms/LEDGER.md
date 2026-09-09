@@ -351,6 +351,7 @@
 | 0328 | NODE_REPORT | OPENCODE | AUDITOR | DEV-075 | 0327 | CLOSED | DEV-075 T001–T002 完成，READY_FOR_REVIEW（git_head=6327e64；chapter-packager 新包：PASS 7 资产文件存在性检查（checkAssetFileExistence，‘file’ in value 窄化只挑 ImageAsset/PREPRODUCED|PREGENERATED，resolve(rootDir,file) 唯一解析约定录为假设）+ Path A/B 双路径可达 NarrativeBlock 计算（computeReachableNarrativeBlockIds，只对 reachability.reachable 内节点收集；Path A 互动链到 ResultNarrative 五档字段，mapsTo 一跳同字典复用 pass2ActionChain.ts 语义；Path B 直联 BossPhase/EndingNode narrationBlockIds）+ 音频覆盖检查（checkNarrativeBlockAudioCoverage，调用方传入 NarrativeBlockAudioResult[] 唯一输入，无 fs/扫描/发明绑定格式）+ 薄封装 generateChapterPackagerReport 真实 loadChapterPack+runSchemaValidation+runPass3；entryNodeId 非调用方参数；无任何写盘/无 Bundle/manifest 产出；恰两项 workspace 依赖 chapter-compiler+audio-production-queue，无第三方；新增 12 测试 824→836 零回归；六条命令全绿） |
 | 0329 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-075 | 0328 | CLOSED | AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO |
 | 0330 | NODE_RULING | COMMANDER | ALL | DEV-075 | 0329 | CLOSED | ruling: PASS；0 发现（Commander 顺手修正 REPORT.md 文件计数 17→18，非阻塞）；DEV-075 转 DONE，接口冻结 checkAssetFileExistence/computeReachableNarrativeBlockIds/checkNarrativeBlockAudioCoverage/generateChapterPackagerReport；M7 第六个节点完成，**M7（Content Factory Complete）全部 6 节点完成**；下一施工组「第八施工组：平台扩展（POST-M8）」超出本轮 USER 授权范围，Commander 暂停等待 USER 裁定 |
+| 0331 | TASK_PACKAGE | COMMANDER | OPENCODE | DEV-080 | 0330 | ISSUED | YouTube Adapter（USER 裁定正式排期 M8，M8 第一个节点）：新建 platform-youtube，四模块结构对齐 platform-twitch 先例并按机制差异调整——youtubeAuth.ts（OAuth2 refresh_token grant 手写 fetch，createOptionalYoutubeAuthProvider(env) 按 YOUTUBE_CLIENT_ID/SECRET/REFRESH_TOKEN 缺失降级 noop，USER 已裁决不让真实数据阻塞完成）、liveChatPoller.ts（长轮询替代 Twitch WebSocket 八态机，Dev Spec 第 46 节无对应状态拓扑不发明，只用 STOPPED/POLLING/ERROR，nextPageToken+pollingIntervalMillis 续传，失败不自动重试）、chatMessageAdapter.ts（normalizeYoutubeChatMessage 用真实 snippet.publishedAt 服务端时间而非本地时钟，区别于 Twitch 无此字段的处置）、sendChat.ts（结果类型对齐 TwitchSendChatResult 先例）；不建 messageDedup（nextPageToken 游标已防重复投递）；不组装 LivePlatformAdapter（DEV-042 D2 YAGNI 裁定延续，该类型代码从未落地，CR-017"计划性修订"对象是 Dev Spec 第 43 节文字描述非任何既有代码接口）；零第三方 SDK 延续 platform-twitch/audio-engine 先例 |
 
 
 ---
@@ -359,6 +360,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | — |
+| OPENCODE | 0331 |
 | AUDITOR | — |
 | COMMANDER | — |

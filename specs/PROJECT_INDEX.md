@@ -32,14 +32,30 @@ Adapter）已 `DONE`**（首轮 `AUDIT_FAIL`：1 MAJOR，`pollOnce` 回调
 `createLiveChatPoller`/`LiveChatPollerState`/`YoutubeChatMessage`/
 `createOptionalYoutubeAuthProvider`/`normalizeYoutubeChatMessage`/
 `createYoutubeChatOnMessage`/`sendYoutubeChat`/
-`noopYoutubeSendChat`（`packages/platform-youtube`）。**USER 裁定
-（2026-09-08）**：先正式定义/排期 M8 里程碑再开始施工——M8
-（Platform Expansion，即原「第八施工组：平台扩展」DEV-080~083）
-已正式排期，前置 M7，详见 `specs/dev/DAG.md`。**USER 后续裁定
-（2026-09-08）**：先推完 M8，再整理发布前缺口清单，再逐项填补；
-并明确要求不让缺乏真实凭据/账号阻碍 M8 完成（noop 降级先例延续）。
-下一节点：**DEV-081（Bilibili Adapter）**，Commander 将按既定
-自主权限继续起草并下发 Task Package，无需逐节点向 USER 确认。
+`noopYoutubeSendChat`（`packages/platform-youtube`）。**M8 第二个
+节点 DEV-081（Bilibili Adapter）已 `DONE`**（`AUDIT_FAIL`：0
+BLOCKER，1 MAJOR（MAJOR-01：Commander 事后提交 `4f133b5` 携带
+Exit Procedure 要求"写入不提交"的 LEDGER/NODE_REPORT，独立复核
+确认属 Commander 自身操作偏离既定"裁决后统一提交"模式，非
+DEV-081 实现/EXECUTOR 缺陷），`verdict_ref: "0341"`；Commander
+裁决 `ruling: PASS`（`NODE_RULING` 消息 `0342`），不判定 FIX。
+接口冻结 `BilibiliAuthPort`/`noopBilibiliAuthPort`/
+`createBilibiliAuthProvider`/`createOptionalBilibiliAuthProvider`/
+`computeBilibiliAuthorization`/`bilibiliContentMd5`/
+`LiveConnectClient`/`createLiveConnectClient`/`LiveConnectState`/
+`BilibiliChatMessage`/`encodeLiveFrame`/`decodeLiveFrame`/
+`normalizeBilibiliChatMessage`/`createBilibiliChatOnMessage`/
+`BilibiliSendChat`/`unsupportedBilibiliSendChat`
+（`packages/platform-bilibili`）。**USER 裁定（2026-09-08）**：先
+正式定义/排期 M8 里程碑再开始施工——M8（Platform Expansion，即原
+「第八施工组：平台扩展」DEV-080~083）已正式排期，前置 M7，详见
+`specs/dev/DAG.md`。**USER 后续裁定（2026-09-08）**：先推完 M8，
+再整理发布前缺口清单，再逐项填补；并明确要求不让缺乏真实凭据/
+账号阻碍 M8 完成（noop 降级先例延续）。下一节点：**DEV-082
+（Interaction Gateway）**，Dev Spec 仅标题级提及，具体范围需在
+起草 Task Package 时基于当前真实既有接口核定；Commander 将按
+既定自主权限继续起草并下发 Task Package，无需逐节点向 USER
+确认。
 
 ## Current Status
 
@@ -65,15 +81,33 @@ Expansion）**：**DEV-080（YouTube Adapter）`DONE`**——新建
 "`disconnect()` 取消挂起定时器"语义），经 `FIX_PACKAGE`
 `DEV-080-FIX-01` 修复（投递循环后补充 `state`/`generation` 重新
 校验守卫 + 新增回归测试）后第二轮 `AUDIT_PASS`，0
-BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0337"`）。AUDITOR 为
-`opencode` 自定义/回退 agent（工具集只读，裁决以文本返回，
-Commander 代为落盘消息文件）。账号/密钥继续占位处理。
+BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0337"`）。**DEV-081
+（Bilibili Adapter）`DONE`**——新建 `packages/platform-bilibili`：
+四模块结构对齐既有 `platform-youtube`/`platform-twitch` 先例并按
+Bilibili 开放平台真实机制调整（HMAC-SHA256 签名场次生命周期 +
+noop 降级；WebSocket 长连六态 `STOPPED|STARTING|CONNECTING|
+AUTHENTICATING|CONNECTED|ERROR` 双独立心跳 20s HTTP+30s WS；
+真实服务端 `timestamp` 时间；诚实能力缺口——协议层面无发送弹幕
+接口，只导出恒失败常量 `unsupportedBilibiliSendChat`）；不建
+`messageDedup`、不组装 `LivePlatformAdapter`、零第三方 SDK。审计
+`AUDIT_FAIL`：0 BLOCKER，1 MAJOR（Commander 事后提交 `4f133b5`
+携带 Exit Procedure 要求"写入不提交"的 LEDGER/NODE_REPORT），
+`verdict_ref: "0341"`；独立复核确认该偏离属 Commander 自身操作
+（对照 DEV-070~080 全部先例，`4f133b5` 是本项目历史上唯一一次
+审计前预提交通信文件），非 DEV-081 实现/EXECUTOR 缺陷，Commander
+裁决 `ruling: PASS`，不判定 FIX；自我纠正后续节点（DEV-082 起）
+恢复既定"裁决后统一提交"模式。AUDITOR 为 `opencode` 自定义/回退
+agent（工具集只读，裁决以文本返回，Commander 代为落盘消息文件）。
+账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`DEV-080` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。下一节点
-`DEV-081`（Bilibili Adapter）Task Package 待 Commander 起草下发。
-DEV-080 历史：`specs/tasks/TASK-PACKAGE-DEV-080.md`（消息
+`DEV-081` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。下一节点
+`DEV-082`（Interaction Gateway）Task Package 待 Commander 起草
+下发。DEV-081 历史：`specs/tasks/TASK-PACKAGE-DEV-081.md`（消息
+`0339`）——Bilibili Adapter，`DONE`（审计 `AUDIT_FAIL`→Commander
+裁决 `PASS`，无 FIX_PACKAGE）。DEV-080 历史：
+`specs/tasks/TASK-PACKAGE-DEV-080.md`（消息
 `0331`）——YouTube Adapter，`DONE`（含 FIX-01 修复回合）。
 DEV-075 历史：`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息
 `0327`）——chapter-packager PASS 7 文件存在性 + Path A/B 可达

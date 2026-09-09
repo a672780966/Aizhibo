@@ -24,16 +24,22 @@ Complete 已于 2026-08-23 全部 9 节点完成；M3 — Audio Complete 真实
 ## Current Node
 
 **M7（Content Factory Complete）全部 6 个节点（DEV-070~075）已
-`DONE`**。DEV-075（Chapter Packager）为 M7 最后一个节点，已 `DONE`
-（`verdict_ref: "0329"`，`NODE_RULING` 消息 `0330`）。**USER 裁定
+`DONE`**。**M8（Platform Expansion）第一个节点 DEV-080（YouTube
+Adapter）已 `DONE`**（首轮 `AUDIT_FAIL`：1 MAJOR，`pollOnce` 回调
+重入竞态，`verdict_ref: "0333"`；`FIX_PACKAGE`
+`DEV-080-FIX-01`（消息 `0335`）修复后第二轮 `AUDIT_PASS`，
+`verdict_ref: "0337"`，`NODE_RULING` 消息 `0338`）。接口冻结
+`createLiveChatPoller`/`LiveChatPollerState`/`YoutubeChatMessage`/
+`createOptionalYoutubeAuthProvider`/`normalizeYoutubeChatMessage`/
+`createYoutubeChatOnMessage`/`sendYoutubeChat`/
+`noopYoutubeSendChat`（`packages/platform-youtube`）。**USER 裁定
 （2026-09-08）**：先正式定义/排期 M8 里程碑再开始施工——M8
 （Platform Expansion，即原「第八施工组：平台扩展」DEV-080~083）
 已正式排期，前置 M7，详见 `specs/dev/DAG.md`。**USER 后续裁定
 （2026-09-08）**：先推完 M8，再整理发布前缺口清单，再逐项填补；
 并明确要求不让缺乏真实凭据/账号阻碍 M8 完成（noop 降级先例延续）。
-DEV-080（YouTube Adapter，M8 第一个节点）Task Package 已下发
-（`specs/tasks/TASK-PACKAGE-DEV-080.md`，消息 `0331`），OpenCode
-执行中。
+下一节点：**DEV-081（Bilibili Adapter）**，Commander 将按既定
+自主权限继续起草并下发 Task Package，无需逐节点向 USER 确认。
 
 ## Current Status
 
@@ -43,60 +49,36 @@ Complete，10/10）均 `DONE`。M3：DEV-030/031/032/034/035/036/037
 依赖真实 Host 音频信号，条件仍未满足）。**M6（Operations）真实
 可施工范围已完成**：DEV-060A/061/062/063/064 均 `DONE`；
 DEV-065/066/067 均 `BLOCKED`（暂缓非施工失败，详见 `DAG.md`）；
-DEV-060B 按 CR-013 后置。**M7（Content Factory Complete）**：
-DEV-070/071/072 均 `DONE`——依次产出 `chapter-authoring-prompts`、
-`ai-chapter-generator`、`ai-compiler-repair-loop`（三者均因 Dev
-Spec 未给出具体 AI 网络协议而只建接口/占位，同既有先例
-`packages/ai-host/src/hostLLMProvider.ts`，不建真实 LLM 网络
-客户端；DEV-072 真实集成既有 DEV-002 `compile()`）。**DEV-073
-（Asset Requirement Generator）`DONE`**——新建
-`packages/asset-requirement-generator`：不涉及任何 AI/LLM 调用，
-真实调用既有 DEV-002 Compiler 的
-`loadChapterPack`/`runSchemaValidation`，从 Chapter Pack 提取
-Dev Spec 给出的五类资产需求（插画/表情/序列帧/BGM/声音），映射
-到 `chapter-schema` 真实字段。不做可达性过滤、不做"已生产/未生产"
-比对——Dev Spec 均未提及，不发明。审计 `AUDIT_PASS`，0
-BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0321"`）。**DEV-074
-（Audio Production Queue）`DONE`**——新建
-`packages/audio-production-queue`：真实复用既有 DEV-034/035
-`audio-engine` 的 `TtsProviderPort`/`createElevenLabsTtsProvider`
-（协议已存在已冻结，不建接口+noop），按 CR-018 职责遍历 Chapter
-Pack 全部 `NarrativeBlock` 批量调用 TTS。不做可达性过滤、
-`voiceId`/`voiceSettings` 由调用方传入不发明、不声称 CR-018 §4.6
-拼接听感原型人工验收已完成（`DEV-030/DECISIONS.md` D3 已如实记录
-未完成）。审计 `AUDIT_PASS`，0 BLOCKER/MAJOR，1 MINOR（文档计数
-已修正）、1 INFO（`verdict_ref: "0325"`）。**DEV-075（Chapter
-Packager）`DONE`**——新建 `packages/chapter-packager`：CR-006
-PASS 7 资产文件存在性校验 + CR-018 §4.4 可达 NarrativeBlock 音频
-覆盖（本节点原文用"可达"，与 DEV-073/074 不同真实要求过滤，
-Path A 互动链 + Path B 直连字段双路径）；`entryNodeId` 经既有
-`runPass3` 内部真实读取，非调用方参数；音频覆盖检查以调用方传入
-数组为唯一输入，零磁盘扫描/发明格式；恰两项 workspace 依赖
-`chapter-compiler`+`audio-production-queue`。审计 `AUDIT_PASS`，
-0 BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0329"`）。**M7
-（Content Factory Complete）全部 6 个节点（DEV-070~075）完成**。
-AUDITOR 为 `opencode`/`gpt-5.6-terra` 自定义 agent（工具集只读，
-裁决以文本返回，Commander 代为落盘消息文件）。账号/密钥继续占位
-处理。
+DEV-060B 按 CR-013 后置。**M7（Content Factory Complete）全部 6
+个节点（DEV-070~075）均 `DONE`**——依次产出
+`chapter-authoring-prompts`、`ai-chapter-generator`、
+`ai-compiler-repair-loop`、`asset-requirement-generator`、
+`audio-production-queue`、`chapter-packager`。**M8（Platform
+Expansion）**：**DEV-080（YouTube Adapter）`DONE`**——新建
+`packages/platform-youtube`：四模块结构对齐既有 `platform-twitch`
+先例并按机制差异调整（OAuth2 refresh_token grant + noop 降级；
+长轮询 `STOPPED|POLLING|ERROR` 三态替代 Twitch WebSocket 八态机；
+真实服务端 `publishedAt` 时间；结果类型对齐 `TwitchSendChatResult`）；
+不建 `messageDedup`、不组装 `LivePlatformAdapter`、零第三方 SDK。
+首轮审计 `AUDIT_FAIL`：1 MAJOR（`pollOnce` 中 `onMessage` 回调
+同步调用 `disconnect()` 后仍会照常排定下一次轮询定时器，违反
+"`disconnect()` 取消挂起定时器"语义），经 `FIX_PACKAGE`
+`DEV-080-FIX-01` 修复（投递循环后补充 `state`/`generation` 重新
+校验守卫 + 新增回归测试）后第二轮 `AUDIT_PASS`，0
+BLOCKER/MAJOR/MINOR/INFO（`verdict_ref: "0337"`）。AUDITOR 为
+`opencode` 自定义/回退 agent（工具集只读，裁决以文本返回，
+Commander 代为落盘消息文件）。账号/密钥继续占位处理。
 
 ## Current Task Package
 
-`specs/tasks/TASK-PACKAGE-DEV-080.md`（消息 `0331`，`ISSUED`）——
-YouTube Adapter，M8 第一个节点。新建 `platform-youtube`：四模块
-结构对齐既有 `platform-twitch` 先例并按机制差异调整
-（`youtubeAuth.ts` OAuth2 refresh_token grant + `createOptional
-YoutubeAuthProvider(env)` noop 降级；`liveChatPoller.ts` 长轮询
-`STOPPED|POLLING|ERROR` 三态，不搬 Twitch WebSocket 八态机；
-`chatMessageAdapter.ts` 用真实 `snippet.publishedAt` 服务端时间；
-`sendChat.ts` 结果类型对齐 `TwitchSendChatResult`）；不建
-`messageDedup`（`nextPageToken` 游标已防重复投递）；不组装
-`LivePlatformAdapter`（该类型代码从未落地，`DEV-042/DECISIONS.md`
-D2 YAGNI 裁定延续，CR-017"计划性修订"对象是 Dev Spec 第 43 节
-文字描述非任何既有代码接口）；零第三方 SDK。
+`DEV-080` 已 `DONE`，暂无 `ISSUED` 中的 Task Package。下一节点
+`DEV-081`（Bilibili Adapter）Task Package 待 Commander 起草下发。
+DEV-080 历史：`specs/tasks/TASK-PACKAGE-DEV-080.md`（消息
+`0331`）——YouTube Adapter，`DONE`（含 FIX-01 修复回合）。
 DEV-075 历史：`specs/tasks/TASK-PACKAGE-DEV-075.md`（消息
 `0327`）——chapter-packager PASS 7 文件存在性 + Path A/B 可达
 NarrativeBlock 计算 + 调用方传入音频覆盖检查，`DONE`。DEV-074
-历史：
+历史:
 `specs/tasks/TASK-PACKAGE-DEV-074.md`（消息 `0323`）——
 audio-production-queue 真实复用既有 TtsProviderPort 批量合成，`DONE`。
 DEV-073 历史：

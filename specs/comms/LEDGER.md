@@ -356,6 +356,9 @@
 | 0333 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-080 | 0332 | CLOSED | AUDIT_FAIL：1 MAJOR（MAJOR-01：`liveChatPoller.ts` `pollOnce` 中 `onMessage` 投递循环之后、排定下一次轮询定时器之前未重新检查 state/generation，回调内同步 disconnect() 之后仍会照常排定新定时器，违反 A14 语义），0 BLOCKER/MINOR，2 INFO（0332 LEDGER 行位置正确；六条命令全绿但未覆盖此竞态） |
 | 0334 | NODE_RULING | COMMANDER | ALL | DEV-080 | 0333 | CLOSED | ruling: FAIL；MAJOR-01 独立复核确认属实，判定 FIX（非 DEV-061/064/070 式接受观察——此为真实代码正确性缺口非 Scope 解释分歧）；架构审计（无 LivePlatformAdapter/messageDedup/第三方 SDK，generation 守卫与 nextPageToken 缺失→STOPPED 均合法）予以采纳；节点转 FIX_REQUIRED |
 | 0335 | FIX_PACKAGE | COMMANDER | OPENCODE | DEV-080 | 0334 | ISSUED | DEV-080-FIX-01：不重开 A01–A13/A15–A21；仅新增 FIX-T01——在 pollOnce 的 onMessage 投递循环之后、nextPageToken 排定/STOPPED 转换之前插入 `state==='POLLING' && generation===gen` 守卫（与函数内其余两处同风格）；新增回归测试断言 onMessage 内同步 disconnect() 后最终 STOPPED、无新定时器、无新请求；必须重跑六条命令 |
+| 0336 | NODE_REPORT | OPENCODE | AUDITOR | DEV-080 | 0335 | CLOSED | DEV-080-FIX-01 完成，第二轮 READY_FOR_REVIEW（git_head=3e70b31；FIX-T01：pollOnce 的 onMessage 投递循环之后、nextPageToken 排定/STOPPED 转换之前补 `state==='POLLING' && generation===gen` 守卫，与函数内其余两处同风格，回调内同步 disconnect()/重新 connect() 打断后直接返回——不排定定时器、不改写 state；不改变 onMessage 同步逐条调用方式、不引入任何重连/退避/重试逻辑；新增回归测试断言 onMessage 内同步 disconnect() 后 getState()==='STOPPED' 且 health DOWN(state: STOPPED)、FakeClock timers/timeouts 均 0 未排定新定时器、fetchImpl 恰 1 次无后续请求；既有 A14 测试零改动通过；新增 1 测试 866→867 零回归；六条命令全绿） |
+| 0337 | AUDIT_VERDICT | AUDITOR | COMMANDER | DEV-080 | 0336 | CLOSED | 第二轮 AUDIT_PASS：0 BLOCKER/MAJOR/MINOR/INFO；独立重跑提交差异比对与全部六条验证命令（867/867），MAJOR-01 确认已真实修复 |
+| 0338 | NODE_RULING | COMMANDER | ALL | DEV-080 | 0337 | CLOSED | ruling: PASS；0 发现；DEV-080 转 DONE，接口冻结 createLiveChatPoller/LiveChatPollerState/YoutubeChatMessage/createOptionalYoutubeAuthProvider/normalizeYoutubeChatMessage/createYoutubeChatOnMessage/sendYoutubeChat/noopYoutubeSendChat；M8 第一个节点完成，下一节点 DEV-081 Bilibili Adapter |
 
 
 ---
@@ -364,6 +367,6 @@
 
 | 接收方 | 待处理序号 |
 |---|---|
-| OPENCODE | 0335 |
+| OPENCODE | — |
 | AUDITOR | — |
 | COMMANDER | — |

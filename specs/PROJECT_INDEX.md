@@ -10,6 +10,10 @@
 - Spec 增补: `specs/audit/SPEC-ADDENDUM-001.md`（FROZEN）＋ `specs/audit/SPEC-ADDENDUM-002.md`（FROZEN——补齐 `DangerState`/`HostPolicy`/`ResultDictionary`，更正 WorldState 归属）
 - Spec 源文件: `AI 自驱动互动绘本直播系统.md`（DEV-000 T002 归档为 `specs/baseline/DEV_SPEC_V1.0.md`）
 - Repo Root: `c:\Users\admin\Music\Aizhibo`
+- 发布前缺口清单: `specs/PRE_LAUNCH_GAPS.md`（2026-09-09 首次整理，
+  对照 Dev Spec 第 69 节 G01–G14 上线 Gate 现状核对 + 硬性代码/配置
+  缺口 + `BLOCKED` 节点汇总；M8 真实可施工范围完成后按 USER 既定
+  顺序起草，"逐项填补"阶段排期未定）
 
 ## Current Milestone
 

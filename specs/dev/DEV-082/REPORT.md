@@ -31,7 +31,7 @@ Adapter 的 `ChatHandler` 包装函数从未被接到同一个共享聚合器上
   文件，A15）。三平台原始形状消息经各自平台回调喂入后汇入同一个
   `aggregator`，`aggregator.onVote(handler)` 注册一次即收到任意平台
   的投票（A09）；非法文本复用 DEV-044 既有解析语义静默忽略（A10）。
-- `src/chatFanOut.ts`：结构类型 `PlatformSendChat` + 
+- `src/chatFanOut.ts`：结构类型 `PlatformSendChat` +
   `createMultiPlatformSendChat(config)`。`sendChat(message)` 按
   `PLATFORM_KEYS`（twitch/youtube/bilibili）顺序过滤出 config 中
   **实际提供**的平台键，`Promise.all` 并发调用各自 `sendChat`，按
